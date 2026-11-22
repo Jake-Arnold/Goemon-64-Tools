@@ -1,0 +1,47 @@
+{
+  "format": "goemon-file22-external-event-order-20261122",
+  "status": "RESEARCH_ONLY_FAILED_NATIVE",
+  "target": "func_801CC0C4_69ECE4",
+  "original_usa_rom_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+  "original_target_sha256": "eaccca6679247d56785806a92a2efe4c1adb73368f723b76d4b6aab5040ef3a9",
+  "original_bytes": 1808,
+  "original_mips_guests": "0x801CC0C4..0x801CC7D4",
+  "original_descriptor_read_offsets": [
+    "0x20",
+    "0x1c",
+    "0x22",
+    "0x1e"
+  ],
+  "corrected_volatile_fields": [
+    "0x20",
+    "0x1c",
+    "0x22"
+  ],
+  "original_volatile_source_proven": false,
+  "completed_cases": 113,
+  "completed_case_categories": {
+    "baseline": 20,
+    "valid_new_geometry": 64,
+    "alias_overlap": 29
+  },
+  "exact_external_nonstack_loads": 90910,
+  "exact_external_nonstack_stores": 100869,
+  "exact_gfx_commands": 33623,
+  "excluded_unmapped_alias_cases": 10,
+  "division_guard_both_trap": 4,
+  "unpadded_code_bytes": 1728,
+  "unpadded_frame": 240,
+  "artificial_frame_code_bytes": 1744,
+  "artificial_frame": 320,
+  "artificial_exact_entry_words": 13,
+  "artificial_weak_opcode_shape_matches": 357,
+  "original_instruction_count": 452,
+  "old_double_scaled_negative_control": "REJECTED",
+  "source_only_zip": "goemon-usa-file22-event-order-proof-20261122.zip",
+  "source_only_zip_sha256": "4a973c5c4648ccdcca6ab2814bd4cd2e8c5bee5bfbc4f62a36365c06f130015d",
+  "gbi_macro_compatibility_113_case_suite": "NOT_RUN",
+  "full_candidate_rom_G2": "NOT_RUN",
+  "full_local_ci": "NOT_RUN",
+  "native_machine_code_exact": false,
+  "accepted_C_increase": 0
+}

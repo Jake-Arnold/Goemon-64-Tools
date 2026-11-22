@@ -350,6 +350,60 @@ The complete **source-only** freshly replayed user-downloadable package is `goem
 
 Original mode-0 (RGBA16), mode-1 (CI8), mode-2 (CI4) seven-command paths reproduce exact Gfx sequences with `gDPLoadTextureBlock`, `gDPLoadTextureBlock`, and specifically **`gDPLoadTextureBlock_4b`**. Wrong generic 4-bit load demonstrably emits `F3000000 070FF800` instead of original `F3000000 070FF400` and fails 5/20 scenarios. Best original-ID0 diagnostic reproduces **1808 bytes, 0x140 stack, F300/E700 3/3, first 16 original words and 20/20 original MIPS-vs-compiled-MIPS command streams** (5,304 commands); 4/4 division guards, 178/178 nonaligned layouts. **Still FAILED_NATIVE, only 20/452 original word positions agree**; artificial diagnostic pad not source proof. See [GBI macro verification report](gbi_macro_20261122/README.md), [structured evidence](gbi_macro_20261122/evidence.json), source-only kit SHA-256 `739f14b705ed8d4f09acb028d5fd210613e7bdd560d6e96849001d54bc8b0f86` delivered in chat. Original clean 32 MiB USA upstream ROM byte exact; no G2 on candidate, no C promotion.
 
+
+## 22 November 2026: exact original-vs-native-IDO external memory-event sequence (113 cases)
+
+**RESEARCH_ONLY / FAILED_NATIVE**. Source guide:
+[event_order_20261122/README.md](event_order_20261122/README.md);
+[metadata](event_order_20261122/evidence.json). This experiment runs the
+authentic 1,808-byte original-USA MIPS and the **actual native IDO5.3-compiled
+C instructions** against identical synthetic guest memory. Non-stack guest-data
+loads and stores are compared **in sequence, including address, width and value**,
+not just final graphics data.
+
+The original loads descriptor fields in order **+0x20 width, +0x1C columns,
++0x22 height, +0x1E rows**; the previous IDO C output instead read +0x22,
++0x1E, +0x1C, +0x20. A source-level *hypothesis*, qualifying reads at +0x20,
++0x1C and +0x22 as volatile signed halfwords, makes original IDO reproduce the
+observed load order. This is compiler-directed C, not proof of Konami's original
+volatile declarations.
+
+**113/113 completed scenarios** exact for both unpadded semantic C and the
+separate artificial-stack diagnostic: **90,910 external reads**, **100,869
+external writes** and **33,623 full 64-bit Gfx commands** per implementation,
+all addresses, widths, values and execution order identical. Tests include
+20 prior cases, 64 additional geometry cases, and 29 deliberate overlapping
+graphics-output / page-map / tile-map / texture metadata aliasing cases.
+**Ten** additional alias scenarios hit unmapped guest RAM in both implementations
+and are excluded. **Four** invalid dimensions generate division guards in
+both implementations, at different PCs (not included in 113).
+
+Crucial negative control: the old double-scaled u16 tile-map pointer source,
+compiled with original IDO, fails immediately: 965 vs 767 external reads,
+1,287 vs 825 stores and different Gfx output on original format 0.
+This is not a trivially permissive test.
+
+The unpadded C is **1,728 B** with frame 0xF0. The artificial-stack
+diagnostic is **1,744 B**, frame 0x140, 13 exact entry words, weak opcode
+shape **357/452** (not identical machine words). Both continue to hoist
+F300/E700 once rather than original three-per-mode branches. The distinct
+[GBI macro study](gbi_macro_20261122/README.md) reaches 1,808 B, original
+frame and 3+3 graphics loads for a *different source shape*, but its source
+has **not been tested with this 113-case external-memory oracle**.
+Do not combine the separate proof claims.
+
+Independent source-only ZIP delivered and replayed after fresh extraction:
+goemon-usa-file22-event-order-proof-20261122.zip
+SHA-256 **4a973c5c4648ccdcca6ab2814bd4cd2e8c5bee5bfbc4f62a36365c06f130015d**.
+Contains reproduction orchestrator, original MIPS and native IDO runner,
+memory-event oracle, C sources and verified negative control; does not include
+any copyrighted original game bytes, extracted original ASM, private compiler,
+objects or raw memory dumps.
+
+No native exact matching C; no current original-ROM G2/ELF/relocation gate,
+strict inventory or full local CI on this nonmatching candidate. Previously
+published USA accepted total remains **1,965 / 84,648 bytes**.
+
 ## Repository boundary and next technical hypothesis
 
 The executable hook integration legitimately lives in [native recompilation PR #1](https://github.com/Jake-Arnold/Goemon64Recomp-JP/pull/1), because it instruments `Goemon64Recomp-JP` runtime. **Matching C, semantics, data layout and proof are owned by this `Goemon-64-Tools` decomp research**, not the native launcher. The two need links, not duplicated runtime patch code.
