@@ -1,3 +1,7 @@
+**UPDATE — 22 November 2026: the third ELF-layout blocker described below is now RESOLVED.** The new [PADDING_FIXED_20261122.md](PADDING_FIXED_20261122.md) and [verify_original_unit.py](verify_original_unit.py) prove all three USA C sources (156 original bytes) *together* against a clean pinned-original full 32 MiB ROM, all 7,376 original positive-size ELF function identities and 82,216 original-upstream relocations. The previous failure report below is preserved for reproducibility, not current status. Canonical modern-branch decomp G2 and full CI remain NOT_RUN; no accepted promotion.
+
+---
+
 # USA original-native C: two whole-ROM/ELF exact, third native and ROM exact but ELF-blocked
 
 **22 November 2026. Research-only; NO canonical USA accepted-C promotion.**
