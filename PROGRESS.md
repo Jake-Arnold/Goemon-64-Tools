@@ -1,10 +1,10 @@
 ## 22 November 2026 — USA six-function canonical G2, inventory, and full CI pass; publication pending
 
-- Starting `chatgptweb/decomp` HEAD: `41dc7404e23ae680a1b400357f59c729799f0710`; USA **1,956 C / 83,940 original instruction bytes / 5,407 ASM**.
+- Starting `chatgptweb/decomp` HEAD: `3f45d572ca25a4980edf116bc67e0514f1ecfb10`; USA **1,956 C / 83,940 original instruction bytes / 5,407 ASM**.
 - Six functions are now accepted locally for review: `func_8000A18C_AD8C` (48B), `func_8000A548_B148` (124B), `func_8000A5C4_B1C4` (80B), `func_8000AAE8_B6E8` (40B), `func_8000AB30_B730` (68B), and `func_800108BC_114BC` (40B). The last was already isolated-native-exact in the crossregion48 research set, so no new discovery is counted. Total acceptance delta **6 functions / 400 bytes**.
 - Fresh `python3 -m decomp.verify` passed **1,962/1,962** claimed functions and all **33,554,432 USA ROM bytes**, SHA-1 `6ea0ed71032ce08fc2745f412d84936382197494`. Strict `python3 -m decomp.inventory` passed: **1,962 C / 5,401 ASM**, 7,376 identified ELF entries, zero extra positive aliases.
 - Direct comparison against a fresh accepted-1,956 baseline found all **7,376 ELF function identity tuples** and all **82,103 semantic relocation records** identical (SHA-256 `e39dc5baf816797a8a835730f5266bf2eedbf3d7e38f0fe18009fbdb54394208`).
-- Full `python3 -m decomp.local_ci` passed: 372 decomp tests (3 skipped), 349 verifier/ledger tests, 7 C-Right comparator tests, and all configured sanitizer suites, including 4,096 actual-source cases for every promoted function. Status **PASSED_G2_LOCAL**; remote publication is pending. Evidence: [promotion proof](decomp/results/usa_92f0_six_g2_promotion_20261122.json), [G2](decomp/results/combined.json), [inventory](decomp/results/inventory.json). Japan unchanged.
+- Full `python3 -m decomp.local_ci` passed: 376 decomp tests (3 skipped), 349 verifier/ledger tests, 7 C-Right comparator tests, and all configured sanitizer suites, including 4,096 actual-source cases for every promoted function. Status **PASSED_G2_LOCAL**; remote publication is pending. Evidence: [promotion proof](decomp/results/usa_92f0_six_g2_promotion_20261122.json), [G2](decomp/results/combined.json), [inventory](decomp/results/inventory.json). Japan unchanged.
 
 ## Historical 22 November 2026 research — two new USA 92F0 functions; all six later passed canonical G2
 
