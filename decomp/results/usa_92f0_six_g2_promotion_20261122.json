@@ -1,6 +1,6 @@
 {
   "format": "goemon-usa-native-g2-promotion-v1",
-  "status": "PASSED_G2_LOCAL",
+  "status": "PASSED_G2",
   "region": "USA",
   "branch_base_commit": "e3c18c08abcd81f67a1e972f5fd9c4a887c49209",
   "upstream_commit": "7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee",
@@ -209,5 +209,15 @@
     "c_right_comparator_tests": "7 passed",
     "actual_source_sanitizers": "all configured full-suite host sanitizer builds and fixtures passed, including 4,096 cases per each of the six promoted USA C sources"
   },
-  "emulator_gameplay": "NOT_RUN"
+  "emulator_gameplay": "NOT_RUN",
+  "publication": {
+    "status": "PUBLISHED_REMOTE_VERIFIED",
+    "target_branch": "chatgptweb/decomp",
+    "pull_request": 167,
+    "pull_request_url": "https://github.com/Jake-Arnold/Goemon-64-Tools/pull/167",
+    "merged_commit_sha": "99c7ae1fcf598196f06e109ecb9423d9db0d74e2",
+    "refetched_target_head": "99c7ae1fcf598196f06e109ecb9423d9db0d74e2",
+    "remote_manifest_functions": 1962,
+    "remote_accepted_instruction_bytes": 84340
+  }
 }
