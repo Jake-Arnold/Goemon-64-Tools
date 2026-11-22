@@ -1,0 +1,96 @@
+{
+  "status": "RESEARCH_ONLY_FAILED_NATIVE",
+  "source_git_pin": "7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee",
+  "original_USA_decompressed_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+  "original_function_sha256": "eaccca6679247d56785806a92a2efe4c1adb73368f723b76d4b6aab5040ef3a9",
+  "original_function_size_bytes": 1808,
+  "original_frame_bytes": 320,
+  "original_lui_total": 40,
+  "original_sp_direct_offsets_count": 18,
+  "checked_original_ido_5_3": true,
+  "verified_original_HI16_LO16_relocations": 2,
+  "native_exact": false,
+  "variants": {
+    "original_gbi_negative_control": {
+      "C_source_sha256": "f097b9f30a7f78aa8f7c8c67549c044b1876ca3a6e5d1a6c200a27ff55901d66",
+      "text_bytes": 1808,
+      "frame_bytes": 144,
+      "entry_exact_instruction_prefix": 0,
+      "position_matches": 21,
+      "positions_compared": 452,
+      "opcode_immediate_shape_matches": 306,
+      "LUI_total": 45,
+      "LUI_missing": {
+        "0xfd50": 1,
+        "0xf550": 1
+      },
+      "LUI_extra": {
+        "0x705": 1,
+        "0x1": 4,
+        "0xe600": 2
+      },
+      "default_modes_exact": 3
+    },
+    "ordered_unpadded": {
+      "C_source_sha256": "766780da793908ecfbf421b2e0a74dd79bd2d494464b748ed786ef1ff3974ec4",
+      "text_bytes": 1792,
+      "frame_bytes": 80,
+      "entry_exact_instruction_prefix": 0,
+      "position_matches": 16,
+      "positions_compared": 448,
+      "opcode_immediate_shape_matches": 300,
+      "LUI_total": 45,
+      "LUI_missing": {
+        "0xfd50": 1,
+        "0xf550": 1
+      },
+      "LUI_extra": {
+        "0x705": 1,
+        "0x1": 4,
+        "0xe600": 2
+      },
+      "default_modes_exact": 4
+    },
+    "dual_named": {
+      "C_source_sha256": "d4df83bc56e6be888f11f196240206747d95303655154d953032cb8f29839b73",
+      "text_bytes": 1776,
+      "frame_bytes": 80,
+      "entry_exact_instruction_prefix": 0,
+      "position_matches": 15,
+      "positions_compared": 444,
+      "opcode_immediate_shape_matches": 304,
+      "LUI_total": 43,
+      "LUI_missing": {
+        "0xfd50": 1
+      },
+      "LUI_extra": {
+        "0x1": 4
+      },
+      "default_modes_exact": 4
+    },
+    "dual_named_and_bound": {
+      "C_source_sha256": "3b13debd5496fad2ed0670fe631b10a77402a69138c394d444a3eb07dce284ce",
+      "text_bytes": 1776,
+      "frame_bytes": 80,
+      "entry_exact_instruction_prefix": 0,
+      "position_matches": 17,
+      "positions_compared": 444,
+      "opcode_immediate_shape_matches": 309,
+      "LUI_total": 39,
+      "LUI_missing": {
+        "0xfd50": 1
+      },
+      "LUI_extra": {},
+      "default_modes_exact": 4,
+      "full_event_cases_passed": 113,
+      "external_reads_exact": 90910,
+      "external_writes_exact": 100869,
+      "gfx_commands_exact": 33623,
+      "invalid_geometry_guards": 4,
+      "excluded_alias_cases": 10
+    }
+  },
+  "accepted_function_change": 0,
+  "full_rom_G2": "NOT_RUN",
+  "full_decomp_local_ci": "NOT_RUN"
+}
