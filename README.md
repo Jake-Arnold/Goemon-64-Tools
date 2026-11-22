@@ -6,6 +6,78 @@ The toolkit address catalogue now includes the separately reviewed address metad
 
 The historical metadata-sync branches are superseded by this consolidated update. The long-lived `chatgptweb/decomp` baseline remains independent from `main`.
 
+## Run the practice toolkit from `main` (Windows and Linux)
+
+**Use the `main` branch for the runnable practice toolkit.** The
+`chatgptweb/decomp` branch is a separate matching-C development workspace;
+its launcher and toolkit files may be older than the live `main` release. These
+instructions use the actual `main` entry points and do not require an N64 ROM
+to open the GUI. You need an independently running supported game/emulator to
+connect to live game memory. Use a disposable save for memory-writing tools.
+
+### Get the toolkit
+
+```bash
+git clone --branch main --single-branch https://github.com/Jake-Arnold/Goemon-64-Tools.git
+cd Goemon-64-Tools
+```
+
+If you already have a **separate clean checkout** of the toolkit, update it
+with `git switch main` and `git pull --ff-only origin main`. Do not switch
+branches inside a working directory that contains uncommitted decomp changes.
+
+### Windows
+
+Install **Python 3.11 or newer**, including the Python launcher (`py`), then
+open a terminal in the repository directory:
+
+```powershell
+py -m pip install -r requirements.txt
+.\Run.bat
+```
+
+`Run.bat` checks Python and launches `py -m practice.toolkit --route route.json`;
+it can also install dependencies if `psutil` is missing on first launch.
+Alternatively run `py -m practice.toolkit` from the repository root. The app
+uses Tkinter for its interface. Select the **USA** or **Japan** region in the
+Dashboard after launch.
+
+### Ubuntu / Linux (native Tk toolkit)
+
+Use a desktop session with Tk support and a regular Python virtual environment:
+
+```bash
+sudo apt update
+sudo apt install git python3-venv python3-tk
+python3 -m venv .venv
+source .venv/bin/activate
+python -m pip install -r requirements.txt
+bash Run-Linux.sh
+```
+
+`Run-Linux.sh` uses `.venv/bin/python` if it exists, otherwise `python3`, and
+starts `python -m practice.toolkit`. It does **not** launch or install the game.
+For a read-only connection, use `bash Run-Linux.sh --read-only` (Windows:
+`py -m practice.toolkit --read-only`). Without `--read-only`, memory-writing
+practice controls are enabled by default once a writable game connection is
+established.
+
+Connect through the **Connection** panel using automatic discovery or an
+existing game PID. Linux process-memory permissions may prevent attaching to
+independently started games. The toolkit offers an explicit authorization path
+for `ptrace_scope` changes, which reduces same-user process isolation; read
+[Linux setup, process permissions and limitations](docs/LINUX_TOOLKIT.md)
+before enabling it. Keyboard injection is verified for X11 only, not Wayland.
+
+### Keep toolkit and decomp development separate
+
+For toolkit updates, run `git pull --ff-only origin main` from the **main**
+checkout. The experimental C decompilation branch has separate original-ROM
+build and verification requirements; the matching-C code and research are **not**
+needed to run the toolkit. Neither branch distributes game ROMs or emulators.
+
+---
+
 # Goemon Speedrun Tools v0.11.78 — Japanese Dialogue Always Readable
 
 ## v0.11.78 — Japanese kana and romaji display is permanent
