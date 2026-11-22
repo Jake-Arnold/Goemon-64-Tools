@@ -1,3 +1,12 @@
+## 22 November 2026 — USA five new native C / eight combined original-ROM G2 (research only)
+
+- Five previously original-ASM-owned USA functions compiled with original SGI IDO 5.3: `func_80012500_13100` (24B), `func_800127FC_133FC` (28B), `func_8001285C_1345C` (28B), `func_8001C9BC_1D5BC` (28B), `func_8001C9D8_1D5D8` (52B). **Five C / 160 original instruction bytes** all code-exact, absent from canonical manifest.
+- Pinned original-upstream complete USA **33,554,432 / 33,554,432 ROM bytes**, SHA-1 `6ea0ed71032ce08fc2745f412d84936382197494` exact; **7,376/7,376 original ELF function identities**, **82,216/82,216 original-upstream symbolic relocation records** exact. Real mixed C/ASM text matched after splitting at original 16-byte-aligned ROM boundary `0x14000`; no machine-code patch.
+- These five plus three previous PR #162 original-USA C functions have been compiled **together** in one original-upstream scratch ROM, eight C / 316 original bytes, complete ROM/ELF/all-relocation exact a second time.
+- GCC 14 and Clang 17 ASan+UBSan actual-C test PASS over 4,096 seeded cases per new routine; independent clean extraction/rebuild replay PASS (make stage resumed after shell timeout).
+- Source-only downloadable kit `goemon_usa_float5_full_rom_research_20261122.zip`, SHA-256 `ae538b0ecd08b704949b72ed403cf21525988270d467bed7069884c8d257131d`, delivered in associated ChatGPT task; source/replay/evidence now in `decomp/research/usa_float5_full_original_rom_20261122`.
+- **RESEARCH_ONLY / NOT PROMOTED**: complete modern USA 1,965 accepted-C staging `decomp.verify`, canonical 82,103 semantic relocations, `decomp.inventory`, and full `decomp.local_ci` **NOT RUN** (current branch unavailable to build shell, GitHub DNS failure). Original ASM/accepted manifest unchanged. USA official **1,965 C / 84,648 bytes**, no increase.
+
 ## 22 November 2026 — Japanese JP55 full original-ROM matching-C G2 PASS; 55 new C functions
 
 - **PASSED_G2_LOCAL:** 55 previously original-ASM-owned Japanese rev-0 functions, 3,376 original instruction bytes, promoted in an all-at-once stage across 33 ASM owners. One research misclassification `func_801E818C_5A415C` was already accepted in JP1686 and was correctly excluded. **2,314 → 2,369 accepted Japanese matching C; 123,236 → 126,612 original C bytes; 5,062 → 5,007 Japanese ASM.** USA unchanged/not rebuilt.

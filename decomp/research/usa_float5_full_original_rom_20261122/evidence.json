@@ -1,0 +1,179 @@
+{
+  "format": "goemon-usa-eight-original-upstream-full-rom-research-20261122-v1",
+  "status": "RESEARCH_ONLY_UPSTREAM_FULL_ROM_EXACT_NOT_CANONICAL_G2",
+  "target_region": "usa",
+  "upstream_pin": "7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee",
+  "original_retail_rom_sha1": "df8083a54296b8c151917c5333e1c85f014a2a66",
+  "original_expanded_rom_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+  "original_elf_sha256": "83eda0f1df831d997f9e505c92a8a7fdb55728d3ad28b30d224f5e1ae975a038",
+  "replay_five_elf_sha256": "1f6eac845ea6fcd916fd7765da171930008cd3ea5d21da317cd006e5efe869f1",
+  "replay_combined_eight_elf_sha256": "15405c2dd87c8e03f19f747f96bae4de058686220d5a95258ad4b4d149cd6344",
+  "new_five": {
+    "original_instruction_bytes": 160,
+    "count": 5,
+    "functions": [
+      {
+        "name": "func_80012500_13100",
+        "rom_offset": "0x13100",
+        "guest_vma": "0x80012500",
+        "original_bytes": 24,
+        "original_slice_sha256": "a3e48ab8383ee90e5cf6011fcd180361bfd050df6839c36ad6c0f528f321c47e",
+        "source_sha256": "7a326c83fb4c6303137918b87f89acac096527e274f3b4331d6cde066ec030f2",
+        "status": "ORIGINAL_UPSTREAM_ROM_EXACT"
+      },
+      {
+        "name": "func_800127FC_133FC",
+        "rom_offset": "0x133fc",
+        "guest_vma": "0x800127fc",
+        "original_bytes": 28,
+        "original_slice_sha256": "7675051da7c384a3110b4a9e598b51523bfa5b35923ef551021b87781f24208b",
+        "source_sha256": "c20801b6f1553988d01cd90adf34e091aaf0e59bf3131b7eb0ab205d9b57d42a",
+        "status": "ORIGINAL_UPSTREAM_ROM_EXACT"
+      },
+      {
+        "name": "func_8001285C_1345C",
+        "rom_offset": "0x1345c",
+        "guest_vma": "0x8001285c",
+        "original_bytes": 28,
+        "original_slice_sha256": "b3b3d2f53ac8fb239cb55eb930d2326ffd410862b34f5c2cea895e385cf58366",
+        "source_sha256": "76fd0f5bbf8cf057faf58a56af29eb33177212b6be17f2190b8e51ec1a2ade1e",
+        "status": "ORIGINAL_UPSTREAM_ROM_EXACT"
+      },
+      {
+        "name": "func_8001C9BC_1D5BC",
+        "rom_offset": "0x1d5bc",
+        "guest_vma": "0x8001c9bc",
+        "original_bytes": 28,
+        "original_slice_sha256": "6d3c1a4234a9fcbb4c601b563221bdc463dbc7bd64e047958118989b908a458c",
+        "source_sha256": "97964cf880836cb6f741a48b0639f2f36f6338d47c56226eb9d1d7dcd7809ae5",
+        "status": "ORIGINAL_UPSTREAM_ROM_EXACT"
+      },
+      {
+        "name": "func_8001C9D8_1D5D8",
+        "rom_offset": "0x1d5d8",
+        "guest_vma": "0x8001c9d8",
+        "original_bytes": 52,
+        "original_slice_sha256": "c66f0cbc8d034a90fc7540863d73e6b8c7302525f585575cbea8385d163f46a6",
+        "source_sha256": "a23fab8bab158a8f9dd5114ef9f073d06b992d920a1804c0a31cd57c13c05a60",
+        "status": "ORIGINAL_UPSTREAM_ROM_EXACT"
+      }
+    ]
+  },
+  "combined_with_prior_three": {
+    "original_instruction_bytes": 316,
+    "count": 8,
+    "functions": [
+      {
+        "name": "func_80012500_13100",
+        "rom_offset": "0x13100",
+        "guest_vma": "0x80012500",
+        "original_bytes": 24,
+        "original_slice_sha256": "a3e48ab8383ee90e5cf6011fcd180361bfd050df6839c36ad6c0f528f321c47e",
+        "source_sha256": "7a326c83fb4c6303137918b87f89acac096527e274f3b4331d6cde066ec030f2",
+        "status": "ORIGINAL_UPSTREAM_ROM_EXACT"
+      },
+      {
+        "name": "func_800127FC_133FC",
+        "rom_offset": "0x133fc",
+        "guest_vma": "0x800127fc",
+        "original_bytes": 28,
+        "original_slice_sha256": "7675051da7c384a3110b4a9e598b51523bfa5b35923ef551021b87781f24208b",
+        "source_sha256": "c20801b6f1553988d01cd90adf34e091aaf0e59bf3131b7eb0ab205d9b57d42a",
+        "status": "ORIGINAL_UPSTREAM_ROM_EXACT"
+      },
+      {
+        "name": "func_8001285C_1345C",
+        "rom_offset": "0x1345c",
+        "guest_vma": "0x8001285c",
+        "original_bytes": 28,
+        "original_slice_sha256": "b3b3d2f53ac8fb239cb55eb930d2326ffd410862b34f5c2cea895e385cf58366",
+        "source_sha256": "76fd0f5bbf8cf057faf58a56af29eb33177212b6be17f2190b8e51ec1a2ade1e",
+        "status": "ORIGINAL_UPSTREAM_ROM_EXACT"
+      },
+      {
+        "name": "func_8001C9BC_1D5BC",
+        "rom_offset": "0x1d5bc",
+        "guest_vma": "0x8001c9bc",
+        "original_bytes": 28,
+        "original_slice_sha256": "6d3c1a4234a9fcbb4c601b563221bdc463dbc7bd64e047958118989b908a458c",
+        "source_sha256": "97964cf880836cb6f741a48b0639f2f36f6338d47c56226eb9d1d7dcd7809ae5",
+        "status": "ORIGINAL_UPSTREAM_ROM_EXACT"
+      },
+      {
+        "name": "func_8001C9D8_1D5D8",
+        "rom_offset": "0x1d5d8",
+        "guest_vma": "0x8001c9d8",
+        "original_bytes": 52,
+        "original_slice_sha256": "c66f0cbc8d034a90fc7540863d73e6b8c7302525f585575cbea8385d163f46a6",
+        "source_sha256": "a23fab8bab158a8f9dd5114ef9f073d06b992d920a1804c0a31cd57c13c05a60",
+        "status": "ORIGINAL_UPSTREAM_ROM_EXACT"
+      },
+      {
+        "name": "func_80008798_9398",
+        "rom_offset": "0x9398",
+        "guest_vma": "0x80008798",
+        "original_bytes": 44,
+        "original_slice_sha256": "27f93c1513ad93f7fb6228b512d6eb178efe9971de423f89ebbcd9a8838826ce",
+        "source_sha256": "3202faf8d0a33f0106a0e52a4454017d4aa9b279d08b7e9645ad47000cf50965",
+        "status": "ORIGINAL_UPSTREAM_ROM_EXACT"
+      },
+      {
+        "name": "func_8000A0F0_ACF0",
+        "rom_offset": "0xacf0",
+        "guest_vma": "0x8000a0f0",
+        "original_bytes": 64,
+        "original_slice_sha256": "f1ebbd24fec5ed12a5193bc3ff26d1abebe594df4f4c1064eb6b9c2d59d9375b",
+        "source_sha256": "4cb749b6efbbf943ddc389166a25445e6e1002f2059a9a1bbbd7868581131484",
+        "status": "ORIGINAL_UPSTREAM_ROM_EXACT"
+      },
+      {
+        "name": "func_8000A18C_AD8C",
+        "rom_offset": "0xad8c",
+        "guest_vma": "0x8000a18c",
+        "original_bytes": 48,
+        "original_slice_sha256": "a494dc6ba7f3ed16e1aa8232fd8e54d8948e40a7f8d2b22b80df3f6a3686a385",
+        "source_sha256": "784d5a565153a3453cc027e7dc87043703af5886e85a32be436aee501b6f44e1",
+        "status": "ORIGINAL_UPSTREAM_ROM_EXACT"
+      }
+    ]
+  },
+  "original_upstream_native_compiler": "SGI IDO 5.3 -O2 -mips2",
+  "original_upstream_build": {
+    "original_rom_bytes": 33554432,
+    "candidate_rom_bytes": 33554432,
+    "whole_rom_byte_for_byte": true,
+    "positive_elf_func_entries_original": 7376,
+    "positive_elf_func_entries_candidate": 7376,
+    "positive_elf_function_multiset_exact": true,
+    "elf_relocs_original": 82216,
+    "elf_relocs_candidate": 82216,
+    "elf_relocation_multiset_exact": true,
+    "fresh_splat_and_make_replay": "PASS_WITH_MAKE_RESUMED_AFTER_SESSION_EXECUTION_TIMEOUT"
+  },
+  "host_tests": {
+    "gcc": "14.2.0 ASan+UBSan PASS",
+    "clang": "17.0.0 ASan+UBSan PASS",
+    "cases_per_new_source": 4096,
+    "in_place_addition_cases": 4096,
+    "previous_three_host_tests": "previous kit PASS"
+  },
+  "canonical_accepted_baseline": {
+    "usa_functions": 1965,
+    "usa_instruction_bytes": 84648
+  },
+  "canonical_decomp_verify": "NOT_RUN",
+  "canonical_semantic_relocations_82103": "NOT_RUN",
+  "canonical_inventory": "NOT_RUN",
+  "full_decomp_local_ci": "NOT_RUN",
+  "accepted_delta_functions": 0,
+  "accepted_delta_instruction_bytes": 0,
+  "blocker": "Live current decomp checkout unavailable in build shell (github.com DNS resolution fails); cannot run modern production staging adapter verification against accepted USA 1965",
+  "source_only_repro": {
+    "script": "verify_pinned_original.py",
+    "also_92f0": true
+  },
+  "negative_controls": {
+    "80_byte_92f0_loops": "FAILED_NATIVE",
+    "large_file22_renderer": "FAILED_NATIVE_UNCHANGED"
+  }
+}
