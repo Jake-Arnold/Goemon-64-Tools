@@ -1,5 +1,15 @@
 # Goemon 64 Tools — Development Progress
 
+## 2026-11-22 — v0.11.81: debugger, trace recorder and reviewed address metadata
+
+- **Change:** Integrated canonical `toolkit/pj64-debugger` guest-RAM debugger, scripted RAM trace recorder, docs and ROM-free tests into current toolkit `main` without reverting newer Japanese auto-attach and Windows packaging fixes. Imported three metadata-only JSON files from `toolkit/address-metadata-sync-45063157503`, expanding catalogue 549 → 615 and discoveries 25 → 117. Bumped release to v0.11.81.
+- **Reason:** v0.11.80 missed independently developed toolkit branches. No decomp source or new automatic memory writes were included.
+- **Review:** Imported research records retain research/disputed classifications and no new permitted writes; disputed Japanese pause and VM countdown conflict remain marked. Existing runtime controls are unchanged.
+- **Tests:** Metadata provenance checks, debugger/tracer synthetic/UI tests, Linux and Windows report regression, version and packaging and EXE smoke must pass in CI before merging.
+- **Limitations:** No real CPU PC/registers, execution breakpoints or stepping; non-atomic manual edits and memory polling can miss changes. Live game attachment and frame timing not verified; Windows binary unsigned.
+- **Next:** Merge after green CI, verify published binary and checksum, perform real USA/Japan connection testing.
+
+
 ## 2026-11-22 — Standalone Windows v0.11.80 EXE release pipeline
 
 - **Change:** Add a Windows x64 PyInstaller build-and-release workflow with a direct .exe artifact. Bundle the repository's reviewed practice JSON files and TkDND runtime alongside existing icons; verify embedded canonical address catalogue, entrance coordinates and unlock flag categories in the one-file archive. Exercise the executable's --help exit, existing packaging/version tests, and publish the tested binary as a GitHub Release only after a successful main-branch build.
