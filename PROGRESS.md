@@ -1,5 +1,14 @@
 # Goemon 64 Tools — Development Progress
 
+## 2026-11-22 — Add canonical toolkit setup instructions to README
+
+- **Change:** Ported the Windows/Linux toolkit setup section added by the latest decomp README commit onto the current `main` README, preserving its newer v0.11.79 release notes. No decomp implementation or research files were copied.
+- **Reason:** Make the canonical `main` launcher and the separation between toolkit and decomp branches clear to new users.
+- **Validation:** Reviewed the copied instructions and confirmed the referenced `Run.bat`, `Run-Linux.sh`, and `docs/LINUX_TOOLKIT.md` exist on `main`; `git diff --check` is the publication check. No runtime tests are applicable to this README-only change.
+- **Limitations:** The Windows/Linux setup steps were documented but not executed in this change.
+- **Next:** Review this focused README update and its CI before merging to `main`.
+
+
 ## 2026-11-20 — v0.11.79 toolkit address metadata consolidation
 
 - **Source selection:** Compared the two independent `toolkit/address-metadata-sync-*` branches. Both contain the same 549 audited address records and 25 supplementary discoveries; their JSON contents differ only in source-revision references on twelve catalogue and sixteen discoveries entries. Selected the newer branch (`6371c7f37bc455a174c20d83032a79cf2756cfc5`, 20 Nov 07:31Z) rather than merging both divergent imports into main.
