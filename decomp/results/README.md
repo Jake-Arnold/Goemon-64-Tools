@@ -2,9 +2,9 @@
 
 This directory contains the published canonical verifier/inventory checkpoint, dated original-ROM G2 promotion reports, and earlier reproducibility snapshots. A later G2 report does **not** make an older original proof redundant: it records a different source fingerprint, accepted set, relocation environment and failure/acceptance history.
 
-## 22 November 2026 — USA Mini reset/ease pair PASSED_G2_LOCAL; publication pending
+## 22 November 2026 — USA Mini reset/ease pair PUBLISHED_REMOTE_VERIFIED
 
-The canonical USA `combined.json` and `inventory.json` now record **1,964 C / 84,708 original instruction bytes / 5,399 ASM**. The preceding **1,962 C / 84,340 byte** checkpoint is preserved as `combined_1962_pre_mini_speed_20261122.json` / `inventory_1962_pre_mini_speed_20261122.json`, with its VM-residual ledger snapshot in `vm_residual_inventory_1962_pre_mini_speed_20261122.json`. Promotion evidence is `usa_mini_speed_two_g2_promotion_20261122.json`. Full original-ROM G2, strict inventory, all 7,376 ELF identities, the complete 82,103 relocation multiset and full `decomp.local_ci` passed. Source provenance and earlier pristine build evidence are in [draft PR #144](https://github.com/Jake-Arnold/Goemon-64-Tools/pull/144); the canonical integration is ready for publication.
+The canonical USA `combined.json` and `inventory.json` now record **1,964 C / 84,708 original instruction bytes / 5,399 ASM**. The preceding **1,962 C / 84,340 byte** checkpoint is preserved as `combined_1962_pre_mini_speed_20261122.json` / `inventory_1962_pre_mini_speed_20261122.json`, with its VM-residual ledger snapshot in `vm_residual_inventory_1962_pre_mini_speed_20261122.json`. Promotion evidence is `usa_mini_speed_two_g2_promotion_20261122.json`. Full original-ROM G2, strict inventory, all 7,376 ELF identities, the complete 82,103 relocation multiset and full `decomp.local_ci` passed. The integration was merged to `chatgptweb/decomp` in [PR #169](https://github.com/Jake-Arnold/Goemon-64-Tools/pull/169), commit `482fb45d2c1e4ad533c093dfa6b53f85cb284bab`; a fresh remote ref confirmed 1,964 functions / 84,708 accepted bytes. Source provenance and earlier pristine build evidence are in [PR #144](https://github.com/Jake-Arnold/Goemon-64-Tools/pull/144).
 
 ## 22 November 2026 — USA six-function promotion PUBLISHED_REMOTE_VERIFIED
 

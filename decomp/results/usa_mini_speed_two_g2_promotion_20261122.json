@@ -1,6 +1,6 @@
 {
   "format": "goemon-usa-native-g2-promotion-v1",
-  "status": "PASSED_G2_LOCAL",
+  "status": "PASSED_G2",
   "region": "USA",
   "branch_base_commit": "91a6d48eeb117c9ffa01b507e83ccd5ca877b9ae",
   "upstream_commit": "7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee",
@@ -191,5 +191,15 @@
     "c_right_comparator_tests": "7 passed",
     "actual_source_sanitizers": "all configured suites passed; both actual Mini source functions ran 4,096 deterministic ASan/UBSan cases"
   },
-  "emulator_gameplay": "NOT_RUN"
+  "emulator_gameplay": "NOT_RUN",
+  "publication": {
+    "status": "PUBLISHED_REMOTE_VERIFIED",
+    "target_branch": "chatgptweb/decomp",
+    "pull_request": 169,
+    "pull_request_url": "https://github.com/Jake-Arnold/Goemon-64-Tools/pull/169",
+    "merged_commit_sha": "482fb45d2c1e4ad533c093dfa6b53f85cb284bab",
+    "refetched_target_head": "482fb45d2c1e4ad533c093dfa6b53f85cb284bab",
+    "remote_manifest_functions": 1964,
+    "remote_accepted_instruction_bytes": 84708
+  }
 }
