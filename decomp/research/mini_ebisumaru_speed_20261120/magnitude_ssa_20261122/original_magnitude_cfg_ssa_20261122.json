@@ -1,0 +1,138 @@
+{
+  "format": "goemon-original-usa-clamp-magnitude-CFG-SSA-v1",
+  "date": "2026-11-22",
+  "status": "FAILED_NATIVE_RESEARCH_ONLY",
+  "function": "func_801CD310_589220",
+  "rom_offset": "0x589220",
+  "vma": "0x801cd310",
+  "original_bytes": 4320,
+  "frame": 232,
+  "expanded_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+  "full_pristine_rom_equal_bytes": 33554432,
+  "original_cfg": {
+    "native_instructions": 1080,
+    "conditional_branches": 103,
+    "branch_likely": 43,
+    "reachable_cfg_states": 1146,
+    "graph_updates": 1969,
+    "dynamic_jumptable_entries": 18,
+    "distinct_targets": 5,
+    "dual_entry_delay_slot_pcs": [
+      "0x610",
+      "0x8a4"
+    ],
+    "zero_source": "0x218",
+    "sqrt_source": "0x4e4",
+    "late_magnitude_read": "0xfe8",
+    "reaching_defs_late_read": [
+      "0x218",
+      "0x4E4"
+    ],
+    "post_multiplier_store": "0xffc",
+    "next_read": "0x1000",
+    "reaching_defs_next_read": [
+      "0xFFC"
+    ],
+    "witness_zero_transitions": 141,
+    "witness_sqrt_transitions": 278,
+    "feasibility": "control_flow_may_paths_only"
+  },
+  "original_fp_stack_occupancy": {
+    "magnitude": "0x8c",
+    "vector_a": [
+      "0xa4",
+      "0xa8",
+      "0xac"
+    ],
+    "vector_b": [
+      "0xb0",
+      "0xb4",
+      "0xb8"
+    ],
+    "FP_counts_for_vectors": [
+      9,
+      8,
+      9,
+      4,
+      5,
+      5
+    ]
+  },
+  "candidates": [
+    {
+      "source": "clamp_f14_best_117.c",
+      "sha256": "43f54bc681c1f1faaa33544a9effbba6750b9bc4acf49c29c36d2d73fbefb6d5",
+      "size": 4440,
+      "frame": 232,
+      "matching_words": 117,
+      "comparable_words": 917,
+      "exact_relocations": 30,
+      "magnitude_stack": "0xd4",
+      "default_write": "0x1c4",
+      "sqrt_write": "0x4e4",
+      "late_read": "0x1060",
+      "reaching_definitions": [
+        "0x1c4",
+        "0x4e4"
+      ],
+      "other_writes_to_sp8c": [
+        "0x314",
+        "0x458",
+        "0x544",
+        "0xf50",
+        "0xf64"
+      ]
+    },
+    {
+      "source": "clamp_f16_exact_reset.c",
+      "sha256": "3f37cae5ab8d641f08d7818594c3b8a82b9767fa648b41cf66904c0509a485b3",
+      "size": 4412,
+      "frame": 232,
+      "matching_words": 86,
+      "comparable_words": 906,
+      "exact_relocations": 20,
+      "magnitude_stack": "0xd4",
+      "default_write": "0x220",
+      "sqrt_write": "0x500",
+      "late_read": "0x1044",
+      "reaching_definitions": [
+        "0x220",
+        "0x500"
+      ],
+      "other_writes_to_sp8c": [
+        "0xf2c",
+        "0xf78"
+      ]
+    }
+  ],
+  "experiments": {
+    "native_ido_compiles": 2442,
+    "original_F14_and_any_target_F16": 0,
+    "original_F14_and_all_8_F16": 0,
+    "original_magnitude_store_at_0x218": 0,
+    "unverified_source_semantics_present": true,
+    "original_m2c_corrected_native_bytes": 0,
+    "original_m2c_corrected_frame": 456,
+    "original_m2c_instruction_matches": 3,
+    "original_m2c_reloc_matches": 1
+  },
+  "tests": {
+    "pristine_original_USA_rom": "PASS_33554432",
+    "synthetic_cfg_tests": "PASS_11",
+    "original_magnitude_reaching": "PASS",
+    "candidate_native_compiles": 2,
+    "candidate_exact_equality": "FAIL",
+    "clean_zip_extraction_checksum": "PASS",
+    "clean_zip_native_replay": "PASS_EXPECTED_FAILED_NATIVE",
+    "candidate_integrated_ROM": "NOT_RUN",
+    "canonical_decomp_verify": "NOT_RUN",
+    "strict_inventory": "NOT_RUN",
+    "full_local_ci": "NOT_RUN",
+    "emulator_gameplay": "NOT_RUN"
+  },
+  "source_zip_sha256": "dc209fc6003cacb38a808e68b9570412c3828c9347b5d8feda5f09a7625726d9",
+  "USA_accepted_before": 1965,
+  "USA_accepted_after": 1965,
+  "USA_accepted_instruction_bytes": 84648,
+  "USA_remaining_ASM": 5398
+}
