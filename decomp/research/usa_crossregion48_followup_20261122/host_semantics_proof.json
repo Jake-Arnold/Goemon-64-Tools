@@ -1,0 +1,297 @@
+{
+  "status": "PASSED_HOST_COMPILE_AND_SEMANTICS",
+  "actual_source_files": 48,
+  "actual_source_compiled_gcc_asan_ubsan": 48,
+  "actual_source_semantic_execution": 45,
+  "architecture_specific_compile_only": 3,
+  "records": [
+    {
+      "name": "func_800108BC_114BC",
+      "gcc_asan_ubsan_compiled": true,
+      "host_semantics_executed": true,
+      "status": "EXECUTED_SEMANTICS"
+    },
+    {
+      "name": "func_801CB460_587370",
+      "gcc_asan_ubsan_compiled": true,
+      "host_semantics_executed": false,
+      "status": "MIPS32_INDIRECT_TABLE_COMPILE_ONLY"
+    },
+    {
+      "name": "func_801E31A8_59F0B8",
+      "gcc_asan_ubsan_compiled": true,
+      "host_semantics_executed": true,
+      "status": "EXECUTED_SEMANTICS"
+    },
+    {
+      "name": "func_801E3244_59F154",
+      "gcc_asan_ubsan_compiled": true,
+      "host_semantics_executed": true,
+      "status": "EXECUTED_SEMANTICS"
+    },
+    {
+      "name": "func_80214768_5CFC38",
+      "gcc_asan_ubsan_compiled": true,
+      "host_semantics_executed": false,
+      "status": "MIPS32_UNPROTOTYPED_CALL_COMPILE_ONLY"
+    },
+    {
+      "name": "func_801CB460_5F6840",
+      "gcc_asan_ubsan_compiled": true,
+      "host_semantics_executed": false,
+      "status": "MIPS32_INDIRECT_TABLE_COMPILE_ONLY"
+    },
+    {
+      "name": "func_801DF7A0_64E5F0",
+      "gcc_asan_ubsan_compiled": true,
+      "host_semantics_executed": true,
+      "status": "EXECUTED_SEMANTICS"
+    },
+    {
+      "name": "func_801E0030_64EE80",
+      "gcc_asan_ubsan_compiled": true,
+      "host_semantics_executed": true,
+      "status": "EXECUTED_SEMANTICS"
+    },
+    {
+      "name": "func_801E09A4_64F7F4",
+      "gcc_asan_ubsan_compiled": true,
+      "host_semantics_executed": true,
+      "status": "EXECUTED_SEMANTICS"
+    },
+    {
+      "name": "func_801CFCC8_662B78",
+      "gcc_asan_ubsan_compiled": true,
+      "host_semantics_executed": true,
+      "status": "EXECUTED_SEMANTICS"
+    },
+    {
+      "name": "func_801CFF08_662DB8",
+      "gcc_asan_ubsan_compiled": true,
+      "host_semantics_executed": true,
+      "status": "EXECUTED_SEMANTICS"
+    },
+    {
+      "name": "func_801D1B6C_664A1C",
+      "gcc_asan_ubsan_compiled": true,
+      "host_semantics_executed": true,
+      "status": "EXECUTED_SEMANTICS"
+    },
+    {
+      "name": "func_802145CC_67357C",
+      "gcc_asan_ubsan_compiled": true,
+      "host_semantics_executed": true,
+      "status": "EXECUTED_SEMANTICS"
+    },
+    {
+      "name": "func_8021D224_686C04",
+      "gcc_asan_ubsan_compiled": true,
+      "host_semantics_executed": true,
+      "status": "EXECUTED_SEMANTICS"
+    },
+    {
+      "name": "func_80213558_69AF58",
+      "gcc_asan_ubsan_compiled": true,
+      "host_semantics_executed": true,
+      "status": "EXECUTED_SEMANTICS"
+    },
+    {
+      "name": "func_080019E4_6C1134",
+      "gcc_asan_ubsan_compiled": true,
+      "host_semantics_executed": true,
+      "status": "EXECUTED_SEMANTICS"
+    },
+    {
+      "name": "func_08004654_6C3DA4",
+      "gcc_asan_ubsan_compiled": true,
+      "host_semantics_executed": true,
+      "status": "EXECUTED_SEMANTICS"
+    },
+    {
+      "name": "func_08006B00_6C6250",
+      "gcc_asan_ubsan_compiled": true,
+      "host_semantics_executed": true,
+      "status": "EXECUTED_SEMANTICS"
+    },
+    {
+      "name": "func_08002344_6D1424",
+      "gcc_asan_ubsan_compiled": true,
+      "host_semantics_executed": true,
+      "status": "EXECUTED_SEMANTICS"
+    },
+    {
+      "name": "func_08002470_6D83C0",
+      "gcc_asan_ubsan_compiled": true,
+      "host_semantics_executed": true,
+      "status": "EXECUTED_SEMANTICS"
+    },
+    {
+      "name": "func_08002570_6D84C0",
+      "gcc_asan_ubsan_compiled": true,
+      "host_semantics_executed": true,
+      "status": "EXECUTED_SEMANTICS"
+    },
+    {
+      "name": "func_08002A84_6DC954",
+      "gcc_asan_ubsan_compiled": true,
+      "host_semantics_executed": true,
+      "status": "EXECUTED_SEMANTICS"
+    },
+    {
+      "name": "func_08004568_6DE438",
+      "gcc_asan_ubsan_compiled": true,
+      "host_semantics_executed": true,
+      "status": "EXECUTED_SEMANTICS"
+    },
+    {
+      "name": "func_080048FC_6DE7CC",
+      "gcc_asan_ubsan_compiled": true,
+      "host_semantics_executed": true,
+      "status": "EXECUTED_SEMANTICS"
+    },
+    {
+      "name": "func_0800057C_6DF71C",
+      "gcc_asan_ubsan_compiled": true,
+      "host_semantics_executed": true,
+      "status": "EXECUTED_SEMANTICS"
+    },
+    {
+      "name": "func_08000B60_6DFD00",
+      "gcc_asan_ubsan_compiled": true,
+      "host_semantics_executed": true,
+      "status": "EXECUTED_SEMANTICS"
+    },
+    {
+      "name": "func_08001AAC_6E0C4C",
+      "gcc_asan_ubsan_compiled": true,
+      "host_semantics_executed": true,
+      "status": "EXECUTED_SEMANTICS"
+    },
+    {
+      "name": "func_08002B1C_6E1CBC",
+      "gcc_asan_ubsan_compiled": true,
+      "host_semantics_executed": true,
+      "status": "EXECUTED_SEMANTICS"
+    },
+    {
+      "name": "func_080039EC_6E2B8C",
+      "gcc_asan_ubsan_compiled": true,
+      "host_semantics_executed": true,
+      "status": "EXECUTED_SEMANTICS"
+    },
+    {
+      "name": "func_080005CC_6E45AC",
+      "gcc_asan_ubsan_compiled": true,
+      "host_semantics_executed": true,
+      "status": "EXECUTED_SEMANTICS"
+    },
+    {
+      "name": "func_08000AA4_6E4A84",
+      "gcc_asan_ubsan_compiled": true,
+      "host_semantics_executed": true,
+      "status": "EXECUTED_SEMANTICS"
+    },
+    {
+      "name": "func_08000E10_6E4DF0",
+      "gcc_asan_ubsan_compiled": true,
+      "host_semantics_executed": true,
+      "status": "EXECUTED_SEMANTICS"
+    },
+    {
+      "name": "func_080029F0_6E69D0",
+      "gcc_asan_ubsan_compiled": true,
+      "host_semantics_executed": true,
+      "status": "EXECUTED_SEMANTICS"
+    },
+    {
+      "name": "func_080006B8_6E79C8",
+      "gcc_asan_ubsan_compiled": true,
+      "host_semantics_executed": true,
+      "status": "EXECUTED_SEMANTICS"
+    },
+    {
+      "name": "func_080007E0_6E7AF0",
+      "gcc_asan_ubsan_compiled": true,
+      "host_semantics_executed": true,
+      "status": "EXECUTED_SEMANTICS"
+    },
+    {
+      "name": "func_08000AC8_6E7DD8",
+      "gcc_asan_ubsan_compiled": true,
+      "host_semantics_executed": true,
+      "status": "EXECUTED_SEMANTICS"
+    },
+    {
+      "name": "func_08001288_6E8598",
+      "gcc_asan_ubsan_compiled": true,
+      "host_semantics_executed": true,
+      "status": "EXECUTED_SEMANTICS"
+    },
+    {
+      "name": "func_08000944_6EF2A4",
+      "gcc_asan_ubsan_compiled": true,
+      "host_semantics_executed": true,
+      "status": "EXECUTED_SEMANTICS"
+    },
+    {
+      "name": "func_08000A60_6F3F40",
+      "gcc_asan_ubsan_compiled": true,
+      "host_semantics_executed": true,
+      "status": "EXECUTED_SEMANTICS"
+    },
+    {
+      "name": "func_08005754_6F8C34",
+      "gcc_asan_ubsan_compiled": true,
+      "host_semantics_executed": true,
+      "status": "EXECUTED_SEMANTICS"
+    },
+    {
+      "name": "func_080004A4_707EE4",
+      "gcc_asan_ubsan_compiled": true,
+      "host_semantics_executed": true,
+      "status": "EXECUTED_SEMANTICS"
+    },
+    {
+      "name": "func_08000764_70A7A4",
+      "gcc_asan_ubsan_compiled": true,
+      "host_semantics_executed": true,
+      "status": "EXECUTED_SEMANTICS"
+    },
+    {
+      "name": "func_08000F00_713E70",
+      "gcc_asan_ubsan_compiled": true,
+      "host_semantics_executed": true,
+      "status": "EXECUTED_SEMANTICS"
+    },
+    {
+      "name": "func_080000C0_71BB40",
+      "gcc_asan_ubsan_compiled": true,
+      "host_semantics_executed": true,
+      "status": "EXECUTED_SEMANTICS"
+    },
+    {
+      "name": "func_08000F94_71CA14",
+      "gcc_asan_ubsan_compiled": true,
+      "host_semantics_executed": true,
+      "status": "EXECUTED_SEMANTICS"
+    },
+    {
+      "name": "func_0800033C_724F4C",
+      "gcc_asan_ubsan_compiled": true,
+      "host_semantics_executed": true,
+      "status": "EXECUTED_SEMANTICS"
+    },
+    {
+      "name": "func_080015B8_739C88",
+      "gcc_asan_ubsan_compiled": true,
+      "host_semantics_executed": true,
+      "status": "EXECUTED_SEMANTICS"
+    },
+    {
+      "name": "func_0800037C_73A21C",
+      "gcc_asan_ubsan_compiled": true,
+      "host_semantics_executed": true,
+      "status": "EXECUTED_SEMANTICS"
+    }
+  ]
+}

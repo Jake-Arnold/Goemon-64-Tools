@@ -1,0 +1,350 @@
+{
+  "status": "PASSED_ISOLATED_NATIVE / RESEARCH_ONLY",
+  "usa_rom_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+  "verified": 48,
+  "original_machine_code_bytes": 3028,
+  "original_symbolic_relocations": 130,
+  "full_usa_ROM_G2": "NOT_RUN",
+  "all_ELF_functions": "NOT_RUN",
+  "all_semantic_relocations": "NOT_RUN",
+  "full_local_CI": "NOT_RUN",
+  "official_usa_promotions": 0,
+  "functions": [
+    {
+      "name": "func_800108BC_114BC",
+      "rom_offset": "0x114BC",
+      "bytes": 40,
+      "relocs": 2,
+      "status": "PASSED_ISOLATED_NATIVE"
+    },
+    {
+      "name": "func_801CB460_587370",
+      "rom_offset": "0x587370",
+      "bytes": 100,
+      "relocs": 6,
+      "status": "PASSED_ISOLATED_NATIVE"
+    },
+    {
+      "name": "func_801E31A8_59F0B8",
+      "rom_offset": "0x59F0B8",
+      "bytes": 52,
+      "relocs": 3,
+      "status": "PASSED_ISOLATED_NATIVE"
+    },
+    {
+      "name": "func_801E3244_59F154",
+      "rom_offset": "0x59F154",
+      "bytes": 52,
+      "relocs": 3,
+      "status": "PASSED_ISOLATED_NATIVE"
+    },
+    {
+      "name": "func_80214768_5CFC38",
+      "rom_offset": "0x5CFC38",
+      "bytes": 60,
+      "relocs": 4,
+      "status": "PASSED_ISOLATED_NATIVE"
+    },
+    {
+      "name": "func_801CB460_5F6840",
+      "rom_offset": "0x5F6840",
+      "bytes": 100,
+      "relocs": 6,
+      "status": "PASSED_ISOLATED_NATIVE"
+    },
+    {
+      "name": "func_801DF7A0_64E5F0",
+      "rom_offset": "0x64E5F0",
+      "bytes": 84,
+      "relocs": 2,
+      "status": "PASSED_ISOLATED_NATIVE"
+    },
+    {
+      "name": "func_801E0030_64EE80",
+      "rom_offset": "0x64EE80",
+      "bytes": 84,
+      "relocs": 2,
+      "status": "PASSED_ISOLATED_NATIVE"
+    },
+    {
+      "name": "func_801E09A4_64F7F4",
+      "rom_offset": "0x64F7F4",
+      "bytes": 84,
+      "relocs": 2,
+      "status": "PASSED_ISOLATED_NATIVE"
+    },
+    {
+      "name": "func_801CFCC8_662B78",
+      "rom_offset": "0x662B78",
+      "bytes": 40,
+      "relocs": 2,
+      "status": "PASSED_ISOLATED_NATIVE"
+    },
+    {
+      "name": "func_801CFF08_662DB8",
+      "rom_offset": "0x662DB8",
+      "bytes": 40,
+      "relocs": 2,
+      "status": "PASSED_ISOLATED_NATIVE"
+    },
+    {
+      "name": "func_801D1B6C_664A1C",
+      "rom_offset": "0x664A1C",
+      "bytes": 84,
+      "relocs": 0,
+      "status": "PASSED_ISOLATED_NATIVE"
+    },
+    {
+      "name": "func_802145CC_67357C",
+      "rom_offset": "0x67357C",
+      "bytes": 40,
+      "relocs": 2,
+      "status": "PASSED_ISOLATED_NATIVE"
+    },
+    {
+      "name": "func_8021D224_686C04",
+      "rom_offset": "0x686C04",
+      "bytes": 44,
+      "relocs": 0,
+      "status": "PASSED_ISOLATED_NATIVE"
+    },
+    {
+      "name": "func_80213558_69AF58",
+      "rom_offset": "0x69AF58",
+      "bytes": 40,
+      "relocs": 2,
+      "status": "PASSED_ISOLATED_NATIVE"
+    },
+    {
+      "name": "func_080019E4_6C1134",
+      "rom_offset": "0x6C1134",
+      "bytes": 64,
+      "relocs": 4,
+      "status": "PASSED_ISOLATED_NATIVE"
+    },
+    {
+      "name": "func_08004654_6C3DA4",
+      "rom_offset": "0x6C3DA4",
+      "bytes": 64,
+      "relocs": 4,
+      "status": "PASSED_ISOLATED_NATIVE"
+    },
+    {
+      "name": "func_08006B00_6C6250",
+      "rom_offset": "0x6C6250",
+      "bytes": 64,
+      "relocs": 4,
+      "status": "PASSED_ISOLATED_NATIVE"
+    },
+    {
+      "name": "func_08002344_6D1424",
+      "rom_offset": "0x6D1424",
+      "bytes": 84,
+      "relocs": 4,
+      "status": "PASSED_ISOLATED_NATIVE"
+    },
+    {
+      "name": "func_08002470_6D83C0",
+      "rom_offset": "0x6D83C0",
+      "bytes": 64,
+      "relocs": 2,
+      "status": "PASSED_ISOLATED_NATIVE"
+    },
+    {
+      "name": "func_08002570_6D84C0",
+      "rom_offset": "0x6D84C0",
+      "bytes": 48,
+      "relocs": 2,
+      "status": "PASSED_ISOLATED_NATIVE"
+    },
+    {
+      "name": "func_08002A84_6DC954",
+      "rom_offset": "0x6DC954",
+      "bytes": 56,
+      "relocs": 2,
+      "status": "PASSED_ISOLATED_NATIVE"
+    },
+    {
+      "name": "func_08004568_6DE438",
+      "rom_offset": "0x6DE438",
+      "bytes": 56,
+      "relocs": 2,
+      "status": "PASSED_ISOLATED_NATIVE"
+    },
+    {
+      "name": "func_080048FC_6DE7CC",
+      "rom_offset": "0x6DE7CC",
+      "bytes": 56,
+      "relocs": 2,
+      "status": "PASSED_ISOLATED_NATIVE"
+    },
+    {
+      "name": "func_0800057C_6DF71C",
+      "rom_offset": "0x6DF71C",
+      "bytes": 64,
+      "relocs": 2,
+      "status": "PASSED_ISOLATED_NATIVE"
+    },
+    {
+      "name": "func_08000B60_6DFD00",
+      "rom_offset": "0x6DFD00",
+      "bytes": 84,
+      "relocs": 4,
+      "status": "PASSED_ISOLATED_NATIVE"
+    },
+    {
+      "name": "func_08001AAC_6E0C4C",
+      "rom_offset": "0x6E0C4C",
+      "bytes": 64,
+      "relocs": 4,
+      "status": "PASSED_ISOLATED_NATIVE"
+    },
+    {
+      "name": "func_08002B1C_6E1CBC",
+      "rom_offset": "0x6E1CBC",
+      "bytes": 64,
+      "relocs": 2,
+      "status": "PASSED_ISOLATED_NATIVE"
+    },
+    {
+      "name": "func_080039EC_6E2B8C",
+      "rom_offset": "0x6E2B8C",
+      "bytes": 84,
+      "relocs": 4,
+      "status": "PASSED_ISOLATED_NATIVE"
+    },
+    {
+      "name": "func_080005CC_6E45AC",
+      "rom_offset": "0x6E45AC",
+      "bytes": 64,
+      "relocs": 2,
+      "status": "PASSED_ISOLATED_NATIVE"
+    },
+    {
+      "name": "func_08000AA4_6E4A84",
+      "rom_offset": "0x6E4A84",
+      "bytes": 64,
+      "relocs": 2,
+      "status": "PASSED_ISOLATED_NATIVE"
+    },
+    {
+      "name": "func_08000E10_6E4DF0",
+      "rom_offset": "0x6E4DF0",
+      "bytes": 84,
+      "relocs": 4,
+      "status": "PASSED_ISOLATED_NATIVE"
+    },
+    {
+      "name": "func_080029F0_6E69D0",
+      "rom_offset": "0x6E69D0",
+      "bytes": 64,
+      "relocs": 2,
+      "status": "PASSED_ISOLATED_NATIVE"
+    },
+    {
+      "name": "func_080006B8_6E79C8",
+      "rom_offset": "0x6E79C8",
+      "bytes": 84,
+      "relocs": 4,
+      "status": "PASSED_ISOLATED_NATIVE"
+    },
+    {
+      "name": "func_080007E0_6E7AF0",
+      "rom_offset": "0x6E7AF0",
+      "bytes": 40,
+      "relocs": 2,
+      "status": "PASSED_ISOLATED_NATIVE"
+    },
+    {
+      "name": "func_08000AC8_6E7DD8",
+      "rom_offset": "0x6E7DD8",
+      "bytes": 84,
+      "relocs": 4,
+      "status": "PASSED_ISOLATED_NATIVE"
+    },
+    {
+      "name": "func_08001288_6E8598",
+      "rom_offset": "0x6E8598",
+      "bytes": 64,
+      "relocs": 4,
+      "status": "PASSED_ISOLATED_NATIVE"
+    },
+    {
+      "name": "func_08000944_6EF2A4",
+      "rom_offset": "0x6EF2A4",
+      "bytes": 64,
+      "relocs": 2,
+      "status": "PASSED_ISOLATED_NATIVE"
+    },
+    {
+      "name": "func_08000A60_6F3F40",
+      "rom_offset": "0x6F3F40",
+      "bytes": 60,
+      "relocs": 2,
+      "status": "PASSED_ISOLATED_NATIVE"
+    },
+    {
+      "name": "func_08005754_6F8C34",
+      "rom_offset": "0x6F8C34",
+      "bytes": 60,
+      "relocs": 2,
+      "status": "PASSED_ISOLATED_NATIVE"
+    },
+    {
+      "name": "func_080004A4_707EE4",
+      "rom_offset": "0x707EE4",
+      "bytes": 84,
+      "relocs": 0,
+      "status": "PASSED_ISOLATED_NATIVE"
+    },
+    {
+      "name": "func_08000764_70A7A4",
+      "rom_offset": "0x70A7A4",
+      "bytes": 40,
+      "relocs": 2,
+      "status": "PASSED_ISOLATED_NATIVE"
+    },
+    {
+      "name": "func_08000F00_713E70",
+      "rom_offset": "0x713E70",
+      "bytes": 64,
+      "relocs": 4,
+      "status": "PASSED_ISOLATED_NATIVE"
+    },
+    {
+      "name": "func_080000C0_71BB40",
+      "rom_offset": "0x71BB40",
+      "bytes": 40,
+      "relocs": 2,
+      "status": "PASSED_ISOLATED_NATIVE"
+    },
+    {
+      "name": "func_08000F94_71CA14",
+      "rom_offset": "0x71CA14",
+      "bytes": 64,
+      "relocs": 4,
+      "status": "PASSED_ISOLATED_NATIVE"
+    },
+    {
+      "name": "func_0800033C_724F4C",
+      "rom_offset": "0x724F4C",
+      "bytes": 64,
+      "relocs": 4,
+      "status": "PASSED_ISOLATED_NATIVE"
+    },
+    {
+      "name": "func_080015B8_739C88",
+      "rom_offset": "0x739C88",
+      "bytes": 40,
+      "relocs": 2,
+      "status": "PASSED_ISOLATED_NATIVE"
+    },
+    {
+      "name": "func_0800037C_73A21C",
+      "rom_offset": "0x73A21C",
+      "bytes": 40,
+      "relocs": 2,
+      "status": "PASSED_ISOLATED_NATIVE"
+    }
+  ]
+}

@@ -1,0 +1,1340 @@
+{
+  "format": "goemon-USA-followup48-original-address-native-v1",
+  "status": "PASSED_ISOLATED_NATIVE / RESEARCH_ONLY",
+  "original_usa_32mib_rom_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+  "original_usa_retail_rom_sha1": "df8083a54296b8c151917c5333e1c85f014a2a66",
+  "compiler": "SGI IDO 5.3 -G 0 -non_shared -O2 -mips2",
+  "accepted_usa_functions_before": 1965,
+  "prior_unpromoted_usa_research_excluded": 51,
+  "new_unique_usa_isolated_functions": 48,
+  "new_unique_usa_code_bytes": 3028,
+  "original_symbolic_relocations": 130,
+  "japan_donors_g2_accepted": true,
+  "full_usa_rom_g2": "NOT_RUN",
+  "all_7376_elf_identities": "NOT_RUN",
+  "all_82103_semantic_relocations": "NOT_RUN",
+  "strict_inventory": "NOT_RUN",
+  "full_post_integration_ci": "NOT_RUN",
+  "official_USA_promotions": 0,
+  "functions": [
+    {
+      "name": "func_800108BC_114BC",
+      "original_usa_rom_offset": "0x114BC",
+      "original_guest_vma": "0x800108BC",
+      "size": 40,
+      "original_rom_code_sha256": "2b856135c3b09dccc933210170254d59c20068d60330c224d0f25eab42320aa7",
+      "usa_source_sha256": "ac1a86443d594f121627145f305013ec148e0066510e760721354bae342822b1",
+      "source": "sources/func_800108BC_114BC.c",
+      "source_japan_donor": "func_8001067C_1127C",
+      "source_japan_batch": "jp_retry29_20261121",
+      "original_symbolic_relocations": [
+        {
+          "offset": 0,
+          "type": "R_MIPS_HI16",
+          "symbol": "D_800637C0_643C0"
+        },
+        {
+          "offset": 4,
+          "type": "R_MIPS_LO16",
+          "symbol": "D_800637C0_643C0"
+        }
+      ],
+      "native_original_address_byte_identical": true
+    },
+    {
+      "name": "func_801CB460_587370",
+      "original_usa_rom_offset": "0x587370",
+      "original_guest_vma": "0x801CB460",
+      "size": 100,
+      "original_rom_code_sha256": "1e90177e303458bf5bb3c361be76fe432b4aea858428ad55693852a234b06edb",
+      "usa_source_sha256": "3c0ff4bb6936e16e20d3d23cb2ec6f305abae0a5fbd55379d067512e50680815",
+      "source": "sources/func_801CB460_587370.c",
+      "source_japan_donor": "func_801D0B90_58CB60",
+      "source_japan_batch": "jp_donor10_20261121",
+      "original_symbolic_relocations": [
+        {
+          "offset": 4,
+          "type": "R_MIPS_HI16",
+          "symbol": "D_801FC5F0_5B8500"
+        },
+        {
+          "offset": 12,
+          "type": "R_MIPS_LO16",
+          "symbol": "D_801FC5F0_5B8500"
+        },
+        {
+          "offset": 24,
+          "type": "R_MIPS_HI16",
+          "symbol": "D_8015C5C8_15D1C8"
+        },
+        {
+          "offset": 36,
+          "type": "R_MIPS_HI16",
+          "symbol": "D_3ADDE"
+        },
+        {
+          "offset": 52,
+          "type": "R_MIPS_LO16",
+          "symbol": "D_8015C5C8_15D1C8"
+        },
+        {
+          "offset": 60,
+          "type": "R_MIPS_LO16",
+          "symbol": "D_3ADDE"
+        }
+      ],
+      "native_original_address_byte_identical": true
+    },
+    {
+      "name": "func_801E31A8_59F0B8",
+      "original_usa_rom_offset": "0x59F0B8",
+      "original_guest_vma": "0x801E31A8",
+      "size": 52,
+      "original_rom_code_sha256": "79e9c610c9a067e0c6f306787a224e99d704152bafe3c4630ba8bc82357dd9a2",
+      "usa_source_sha256": "6580680c06b1c6d835bf77e140a41b5b4215f2b9504060949d0bccf21922ecf6",
+      "source": "sources/func_801E31A8_59F0B8.c",
+      "source_japan_donor": "func_801E8458_5A4428",
+      "source_japan_batch": "jp_expand7_20261121",
+      "original_symbolic_relocations": [
+        {
+          "offset": 0,
+          "type": "R_MIPS_HI16",
+          "symbol": "D_8020B350_5C7260"
+        },
+        {
+          "offset": 4,
+          "type": "R_MIPS_LO16",
+          "symbol": "D_8020B350_5C7260"
+        },
+        {
+          "offset": 28,
+          "type": "R_MIPS_26",
+          "symbol": "func_801E32D4_59F1E4"
+        }
+      ],
+      "native_original_address_byte_identical": true
+    },
+    {
+      "name": "func_801E3244_59F154",
+      "original_usa_rom_offset": "0x59F154",
+      "original_guest_vma": "0x801E3244",
+      "size": 52,
+      "original_rom_code_sha256": "b5c45954e5438cae2f9c1c594be079c723667b51ed66f447a2644cc2af677c05",
+      "usa_source_sha256": "8f5ae3b14208e1707ca8bbf2e96d7cefff3674a97473222a33104581a64041e2",
+      "source": "sources/func_801E3244_59F154.c",
+      "source_japan_donor": "func_801E8458_5A4428",
+      "source_japan_batch": "jp_expand7_20261121",
+      "original_symbolic_relocations": [
+        {
+          "offset": 0,
+          "type": "R_MIPS_HI16",
+          "symbol": "D_8020B35C_5C726C"
+        },
+        {
+          "offset": 4,
+          "type": "R_MIPS_LO16",
+          "symbol": "D_8020B35C_5C726C"
+        },
+        {
+          "offset": 28,
+          "type": "R_MIPS_26",
+          "symbol": "func_801E32D4_59F1E4"
+        }
+      ],
+      "native_original_address_byte_identical": true
+    },
+    {
+      "name": "func_80214768_5CFC38",
+      "original_usa_rom_offset": "0x5CFC38",
+      "original_guest_vma": "0x80214768",
+      "size": 60,
+      "original_rom_code_sha256": "79354a548415b519e235bbf9259cc187c130ad02b962805bc658ff16765d8525",
+      "usa_source_sha256": "6c9c63cbc393016ddd3ca9538f847c2d96705ead0e76b2d2129a78cf6afb5f70",
+      "source": "sources/func_80214768_5CFC38.c",
+      "source_japan_donor": "func_80219500_5D4A90",
+      "source_japan_batch": "jp_donor10_20261121",
+      "original_symbolic_relocations": [
+        {
+          "offset": 16,
+          "type": "R_MIPS_HI16",
+          "symbol": "func_8003521C_35E1C"
+        },
+        {
+          "offset": 20,
+          "type": "R_MIPS_LO16",
+          "symbol": "func_8003521C_35E1C"
+        },
+        {
+          "offset": 32,
+          "type": "R_MIPS_HI16",
+          "symbol": "func_802145F0_5CFAC0"
+        },
+        {
+          "offset": 40,
+          "type": "R_MIPS_LO16",
+          "symbol": "func_802145F0_5CFAC0"
+        }
+      ],
+      "native_original_address_byte_identical": true
+    },
+    {
+      "name": "func_801CB460_5F6840",
+      "original_usa_rom_offset": "0x5F6840",
+      "original_guest_vma": "0x801CB460",
+      "size": 100,
+      "original_rom_code_sha256": "c508815d47b86c7221533ad80d99250c82095f3b07a846e5da8be58f8ebbde4f",
+      "usa_source_sha256": "89ce4d9ed3aaef822a32b67d78095157d12b98577036b7cf6ed9f667fe5a0866",
+      "source": "sources/func_801CB460_5F6840.c",
+      "source_japan_donor": "func_801D0B90_58CB60",
+      "source_japan_batch": "jp_donor10_20261121",
+      "original_symbolic_relocations": [
+        {
+          "offset": 4,
+          "type": "R_MIPS_HI16",
+          "symbol": "D_80209A50_634E30"
+        },
+        {
+          "offset": 12,
+          "type": "R_MIPS_LO16",
+          "symbol": "D_80209A50_634E30"
+        },
+        {
+          "offset": 24,
+          "type": "R_MIPS_HI16",
+          "symbol": "D_8015C5C8_15D1C8"
+        },
+        {
+          "offset": 36,
+          "type": "R_MIPS_HI16",
+          "symbol": "D_3ADDE"
+        },
+        {
+          "offset": 52,
+          "type": "R_MIPS_LO16",
+          "symbol": "D_8015C5C8_15D1C8"
+        },
+        {
+          "offset": 60,
+          "type": "R_MIPS_LO16",
+          "symbol": "D_3ADDE"
+        }
+      ],
+      "native_original_address_byte_identical": true
+    },
+    {
+      "name": "func_801DF7A0_64E5F0",
+      "original_usa_rom_offset": "0x64E5F0",
+      "original_guest_vma": "0x801DF7A0",
+      "size": 84,
+      "original_rom_code_sha256": "9b7a057c4121522651fd5cbe6c05f5ac35696e1075a6db2fba9d6954f654727f",
+      "usa_source_sha256": "b49a71702f4cd6b556e882e1840760d157ce0965a3589bbec596eb13f5d15eb0",
+      "source": "sources/func_801DF7A0_64E5F0.c",
+      "source_japan_donor": "func_801E4ED0_6533C0",
+      "source_japan_batch": "jp_retry29_20261121",
+      "original_symbolic_relocations": [
+        {
+          "offset": 4,
+          "type": "R_MIPS_HI16",
+          "symbol": "D_801EF370_65E1C0"
+        },
+        {
+          "offset": 8,
+          "type": "R_MIPS_LO16",
+          "symbol": "D_801EF370_65E1C0"
+        }
+      ],
+      "native_original_address_byte_identical": true
+    },
+    {
+      "name": "func_801E0030_64EE80",
+      "original_usa_rom_offset": "0x64EE80",
+      "original_guest_vma": "0x801E0030",
+      "size": 84,
+      "original_rom_code_sha256": "b93586c64d275efe97aa23cd514cee897cfb8453046e2e5d1a9350a6e7d8932b",
+      "usa_source_sha256": "26dce78ebdff2c149762bb42868c328447f8b6c74fd04189a6bbe56d4edd8844",
+      "source": "sources/func_801E0030_64EE80.c",
+      "source_japan_donor": "func_801E4ED0_6533C0",
+      "source_japan_batch": "jp_retry29_20261121",
+      "original_symbolic_relocations": [
+        {
+          "offset": 4,
+          "type": "R_MIPS_HI16",
+          "symbol": "D_801EF390_65E1E0"
+        },
+        {
+          "offset": 8,
+          "type": "R_MIPS_LO16",
+          "symbol": "D_801EF390_65E1E0"
+        }
+      ],
+      "native_original_address_byte_identical": true
+    },
+    {
+      "name": "func_801E09A4_64F7F4",
+      "original_usa_rom_offset": "0x64F7F4",
+      "original_guest_vma": "0x801E09A4",
+      "size": 84,
+      "original_rom_code_sha256": "1e75dd7e18cdff1aac561a81695a4f4fdc0db6fff0b08b92dcaf2ef43e463a75",
+      "usa_source_sha256": "602f911a969bf8bf10e3bf9d65d0c3dd84d056a1ba4a2e56804802e0c7ccd44c",
+      "source": "sources/func_801E09A4_64F7F4.c",
+      "source_japan_donor": "func_801E60D4_6545C4",
+      "source_japan_batch": "jp_retry29_20261121",
+      "original_symbolic_relocations": [
+        {
+          "offset": 4,
+          "type": "R_MIPS_HI16",
+          "symbol": "D_801EF3B0_65E200"
+        },
+        {
+          "offset": 8,
+          "type": "R_MIPS_LO16",
+          "symbol": "D_801EF3B0_65E200"
+        }
+      ],
+      "native_original_address_byte_identical": true
+    },
+    {
+      "name": "func_801CFCC8_662B78",
+      "original_usa_rom_offset": "0x662B78",
+      "original_guest_vma": "0x801CFCC8",
+      "size": 40,
+      "original_rom_code_sha256": "dd34d00e2f95f216b6efacd244d570140bd3d5c82f60f620195c14bcbff48bad",
+      "usa_source_sha256": "564b658e62814ed1a41f77b20648dc402fee845c74fee3855dee1ea5d0a3efd4",
+      "source": "sources/func_801CFCC8_662B78.c",
+      "source_japan_donor": "func_8001067C_1127C",
+      "source_japan_batch": "jp_retry29_20261121",
+      "original_symbolic_relocations": [
+        {
+          "offset": 0,
+          "type": "R_MIPS_HI16",
+          "symbol": "D_801D33B0_666260"
+        },
+        {
+          "offset": 4,
+          "type": "R_MIPS_LO16",
+          "symbol": "D_801D33B0_666260"
+        }
+      ],
+      "native_original_address_byte_identical": true
+    },
+    {
+      "name": "func_801CFF08_662DB8",
+      "original_usa_rom_offset": "0x662DB8",
+      "original_guest_vma": "0x801CFF08",
+      "size": 40,
+      "original_rom_code_sha256": "dd34d00e2f95f216b6efacd244d570140bd3d5c82f60f620195c14bcbff48bad",
+      "usa_source_sha256": "4e42c5f0e7bd6e3cd12b67ffca026227be5f3924863d5fd94f17c063162b55de",
+      "source": "sources/func_801CFF08_662DB8.c",
+      "source_japan_donor": "func_8001067C_1127C",
+      "source_japan_batch": "jp_retry29_20261121",
+      "original_symbolic_relocations": [
+        {
+          "offset": 0,
+          "type": "R_MIPS_HI16",
+          "symbol": "D_801D33B0_666260"
+        },
+        {
+          "offset": 4,
+          "type": "R_MIPS_LO16",
+          "symbol": "D_801D33B0_666260"
+        }
+      ],
+      "native_original_address_byte_identical": true
+    },
+    {
+      "name": "func_801D1B6C_664A1C",
+      "original_usa_rom_offset": "0x664A1C",
+      "original_guest_vma": "0x801D1B6C",
+      "size": 84,
+      "original_rom_code_sha256": "6f41f3421edbb730bfec84293bd9824f5c065c64ceded3fbfc40594d6e4ac487",
+      "usa_source_sha256": "392a2b6a6b766b4408910fc04e8a9e2d704b0178d08771e244d3ec113ae6c734",
+      "source": "sources/func_801D1B6C_664A1C.c",
+      "source_japan_donor": "func_80212B78_6719E8",
+      "source_japan_batch": "jp_short145_20261121/batch101",
+      "original_symbolic_relocations": [],
+      "native_original_address_byte_identical": true
+    },
+    {
+      "name": "func_802145CC_67357C",
+      "original_usa_rom_offset": "0x67357C",
+      "original_guest_vma": "0x802145CC",
+      "size": 40,
+      "original_rom_code_sha256": "698df444fdffe051973ab9c29d73e0e800ea0741c5a2a09848db59cc66db0c77",
+      "usa_source_sha256": "1a9352746e9bf0ab811ba4d003927662a6541fb17b164a33d6bdd39126f02ada",
+      "source": "sources/func_802145CC_67357C.c",
+      "source_japan_donor": "func_8001067C_1127C",
+      "source_japan_batch": "jp_retry29_20261121",
+      "original_symbolic_relocations": [
+        {
+          "offset": 0,
+          "type": "R_MIPS_HI16",
+          "symbol": "D_80216F68_675F18"
+        },
+        {
+          "offset": 4,
+          "type": "R_MIPS_LO16",
+          "symbol": "D_80216F68_675F18"
+        }
+      ],
+      "native_original_address_byte_identical": true
+    },
+    {
+      "name": "func_8021D224_686C04",
+      "original_usa_rom_offset": "0x686C04",
+      "original_guest_vma": "0x8021D224",
+      "size": 44,
+      "original_rom_code_sha256": "cc885ce3a6ad7283f2bdad487de2e3e0eadd833f3b1bfea62b0f8e9c306ed047",
+      "usa_source_sha256": "5c4a0560319b858a8e34bd18476c8132a42ac09f2570740ebe6473022295d315",
+      "source": "sources/func_8021D224_686C04.c",
+      "source_japan_donor": "func_802215F8_68ACE8",
+      "source_japan_batch": "jp_short145_20261121/batch101",
+      "original_symbolic_relocations": [],
+      "native_original_address_byte_identical": true
+    },
+    {
+      "name": "func_80213558_69AF58",
+      "original_usa_rom_offset": "0x69AF58",
+      "original_guest_vma": "0x80213558",
+      "size": 40,
+      "original_rom_code_sha256": "026be357f3e29b77f0b3f5ececa76d2b1c81a385d091c04a624947ff21cc29da",
+      "usa_source_sha256": "e81f29fe41dd4afceb46c2151ce01147082b505cadcb2e3715b2c40cf7cfde11",
+      "source": "sources/func_80213558_69AF58.c",
+      "source_japan_donor": "func_80218350_69FA50",
+      "source_japan_batch": "jp_donor10_20261121",
+      "original_symbolic_relocations": [
+        {
+          "offset": 4,
+          "type": "R_MIPS_HI16",
+          "symbol": "func_80034EF8_35AF8"
+        },
+        {
+          "offset": 12,
+          "type": "R_MIPS_LO16",
+          "symbol": "func_80034EF8_35AF8"
+        }
+      ],
+      "native_original_address_byte_identical": true
+    },
+    {
+      "name": "func_080019E4_6C1134",
+      "original_usa_rom_offset": "0x6C1134",
+      "original_guest_vma": "0x80019E4",
+      "size": 64,
+      "original_rom_code_sha256": "032743dcc988ed3639f761560a48e3ce4a02088b810831b533d92db4fb1e7ad8",
+      "usa_source_sha256": "9fd184d6dfae089359ac9946bc7832b648300ee47aeb82fa6b10d4fed001e6dd",
+      "source": "sources/func_080019E4_6C1134.c",
+      "source_japan_donor": "func_080019E4_6C5BA4",
+      "source_japan_batch": "jp_short145_20261121/batch101",
+      "original_symbolic_relocations": [
+        {
+          "offset": 16,
+          "type": "R_MIPS_HI16",
+          "symbol": "func_8003521C_35E1C"
+        },
+        {
+          "offset": 20,
+          "type": "R_MIPS_LO16",
+          "symbol": "func_8003521C_35E1C"
+        },
+        {
+          "offset": 36,
+          "type": "R_MIPS_HI16",
+          "symbol": "func_08001A24_6C1174"
+        },
+        {
+          "offset": 44,
+          "type": "R_MIPS_LO16",
+          "symbol": "func_08001A24_6C1174"
+        }
+      ],
+      "native_original_address_byte_identical": true
+    },
+    {
+      "name": "func_08004654_6C3DA4",
+      "original_usa_rom_offset": "0x6C3DA4",
+      "original_guest_vma": "0x8004654",
+      "size": 64,
+      "original_rom_code_sha256": "d8fb703a49c1bc4ee4d08380399fabb266246a03bcae983dd94c607b4c79a540",
+      "usa_source_sha256": "19e87ff4f44aecfb7f839aa2b1d9c52125c8e4f3e9e921bc1fcf61fbe9517e4f",
+      "source": "sources/func_08004654_6C3DA4.c",
+      "source_japan_donor": "func_08004654_6C8814",
+      "source_japan_batch": "jp_short145_20261121/batch101",
+      "original_symbolic_relocations": [
+        {
+          "offset": 16,
+          "type": "R_MIPS_HI16",
+          "symbol": "func_8003521C_35E1C"
+        },
+        {
+          "offset": 20,
+          "type": "R_MIPS_LO16",
+          "symbol": "func_8003521C_35E1C"
+        },
+        {
+          "offset": 36,
+          "type": "R_MIPS_HI16",
+          "symbol": "func_08004594_6C3CE4"
+        },
+        {
+          "offset": 44,
+          "type": "R_MIPS_LO16",
+          "symbol": "func_08004594_6C3CE4"
+        }
+      ],
+      "native_original_address_byte_identical": true
+    },
+    {
+      "name": "func_08006B00_6C6250",
+      "original_usa_rom_offset": "0x6C6250",
+      "original_guest_vma": "0x8006B00",
+      "size": 64,
+      "original_rom_code_sha256": "9ca1629fa3f15321ac65b1ee188521c517d928974e49e1661372a55a31e65616",
+      "usa_source_sha256": "cc649f3eeec153302fb37948a88ae8c2c39c159e5a6282d3d307e3627d23801b",
+      "source": "sources/func_08006B00_6C6250.c",
+      "source_japan_donor": "func_08006B00_6CACC0",
+      "source_japan_batch": "jp_short145_20261121/batch101",
+      "original_symbolic_relocations": [
+        {
+          "offset": 16,
+          "type": "R_MIPS_HI16",
+          "symbol": "func_8003521C_35E1C"
+        },
+        {
+          "offset": 20,
+          "type": "R_MIPS_LO16",
+          "symbol": "func_8003521C_35E1C"
+        },
+        {
+          "offset": 36,
+          "type": "R_MIPS_HI16",
+          "symbol": "func_08006968_6C60B8"
+        },
+        {
+          "offset": 44,
+          "type": "R_MIPS_LO16",
+          "symbol": "func_08006968_6C60B8"
+        }
+      ],
+      "native_original_address_byte_identical": true
+    },
+    {
+      "name": "func_08002344_6D1424",
+      "original_usa_rom_offset": "0x6D1424",
+      "original_guest_vma": "0x8002344",
+      "size": 84,
+      "original_rom_code_sha256": "d7131d55990c55c4dbc4fc893df36187e81cc354ed25a0763a96e369863e3891",
+      "usa_source_sha256": "8a52f2a313b00c6aee40bb00e29f5dd530c9853edaaa953d0643eb68cc39fea2",
+      "source": "sources/func_08002344_6D1424.c",
+      "source_japan_donor": "func_08000DB8_6E9508",
+      "source_japan_batch": "jp_short145_20261121/batch101",
+      "original_symbolic_relocations": [
+        {
+          "offset": 16,
+          "type": "R_MIPS_HI16",
+          "symbol": "func_8021927C_5D474C"
+        },
+        {
+          "offset": 20,
+          "type": "R_MIPS_LO16",
+          "symbol": "func_8021927C_5D474C"
+        },
+        {
+          "offset": 44,
+          "type": "R_MIPS_HI16",
+          "symbol": "func_8021B09C_5D656C"
+        },
+        {
+          "offset": 48,
+          "type": "R_MIPS_LO16",
+          "symbol": "func_8021B09C_5D656C"
+        }
+      ],
+      "native_original_address_byte_identical": true
+    },
+    {
+      "name": "func_08002470_6D83C0",
+      "original_usa_rom_offset": "0x6D83C0",
+      "original_guest_vma": "0x8002470",
+      "size": 64,
+      "original_rom_code_sha256": "9d77b71b96c3d9fc5036e50f4d9d419c8dc298dc9adaec3b317783ea5c81fc6b",
+      "usa_source_sha256": "d35c22d3941015adb53779ae524cdab88428f0df6330d3b0aae589b8dff2583e",
+      "source": "sources/func_08002470_6D83C0.c",
+      "source_japan_donor": "func_08002B00_6E6470",
+      "source_japan_batch": "jp_short145_20261121/batch101",
+      "original_symbolic_relocations": [
+        {
+          "offset": 20,
+          "type": "R_MIPS_HI16",
+          "symbol": "func_8021B09C_5D656C"
+        },
+        {
+          "offset": 36,
+          "type": "R_MIPS_LO16",
+          "symbol": "func_8021B09C_5D656C"
+        }
+      ],
+      "native_original_address_byte_identical": true
+    },
+    {
+      "name": "func_08002570_6D84C0",
+      "original_usa_rom_offset": "0x6D84C0",
+      "original_guest_vma": "0x8002570",
+      "size": 48,
+      "original_rom_code_sha256": "6a9b7d93fb1455b4e6a6ff41cf6ce32db1ffe36a740db72823e333fe92086753",
+      "usa_source_sha256": "47818db4b5d59d6367b63dbe77d1714dad5f20d6b73593f7dd9aafec1d747eca",
+      "source": "sources/func_08002570_6D84C0.c",
+      "source_japan_donor": "func_080004E4_6DAD84",
+      "source_japan_batch": "jp_short145_20261121/batch101",
+      "original_symbolic_relocations": [
+        {
+          "offset": 4,
+          "type": "R_MIPS_HI16",
+          "symbol": "func_8021B09C_5D656C"
+        },
+        {
+          "offset": 16,
+          "type": "R_MIPS_LO16",
+          "symbol": "func_8021B09C_5D656C"
+        }
+      ],
+      "native_original_address_byte_identical": true
+    },
+    {
+      "name": "func_08002A84_6DC954",
+      "original_usa_rom_offset": "0x6DC954",
+      "original_guest_vma": "0x8002A84",
+      "size": 56,
+      "original_rom_code_sha256": "dbb74f491ab2664db48b3fc37f134ab0a1da45834b0dbe1e2c125e64b084acbb",
+      "usa_source_sha256": "f4c4713ab2779fc213111baa392b411597f699978028e38a48f38c202243f6da",
+      "source": "sources/func_08002A84_6DC954.c",
+      "source_japan_donor": "func_08004494_6E2C24",
+      "source_japan_batch": "jp_short145_20261121/batch101",
+      "original_symbolic_relocations": [
+        {
+          "offset": 12,
+          "type": "R_MIPS_HI16",
+          "symbol": "func_8021B09C_5D656C"
+        },
+        {
+          "offset": 16,
+          "type": "R_MIPS_LO16",
+          "symbol": "func_8021B09C_5D656C"
+        }
+      ],
+      "native_original_address_byte_identical": true
+    },
+    {
+      "name": "func_08004568_6DE438",
+      "original_usa_rom_offset": "0x6DE438",
+      "original_guest_vma": "0x8004568",
+      "size": 56,
+      "original_rom_code_sha256": "dbb74f491ab2664db48b3fc37f134ab0a1da45834b0dbe1e2c125e64b084acbb",
+      "usa_source_sha256": "5cc84189af29745cc82f25bd2bf50382342997ce6cf0aa51b403f0e1c95e9219",
+      "source": "sources/func_08004568_6DE438.c",
+      "source_japan_donor": "func_08004494_6E2C24",
+      "source_japan_batch": "jp_short145_20261121/batch101",
+      "original_symbolic_relocations": [
+        {
+          "offset": 12,
+          "type": "R_MIPS_HI16",
+          "symbol": "func_8021B09C_5D656C"
+        },
+        {
+          "offset": 16,
+          "type": "R_MIPS_LO16",
+          "symbol": "func_8021B09C_5D656C"
+        }
+      ],
+      "native_original_address_byte_identical": true
+    },
+    {
+      "name": "func_080048FC_6DE7CC",
+      "original_usa_rom_offset": "0x6DE7CC",
+      "original_guest_vma": "0x80048FC",
+      "size": 56,
+      "original_rom_code_sha256": "dbb74f491ab2664db48b3fc37f134ab0a1da45834b0dbe1e2c125e64b084acbb",
+      "usa_source_sha256": "6785213f828168e94e656cc94ab7cbfdfb400f987935a24173882bb2fdf64394",
+      "source": "sources/func_080048FC_6DE7CC.c",
+      "source_japan_donor": "func_08004494_6E2C24",
+      "source_japan_batch": "jp_short145_20261121/batch101",
+      "original_symbolic_relocations": [
+        {
+          "offset": 12,
+          "type": "R_MIPS_HI16",
+          "symbol": "func_8021B09C_5D656C"
+        },
+        {
+          "offset": 16,
+          "type": "R_MIPS_LO16",
+          "symbol": "func_8021B09C_5D656C"
+        }
+      ],
+      "native_original_address_byte_identical": true
+    },
+    {
+      "name": "func_0800057C_6DF71C",
+      "original_usa_rom_offset": "0x6DF71C",
+      "original_guest_vma": "0x800057C",
+      "size": 64,
+      "original_rom_code_sha256": "9d77b71b96c3d9fc5036e50f4d9d419c8dc298dc9adaec3b317783ea5c81fc6b",
+      "usa_source_sha256": "b5d99587a2848c91a89d72fbc3f9753754906a0c3800044b193eb23ed0305392",
+      "source": "sources/func_0800057C_6DF71C.c",
+      "source_japan_donor": "func_08002B00_6E6470",
+      "source_japan_batch": "jp_short145_20261121/batch101",
+      "original_symbolic_relocations": [
+        {
+          "offset": 20,
+          "type": "R_MIPS_HI16",
+          "symbol": "func_8021B09C_5D656C"
+        },
+        {
+          "offset": 36,
+          "type": "R_MIPS_LO16",
+          "symbol": "func_8021B09C_5D656C"
+        }
+      ],
+      "native_original_address_byte_identical": true
+    },
+    {
+      "name": "func_08000B60_6DFD00",
+      "original_usa_rom_offset": "0x6DFD00",
+      "original_guest_vma": "0x8000B60",
+      "size": 84,
+      "original_rom_code_sha256": "064038791cccb9943625da54376c4f13457f6426a8a2b8d3c35d911be0eaba85",
+      "usa_source_sha256": "f8b06250ca42acd671ef2d9713f44ae589869e7b97b3f2dc9af613f37d81b4cd",
+      "source": "sources/func_08000B60_6DFD00.c",
+      "source_japan_donor": "func_08000B60_6E44D0",
+      "source_japan_batch": "jp_short145_20261121/batch101",
+      "original_symbolic_relocations": [
+        {
+          "offset": 16,
+          "type": "R_MIPS_HI16",
+          "symbol": "func_8021927C_5D474C"
+        },
+        {
+          "offset": 20,
+          "type": "R_MIPS_LO16",
+          "symbol": "func_8021927C_5D474C"
+        },
+        {
+          "offset": 44,
+          "type": "R_MIPS_HI16",
+          "symbol": "func_8021B09C_5D656C"
+        },
+        {
+          "offset": 48,
+          "type": "R_MIPS_LO16",
+          "symbol": "func_8021B09C_5D656C"
+        }
+      ],
+      "native_original_address_byte_identical": true
+    },
+    {
+      "name": "func_08001AAC_6E0C4C",
+      "original_usa_rom_offset": "0x6E0C4C",
+      "original_guest_vma": "0x8001AAC",
+      "size": 64,
+      "original_rom_code_sha256": "91f1944d4512ef51c02f8cdd3d6259fa9cd2d52ad0b0ceaf41f59f5588f44071",
+      "usa_source_sha256": "1b712807bdf83e09493b78900874e49681f01125df1f4f2d9e543af81d13efc4",
+      "source": "sources/func_08001AAC_6E0C4C.c",
+      "source_japan_donor": "func_08001AAC_6E541C",
+      "source_japan_batch": "jp_short145_20261121/batch101",
+      "original_symbolic_relocations": [
+        {
+          "offset": 16,
+          "type": "R_MIPS_HI16",
+          "symbol": "func_8003521C_35E1C"
+        },
+        {
+          "offset": 20,
+          "type": "R_MIPS_LO16",
+          "symbol": "func_8003521C_35E1C"
+        },
+        {
+          "offset": 36,
+          "type": "R_MIPS_HI16",
+          "symbol": "func_08001640_6E07E0"
+        },
+        {
+          "offset": 44,
+          "type": "R_MIPS_LO16",
+          "symbol": "func_08001640_6E07E0"
+        }
+      ],
+      "native_original_address_byte_identical": true
+    },
+    {
+      "name": "func_08002B1C_6E1CBC",
+      "original_usa_rom_offset": "0x6E1CBC",
+      "original_guest_vma": "0x8002B1C",
+      "size": 64,
+      "original_rom_code_sha256": "9d77b71b96c3d9fc5036e50f4d9d419c8dc298dc9adaec3b317783ea5c81fc6b",
+      "usa_source_sha256": "258558d741a995c93ef9bd8a2a7e11435c342ae782436f0eb83040223b7b7735",
+      "source": "sources/func_08002B1C_6E1CBC.c",
+      "source_japan_donor": "func_08002B00_6E6470",
+      "source_japan_batch": "jp_short145_20261121/batch101",
+      "original_symbolic_relocations": [
+        {
+          "offset": 20,
+          "type": "R_MIPS_HI16",
+          "symbol": "func_8021B09C_5D656C"
+        },
+        {
+          "offset": 36,
+          "type": "R_MIPS_LO16",
+          "symbol": "func_8021B09C_5D656C"
+        }
+      ],
+      "native_original_address_byte_identical": true
+    },
+    {
+      "name": "func_080039EC_6E2B8C",
+      "original_usa_rom_offset": "0x6E2B8C",
+      "original_guest_vma": "0x80039EC",
+      "size": 84,
+      "original_rom_code_sha256": "d7131d55990c55c4dbc4fc893df36187e81cc354ed25a0763a96e369863e3891",
+      "usa_source_sha256": "a6dd6f0d9c97b9cf10c4367381c35dc7b1c7faf5355ff9103c0a27c4adc56cf0",
+      "source": "sources/func_080039EC_6E2B8C.c",
+      "source_japan_donor": "func_08000DB8_6E9508",
+      "source_japan_batch": "jp_short145_20261121/batch101",
+      "original_symbolic_relocations": [
+        {
+          "offset": 16,
+          "type": "R_MIPS_HI16",
+          "symbol": "func_8021927C_5D474C"
+        },
+        {
+          "offset": 20,
+          "type": "R_MIPS_LO16",
+          "symbol": "func_8021927C_5D474C"
+        },
+        {
+          "offset": 44,
+          "type": "R_MIPS_HI16",
+          "symbol": "func_8021B09C_5D656C"
+        },
+        {
+          "offset": 48,
+          "type": "R_MIPS_LO16",
+          "symbol": "func_8021B09C_5D656C"
+        }
+      ],
+      "native_original_address_byte_identical": true
+    },
+    {
+      "name": "func_080005CC_6E45AC",
+      "original_usa_rom_offset": "0x6E45AC",
+      "original_guest_vma": "0x80005CC",
+      "size": 64,
+      "original_rom_code_sha256": "9d77b71b96c3d9fc5036e50f4d9d419c8dc298dc9adaec3b317783ea5c81fc6b",
+      "usa_source_sha256": "e89e50955ddc9b6fed806f2fe0af7b5181c687b8a40e60a926ddac560d848b2a",
+      "source": "sources/func_080005CC_6E45AC.c",
+      "source_japan_donor": "func_08002B00_6E6470",
+      "source_japan_batch": "jp_short145_20261121/batch101",
+      "original_symbolic_relocations": [
+        {
+          "offset": 20,
+          "type": "R_MIPS_HI16",
+          "symbol": "func_8021B09C_5D656C"
+        },
+        {
+          "offset": 36,
+          "type": "R_MIPS_LO16",
+          "symbol": "func_8021B09C_5D656C"
+        }
+      ],
+      "native_original_address_byte_identical": true
+    },
+    {
+      "name": "func_08000AA4_6E4A84",
+      "original_usa_rom_offset": "0x6E4A84",
+      "original_guest_vma": "0x8000AA4",
+      "size": 64,
+      "original_rom_code_sha256": "9d77b71b96c3d9fc5036e50f4d9d419c8dc298dc9adaec3b317783ea5c81fc6b",
+      "usa_source_sha256": "aba6aec149c0fc976488ba31eeed5e40152fe634a0a6c132df19349f37edeeb4",
+      "source": "sources/func_08000AA4_6E4A84.c",
+      "source_japan_donor": "func_08002B00_6E6470",
+      "source_japan_batch": "jp_short145_20261121/batch101",
+      "original_symbolic_relocations": [
+        {
+          "offset": 20,
+          "type": "R_MIPS_HI16",
+          "symbol": "func_8021B09C_5D656C"
+        },
+        {
+          "offset": 36,
+          "type": "R_MIPS_LO16",
+          "symbol": "func_8021B09C_5D656C"
+        }
+      ],
+      "native_original_address_byte_identical": true
+    },
+    {
+      "name": "func_08000E10_6E4DF0",
+      "original_usa_rom_offset": "0x6E4DF0",
+      "original_guest_vma": "0x8000E10",
+      "size": 84,
+      "original_rom_code_sha256": "d7131d55990c55c4dbc4fc893df36187e81cc354ed25a0763a96e369863e3891",
+      "usa_source_sha256": "e3b75b259a92ef737464ffcb4cc2f4a02f02c15d57680e0821024b1baa8e226c",
+      "source": "sources/func_08000E10_6E4DF0.c",
+      "source_japan_donor": "func_08000DB8_6E9508",
+      "source_japan_batch": "jp_short145_20261121/batch101",
+      "original_symbolic_relocations": [
+        {
+          "offset": 16,
+          "type": "R_MIPS_HI16",
+          "symbol": "func_8021927C_5D474C"
+        },
+        {
+          "offset": 20,
+          "type": "R_MIPS_LO16",
+          "symbol": "func_8021927C_5D474C"
+        },
+        {
+          "offset": 44,
+          "type": "R_MIPS_HI16",
+          "symbol": "func_8021B09C_5D656C"
+        },
+        {
+          "offset": 48,
+          "type": "R_MIPS_LO16",
+          "symbol": "func_8021B09C_5D656C"
+        }
+      ],
+      "native_original_address_byte_identical": true
+    },
+    {
+      "name": "func_080029F0_6E69D0",
+      "original_usa_rom_offset": "0x6E69D0",
+      "original_guest_vma": "0x80029F0",
+      "size": 64,
+      "original_rom_code_sha256": "9d77b71b96c3d9fc5036e50f4d9d419c8dc298dc9adaec3b317783ea5c81fc6b",
+      "usa_source_sha256": "deb3537d09eebbd2583c1b2fcbc005d7df3e8aac12a6e172682db7d697b39b47",
+      "source": "sources/func_080029F0_6E69D0.c",
+      "source_japan_donor": "func_08002B00_6E6470",
+      "source_japan_batch": "jp_short145_20261121/batch101",
+      "original_symbolic_relocations": [
+        {
+          "offset": 20,
+          "type": "R_MIPS_HI16",
+          "symbol": "func_8021B09C_5D656C"
+        },
+        {
+          "offset": 36,
+          "type": "R_MIPS_LO16",
+          "symbol": "func_8021B09C_5D656C"
+        }
+      ],
+      "native_original_address_byte_identical": true
+    },
+    {
+      "name": "func_080006B8_6E79C8",
+      "original_usa_rom_offset": "0x6E79C8",
+      "original_guest_vma": "0x80006B8",
+      "size": 84,
+      "original_rom_code_sha256": "064038791cccb9943625da54376c4f13457f6426a8a2b8d3c35d911be0eaba85",
+      "usa_source_sha256": "cec472c79ef22593eeaa7c72f232780fe94cedd0a0e92cc10c9b793895f58a33",
+      "source": "sources/func_080006B8_6E79C8.c",
+      "source_japan_donor": "func_08000B60_6E44D0",
+      "source_japan_batch": "jp_short145_20261121/batch101",
+      "original_symbolic_relocations": [
+        {
+          "offset": 16,
+          "type": "R_MIPS_HI16",
+          "symbol": "func_8021927C_5D474C"
+        },
+        {
+          "offset": 20,
+          "type": "R_MIPS_LO16",
+          "symbol": "func_8021927C_5D474C"
+        },
+        {
+          "offset": 44,
+          "type": "R_MIPS_HI16",
+          "symbol": "func_8021B09C_5D656C"
+        },
+        {
+          "offset": 48,
+          "type": "R_MIPS_LO16",
+          "symbol": "func_8021B09C_5D656C"
+        }
+      ],
+      "native_original_address_byte_identical": true
+    },
+    {
+      "name": "func_080007E0_6E7AF0",
+      "original_usa_rom_offset": "0x6E7AF0",
+      "original_guest_vma": "0x80007E0",
+      "size": 40,
+      "original_rom_code_sha256": "5b21a0f90dffc757ae343a35b6b58e7dfff3f381289f20eda765f100168f8207",
+      "usa_source_sha256": "99a0dd191090328f60f4d1da11734e37f3be110011bd47495f86653ab88bf788",
+      "source": "sources/func_080007E0_6E7AF0.c",
+      "source_japan_donor": "func_080007E0_6EC210",
+      "source_japan_batch": "jp_short145_20261121/batch101",
+      "original_symbolic_relocations": [
+        {
+          "offset": 4,
+          "type": "R_MIPS_HI16",
+          "symbol": "func_802268A8_5E1D78"
+        },
+        {
+          "offset": 12,
+          "type": "R_MIPS_LO16",
+          "symbol": "func_802268A8_5E1D78"
+        }
+      ],
+      "native_original_address_byte_identical": true
+    },
+    {
+      "name": "func_08000AC8_6E7DD8",
+      "original_usa_rom_offset": "0x6E7DD8",
+      "original_guest_vma": "0x8000AC8",
+      "size": 84,
+      "original_rom_code_sha256": "064038791cccb9943625da54376c4f13457f6426a8a2b8d3c35d911be0eaba85",
+      "usa_source_sha256": "76ffc51f953304ad13a7b6c0d6cc462097090e96355da46d7a1aa4cb69b970c4",
+      "source": "sources/func_08000AC8_6E7DD8.c",
+      "source_japan_donor": "func_08000B60_6E44D0",
+      "source_japan_batch": "jp_short145_20261121/batch101",
+      "original_symbolic_relocations": [
+        {
+          "offset": 16,
+          "type": "R_MIPS_HI16",
+          "symbol": "func_8021927C_5D474C"
+        },
+        {
+          "offset": 20,
+          "type": "R_MIPS_LO16",
+          "symbol": "func_8021927C_5D474C"
+        },
+        {
+          "offset": 44,
+          "type": "R_MIPS_HI16",
+          "symbol": "func_8021B09C_5D656C"
+        },
+        {
+          "offset": 48,
+          "type": "R_MIPS_LO16",
+          "symbol": "func_8021B09C_5D656C"
+        }
+      ],
+      "native_original_address_byte_identical": true
+    },
+    {
+      "name": "func_08001288_6E8598",
+      "original_usa_rom_offset": "0x6E8598",
+      "original_guest_vma": "0x8001288",
+      "size": 64,
+      "original_rom_code_sha256": "a2ad06d97bb38fc5b656d3d163fd43abaa8f93e630a2b066fad5657cf2490cf9",
+      "usa_source_sha256": "47a2ca5e1c94377a5f9eb7e8afeef82857dde5aabbe6b47869956523b6f887f4",
+      "source": "sources/func_08001288_6E8598.c",
+      "source_japan_donor": "func_080019E4_6C5BA4",
+      "source_japan_batch": "jp_short145_20261121/batch101",
+      "original_symbolic_relocations": [
+        {
+          "offset": 16,
+          "type": "R_MIPS_HI16",
+          "symbol": "func_8003521C_35E1C"
+        },
+        {
+          "offset": 20,
+          "type": "R_MIPS_LO16",
+          "symbol": "func_8003521C_35E1C"
+        },
+        {
+          "offset": 36,
+          "type": "R_MIPS_HI16",
+          "symbol": "func_080012C8_6E85D8"
+        },
+        {
+          "offset": 44,
+          "type": "R_MIPS_LO16",
+          "symbol": "func_080012C8_6E85D8"
+        }
+      ],
+      "native_original_address_byte_identical": true
+    },
+    {
+      "name": "func_08000944_6EF2A4",
+      "original_usa_rom_offset": "0x6EF2A4",
+      "original_guest_vma": "0x8000944",
+      "size": 64,
+      "original_rom_code_sha256": "9d77b71b96c3d9fc5036e50f4d9d419c8dc298dc9adaec3b317783ea5c81fc6b",
+      "usa_source_sha256": "414f14cdfda86ba62ef1869c25a35b05d94a57b07c221e1317552a538160cf95",
+      "source": "sources/func_08000944_6EF2A4.c",
+      "source_japan_donor": "func_08002B00_6E6470",
+      "source_japan_batch": "jp_short145_20261121/batch101",
+      "original_symbolic_relocations": [
+        {
+          "offset": 20,
+          "type": "R_MIPS_HI16",
+          "symbol": "func_8021B09C_5D656C"
+        },
+        {
+          "offset": 36,
+          "type": "R_MIPS_LO16",
+          "symbol": "func_8021B09C_5D656C"
+        }
+      ],
+      "native_original_address_byte_identical": true
+    },
+    {
+      "name": "func_08000A60_6F3F40",
+      "original_usa_rom_offset": "0x6F3F40",
+      "original_guest_vma": "0x8000A60",
+      "size": 60,
+      "original_rom_code_sha256": "793dc4e42e09d625f3b532266a6cb46965c08c0616f040e1e9826668e316536e",
+      "usa_source_sha256": "7b4e4e9869d1fe18dffef4d49131a1ab1200d9c47467b87e76a2287a747fb6ea",
+      "source": "sources/func_08000A60_6F3F40.c",
+      "source_japan_donor": "func_08000A60_6F85F0",
+      "source_japan_batch": "jp_short145_20261121/batch101",
+      "original_symbolic_relocations": [
+        {
+          "offset": 16,
+          "type": "R_MIPS_HI16",
+          "symbol": "func_80034ED4_35AD4"
+        },
+        {
+          "offset": 20,
+          "type": "R_MIPS_LO16",
+          "symbol": "func_80034ED4_35AD4"
+        }
+      ],
+      "native_original_address_byte_identical": true
+    },
+    {
+      "name": "func_08005754_6F8C34",
+      "original_usa_rom_offset": "0x6F8C34",
+      "original_guest_vma": "0x8005754",
+      "size": 60,
+      "original_rom_code_sha256": "793dc4e42e09d625f3b532266a6cb46965c08c0616f040e1e9826668e316536e",
+      "usa_source_sha256": "6252523199f67422d83c08c3174bf4da22f893b11adc0a11945a6587c33a7487",
+      "source": "sources/func_08005754_6F8C34.c",
+      "source_japan_donor": "func_08000A60_6F85F0",
+      "source_japan_batch": "jp_short145_20261121/batch101",
+      "original_symbolic_relocations": [
+        {
+          "offset": 16,
+          "type": "R_MIPS_HI16",
+          "symbol": "func_80034ED4_35AD4"
+        },
+        {
+          "offset": 20,
+          "type": "R_MIPS_LO16",
+          "symbol": "func_80034ED4_35AD4"
+        }
+      ],
+      "native_original_address_byte_identical": true
+    },
+    {
+      "name": "func_080004A4_707EE4",
+      "original_usa_rom_offset": "0x707EE4",
+      "original_guest_vma": "0x80004A4",
+      "size": 84,
+      "original_rom_code_sha256": "6f41f3421edbb730bfec84293bd9824f5c065c64ceded3fbfc40594d6e4ac487",
+      "usa_source_sha256": "300e23e0f12062a8042c2b1d4fd09160efea9f888ea2d7b6c0571b1a1b192332",
+      "source": "sources/func_080004A4_707EE4.c",
+      "source_japan_donor": "func_80212B78_6719E8",
+      "source_japan_batch": "jp_short145_20261121/batch101",
+      "original_symbolic_relocations": [],
+      "native_original_address_byte_identical": true
+    },
+    {
+      "name": "func_08000764_70A7A4",
+      "original_usa_rom_offset": "0x70A7A4",
+      "original_guest_vma": "0x8000764",
+      "size": 40,
+      "original_rom_code_sha256": "07eaac25fe7dc4bd64b6e2b7798f809c14d8bd58dab408e48fdcacd95178898c",
+      "usa_source_sha256": "d8dc5c2e747584c907f29139a5e09904a1963d41da8035ae67f440b3d0612935",
+      "source": "sources/func_08000764_70A7A4.c",
+      "source_japan_donor": "func_080007E0_6EC210",
+      "source_japan_batch": "jp_short145_20261121/batch101",
+      "original_symbolic_relocations": [
+        {
+          "offset": 4,
+          "type": "R_MIPS_HI16",
+          "symbol": "func_802213F4_5DC8C4"
+        },
+        {
+          "offset": 12,
+          "type": "R_MIPS_LO16",
+          "symbol": "func_802213F4_5DC8C4"
+        }
+      ],
+      "native_original_address_byte_identical": true
+    },
+    {
+      "name": "func_08000F00_713E70",
+      "original_usa_rom_offset": "0x713E70",
+      "original_guest_vma": "0x8000F00",
+      "size": 64,
+      "original_rom_code_sha256": "ef4b3ecfd5774cdc8d8ee2cd90d3b21a8c837f5d2ad0099ad5d4da1b9b836623",
+      "usa_source_sha256": "9855e32814e80e8e90c46f8bcb8699273517fcd4d1db8ab5e6e5a5e08d71672f",
+      "source": "sources/func_08000F00_713E70.c",
+      "source_japan_donor": "func_08000F00_7183A0",
+      "source_japan_batch": "jp_short145_20261121/batch101",
+      "original_symbolic_relocations": [
+        {
+          "offset": 16,
+          "type": "R_MIPS_HI16",
+          "symbol": "func_8003521C_35E1C"
+        },
+        {
+          "offset": 20,
+          "type": "R_MIPS_LO16",
+          "symbol": "func_8003521C_35E1C"
+        },
+        {
+          "offset": 36,
+          "type": "R_MIPS_HI16",
+          "symbol": "func_08000DC4_713D34"
+        },
+        {
+          "offset": 44,
+          "type": "R_MIPS_LO16",
+          "symbol": "func_08000DC4_713D34"
+        }
+      ],
+      "native_original_address_byte_identical": true
+    },
+    {
+      "name": "func_080000C0_71BB40",
+      "original_usa_rom_offset": "0x71BB40",
+      "original_guest_vma": "0x80000C0",
+      "size": 40,
+      "original_rom_code_sha256": "5b21a0f90dffc757ae343a35b6b58e7dfff3f381289f20eda765f100168f8207",
+      "usa_source_sha256": "905e64e4ce627e0310d9985b4f939ae2b8da2de9931e340bb465849f0c51510f",
+      "source": "sources/func_080000C0_71BB40.c",
+      "source_japan_donor": "func_080007E0_6EC210",
+      "source_japan_batch": "jp_short145_20261121/batch101",
+      "original_symbolic_relocations": [
+        {
+          "offset": 4,
+          "type": "R_MIPS_HI16",
+          "symbol": "func_802268A8_5E1D78"
+        },
+        {
+          "offset": 12,
+          "type": "R_MIPS_LO16",
+          "symbol": "func_802268A8_5E1D78"
+        }
+      ],
+      "native_original_address_byte_identical": true
+    },
+    {
+      "name": "func_08000F94_71CA14",
+      "original_usa_rom_offset": "0x71CA14",
+      "original_guest_vma": "0x8000F94",
+      "size": 64,
+      "original_rom_code_sha256": "5f667ecf0ca5feff90b44848ccfbda550289bb678db39b19c2409396a634ac92",
+      "usa_source_sha256": "015b44053b00a45cc1998b6bf5f213077086f7a06faa027eabf7e8d26e6f0421",
+      "source": "sources/func_08000F94_71CA14.c",
+      "source_japan_donor": "func_080019E4_6C5BA4",
+      "source_japan_batch": "jp_short145_20261121/batch101",
+      "original_symbolic_relocations": [
+        {
+          "offset": 16,
+          "type": "R_MIPS_HI16",
+          "symbol": "func_8003521C_35E1C"
+        },
+        {
+          "offset": 20,
+          "type": "R_MIPS_LO16",
+          "symbol": "func_8003521C_35E1C"
+        },
+        {
+          "offset": 36,
+          "type": "R_MIPS_HI16",
+          "symbol": "func_08000FD4_71CA54"
+        },
+        {
+          "offset": 44,
+          "type": "R_MIPS_LO16",
+          "symbol": "func_08000FD4_71CA54"
+        }
+      ],
+      "native_original_address_byte_identical": true
+    },
+    {
+      "name": "func_0800033C_724F4C",
+      "original_usa_rom_offset": "0x724F4C",
+      "original_guest_vma": "0x800033C",
+      "size": 64,
+      "original_rom_code_sha256": "2fef8482328dd36a709cb9dca3441790ebaa6b63986cd7298264c7bd3ac909bd",
+      "usa_source_sha256": "b73d1ca45b215b72e5c6fdd66202677eae1794d8397b2323b4cfce9ec9e88995",
+      "source": "sources/func_0800033C_724F4C.c",
+      "source_japan_donor": "func_0800033C_72936C",
+      "source_japan_batch": "jp_short145_20261121/batch101",
+      "original_symbolic_relocations": [
+        {
+          "offset": 16,
+          "type": "R_MIPS_HI16",
+          "symbol": "func_8003521C_35E1C"
+        },
+        {
+          "offset": 20,
+          "type": "R_MIPS_LO16",
+          "symbol": "func_8003521C_35E1C"
+        },
+        {
+          "offset": 36,
+          "type": "R_MIPS_HI16",
+          "symbol": "func_080001BC_724DCC"
+        },
+        {
+          "offset": 44,
+          "type": "R_MIPS_LO16",
+          "symbol": "func_080001BC_724DCC"
+        }
+      ],
+      "native_original_address_byte_identical": true
+    },
+    {
+      "name": "func_080015B8_739C88",
+      "original_usa_rom_offset": "0x739C88",
+      "original_guest_vma": "0x80015B8",
+      "size": 40,
+      "original_rom_code_sha256": "026be357f3e29b77f0b3f5ececa76d2b1c81a385d091c04a624947ff21cc29da",
+      "usa_source_sha256": "7524cbaccbf556dbf9d4955e6839ec9a8051524e979c22a24a72cd71827fbbd5",
+      "source": "sources/func_080015B8_739C88.c",
+      "source_japan_donor": "func_80218350_69FA50",
+      "source_japan_batch": "jp_donor10_20261121",
+      "original_symbolic_relocations": [
+        {
+          "offset": 4,
+          "type": "R_MIPS_HI16",
+          "symbol": "func_80034EF8_35AF8"
+        },
+        {
+          "offset": 12,
+          "type": "R_MIPS_LO16",
+          "symbol": "func_80034EF8_35AF8"
+        }
+      ],
+      "native_original_address_byte_identical": true
+    },
+    {
+      "name": "func_0800037C_73A21C",
+      "original_usa_rom_offset": "0x73A21C",
+      "original_guest_vma": "0x800037C",
+      "size": 40,
+      "original_rom_code_sha256": "026be357f3e29b77f0b3f5ececa76d2b1c81a385d091c04a624947ff21cc29da",
+      "usa_source_sha256": "bf1e9f4356fdfdff621354927a55ebd9efca483524b24a7d6762461febfba242",
+      "source": "sources/func_0800037C_73A21C.c",
+      "source_japan_donor": "func_80218350_69FA50",
+      "source_japan_batch": "jp_donor10_20261121",
+      "original_symbolic_relocations": [
+        {
+          "offset": 4,
+          "type": "R_MIPS_HI16",
+          "symbol": "func_80034EF8_35AF8"
+        },
+        {
+          "offset": 12,
+          "type": "R_MIPS_LO16",
+          "symbol": "func_80034EF8_35AF8"
+        }
+      ],
+      "native_original_address_byte_identical": true
+    }
+  ]
+}
