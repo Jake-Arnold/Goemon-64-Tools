@@ -60,6 +60,11 @@ def list_japan_processes(*, pid_hint: int | None = None, target="auto",
                 name = data.get("name") or ""
                 executable = data.get("exe") or ""
             kind = classify_candidate(name, executable)
+            # A Linux process may not expose exe(). Cache by its process
+            # name only as a last resort; every connection still verifies
+            # all three original-ROM code signatures and live RAM state.
+            if kind and not executable and name:
+                executable = "name:" + name.lower()
             if (kind and (target == "auto" or target == kind)
                     and (allow_project64 or kind != "project64")
                     and type(pid) is int and pid > 0):
@@ -89,51 +94,99 @@ def connect_candidate_ram(candidate: JapanProcessCandidate, process, probes, *,
     The hint is only a speed optimization, never proof of a live game. Manual
     host-base/endian overrides remain explicit and are re-verified.
     """
-    from practice.japan_connection_hints import load_hint
+    from practice.japan_connection_hints import load_hint_record
     from practice.japanese_mupen_attach import (
-        discover_japanese_mupen_rdram, validate_rdram_base,
+        AmbiguousJapaneseRdram, discover_japanese_mupen_rdram,
+        validate_rdram_base,
     )
     from practice.japan_native_recomp import (
         discover_japan_recomp_rdram, validate_japan_recomp_context,
     )
     allow_4mb = candidate.backend == "project64"
     if base_hint is None and endian == "auto" and candidate.executable:
-        hint = load_hint(candidate.executable, candidate.backend, probes)
+        hint = load_hint_record(candidate.executable, candidate.backend, probes)
         if hint is not None:
-            base, cached_endian = hint
+            # First try the previous absolute address. If Linux ASLR moved
+            # the RDRAM allocation, reconstruct candidates from its position
+            # within an identically sized host mapping. Never trust a cache
+            # record without fresh code, size and live-context checks.
+            guesses = [hint["base"]]
+            size, offset = hint.get("mapping_size"), hint.get("mapping_offset")
+            if size is not None and offset is not None:
+                for start, length in process.regions():
+                    if length == size:
+                        address = start + offset
+                        if address not in guesses and address % 16 == 0:
+                            guesses.append(address)
+            confirmed = []
+            for address in guesses:
+                try:
+                    reader = validate_rdram_base(
+                        process, address, hint["endian"], probes,
+                        allow_4mb=allow_4mb)
+                    validate_japan_recomp_context(
+                        reader, strict_character=False)
+                    confirmed.append((reader, address, hint["endian"]))
+                except PermissionError:
+                    raise
+                except (OSError, ValueError, RuntimeError):
+                    pass
+            if len(confirmed) == 1:
+                return confirmed[0]
+            if len(confirmed) > 1:
+                raise AmbiguousJapaneseRdram(
+                    [(base, order) for _, base, order in confirmed])
+            # Old cache layouts or rebuilt allocations may require a full scan.
+    try:
+        if candidate.backend == "recomp":
+            reader, base, order = discover_japan_recomp_rdram(
+                process, probes, mode=endian, base_hint=base_hint,
+                strict_character=False)
+        else:
+            reader, base, order = discover_japanese_mupen_rdram(
+                process, probes, mode=endian, base_hint=base_hint,
+                allow_4mb=allow_4mb)
+    except AmbiguousJapaneseRdram as exc:
+        # Multiple code-matching copies are not necessarily live RDRAM.
+        # Exclude implausible engine/scene state before asking the user.
+        live = []
+        for base, order in exc.candidates:
             try:
                 reader = validate_rdram_base(
-                    process, base, cached_endian, probes, allow_4mb=allow_4mb)
-                # A ROM-code match is not enough on its own: every backend
-                # must also look like plausible Japanese live game RAM.
+                    process, base, order, probes, allow_4mb=allow_4mb)
                 validate_japan_recomp_context(
                     reader, strict_character=False)
-                return reader, base, cached_endian
+                live.append((reader, base, order))
+            except PermissionError:
+                raise
             except (OSError, ValueError, RuntimeError):
-                # A recompilation update or ASLR may have changed the mapping.
-                # Retrying a full scan is mandatory; do not accept the cache.
-                pass
-    if candidate.backend == "recomp":
-        reader, base, order = discover_japan_recomp_rdram(
-            process, probes, mode=endian, base_hint=base_hint,
-            strict_character=False)
-    else:
-        reader, base, order = discover_japanese_mupen_rdram(
-            process, probes, mode=endian, base_hint=base_hint,
-            allow_4mb=allow_4mb)
+                continue
+        if len(live) == 1:
+            return live[0]
+        if len(live) > 1:
+            raise AmbiguousJapaneseRdram(
+                [(base, order) for _, base, order in live]) from exc
+        raise RuntimeError(
+            "Code-matching Japanese RAM buffers have no plausible live game state"
+        ) from exc
     validate_japan_recomp_context(reader, strict_character=False)
     return reader, base, order
 
 
 def remember_verified_connection(candidate: JapanProcessCandidate,
-                                 probes, base: int, endian: str) -> None:
-    """Best-effort local preference; never part of the attach proof."""
+                                 probes, base: int, endian: str,
+                                 *, process=None) -> None:
+    """Store an independently proven address and ASLR-relocatable mapping."""
     if candidate.executable:
-        from practice.japan_connection_hints import save_hint
+        from practice.japan_connection_hints import (
+            mapping_coordinates, save_hint,
+        )
         try:
+            mapping = mapping_coordinates(process, base) if process else None
+            options = (dict(mapping_size=mapping[0], mapping_offset=mapping[1])
+                       if mapping else {})
             save_hint(candidate.executable, candidate.backend,
-                      probes, base, endian)
+                      probes, base, endian, **options)
         except (OSError, ValueError, TypeError):
-            # Invalid or unwriteable preference data must never prevent a
-            # proven live connection or leak its process handle.
+            # Hint persistence must never prevent a verified attachment.
             pass

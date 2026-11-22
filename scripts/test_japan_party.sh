@@ -42,6 +42,7 @@ esac
   tests.test_japanese_mupen_attach \
   tests.test_japan_native_recomp \
   tests.test_japan_auto_attach \
+  tests.test_japan_fast_attach \
   tests.test_japan_pid_restart_watch \
   tests.test_gui_smoke_runner \
   tests.test_toolkit_version \

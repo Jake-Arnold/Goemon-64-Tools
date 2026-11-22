@@ -1854,7 +1854,8 @@ class Toolkit(DialogueRegionMixin, DialogueMixin, UpdaterMixin, ReportsMixin, Ja
                     + '. Resolve before auto-connecting.')
             if len(confirmed) == 1:
                 choice, process, reader, address, mode = confirmed.pop()
-                remember_verified_connection(choice, probes, address, mode)
+                remember_verified_connection(
+                    choice, probes, address, mode, process=process)
                 self._connect_queue.put(
                     ('japan-ok', choice.pid, choice.backend,
                      process, reader, address, mode))
@@ -1906,7 +1907,11 @@ class Toolkit(DialogueRegionMixin, DialogueMixin, UpdaterMixin, ReportsMixin, Ja
             executable = ''
             try:
                 import psutil
-                executable = psutil.Process(pid).exe() or ''
+                identity = psutil.Process(pid)
+                executable = identity.exe() or ''
+                if not executable:
+                    name = identity.name() or ''
+                    executable = 'name:' + name.lower() if name else ''
             except Exception:
                 # Optional executable metadata must not veto a PID whose
                 # process identity and ROM signatures are otherwise valid.
@@ -1914,7 +1919,8 @@ class Toolkit(DialogueRegionMixin, DialogueMixin, UpdaterMixin, ReportsMixin, Ja
             candidate = JapanProcessCandidate(pid, target, executable)
             reader, address, mode = connect_candidate_ram(
                 candidate, process, probes, base_hint=base, endian=endian)
-            remember_verified_connection(candidate, probes, address, mode)
+            remember_verified_connection(
+                candidate, probes, address, mode, process=process)
             self._connect_queue.put(('japan-ok', pid, target, process, reader,
                                      address, mode))
 

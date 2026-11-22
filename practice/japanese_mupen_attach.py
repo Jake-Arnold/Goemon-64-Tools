@@ -152,6 +152,31 @@ def discover_japanese_mupen_rdram(process, probes, *, mode='auto',
         if len(matches) != 1:
             raise RuntimeError('Manual base did not uniquely match Japan-0 executable code')
         return matches[0]
+    # Fast path for native recomp and emulators that allocate a separate
+    # exact-size 8 MiB (or 4 MiB Project64) guest-RAM mapping. Read only the
+    # three tiny code probes at each mapping start before scanning gigabytes.
+    # Ambiguous equal-size allocations remain ambiguous, never first-wins.
+    minimum_size = MIN_RDRAM_SIZE if allow_4mb else RDRAM_SIZE
+    anchored = set()
+    for start, length in process.regions():
+        if length != minimum_size or start % 16:
+            continue
+        for endian in modes:
+            try:
+                validate_rdram_base(
+                    process, start, endian, probes, allow_4mb=allow_4mb)
+            except PermissionError:
+                raise
+            except (OSError, ValueError):
+                continue
+            anchored.add((start, endian))
+    if len(anchored) > 1:
+        raise AmbiguousJapaneseRdram(anchored)
+    if len(anchored) == 1:
+        base, endian = next(iter(anchored))
+        return validate_rdram_base(
+            process, base, endian, probes, allow_4mb=allow_4mb), base, endian
+
     first_offset, first_code = probes[0]
     signatures = {
         endian: _host_order(first_code, endian)
@@ -160,7 +185,6 @@ def discover_japanese_mupen_rdram(process, probes, *, mode='auto',
     matches = set()
     scanned = 0
     budget = max_scan_mb * 1048576
-    minimum_size = MIN_RDRAM_SIZE if allow_4mb else RDRAM_SIZE
     for start, length in readable_spans(process.regions()):
         if length < minimum_size or scanned >= budget:
             continue

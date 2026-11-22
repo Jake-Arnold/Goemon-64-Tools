@@ -153,8 +153,8 @@ class AutoJapaneseAttachTests(unittest.TestCase):
                                         MUPEN_PROBES, store=store))
             # Wrong cache offset must be rejected; full three-code-probe
             # detection then recovers the actual memory mapping.
-            with patch('practice.japan_connection_hints.load_hint',
-                       return_value=(BASE + 16, 'wordswapped')):
+            with patch('practice.japan_connection_hints.load_hint_record',
+                       return_value={'base': BASE + 16, 'endian': 'wordswapped'}):
                 _, base, endian = connect_candidate_ram(
                     candidate, process, MUPEN_PROBES)
             self.assertEqual((base, endian), (BASE, 'wordswapped'))
@@ -198,8 +198,8 @@ class AutoJapaneseAttachTests(unittest.TestCase):
                    side_effect=lambda pid: (pid, 'recomp')), \
              patch('practice.toolkit.HostProcess',
                    side_effect=(old, new)), \
-             patch('practice.japan_connection_hints.load_hint',
-                   return_value=(HOST_BASE, 'big')), \
+             patch('practice.japan_connection_hints.load_hint_record',
+                   return_value={'base': HOST_BASE, 'endian': 'big'}), \
              patch('practice.toolkit.remember_verified_connection'):
             for _ in range(2):
                 Toolkit._connect_japan_auto_worker(
