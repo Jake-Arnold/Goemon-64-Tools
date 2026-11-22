@@ -1,3 +1,11 @@
+## 22 November 2026 — Two Japanese halfword update functions now isolated native-exact (research only)
+
+- **New recovered standalone C, not yet promoted:** `func_80219328_6A0A28` (expanded JP ROM `0x6A0A28`, 28/28 bytes) and `func_80222F18_68C608` (`0x68C608`, 28/28 bytes). Both reproduce all seven original MIPS instruction words with pinned SGI IDO 5.3 `-O2 -mips2 -G 0`, including both 16-bit stores and the original `t6/t8/t9` register choices.
+- **Method:** replace raw pointer casts with a typed struct containing an unsigned halfword at offset `0x18` and preserve the original two sequential assignments. Function `.text` sections include a trailing four-byte alignment NOP, outside the 28-byte original function extents.
+- **Actual tests:** Original Japanese expanded ROM SHA-1 `6f8745fecc3a5e7d4918c7a73353eb0726116ded` checked; two isolated native compiler/objcopy comparisons each 28/28 bytes PASS; host GCC ASan/UBSan semantic fixture checked all 65,536 possible 16-bit values per function PASS. Research sources, replay script and host tests in [JP halfword research](decomp/research/jp_halfword_retry_20261122/README.md).
+- **Acceptance gate explicitly NOT RUN:** Combined original-ROM/retail-ROM native G2 with all accepted C, 7,376 ELF identities, 80,747 linked relocations, strict inventory and full `decomp.local_ci`. GitHub source clone is blocked by shell DNS, and the local uploaded `mnsg` ZIP is not the current decomp branch. These two functions remain original assembly; no manifest, official function count, original-code byte count or canonical proof changed.
+- **Current published Japan remains 2,314 matching C / 123,236 instruction bytes / 5,062 ASM.** Four other JP2307 retry blockers and three later clear-loop routines remain unaccepted.
+
 ## 21 November 2026 — Japanese JP2314 structural-family C published and remotely verified
 
 - **Implementation published:** [GitHub commit `921b024be4efd068e98f30853c62401ecae55f92`](https://github.com/Jake-Arnold/Goemon-64-Tools/commit/921b024be4efd068e98f30853c62401ecae55f92) to `chatgptweb/decomp`; all 15 new source, proof, staging, manifest and test files independently re-fetched with **identical original published file contents**. The complete prepublication local G2 section below remains authentic historical evidence.
