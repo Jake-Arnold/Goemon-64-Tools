@@ -1,4 +1,4 @@
-"""Original-USA 233-C native source, dedupe, and host semantic regression.
+"""Original-USA isolated-stage native source, dedupe, and host semantic regression.
 
 These ROM-free tests are not a substitute for decomp.verify and original ELF
 relocation equality; they enforce additive source ownership and ABI contracts.
@@ -24,21 +24,24 @@ class Isolated233PromotionTests(unittest.TestCase):
         cls.fixture = native.load_fixture()
         cls.functions = cls.fixture['functions']
 
-    def test_full_1956_cumulative_claims_are_unique(self):
+    def test_full_1959_cumulative_claims_are_unique(self):
         previous = claimed_functions({k:v for k,v in self.manifest.items()
                                       if k!='overlay_isolated233_stage'})
         current = claimed_functions(self.manifest)
         self.assertEqual((len(previous),sum(f['size'] for f in previous)),(1723,69344))
-        self.assertEqual((len(current),sum(f['size'] for f in current)),(1956,83940))
-        self.assertEqual(len(self.functions),233)
-        self.assertEqual(sum(f['size'] for f in self.functions),14596)
-        self.assertEqual(len({f['name'] for f in current}),1956)
+        self.assertEqual((len(current),sum(f['size'] for f in current)),(1959,84096))
+        self.assertEqual(len(self.functions),236)
+        self.assertEqual(sum(f['size'] for f in self.functions),14752)
+        self.assertEqual(len({f['name'] for f in current}),1959)
         spans = sorted((f['rom_offset'],f['rom_offset']+f['size']) for f in current)
         self.assertTrue(all(left[1]<=right[0] for left,right in zip(spans,spans[1:])))
 
     def test_frozen_original_sources_and_addresses(self):
-        self.assertEqual(len(native.EMBEDDED),11)
-        self.assertEqual(len({f['rom_offset'] for f in self.functions}),233)
+        self.assertEqual(len(native.EMBEDDED),12)
+        self.assertEqual(len({f['rom_offset'] for f in self.functions}),236)
+        self.assertIn('func_8000A18C_AD8C',native.EMBEDDED)
+        self.assertNotIn('func_8000AAE8_B6E8',native.EMBEDDED)
+        self.assertNotIn('func_8000AB30_B730',native.EMBEDDED)
         for f in self.functions:
             with self.subTest(name=f['name']):
                 p=native.SOURCE/(f['source']+'.c')
@@ -66,7 +69,8 @@ class Isolated233PromotionTests(unittest.TestCase):
                 run=subprocess.run([gcc,'-std=gnu89','-fsyntax-only',
                     '-Wno-int-to-pointer-cast','-Wno-pointer-to-int-cast',
                     '-Wno-implicit-function-declaration','-Wno-incompatible-pointer-types',
-                    '-Wno-int-conversion','-fsanitize=address,undefined',str(p)],
+                    '-Wno-int-conversion','-fsanitize=address,undefined',
+                    '-I'+str(native.SOURCE.parent/'tests'),str(p)],
                     capture_output=True,timeout=20)
                 self.assertEqual(run.returncode,0,run.stderr.decode(errors='replace')[:350])
 

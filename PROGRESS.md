@@ -1,3 +1,11 @@
+## 22 November 2026 — USA three-function canonical G2, inventory, and full CI pass; publication pending
+
+- Starting `chatgptweb/decomp` HEAD: `c738164ff1fed1c1258faf74f45cada8189f8f5e`; USA **1,956 C / 83,940 original instruction bytes / 5,407 ASM**.
+- Promoted locally for review: `func_8000A18C_AD8C` (ROM `0xAD8C`, VMA `0x8000A18C`, 48B), `func_8000AAE8_B6E8` (`0xB6E8`, `0x8000AAE8`, 40B), `func_8000AB30_B730` (`0xB730`, `0x8000AB30`, 68B). Original IDO 5.3 matches; **3 functions / 156 bytes**.
+- Fresh `python3 -m decomp.verify` passed: **1,959/1,959 claimed functions**, **33,554,432/33,554,432 USA ROM bytes**, SHA-1 `6ea0ed71032ce08fc2745f412d84936382197494`. `python3 -m decomp.inventory` passed: **1,959 C / 5,404 ASM**, 7,376 ELF entries, no extra positive aliases.
+- Direct comparison of freshly rebuilt accepted 1,956 baseline with final candidate: all **7,376 ELF function identities** and all **82,103 semantic relocation records** are identical; relocation SHA-256 `e39dc5baf816797a8a835730f5266bf2eedbf3d7e38f0fe18009fbdb54394208`.
+- Full `python3 -m decomp.local_ci` passed: 367 decomp tests (3 skipped), 349 verifier/ledger tests, 7 C-Right comparator tests, and all configured sanitizer suites. Status **PASSED_G2_LOCAL**. Publication is through PR #165 after the latest research commit is reconciled and the remote branch rechecked. Japan unchanged. See `decomp/results/usa_unique_three_g2_promotion_20261122.json`.
+
 ## 22 November 2026 — two genuinely new USA 92F0 C functions (204 original bytes), six combined native original-ROM/ELF exact (RESEARCH_ONLY)
 
 - **New original-address functions:** `func_8000A548_B148` (ROM `0xB148`, VMA `0x8000A548`, **124B**) and `func_8000A5C4_B1C4` (ROM `0xB1C4`, VMA `0x8000A5C4`, **80B**). Both are absent from full historical accepted 1,956-function proof (including staged overlays) and pending USA crossregion51+crossregion48 research indices. Neither duplicates recent nine scheduler accepted functions. Each IDO5.3 C body emits original MIPS words and all 5 relocations; source hashes pinned.

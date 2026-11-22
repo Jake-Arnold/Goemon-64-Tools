@@ -1,5 +1,7 @@
 # Three truly new USA original-ROM- and ELF-exact C functions
 
+> **Later canonical result:** These three functions passed canonical USA `decomp.verify`, strict inventory, full ELF and relocation comparison, and full `decomp.local_ci`. See [the promotion proof](../../results/usa_unique_three_g2_promotion_20261122.json). This document retains the earlier original-upstream research and padding-workaround details.
+
 **22 November 2026 — RESEARCH_ONLY / native original-upstream fully proven. No canonical accepted-C promotion.**
 
 This source-only kit contains an independently replayed, original-SGI-IDO matching-C build for three original USA ASM-owned functions. It resolves the previous eight-byte ELF function-size discrepancy caused by the original mixed C/`GLOBAL_ASM` source unit.

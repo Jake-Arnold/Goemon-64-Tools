@@ -1,0 +1,83 @@
+{
+  "format": "goemon-usa-japan-global-crosswalk-v1",
+  "status": "instruction_traced",
+  "memory_write_or_toolkit_enablement": false,
+  "source_region": {
+    "region": "usa",
+    "revision": "NG5E-0",
+    "retail_sha1": "df8083a54296b8c151917c5333e1c85f014a2a66",
+    "expanded_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+    "symbol": "D_8014CCC0_14D8C0",
+    "guest_base": "0x8014CCC0",
+    "rom_symbol_offset": "0x14D8C0",
+    "function": "func_8000A18C_AD8C",
+    "function_rom_offset": "0xAD8C",
+    "function_vma": "0x8000A18C",
+    "function_bytes": 48,
+    "function_sha256": "a494dc6ba7f3ed16e1aa8232fd8e54d8948e40a7f8d2b22b80df3f6a3686a385"
+  },
+  "counterpart_region": {
+    "region": "japan_0",
+    "revision": "rev-0",
+    "retail_sha1": "9843ee979b5f6c80f5eda85df0baed9ae7c4e73b",
+    "expanded_sha1": "6f8745fecc3a5e7d4918c7a73353eb0726116ded",
+    "symbol": "g_system",
+    "symbol_vma": "0x800924B0",
+    "symbol_size": "0xCF908",
+    "mips_expression": "g_system + 0xC0000",
+    "effective_guest_base": "0x801524B0",
+    "function": "func_8000A03C_AC3C",
+    "function_rom_offset": "0xAC3C",
+    "function_vma": "0x8000A03C",
+    "function_bytes": 48,
+    "function_sha256": "447a1a66edfd68dd9f9f89054eec460f52f6a1d5b6c8ae8ce1b7512f642ea411"
+  },
+  "address_delta": "0x57F0",
+  "evidence": [
+    "USA original MIPS references D_8014CCC0_14D8C0 and accesses signed halfword fields at +0x5D06, +0x5D08, +0x5D0A, +0x5D0C and a signed word at +0x5D10.",
+    "Japanese original MIPS func_8000A03C_AC3C references g_system+0xC0000; the Japan-0 symbol map resolves g_system to 0x800924B0, giving effective base 0x801524B0. It accesses the same five offsets with LH/SH and LW/SW instructions.",
+    "Both original regional ROMs were locally authenticated by the SHA-1 values above. This is code and symbol evidence, not a gameplay RAM observation."
+  ],
+  "field_pairs": [
+    {
+      "offset": 23814,
+      "type": "s16",
+      "width": 2,
+      "usa": "0x801529C6",
+      "japan_candidate": "0x801581B6"
+    },
+    {
+      "offset": 23816,
+      "type": "s16",
+      "width": 2,
+      "usa": "0x801529C8",
+      "japan_candidate": "0x801581B8"
+    },
+    {
+      "offset": 23818,
+      "type": "s16",
+      "width": 2,
+      "usa": "0x801529CA",
+      "japan_candidate": "0x801581BA"
+    },
+    {
+      "offset": 23820,
+      "type": "s16",
+      "width": 2,
+      "usa": "0x801529CC",
+      "japan_candidate": "0x801581BC"
+    },
+    {
+      "offset": 23824,
+      "type": "s32",
+      "width": 4,
+      "usa": "0x801529D0",
+      "japan_candidate": "0x801581C0"
+    }
+  ],
+  "limits": [
+    "Field semantic names and lifecycle remain unknown.",
+    "No live Japanese or USA gameplay/RAM capture was used.",
+    "Japanese addresses are structurally instruction-traced; they do not authorize toolkit writes."
+  ]
+}

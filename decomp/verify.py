@@ -408,12 +408,13 @@ def native51_stage(manifest):
 
 
 def isolated233_stage(manifest):
+    """Return the current cumulative main-segment stage that began as 233 C functions."""
     stage = manifest.get('overlay_isolated233_stage')
     if stage is None:
         return None
     from . import overlay_isolated233 as isolated
     if stage != {'format': isolated.FORMAT}:
-        raise ValueError('Unreviewed 233-C native production stage contract')
+        raise ValueError('Unreviewed isolated main-segment native production stage contract')
     return isolated.load_fixture()
 
 
@@ -1329,7 +1330,7 @@ def load_manifest(path):
     manifest=json.loads(Path(path).read_text(encoding='utf-8'))
     if manifest.get('format')!='goemon-matching-decomp-v1':raise ValueError('Unsupported manifest format')
     # Historical stages validate their frozen G2 claim counts against the
-    # precise old manifest. Validate the additive 233-C stage separately
+    # precise old manifest. Validate the additive isolated main-C stage separately
     # against every earlier accepted claim after all legacy guards pass.
     isolated_stage_value = manifest.pop('overlay_isolated233_stage', None)
     for key,length in (('upstream_commit',40),('retail_sha1',40),('decompressed_sha1',40)):

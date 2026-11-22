@@ -254,6 +254,21 @@ def build_steps(host_binary: Path, *, quick: bool = False):
               '-o',str(binary)]),
           ('Native100 original-C 1000-case host sanitizer test',[str(binary)])
         ])
+    if not quick:
+        isolated_tests=ROOT/'decomp/research/pending_isolated233_20261120/tests'
+        if not (isolated_tests/'test_usa_92f0_a18c_aae8.c').is_file():
+            raise ValueError('Missing isolated USA 92F0 actual-source host fixture')
+        compiler=shlex.split(os.environ.get('CC','cc'))
+        binary=host_binary.with_name('usa-92f0-a18c-aae8-host')
+        steps.extend([
+            ('USA 92F0 A18C/AAE8/AB30 actual-source sanitizer build',compiler+[
+                '-std=gnu11','-O1','-g','-Wall','-Wextra','-Werror',
+                '-fsanitize=address,undefined','-fno-sanitize-recover=all',
+                '-fno-omit-frame-pointer','-I'+str(isolated_tests.relative_to(ROOT)),
+                str((isolated_tests/'test_usa_92f0_a18c_aae8.c').relative_to(ROOT)),
+                '-o',str(binary)]),
+            ('USA 92F0 A18C/AAE8/AB30 actual-source sanitizer test',[str(binary)]),
+        ])
     # The resumable queue and read-only C-Right comparator belong to the
     # same ROM-free acceptance gate as the existing Python/ledger checks.
     # Append them, preserving existing native-host fixture ordering.
