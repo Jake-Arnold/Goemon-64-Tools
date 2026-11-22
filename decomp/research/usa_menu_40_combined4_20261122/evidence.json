@@ -1,0 +1,61 @@
+{
+  "classification": "RESEARCH_ONLY_FOUR_FULL_ORIGINAL_UPSTREAM_ROM_ELF_EXACT",
+  "pin": "7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee",
+  "region": "USA",
+  "original_retail_sha1": "df8083a54296b8c151917c5333e1c85f014a2a66",
+  "original_expanded_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+  "candidate_expanded_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+  "complete_original_rom_byte_identity": 33554432,
+  "elf_positive_FUNC_count_both": 7376,
+  "positive_FUNC_identity_multiset_exact": true,
+  "original_upstream_elf_relocations_both": 82216,
+  "original_relocations_multiset_exact": true,
+  "original_elf_sha256": "83eda0f1df831d997f9e505c92a8a7fdb55728d3ad28b30d224f5e1ae975a038",
+  "candidate_elf_sha256": "dcf489b36a8593260e9e841266c52471447f64a53c3531c0beba3920179d629c",
+  "compiler_sha256": "76d796c9591c9f5504949f85b29c32a6039a663791afe2f36f34ca18425b64d0",
+  "asm_processor_sha256": "d3c002fbb630b18117f4ca4e799516fb78012120469518352dae678e8c68abb9",
+  "padding_quirk": {
+    "trailing_padding_bytes": 8,
+    "original_padding_rom_range": [
+      "0xBE98",
+      "0xBEA0"
+    ],
+    "removed_from_embedded_original_function": true,
+    "reintroduced_by_original_linker_alignment": true
+  },
+  "targets": [
+    {
+      "name": "func_8000A18C_AD8C",
+      "rom_offset": "0xad8c",
+      "vma": "0x8000a18c",
+      "code_bytes": 48,
+      "source_sha256": "784d5a565153a3453cc027e7dc87043703af5886e85a32be436aee501b6f44e1"
+    },
+    {
+      "name": "func_8000AAE8_B6E8",
+      "rom_offset": "0xb6e8",
+      "vma": "0x8000aae8",
+      "code_bytes": 40,
+      "source_sha256": "a23015cca3d8625fd850218b6d9d14250aad63c9fac0c3aa8323370e1c29485b"
+    },
+    {
+      "name": "func_8000AB30_B730",
+      "rom_offset": "0xb730",
+      "vma": "0x8000ab30",
+      "code_bytes": 68,
+      "source_sha256": "305318d9c1dfb10881f0551086758a51e6a9fc7cd974cd2372f30d95240fe840"
+    },
+    {
+      "name": "func_800108BC_114BC",
+      "rom_offset": "0x114bc",
+      "vma": "0x800108bc",
+      "code_bytes": 40,
+      "source_sha256": "37eb14efded2671ea86242caffecd292c2f71c5595b0a5e51bba0c2662decbd0"
+    }
+  ],
+  "canonical_decomp_verify": "NOT_RUN",
+  "canonical_82103_semantic_relocations": "NOT_RUN",
+  "canonical_inventory": "NOT_RUN",
+  "canonical_full_local_ci": "NOT_RUN",
+  "canonical_accepted_function_delta": 0
+}

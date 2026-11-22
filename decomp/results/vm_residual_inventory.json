@@ -25,25 +25,25 @@
     "header": "decomp/script_vm.h",
     "header_sha256": "42aa91e7c21dba3b1e6aff8732a65d32d5fe4e727a19ad1b4fc3b61a271e1cf5",
     "manifest": "decomp/manifest.json",
-    "manifest_sha256": "9d83a3d004077638314d1f7b5389e4d67ce0457c4e9947e84c56f795b9948dd5",
+    "manifest_sha256": "815f3f6a7d563caa1e4253d6372a54ede5d2f2fd3c4e0b8e09860df382acb1ae",
     "verifier": "decomp/verify.py",
-    "verifier_sha256": "bdd143cbc51ba03544a8e9ad7645da1ef42735e5858b62e8ba5125f066315dde",
+    "verifier_sha256": "f793e6dc972609196dfa99b65452220930e2328f9ebabc84e88e63e46686be86",
     "script_vm_sha256": "42aa91e7c21dba3b1e6aff8732a65d32d5fe4e727a19ad1b4fc3b61a271e1cf5",
-    "verify_sha256": "bdd143cbc51ba03544a8e9ad7645da1ef42735e5858b62e8ba5125f066315dde"
+    "verify_sha256": "f793e6dc972609196dfa99b65452220930e2328f9ebabc84e88e63e46686be86"
   },
   "whole_project_inventory": {
     "report": "decomp/results/inventory.json",
-    "report_sha256": "64566cb2891fab83f1d1c78a45ae7210bb014a6f5b5b6408a494e787d05bee65",
+    "report_sha256": "4ec57f484f5b846b99105d73cae75fb3c9f8dc9772892ac750c9008ad57cb8de",
     "combined_proof": "decomp/results/combined.json",
-    "combined_proof_sha256": "906e16a2462fc60c83f643060a177d47224ca9b6aefabefa2c0ad5090f3a32e6",
-    "matching_c_functions": 1956,
-    "matching_c_bytes": 83940,
-    "combined_c_entries": 1969,
-    "asm_entries": 5407,
+    "combined_proof_sha256": "c751bd002eb05aac66bf504e345d621e02f9159975258d52338b14f686285889",
+    "matching_c_functions": 1962,
+    "matching_c_bytes": 84340,
+    "combined_c_entries": 1975,
+    "asm_entries": 5401,
     "identified_entries": 7376,
     "full_rom_exact": true,
-    "note": "USA 1,956 original-address matching C after 233 native-exact additive functions; complete original ROM, 7,376 ELF function identities and semantic relocation comparisons PASSED_G2; original 1,723 proof preserved.",
-    "reconciled_date": "2026-11-20"
+    "note": "USA 1,962 original-address matching C after six native-exact additive functions; complete original ROM, 7,376 ELF function identities, full 82,103 semantic relocation multiset and strict inventory match the accepted 1,956 baseline.",
+    "reconciled_date": "2026-11-22"
   },
   "residual_functions": [
     {

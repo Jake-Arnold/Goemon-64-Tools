@@ -30,10 +30,11 @@ class TestUSA49ResearchSourceGuards(unittest.TestCase):
                 self.assertNotEqual(a['name'],b['name'])
                 self.assertTrue(a['rom_offset']+a['size']<=b['rom_offset'] or b['rom_offset']+b['size']<=a['rom_offset'],(a['name'],b['name']))
 
-    def test_not_already_accepted(self):
+    def test_only_prior_canonical_overlap_is_the_promoted_menu_helper(self):
         existing={x['name'] for x in verify.claimed_functions(verify.load_manifest(verify.ROOT/'manifest.json'))}
         names={x['name'] for x in mini.fixture()['functions']+cross.fixture()['functions']}
-        self.assertFalse(names&existing)
+        self.assertEqual(names&existing,{'func_800108BC_114BC'})
+        self.assertEqual(len(names-existing),48)
 
     def test_never_invent_acceptance_without_G2(self):
         self.assertEqual(mini.fixture()['status'],'PENDING_FULL_G2')
