@@ -1,0 +1,93 @@
+{
+  "format": "goemon-usa-mini-nine-pristine-full-original-v1",
+  "date": "2026-11-22",
+  "status": "PASSED_PRISTINE_FULL_ROM_ELF_RESEARCH_ONLY",
+  "original_rom_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+  "original_retail_sha1": "df8083a54296b8c151917c5333e1c85f014a2a66",
+  "pinned_upstream": "7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee",
+  "nine_functions": [
+    [
+      "func_801E1C90_59DBA0",
+      "0x59DBA0",
+      384,
+      "prior"
+    ],
+    [
+      "func_801E276C_59E67C",
+      "0x59E67C",
+      148,
+      "prior"
+    ],
+    [
+      "func_801E28D8_59E7E8",
+      "0x59E7E8",
+      68,
+      "new"
+    ],
+    [
+      "func_801E2B54_59EA64",
+      "0x59EA64",
+      84,
+      "new"
+    ],
+    [
+      "func_801E31A8_59F0B8",
+      "0x59F0B8",
+      52,
+      "new"
+    ],
+    [
+      "func_801E31DC_59F0EC",
+      "0x59F0EC",
+      104,
+      "new"
+    ],
+    [
+      "func_801E3244_59F154",
+      "0x59F154",
+      52,
+      "new"
+    ],
+    [
+      "func_801E3278_59F188",
+      "0x59F188",
+      92,
+      "new"
+    ],
+    [
+      "func_801E3DE0_59FCF0",
+      "0x59FCF0",
+      220,
+      "prior"
+    ]
+  ],
+  "new_asm_owned_c": 6,
+  "new_asm_bytes": 452,
+  "prior_native_exact_c": 3,
+  "prior_exact_bytes": 752,
+  "original_function_bytes_replaced": 1204,
+  "full_rom_bytes_exact": 33554432,
+  "original_rom_bytes": 33554432,
+  "positive_ELF_functions_exact": 7376,
+  "positive_ELF_functions_original": 7376,
+  "semantic_relocations_exact": 82216,
+  "semantic_relocations_original": 82216,
+  "file11_relocations_exact": 8825,
+  "file11_relocations_original": 8825,
+  "relocation_sections_exact": 72,
+  "original_elf_sha256": "83eda0f1df831d997f9e505c92a8a7fdb55728d3ad28b30d224f5e1ae975a038",
+  "nine_C_elf_sha256": "451b978994f0cbfe4dc24caf7adf529cdf3b7f55501bf307b414bb60e46e56fb",
+  "new_wrapper_original_sha256": "b3c84e2592183a6a409f9a682fb302f4b90d7e78a9c772766f279e34d3919a86",
+  "new_wrapper_symbolic_relocations_exact": 7,
+  "source_zip_sha256": "b64be6fe88f533123e3c82334bd31232b2c901f4e48e8516ebec8fb7392423e0",
+  "fresh_unzip_replay": "PASS",
+  "GCC_ASAN_UBSAN_five": "PASS_32768_ITERATIONS_163840_CALLS",
+  "Clang_ASAN_UBSAN_five": "PASS_32768_ITERATIONS_163840_CALLS",
+  "GCC_ASAN_UBSAN_conditional": "PASS_65536_CASES",
+  "Clang_ASAN_UBSAN_conditional": "PASS_65536_CASES",
+  "production_promotion": false,
+  "combined_decomp_verify": "NOT_RUN",
+  "strict_inventory": "NOT_RUN",
+  "full_local_ci": "NOT_RUN",
+  "emulator_gameplay": "NOT_RUN"
+}
