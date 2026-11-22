@@ -1,3 +1,10 @@
+## 22 November 2026 — remaining 24 USA cross-region C functions original-ROM G2: full 51 completed
+
+- Completed the cross-region51 backlog following the earlier published 27: four 80-byte MIPS angle wrappers (4 `R_MIPS_26` relocs), one 44-byte unsigned-byte-to-float setter, and **19 distinct 84-byte float ratio/range setters** whose exact original instructions were located independently in authenticated Japan-0 ROM and mapped to published native Japanese C donor source. Original unavailable ZIP was not used.
+- All 24 additional C functions reproduced **1,960/1,960 original USA instruction bytes and 4/4 symbolic relocations** after original guest-VMA IDO 5.3 compilation and link. Full USA2041→USA2046→**USA2065** builds reproduce the complete **33,554,432** original USA ROM bytes SHA-1 `6ea0ed71032ce08fc2745f412d84936382197494`, **7,376** ELF functions and **82,103** semantic relocations; strict inventory **2,065 C / 91,764 original C bytes / 5,298 ASM** PASS. The one corrected ELF size from USA2041 stays aligned with original.
+- Full `python3 -m decomp.local_ci` PASS, dedicated source-integrity and 51-function dedup tests PASS, and actual 24 C source GCC ASan/UBSan host semantics PASS across 1,000 loops / both float branches. Proofs: `decomp/results/usa_extra5_2046_g2_20261122.json`, `decomp/results/usa_recovered19_2065_g2_20261122.json`; sources and replay adapters in matching `decomp/research/usa_crossregion51_*/` directories. No in-game emulator replay claimed.
+- Next: treat 2,065 as the published staged USA state only after verifying remote HEAD, retain old canonical proofs as historical. Future candidates must be excluded from all 2,065 original ROM identities, not just the 1,956-function legacy manifest.
+
 ## 22 November 2026 — 27 distinct USA C source recoveries promoted after published 2014
 
 - Independently reconstructed 27 missing original-USA C bodies from published JP55 C donors plus original USA ASM/symbol relocations. Original 51-source ZIP is not accessible; no source was falsely recovered from that ZIP. Excluded all previously published names.

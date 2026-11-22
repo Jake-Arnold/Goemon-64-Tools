@@ -1,0 +1,88 @@
+{
+  "format": "goemon-USA-crossregion51-extra5-after-2041-v1",
+  "region": "usa",
+  "original_rom_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+  "accepted_before": 2041,
+  "accepted_bytes_before": 89804,
+  "functions": [
+    {
+      "name": "func_80217970_681350",
+      "rom_offset": 6820688,
+      "vma": 2149677424,
+      "size": 80,
+      "source": "donor5_000",
+      "source_sha256": "f1185b7a3ea7aedc10a2ad349cf95c47c39791945471790e0afb164b13590a4f",
+      "original_code_sha256": "93a007a0271fb0529cd64c69160775986583684f40269216f30b6ef003c896c5",
+      "original_symbolic_relocations": [
+        {
+          "offset": 44,
+          "type": "R_MIPS_26",
+          "symbol": "func_800040A8_4CA8"
+        }
+      ],
+      "original_asm": "func_80217970_681350.s"
+    },
+    {
+      "name": "func_80217E04_6817E4",
+      "rom_offset": 6821860,
+      "vma": 2149678596,
+      "size": 80,
+      "source": "donor5_001",
+      "source_sha256": "7b1769a72a4e324af64bc7f200c3f613718b1b417afdc0698c82eaa82566c7d8",
+      "original_code_sha256": "93a007a0271fb0529cd64c69160775986583684f40269216f30b6ef003c896c5",
+      "original_symbolic_relocations": [
+        {
+          "offset": 44,
+          "type": "R_MIPS_26",
+          "symbol": "func_800040A8_4CA8"
+        }
+      ],
+      "original_asm": "func_80217E04_6817E4.s"
+    },
+    {
+      "name": "func_80217FCC_6819AC",
+      "rom_offset": 6822316,
+      "vma": 2149679052,
+      "size": 80,
+      "source": "donor5_002",
+      "source_sha256": "4696b1925363006552807ef574f88b386f99d38dbbee73f58218aa73835e8438",
+      "original_code_sha256": "93a007a0271fb0529cd64c69160775986583684f40269216f30b6ef003c896c5",
+      "original_symbolic_relocations": [
+        {
+          "offset": 44,
+          "type": "R_MIPS_26",
+          "symbol": "func_800040A8_4CA8"
+        }
+      ],
+      "original_asm": "func_80217FCC_6819AC.s"
+    },
+    {
+      "name": "func_80218194_681B74",
+      "rom_offset": 6822772,
+      "vma": 2149679508,
+      "size": 80,
+      "source": "donor5_003",
+      "source_sha256": "5d1979e6c985383ce0e0481ce46f0573b537deb4863a9ed33f837dc01d5c8d87",
+      "original_code_sha256": "93a007a0271fb0529cd64c69160775986583684f40269216f30b6ef003c896c5",
+      "original_symbolic_relocations": [
+        {
+          "offset": 44,
+          "type": "R_MIPS_26",
+          "symbol": "func_800040A8_4CA8"
+        }
+      ],
+      "original_asm": "func_80218194_681B74.s"
+    },
+    {
+      "name": "func_8021C818_6861F8",
+      "rom_offset": 6840824,
+      "vma": 2149697560,
+      "size": 44,
+      "source": "donor5_004",
+      "source_sha256": "215dd42e502b4766e67f316034c37fd90afbc143c98cfa265de75c579af4dad7",
+      "original_code_sha256": "cc885ce3a6ad7283f2bdad487de2e3e0eadd833f3b1bfea62b0f8e9c306ed047",
+      "original_symbolic_relocations": [],
+      "original_asm": "func_8021C818_6861F8.s"
+    }
+  ]
+}
