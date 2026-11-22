@@ -1,0 +1,1 @@
+extern unsigned char D_8021BEA0_67AD10[]; int func_8021B418_67A288(int i) {return D_8021BEA0_67AD10[i*120];}

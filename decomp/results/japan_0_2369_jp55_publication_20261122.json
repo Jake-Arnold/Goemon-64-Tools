@@ -1,0 +1,27 @@
+{
+  "format": "goemon-japan-jp55-publication-v1",
+  "status": "PASSED_G2_LOCAL",
+  "region": "japan_0",
+  "branch": "chatgptweb/decomp",
+  "base_verified_c": 2314,
+  "new_accepted_c": 55,
+  "accepted_c_after": 2369,
+  "original_code_bytes_added": 3376,
+  "original_c_instruction_bytes_total": 126612,
+  "assembly_remaining": 5007,
+  "elf_functions": 7376,
+  "semantic_relocations": 80747,
+  "expanded_32mib_sha1": "6f8745fecc3a5e7d4918c7a73353eb0726116ded",
+  "compressed_16mib_sha1": "9843ee979b5f6c80f5eda85df0baed9ae7c4e73b",
+  "native_retail_full_rom_byte_equal": true,
+  "full_local_ci": "PASS",
+  "original_full_rom_elf_reloc_inventory_gate": "PASSED_G2_LOCAL",
+  "no_emulator_gameplay_test": "NOT_RUN",
+  "original_research_duplicates_excluded": [
+    "func_801E818C_5A415C"
+  ],
+  "impl_source": "decomp/research/jp55_allatonce_20261122/sources",
+  "replay_script": "decomp/build_japan_jp55_promotion.sh",
+  "other_region_usa_verified_state": "UNCHANGED_NOT_REBUILT",
+  "commit": "TO_BE_RECORDED_BY_REMOTE_VERIFICATION"
+}
