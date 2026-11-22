@@ -1,0 +1,324 @@
+{
+  "format": "goemon-jp-actor15-isolated-native-research-v1",
+  "region": "japan_0",
+  "date": "2026-11-22",
+  "status": "PASSED_ISOLATED_NATIVE_RESEARCH_ONLY",
+  "exact_original_bytes": 748,
+  "original_relocations_verified_in_isolated_objects": 30,
+  "unique_new_asm_owned_candidates": 11,
+  "new_original_bytes": 588,
+  "already_published_control_count": 4,
+  "canonical_japan_count_unchanged": 2314,
+  "canonical_japan_asm_unchanged": 5062,
+  "original_expanded_rom_sha1": "6f8745fecc3a5e7d4918c7a73353eb0726116ded",
+  "compiler": "SGI IDO 5.3 -O2 -mips2 -G 0",
+  "original_global_symbol": "D_8016D430_16E030",
+  "host_semantic_tests": "PASS: 15 original-C functions x 2048 deterministic states x live/null pointers, GCC ASan/UBSan",
+  "full_original_rom_g2": "NOT_RUN",
+  "retail_rom_g2": "NOT_RUN",
+  "elf_identity": "NOT_RUN",
+  "full_relocation_multiset": "NOT_RUN",
+  "full_local_ci": "NOT_RUN",
+  "functions": [
+    {
+      "name": "func_8000C118_CD18",
+      "rom_offset": "0xCD18",
+      "size": 36,
+      "isolated_native_original_address_bytes": "EXACT",
+      "isolated_original_relocations": [
+        {
+          "offset": 4,
+          "type": "R_MIPS_HI16",
+          "symbol": "D_8016D430_16E030"
+        },
+        {
+          "offset": 12,
+          "type": "R_MIPS_LO16",
+          "symbol": "D_8016D430_16E030"
+        }
+      ],
+      "already_accepted": false,
+      "official_status": "RESEARCH_ONLY_RETAIN_ASM"
+    },
+    {
+      "name": "func_8000C13C_CD3C",
+      "rom_offset": "0xCD3C",
+      "size": 52,
+      "isolated_native_original_address_bytes": "EXACT",
+      "isolated_original_relocations": [
+        {
+          "offset": 4,
+          "type": "R_MIPS_HI16",
+          "symbol": "D_8016D430_16E030"
+        },
+        {
+          "offset": 12,
+          "type": "R_MIPS_LO16",
+          "symbol": "D_8016D430_16E030"
+        }
+      ],
+      "already_accepted": false,
+      "official_status": "RESEARCH_ONLY_RETAIN_ASM"
+    },
+    {
+      "name": "func_8000C170_CD70",
+      "rom_offset": "0xCD70",
+      "size": 64,
+      "isolated_native_original_address_bytes": "EXACT",
+      "isolated_original_relocations": [
+        {
+          "offset": 4,
+          "type": "R_MIPS_HI16",
+          "symbol": "D_8016D430_16E030"
+        },
+        {
+          "offset": 12,
+          "type": "R_MIPS_LO16",
+          "symbol": "D_8016D430_16E030"
+        }
+      ],
+      "already_accepted": false,
+      "official_status": "RESEARCH_ONLY_RETAIN_ASM"
+    },
+    {
+      "name": "func_8000C1B0_CDB0",
+      "rom_offset": "0xCDB0",
+      "size": 52,
+      "isolated_native_original_address_bytes": "EXACT",
+      "isolated_original_relocations": [
+        {
+          "offset": 4,
+          "type": "R_MIPS_HI16",
+          "symbol": "D_8016D430_16E030"
+        },
+        {
+          "offset": 12,
+          "type": "R_MIPS_LO16",
+          "symbol": "D_8016D430_16E030"
+        }
+      ],
+      "already_accepted": false,
+      "official_status": "RESEARCH_ONLY_RETAIN_ASM"
+    },
+    {
+      "name": "func_8000C1E4_CDE4",
+      "rom_offset": "0xCDE4",
+      "size": 64,
+      "isolated_native_original_address_bytes": "EXACT",
+      "isolated_original_relocations": [
+        {
+          "offset": 4,
+          "type": "R_MIPS_HI16",
+          "symbol": "D_8016D430_16E030"
+        },
+        {
+          "offset": 12,
+          "type": "R_MIPS_LO16",
+          "symbol": "D_8016D430_16E030"
+        }
+      ],
+      "already_accepted": false,
+      "official_status": "RESEARCH_ONLY_RETAIN_ASM"
+    },
+    {
+      "name": "func_8000C224_CE24",
+      "rom_offset": "0xCE24",
+      "size": 36,
+      "isolated_native_original_address_bytes": "EXACT",
+      "isolated_original_relocations": [
+        {
+          "offset": 4,
+          "type": "R_MIPS_HI16",
+          "symbol": "D_8016D430_16E030"
+        },
+        {
+          "offset": 12,
+          "type": "R_MIPS_LO16",
+          "symbol": "D_8016D430_16E030"
+        }
+      ],
+      "already_accepted": false,
+      "official_status": "RESEARCH_ONLY_RETAIN_ASM"
+    },
+    {
+      "name": "func_8000C248_CE48",
+      "rom_offset": "0xCE48",
+      "size": 40,
+      "isolated_native_original_address_bytes": "EXACT",
+      "isolated_original_relocations": [
+        {
+          "offset": 4,
+          "type": "R_MIPS_HI16",
+          "symbol": "D_8016D430_16E030"
+        },
+        {
+          "offset": 12,
+          "type": "R_MIPS_LO16",
+          "symbol": "D_8016D430_16E030"
+        }
+      ],
+      "already_accepted": true,
+      "official_status": "ACCEPTED_EARLIER_CONTROL"
+    },
+    {
+      "name": "func_8000C270_CE70",
+      "rom_offset": "0xCE70",
+      "size": 40,
+      "isolated_native_original_address_bytes": "EXACT",
+      "isolated_original_relocations": [
+        {
+          "offset": 4,
+          "type": "R_MIPS_HI16",
+          "symbol": "D_8016D430_16E030"
+        },
+        {
+          "offset": 12,
+          "type": "R_MIPS_LO16",
+          "symbol": "D_8016D430_16E030"
+        }
+      ],
+      "already_accepted": true,
+      "official_status": "ACCEPTED_EARLIER_CONTROL"
+    },
+    {
+      "name": "func_8000C298_CE98",
+      "rom_offset": "0xCE98",
+      "size": 52,
+      "isolated_native_original_address_bytes": "EXACT",
+      "isolated_original_relocations": [
+        {
+          "offset": 4,
+          "type": "R_MIPS_HI16",
+          "symbol": "D_8016D430_16E030"
+        },
+        {
+          "offset": 12,
+          "type": "R_MIPS_LO16",
+          "symbol": "D_8016D430_16E030"
+        }
+      ],
+      "already_accepted": false,
+      "official_status": "RESEARCH_ONLY_RETAIN_ASM"
+    },
+    {
+      "name": "func_8000C2CC_CECC",
+      "rom_offset": "0xCECC",
+      "size": 64,
+      "isolated_native_original_address_bytes": "EXACT",
+      "isolated_original_relocations": [
+        {
+          "offset": 4,
+          "type": "R_MIPS_HI16",
+          "symbol": "D_8016D430_16E030"
+        },
+        {
+          "offset": 12,
+          "type": "R_MIPS_LO16",
+          "symbol": "D_8016D430_16E030"
+        }
+      ],
+      "already_accepted": false,
+      "official_status": "RESEARCH_ONLY_RETAIN_ASM"
+    },
+    {
+      "name": "func_8000C30C_CF0C",
+      "rom_offset": "0xCF0C",
+      "size": 40,
+      "isolated_native_original_address_bytes": "EXACT",
+      "isolated_original_relocations": [
+        {
+          "offset": 4,
+          "type": "R_MIPS_HI16",
+          "symbol": "D_8016D430_16E030"
+        },
+        {
+          "offset": 12,
+          "type": "R_MIPS_LO16",
+          "symbol": "D_8016D430_16E030"
+        }
+      ],
+      "already_accepted": true,
+      "official_status": "ACCEPTED_EARLIER_CONTROL"
+    },
+    {
+      "name": "func_8000C334_CF34",
+      "rom_offset": "0xCF34",
+      "size": 52,
+      "isolated_native_original_address_bytes": "EXACT",
+      "isolated_original_relocations": [
+        {
+          "offset": 4,
+          "type": "R_MIPS_HI16",
+          "symbol": "D_8016D430_16E030"
+        },
+        {
+          "offset": 12,
+          "type": "R_MIPS_LO16",
+          "symbol": "D_8016D430_16E030"
+        }
+      ],
+      "already_accepted": false,
+      "official_status": "RESEARCH_ONLY_RETAIN_ASM"
+    },
+    {
+      "name": "func_8000C368_CF68",
+      "rom_offset": "0xCF68",
+      "size": 64,
+      "isolated_native_original_address_bytes": "EXACT",
+      "isolated_original_relocations": [
+        {
+          "offset": 4,
+          "type": "R_MIPS_HI16",
+          "symbol": "D_8016D430_16E030"
+        },
+        {
+          "offset": 12,
+          "type": "R_MIPS_LO16",
+          "symbol": "D_8016D430_16E030"
+        }
+      ],
+      "already_accepted": false,
+      "official_status": "RESEARCH_ONLY_RETAIN_ASM"
+    },
+    {
+      "name": "func_8000C3A8_CFA8",
+      "rom_offset": "0xCFA8",
+      "size": 40,
+      "isolated_native_original_address_bytes": "EXACT",
+      "isolated_original_relocations": [
+        {
+          "offset": 4,
+          "type": "R_MIPS_HI16",
+          "symbol": "D_8016D430_16E030"
+        },
+        {
+          "offset": 12,
+          "type": "R_MIPS_LO16",
+          "symbol": "D_8016D430_16E030"
+        }
+      ],
+      "already_accepted": true,
+      "official_status": "ACCEPTED_EARLIER_CONTROL"
+    },
+    {
+      "name": "func_8000C600_D200",
+      "rom_offset": "0xD200",
+      "size": 52,
+      "isolated_native_original_address_bytes": "EXACT",
+      "isolated_original_relocations": [
+        {
+          "offset": 4,
+          "type": "R_MIPS_HI16",
+          "symbol": "D_8016D430_16E030"
+        },
+        {
+          "offset": 12,
+          "type": "R_MIPS_LO16",
+          "symbol": "D_8016D430_16E030"
+        }
+      ],
+      "already_accepted": false,
+      "official_status": "RESEARCH_ONLY_RETAIN_ASM"
+    }
+  ]
+}
