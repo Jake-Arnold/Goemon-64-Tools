@@ -1,0 +1,210 @@
+{
+  "status": "PASSED_G2_LOCAL",
+  "region": "usa",
+  "accepted_before": 2041,
+  "accepted_after": 2046,
+  "new_original_C_bytes": 364,
+  "total_original_C_bytes": 90168,
+  "remaining_asm": 5317,
+  "original_ROM_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+  "original_ROM_bytes": 33554432,
+  "original_elf_positive_functions": 7376,
+  "original_semantic_relocations": 82103,
+  "source_relocations_in_batch": 4,
+  "new_functions": [
+    {
+      "name": "func_80217970_681350",
+      "rom_offset": 6820688,
+      "vma": 2149677424,
+      "size": 80,
+      "source": "donor5_000",
+      "source_sha256": "f1185b7a3ea7aedc10a2ad349cf95c47c39791945471790e0afb164b13590a4f",
+      "original_code_sha256": "93a007a0271fb0529cd64c69160775986583684f40269216f30b6ef003c896c5",
+      "original_symbolic_relocations": [
+        {
+          "offset": 44,
+          "type": "R_MIPS_26",
+          "symbol": "func_800040A8_4CA8"
+        }
+      ],
+      "original_asm": "func_80217970_681350.s"
+    },
+    {
+      "name": "func_80217E04_6817E4",
+      "rom_offset": 6821860,
+      "vma": 2149678596,
+      "size": 80,
+      "source": "donor5_001",
+      "source_sha256": "7b1769a72a4e324af64bc7f200c3f613718b1b417afdc0698c82eaa82566c7d8",
+      "original_code_sha256": "93a007a0271fb0529cd64c69160775986583684f40269216f30b6ef003c896c5",
+      "original_symbolic_relocations": [
+        {
+          "offset": 44,
+          "type": "R_MIPS_26",
+          "symbol": "func_800040A8_4CA8"
+        }
+      ],
+      "original_asm": "func_80217E04_6817E4.s"
+    },
+    {
+      "name": "func_80217FCC_6819AC",
+      "rom_offset": 6822316,
+      "vma": 2149679052,
+      "size": 80,
+      "source": "donor5_002",
+      "source_sha256": "4696b1925363006552807ef574f88b386f99d38dbbee73f58218aa73835e8438",
+      "original_code_sha256": "93a007a0271fb0529cd64c69160775986583684f40269216f30b6ef003c896c5",
+      "original_symbolic_relocations": [
+        {
+          "offset": 44,
+          "type": "R_MIPS_26",
+          "symbol": "func_800040A8_4CA8"
+        }
+      ],
+      "original_asm": "func_80217FCC_6819AC.s"
+    },
+    {
+      "name": "func_80218194_681B74",
+      "rom_offset": 6822772,
+      "vma": 2149679508,
+      "size": 80,
+      "source": "donor5_003",
+      "source_sha256": "5d1979e6c985383ce0e0481ce46f0573b537deb4863a9ed33f837dc01d5c8d87",
+      "original_code_sha256": "93a007a0271fb0529cd64c69160775986583684f40269216f30b6ef003c896c5",
+      "original_symbolic_relocations": [
+        {
+          "offset": 44,
+          "type": "R_MIPS_26",
+          "symbol": "func_800040A8_4CA8"
+        }
+      ],
+      "original_asm": "func_80218194_681B74.s"
+    },
+    {
+      "name": "func_8021C818_6861F8",
+      "rom_offset": 6840824,
+      "vma": 2149697560,
+      "size": 44,
+      "source": "donor5_004",
+      "source_sha256": "215dd42e502b4766e67f316034c37fd90afbc143c98cfa265de75c579af4dad7",
+      "original_code_sha256": "cc885ce3a6ad7283f2bdad487de2e3e0eadd833f3b1bfea62b0f8e9c306ed047",
+      "original_symbolic_relocations": [],
+      "original_asm": "func_8021C818_6861F8.s"
+    }
+  ],
+  "link_proof": {
+    "status": "PASS",
+    "count": 233,
+    "bytes": 14596,
+    "rom_bytes": 33554432,
+    "sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+    "positive_elf_function_entries": 7376,
+    "semantic_relocation_counts": {
+      "file_11": 8825,
+      "file_12": 7051,
+      "file_13": 9589,
+      "file_14": 3041,
+      "file_15": 1625,
+      "file_16": 781,
+      "file_17": 1739,
+      "file_18": 3365,
+      "file_19": 1078,
+      "file_20": 68,
+      "file_21": 114,
+      "file_22": 294,
+      "file_23": 377,
+      "file_24": 160,
+      "file_25": 167,
+      "file_26": 207,
+      "file_27": 876,
+      "file_28": 35,
+      "file_29": 2536,
+      "file_30": 1826,
+      "file_31": 1371,
+      "file_32": 1068,
+      "file_33": 139,
+      "file_34": 317,
+      "file_35": 677,
+      "file_36": 1025,
+      "file_37": 1079,
+      "file_38": 761,
+      "file_39": 435,
+      "file_40": 892,
+      "file_41": 280,
+      "file_42": 555,
+      "file_43": 1593,
+      "file_44": 598,
+      "file_45": 545,
+      "file_46": 817,
+      "file_47": 275,
+      "file_48": 469,
+      "file_49": 602,
+      "file_50": 228,
+      "file_51": 143,
+      "file_52": 8,
+      "file_53": 534,
+      "file_54": 341,
+      "file_55": 390,
+      "file_56": 436,
+      "file_57": 708,
+      "file_58": 340,
+      "file_59": 508,
+      "file_60": 418,
+      "file_61": 161,
+      "file_62": 747,
+      "file_63": 94,
+      "file_64": 176,
+      "file_65": 86,
+      "file_66": 571,
+      "file_67": 254,
+      "file_68": 155,
+      "file_69": 464,
+      "file_70": 298,
+      "file_71": 350,
+      "file_72": 412,
+      "file_73": 274,
+      "file_74": 822,
+      "file_75": 279,
+      "file_76": 6,
+      "file_77": 304,
+      "file_78": 124,
+      "file_79": 180,
+      "file_80": 89
+    },
+    "C_units": 233,
+    "retained_ASM_fragments": 6
+  },
+  "inventory": {
+    "identified_function_entries": 7376,
+    "upstream_unmarked_entries": 13,
+    "newly_matching_c": 2046,
+    "current_unmarked_entries": 2059,
+    "remaining_assembly_entries": 5317,
+    "baseline_zero_sized_function_labels_ignored": 0,
+    "candidate_zero_sized_function_labels_ignored": 851,
+    "extra_positive_alias_entries": 0,
+    "upstream_unmarked_names": [
+      "func_8000A480_B080",
+      "func_80013940_14540",
+      "func_80013AC4_146C4",
+      "func_80013C0C_1480C",
+      "func_80013C70_14870",
+      "func_800141C4_14DC4",
+      "func_8001481C_1541C",
+      "func_80014840_15440",
+      "func_800148C0_154C0",
+      "func_80014C00_15800",
+      "func_80014C20_15820",
+      "func_80029E58_2AA58",
+      "func_8002A168_2AD68"
+    ],
+    "size_annotation_differences": [
+      {
+        "name": "func_8003F6E8_402E8",
+        "baseline_size": 48,
+        "candidate_size": 56
+      }
+    ],
+    "function_entry_identity_sha256": "01f41037ac83f6e18e80c83489a18b870e4fef907c67d20a345871c7c34fe787"
+  }
+}

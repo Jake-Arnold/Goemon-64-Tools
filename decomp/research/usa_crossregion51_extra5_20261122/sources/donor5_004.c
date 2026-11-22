@@ -1,0 +1,1 @@
+typedef float f32;void func_8021C818_6861F8(void *arg0,unsigned char arg1) {*(f32*)((char*)arg0+0x64)=(float)(unsigned char)arg1;}
