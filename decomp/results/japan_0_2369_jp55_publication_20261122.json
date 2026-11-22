@@ -1,6 +1,6 @@
 {
   "format": "goemon-japan-jp55-publication-v1",
-  "status": "PASSED_G2_LOCAL",
+  "status": "PUBLISHED_REMOTE_VERIFIED",
   "region": "japan_0",
   "branch": "chatgptweb/decomp",
   "base_verified_c": 2314,
@@ -23,5 +23,9 @@
   "impl_source": "decomp/research/jp55_allatonce_20261122/sources",
   "replay_script": "decomp/build_japan_jp55_promotion.sh",
   "other_region_usa_verified_state": "UNCHANGED_NOT_REBUILT",
-  "commit": "TO_BE_RECORDED_BY_REMOTE_VERIFICATION"
+  "commit": "8d7ce3e2baa68fa8bf22229907b809a70cdb138d",
+  "published_implementation_commit": "8d7ce3e2baa68fa8bf22229907b809a70cdb138d",
+  "remote_verified_source_and_doc_file_count": 69,
+  "remote_verified_sha_checks": "69/69 original expected blob hashes matched remote",
+  "verification_note": "The 55-function original-ROM G2 and full local CI were executed locally before publication; remote source/tree/README/docs SHA verification was executed after publishing the implementation commit. No emulator gameplay test. This publication attestation changes no C code or ROM proof."
 }
