@@ -1,0 +1,91 @@
+{
+  "classification": "RESEARCH_ONLY_ORIGINAL_UPSTREAM_ROM_EXACT_NOT_CANONICAL_DECOMP_G2",
+  "pin": "7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee",
+  "rom_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+  "retail_sha1": "df8083a54296b8c151917c5333e1c85f014a2a66",
+  "rom_bytes_identical": 33554432,
+  "original_elf_sha256": "83eda0f1df831d997f9e505c92a8a7fdb55728d3ad28b30d224f5e1ae975a038",
+  "candidate_elf_sha256": "71c82f7a2e3c578a64e4a910c91b4e127efd110ed5aae2b680623986eabff52f",
+  "elf_positive_function_identities_exact": 7376,
+  "elf_original_relocation_records_exact": 82216,
+  "targets": [
+    {
+      "name": "func_8000A18C_AD8C",
+      "original_rom_offset": "0xad8c",
+      "original_bytes": 48,
+      "original_function_sha256": "a494dc6ba7f3ed16e1aa8232fd8e54d8948e40a7f8d2b22b80df3f6a3686a385",
+      "source_sha256": "784d5a565153a3453cc027e7dc87043703af5886e85a32be436aee501b6f44e1"
+    },
+    {
+      "name": "func_8000AAE8_B6E8",
+      "original_rom_offset": "0xb6e8",
+      "original_bytes": 40,
+      "original_function_sha256": "790033f931cf2f15ea0e5d16204cd3caf6cec02a22e4ff55531aa196e9bcff77",
+      "source_sha256": "a23015cca3d8625fd850218b6d9d14250aad63c9fac0c3aa8323370e1c29485b"
+    }
+  ],
+  "canonical_decomp_verify": "NOT_RUN",
+  "canonical_semantic_relocations": "NOT_RUN",
+  "strict_inventory": "NOT_RUN",
+  "decomp_local_ci": "NOT_RUN",
+  "accepted_delta": 0,
+  "source_only_package_format": "goemon-usa-unique-three-20261122-v1",
+  "host_sanitizers": {
+    "gcc_14_2_ASAN_UBSAN": "PASS",
+    "clang_17_ASAN_UBSAN": "PASS",
+    "trials_per_function": 4096,
+    "sources_tested": 3
+  },
+  "rejected_duplicate_claims": {
+    "pr162_previously_accepted_functions": [
+      "func_80008798_9398",
+      "func_8000A0F0_ACF0"
+    ],
+    "pr164_already_accepted_functions": [
+      "func_80012500_13100",
+      "func_800127FC_133FC",
+      "func_8001285C_1345C",
+      "func_8001C9BC_1D5BC",
+      "func_8001C9D8_1D5D8"
+    ],
+    "pr164_state": "closed_unmerged",
+    "acceptance_delta_of_duplicates": 0
+  },
+  "third_diagnostic": {
+    "name": "func_8000AB30_B730",
+    "original_rom_offset": "0xb730",
+    "original_bytes": 68,
+    "original_sha256": "3919d906ca430e5f56cc9c36a2e3320e5563166409bfb71756249445bd1f1531",
+    "source_sha256": "305318d9c1dfb10881f0551086758a51e6a9fc7cd974cd2372f30d95240fe840",
+    "isolated_native_exact": true,
+    "compiled_elf_function_size": 68,
+    "compiled_text_section_size": 80,
+    "symbolic_relocations": [
+      {
+        "offset": "0x0",
+        "type": "R_MIPS_HI16",
+        "symbol": "D_8008CCC0_8D8C0"
+      },
+      {
+        "offset": "0x4",
+        "type": "R_MIPS_LO16",
+        "symbol": "D_8008CCC0_8D8C0"
+      }
+    ],
+    "integrated_original_rom_size_bytes": 33554432,
+    "integrated_original_rom_byte_identical": true,
+    "original_upstream_relocations_exact": 82216,
+    "original_ELF_positive_FUNC_count": 7376,
+    "candidate_ELF_positive_FUNC_count": 7376,
+    "strict_elf_function_identity_match": false,
+    "neighbor_original_name": "func_8000AFA8_BBA8",
+    "neighbor_original_size": 752,
+    "neighbor_candidate_size": 760,
+    "status": "FAILED_ELF_RESEARCH_ONLY"
+  },
+  "dedup_against_latest_research": {
+    "usa_crossregion51_20261122": 51,
+    "usa_crossregion48_followup_20261122": 48,
+    "overlapping_selected_functions": []
+  }
+}
