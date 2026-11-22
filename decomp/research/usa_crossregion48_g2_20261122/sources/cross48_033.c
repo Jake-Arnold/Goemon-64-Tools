@@ -1,0 +1,1 @@
+typedef unsigned short u16;struct X{char filler[0x8a];u16 count;};extern int func_8021927C_5D474C;extern int func_8021B09C_5D656C;void func_080006B8_6E79C8(struct X *p,int arg1){int old=p->count;p->count=old-1;if(old==0){((void(*)(void*))&func_8021927C_5D474C)(p);((void(*)(void*,int,int))&func_8021B09C_5D656C)(p,1,1);}}
