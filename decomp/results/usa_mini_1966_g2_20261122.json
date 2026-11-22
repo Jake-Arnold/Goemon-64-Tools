@@ -1,0 +1,218 @@
+{
+  "status": "PASSED_G2_LOCAL",
+  "region": "usa",
+  "accepted_before": 1965,
+  "accepted_after": 1966,
+  "added_original_bytes": 224,
+  "total_C_original_instruction_bytes": 84872,
+  "remaining_asm": 5397,
+  "rom_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+  "rom_bytes": 33554432,
+  "original_elf_functions": 7376,
+  "semantic_relocations": 82103,
+  "new_functions": [
+    {
+      "name": "func_801E20A0_59DFB0",
+      "rom_offset": 5889968,
+      "vma": 2149458080,
+      "size": 224,
+      "source": "mini1_59dfb0",
+      "source_sha256": "e86a3aef81e44ee0c5ea9d90b7c9275e0a84a7a45dfa1e7dc2c28e3aa34705df",
+      "original_code_sha256": "c0345c569e9107bff582b0df998723c3ac3428c616fa115ec0e456735c667457",
+      "original_symbolic_relocations": [
+        {
+          "offset": 12,
+          "type": "R_MIPS_26",
+          "symbol": "func_801E7DE8_5A3CF8",
+          "count": 1
+        },
+        {
+          "offset": 28,
+          "type": "R_MIPS_HI16",
+          "symbol": "D_8020B308_5C7218",
+          "count": 1
+        },
+        {
+          "offset": 32,
+          "type": "R_MIPS_LO16",
+          "symbol": "D_8020B308_5C7218",
+          "count": 1
+        },
+        {
+          "offset": 84,
+          "type": "R_MIPS_26",
+          "symbol": "func_801DD830_599740",
+          "count": 1
+        },
+        {
+          "offset": 96,
+          "type": "R_MIPS_HI16",
+          "symbol": "D_8020CA6C_5C897C",
+          "count": 1
+        },
+        {
+          "offset": 112,
+          "type": "R_MIPS_26",
+          "symbol": "func_80038BC8_397C8",
+          "count": 1
+        },
+        {
+          "offset": 120,
+          "type": "R_MIPS_26",
+          "symbol": "func_80038BC8_397C8",
+          "count": 1
+        },
+        {
+          "offset": 136,
+          "type": "R_MIPS_LO16",
+          "symbol": "D_8020CA6C_5C897C",
+          "count": 1
+        },
+        {
+          "offset": 148,
+          "type": "R_MIPS_26",
+          "symbol": "func_80038BC8_397C8",
+          "count": 1
+        },
+        {
+          "offset": 164,
+          "type": "R_MIPS_26",
+          "symbol": "func_801E7DE8_5A3CF8",
+          "count": 1
+        },
+        {
+          "offset": 180,
+          "type": "R_MIPS_26",
+          "symbol": "func_80038BC8_397C8",
+          "count": 1
+        },
+        {
+          "offset": 196,
+          "type": "R_MIPS_26",
+          "symbol": "func_801DD6E0_5995F0",
+          "count": 1
+        }
+      ]
+    }
+  ],
+  "link_proof": {
+    "status": "PASS",
+    "count": 1,
+    "bytes": 224,
+    "rom_bytes": 33554432,
+    "sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+    "positive_elf_function_entries": 7376,
+    "semantic_relocation_counts": {
+      "file_11": 8825,
+      "file_12": 7051,
+      "file_13": 9589,
+      "file_14": 3041,
+      "file_15": 1625,
+      "file_16": 781,
+      "file_17": 1739,
+      "file_18": 3365,
+      "file_19": 1078,
+      "file_20": 68,
+      "file_21": 114,
+      "file_22": 294,
+      "file_23": 377,
+      "file_24": 160,
+      "file_25": 167,
+      "file_26": 207,
+      "file_27": 876,
+      "file_28": 35,
+      "file_29": 2536,
+      "file_30": 1826,
+      "file_31": 1371,
+      "file_32": 1068,
+      "file_33": 139,
+      "file_34": 317,
+      "file_35": 677,
+      "file_36": 1025,
+      "file_37": 1079,
+      "file_38": 761,
+      "file_39": 435,
+      "file_40": 892,
+      "file_41": 280,
+      "file_42": 555,
+      "file_43": 1593,
+      "file_44": 598,
+      "file_45": 545,
+      "file_46": 817,
+      "file_47": 275,
+      "file_48": 469,
+      "file_49": 602,
+      "file_50": 228,
+      "file_51": 143,
+      "file_52": 8,
+      "file_53": 534,
+      "file_54": 341,
+      "file_55": 390,
+      "file_56": 436,
+      "file_57": 708,
+      "file_58": 340,
+      "file_59": 508,
+      "file_60": 418,
+      "file_61": 161,
+      "file_62": 747,
+      "file_63": 94,
+      "file_64": 176,
+      "file_65": 86,
+      "file_66": 571,
+      "file_67": 254,
+      "file_68": 155,
+      "file_69": 464,
+      "file_70": 298,
+      "file_71": 350,
+      "file_72": 412,
+      "file_73": 274,
+      "file_74": 822,
+      "file_75": 279,
+      "file_76": 6,
+      "file_77": 304,
+      "file_78": 124,
+      "file_79": 180,
+      "file_80": 89
+    },
+    "C_units": 1,
+    "retained_ASM_fragments": 2
+  },
+  "inventory": {
+    "identified_function_entries": 7376,
+    "upstream_unmarked_entries": 13,
+    "newly_matching_c": 1966,
+    "current_unmarked_entries": 1979,
+    "remaining_assembly_entries": 5397,
+    "baseline_zero_sized_function_labels_ignored": 0,
+    "candidate_zero_sized_function_labels_ignored": 851,
+    "extra_positive_alias_entries": 0,
+    "upstream_unmarked_names": [
+      "func_8000A480_B080",
+      "func_80013940_14540",
+      "func_80013AC4_146C4",
+      "func_80013C0C_1480C",
+      "func_80013C70_14870",
+      "func_800141C4_14DC4",
+      "func_8001481C_1541C",
+      "func_80014840_15440",
+      "func_800148C0_154C0",
+      "func_80014C00_15800",
+      "func_80014C20_15820",
+      "func_80029E58_2AA58",
+      "func_8002A168_2AD68"
+    ],
+    "size_annotation_differences": [
+      {
+        "name": "func_8000D3B8_DFB8",
+        "baseline_size": 64,
+        "candidate_size": 72
+      },
+      {
+        "name": "func_8003F6E8_402E8",
+        "baseline_size": 48,
+        "candidate_size": 56
+      }
+    ],
+    "function_entry_identity_sha256": "01f41037ac83f6e18e80c83489a18b870e4fef907c67d20a345871c7c34fe787"
+  }
+}

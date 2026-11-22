@@ -1,0 +1,92 @@
+{
+  "format": "goemon-USA-mini-ebisumaru-1-after-1965-v1",
+  "rom_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+  "accepted_before": 1965,
+  "accepted_instruction_bytes_before": 84648,
+  "functions": [
+    {
+      "name": "func_801E20A0_59DFB0",
+      "rom_offset": 5889968,
+      "vma": 2149458080,
+      "size": 224,
+      "source": "mini1_59dfb0",
+      "source_sha256": "e86a3aef81e44ee0c5ea9d90b7c9275e0a84a7a45dfa1e7dc2c28e3aa34705df",
+      "original_code_sha256": "c0345c569e9107bff582b0df998723c3ac3428c616fa115ec0e456735c667457",
+      "original_symbolic_relocations": [
+        {
+          "offset": 12,
+          "type": "R_MIPS_26",
+          "symbol": "func_801E7DE8_5A3CF8",
+          "count": 1
+        },
+        {
+          "offset": 28,
+          "type": "R_MIPS_HI16",
+          "symbol": "D_8020B308_5C7218",
+          "count": 1
+        },
+        {
+          "offset": 32,
+          "type": "R_MIPS_LO16",
+          "symbol": "D_8020B308_5C7218",
+          "count": 1
+        },
+        {
+          "offset": 84,
+          "type": "R_MIPS_26",
+          "symbol": "func_801DD830_599740",
+          "count": 1
+        },
+        {
+          "offset": 96,
+          "type": "R_MIPS_HI16",
+          "symbol": "D_8020CA6C_5C897C",
+          "count": 1
+        },
+        {
+          "offset": 112,
+          "type": "R_MIPS_26",
+          "symbol": "func_80038BC8_397C8",
+          "count": 1
+        },
+        {
+          "offset": 120,
+          "type": "R_MIPS_26",
+          "symbol": "func_80038BC8_397C8",
+          "count": 1
+        },
+        {
+          "offset": 136,
+          "type": "R_MIPS_LO16",
+          "symbol": "D_8020CA6C_5C897C",
+          "count": 1
+        },
+        {
+          "offset": 148,
+          "type": "R_MIPS_26",
+          "symbol": "func_80038BC8_397C8",
+          "count": 1
+        },
+        {
+          "offset": 164,
+          "type": "R_MIPS_26",
+          "symbol": "func_801E7DE8_5A3CF8",
+          "count": 1
+        },
+        {
+          "offset": 180,
+          "type": "R_MIPS_26",
+          "symbol": "func_80038BC8_397C8",
+          "count": 1
+        },
+        {
+          "offset": 196,
+          "type": "R_MIPS_26",
+          "symbol": "func_801DD6E0_5995F0",
+          "count": 1
+        }
+      ]
+    }
+  ],
+  "status": "PENDING_FULL_G2"
+}
