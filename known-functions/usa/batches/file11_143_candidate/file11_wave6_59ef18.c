@@ -1,0 +1,1 @@
+typedef struct {short field;char pad[0x2C-2];unsigned char flag;} Inner;typedef struct {char p[0x4C];unsigned char mode;char p1[0x5C-0x4D];Inner*inner;char p2[0x68-0x60];float v68,v6c,v70;char p3[0xE4-0x74];float e4,e8;}Actor;void func_801E3008_59EF18(Actor*a){a->e4=0;a->e8=0;a->v70=0;a->v6c=0;a->v68=0;a->inner->flag=0;a->mode=20;a->inner->field=0;}

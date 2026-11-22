@@ -1,0 +1,1 @@
+typedef struct {char pad[0x60];float f;} O; int func_8021EE90_688870 (O *o){return (int)(o->f * 1000.0f);}

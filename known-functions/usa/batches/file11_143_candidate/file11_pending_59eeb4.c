@@ -1,0 +1,2 @@
+#define handler func_801E8160_5A4070
+typedef struct {char p[0x30];short v;} Inner;typedef struct {char p[0x30];unsigned char flags;char p2[0x5C-0x31];Inner*inner;char p3[0xE4-0x60];float e4,e8;}Actor;extern void handler();void func_801E2FA4_59EEB4(Actor*a){a->inner->v=0;a->e4=0;a->e8=0;a->flags&=~1;handler();}

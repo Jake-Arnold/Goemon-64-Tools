@@ -1,0 +1,1 @@
+extern void func_801FB654_5B7624(void*,int,int,int);void func_801FB5D0_5B75A0(void *p,int unused){func_801FB654_5B7624(p,0,0x41100000,29);}

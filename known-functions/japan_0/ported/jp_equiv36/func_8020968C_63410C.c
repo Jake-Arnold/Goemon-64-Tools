@@ -1,0 +1,1 @@
+typedef struct C {char pad[0x18];void *node;} C;typedef struct O {char pad[0xB0];int zero;C *child;void *node;float x,y,z;} O;void func_8020968C_63410C (O*o,C*c,float x,float y,float z){void *node=c->node;o->child=c;o->node=node;o->x=x;o->y=y;o->z=z;o->zero=0;}

@@ -1,0 +1,2 @@
+typedef signed char s8;typedef unsigned int u32;typedef struct{char pad[0xb4];int b4,b8;char q[8];s8 c4,c5;}Obj;
+void func_801D7070_645560(Obj*o,int unused){u32 x=o->c4;if(!(x>>1)){o->c5=x;o->b8=o->b4;}else{o->c5=-1;}}

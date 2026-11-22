@@ -1,0 +1,1 @@
+typedef unsigned char u8;extern void func_801F5F90_5B1F60(void*,u8,int);void func_801F5F0C_5B1EDC(void *p,u8 x){func_801F5F90_5B1F60(p,x,0);}

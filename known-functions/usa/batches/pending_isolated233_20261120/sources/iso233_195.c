@@ -1,0 +1,2 @@
+typedef signed char s8;typedef unsigned char u8;typedef short s16;typedef unsigned short u16;typedef int s32;typedef unsigned int u32;typedef float f32;
+extern s32 D_80217034_675FE4;s32 func_802165F0_6755A0(s32 arg0,s32 arg1){return *(s32*)((u8*)&D_80217034_675FE4+arg0*84 + arg1*12);}

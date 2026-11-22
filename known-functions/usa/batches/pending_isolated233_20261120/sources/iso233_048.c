@@ -1,0 +1,2 @@
+typedef signed char s8;typedef unsigned char u8;typedef short s16;typedef unsigned short u16;typedef int s32;typedef unsigned int u32;typedef float f32;
+extern s32 D_8007A230_7AE30;void __freeParam(s32 *arg0){u8 *p=(u8*)D_8007A230_7AE30;*arg0=*(s32*)(p+0x2C);*(s32*)(p+0x2C)=(s32)arg0;}

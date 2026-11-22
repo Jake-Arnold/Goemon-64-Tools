@@ -1,0 +1,1 @@
+extern float D_0800C388_6C4108;extern int func_80034E8C_35A8C;extern int func_08006898_6BE618;void func_08006854_6BE5D4(void *p,float *v){float x=D_0800C388_6C4108;v[9]=x;v[8]=x;v[7]=x;((void(*)(void*))&func_80034E8C_35A8C)(&func_08006898_6BE618);}

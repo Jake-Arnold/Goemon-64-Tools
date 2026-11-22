@@ -1,0 +1,1 @@
+typedef unsigned char u8;typedef struct{char p[0x2D0];void*list[17];char z[1];u8 count;} Table;typedef struct{char p[0xEC];Table*table;} Obj;void func_801D7868_645D58 (Obj*o){Table*t=o->table;u8 i=t->count;t->list[i]=o;t->count=i+1;}

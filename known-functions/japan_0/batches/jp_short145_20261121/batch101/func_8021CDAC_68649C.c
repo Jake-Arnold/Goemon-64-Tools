@@ -1,0 +1,1 @@
+typedef float f32;typedef unsigned short u16;extern int func_80003FD8_4BD8(f32,f32);void func_8021CDAC_68649C(void *object,f32 x,f32 z){void *t=*(void**)((char*)object+0x18);*(u16*)((char*)t+0x16)=func_80003FD8_4BD8(x-*(f32*)((char*)t+8),z-*(f32*)((char*)t+0x10))&0x3ff;}

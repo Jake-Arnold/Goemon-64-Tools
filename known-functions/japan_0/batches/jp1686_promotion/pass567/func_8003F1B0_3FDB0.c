@@ -1,0 +1,8 @@
+#include "../m2c_types.h"
+extern s32 D_801CCE70_1CDA70;
+extern s32 D_801CCE74_1CDA74;
+extern s32 D_801CCE80_1CDA80;
+
+void func_8003F1B0_3FDB0(void) {
+    D_801CCE80_1CDA80 = D_801CCE70_1CDA70 - D_801CCE74_1CDA74;
+}

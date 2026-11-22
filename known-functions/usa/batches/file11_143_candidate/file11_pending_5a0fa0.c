@@ -1,0 +1,1 @@
+typedef struct {short flag;} Inner;typedef struct {char p[0x30];unsigned char flags;char p2[0x5C-0x31];Inner* state;char p3[0x68-0x60];float v68,v6c,v70;char p4[0xE8-0x74];float ve8;} Actor;void func_801E5090_5A0FA0(Actor*a){a->v70=0.0f;a->v6c=0.0f;a->v68=0.0f;a->ve8=0.0f;a->state->flag=1;a->flags&=~1;}

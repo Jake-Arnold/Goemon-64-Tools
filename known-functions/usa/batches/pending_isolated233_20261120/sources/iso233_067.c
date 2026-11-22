@@ -1,0 +1,2 @@
+typedef signed char s8;typedef unsigned char u8;typedef short s16;typedef unsigned short u16;typedef int s32;typedef unsigned int u32;typedef float f32;
+s32 alSaveParam(void *arg0,s32 arg1,u32 arg2){switch(arg1){case 1:*(s32*)arg0=arg2;break;case 6:*(s32*)((u8*)arg0+0x14)=arg2;break;}return 0;}

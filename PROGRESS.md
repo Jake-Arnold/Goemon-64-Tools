@@ -1,3 +1,11 @@
+## 22 November 2026 — Verified matching-C source browsing branch (no new promotions)
+
+- Created branch `chatgptweb/known-functions-20261122` from decomp commit `c699608fa79ba8058546a6b2d9caf9dc64768dec`. Added source-only `known-functions/usa/` and `known-functions/japan_0/` directories, keeping the original decomp source and proof files unchanged. No changes to `main`.
+- USA snapshot: 1,265 readable C files from the previously verified 1,965 original-address matching functions / 84,648 instruction bytes. The file11 fixture yielded 166 original source texts, checked against `results/combined.json` source SHA-256 records; the 132 C files in the archived wide132 source tarball were extracted. `27FE0.c` is original-upstream-only and not duplicated here.
+- Japan rev-0 snapshot: 2,050 C files from the previously verified 2,369 original-address matching functions / 126,612 instruction bytes. Excluded the two JP1686 original-semantic-relocation failures. Reproduced 290 verified no-op function bodies and 99 separately verified USA-derived Japan source transformations in browse-only form.
+- Checks actually performed: acceptance-ledger membership and input-symbol checks; source-referenced fixture SHA-256 checks (166/166); browser-source tree enumeration (USA 1,265 C files; Japan 2,050 C files); exclusion checks for rejected JP symbols. No new original-ROM G2, native compilation, retail-ROM comparison, local CI or gameplay verification was performed for this copy-only branch. Previously published counts remain unchanged.
+- Limitations: directory is for browsing/reference, not a separately linkable or buildable translation-unit set. Original production layouts and source-specific headers remain under `decomp/`. Update this snapshot after future separately verified matching-C promotions.
+
 ## 22 November 2026 — Japanese JP55 full original-ROM matching-C G2 PASS; 55 new C functions
 
 - **PASSED_G2_LOCAL:** 55 previously original-ASM-owned Japanese rev-0 functions, 3,376 original instruction bytes, promoted in an all-at-once stage across 33 ASM owners. One research misclassification `func_801E818C_5A415C` was already accepted in JP1686 and was correctly excluded. **2,314 → 2,369 accepted Japanese matching C; 123,236 → 126,612 original C bytes; 5,062 → 5,007 Japanese ASM.** USA unchanged/not rebuilt.

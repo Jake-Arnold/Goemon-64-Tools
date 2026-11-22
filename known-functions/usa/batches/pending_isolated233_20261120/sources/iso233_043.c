@@ -1,0 +1,2 @@
+typedef signed char s8;typedef unsigned char u8;typedef short s16;typedef unsigned short u16;typedef int s32;typedef unsigned int u32;typedef float f32;
+typedef struct Node { struct Node *next; struct Node *prev; } Node;void alLink(Node *arg0,Node*arg1){Node *a=arg0,*b=arg1;a->next=b->next;a->prev=b;if(b->next)b->next->prev=a;b->next=a;}

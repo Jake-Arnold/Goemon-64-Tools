@@ -1,0 +1,2 @@
+typedef signed char s8;typedef unsigned char u8;typedef short s16;typedef unsigned short u16;typedef int s32;typedef unsigned int u32;typedef float f32;
+extern u8 D_801C7743; extern s32 D_8015C5F4; void func_8022212C_5DD5FC(void){D_8015C5F4=D_801C7743;}

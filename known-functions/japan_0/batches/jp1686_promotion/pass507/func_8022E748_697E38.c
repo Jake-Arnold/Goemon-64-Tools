@@ -1,0 +1,1 @@
+void func_8022E748_697E38(void *p,float *a,float *b,float *c){ *(float*)((char*)a+0) = *(float*)((char*)p+148); *(float*)((char*)b+0) = *(float*)((char*)p+160); *(float*)((char*)c+0) = *(float*)((char*)p+172); }

@@ -1,0 +1,1 @@
+void func_801EE2BC_5AA1CC(void*a,void*b){if(a && b){*(unsigned short*)((char*)b+20)=*(unsigned short*)((char*)a+20);*(unsigned short*)((char*)b+22)=*(unsigned short*)((char*)a+22);*(unsigned short*)((char*)b+24)=*(unsigned short*)((char*)a+24);}}

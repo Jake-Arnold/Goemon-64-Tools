@@ -1,0 +1,1 @@
+typedef unsigned short u16; typedef struct {char pad[0x5C];float a,b,c;u16 d;} O;typedef struct {char pad[0x8];float a,b,c;char x[2];u16 d;} N;void func_802191DC_6A08DC (O *o,N*n){n->d=o->d;n->a=o->a;n->b=o->b;n->c=o->c;}

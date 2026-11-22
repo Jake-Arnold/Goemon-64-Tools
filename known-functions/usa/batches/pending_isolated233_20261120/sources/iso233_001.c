@@ -1,0 +1,2 @@
+typedef signed char s8;typedef unsigned char u8;typedef short s16;typedef unsigned short u16;typedef int s32;typedef unsigned int u32;typedef float f32;typedef double f64;
+typedef struct{u32 w0,w1;} Gfx; extern Gfx *D_8015C5CC_15D1CC;extern u8 D_8006E030_6EC30[];void func_80001614_2214(void){Gfx *p=D_8015C5CC_15D1CC++; p->w0=0x06000000; p->w1=(u32)D_8006E030_6EC30;}

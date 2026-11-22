@@ -1,0 +1,2 @@
+typedef signed char s8;typedef unsigned char u8;typedef short s16;typedef unsigned short u16;typedef int s32;typedef unsigned int u32;typedef float f32;
+s32 strlen(const u8*s){const u8*ptr=s;while(*ptr){ptr++;}return ptr-s;}

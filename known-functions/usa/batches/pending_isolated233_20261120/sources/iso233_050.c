@@ -1,0 +1,2 @@
+typedef unsigned char u8;typedef short s16;typedef unsigned short u16;typedef int s32;typedef unsigned int u32;
+typedef struct Seq {s16 pad;s16 count;u32 addr;} Seq;void alSeqFileNew(Seq*seq,s32 off){s32 i=0;while(i<seq->count){seq[i].addr+=off;i++;}}

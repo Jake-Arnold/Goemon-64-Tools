@@ -1,0 +1,2 @@
+typedef signed char s8;typedef unsigned char u8;typedef short s16;typedef unsigned short u16;typedef int s32;typedef unsigned int u32;typedef float f32;typedef double f64;
+extern u8 *D_8020EED0_63A2B0;void func_801EA060_615440(void){u8 *p=D_8020EED0_63A2B0+0x140;*(s32*)(p+0x34)=0;}
