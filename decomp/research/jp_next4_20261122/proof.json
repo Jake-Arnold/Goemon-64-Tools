@@ -1,0 +1,150 @@
+{
+  "format": "goemon-japan-new-four-research-only-v1",
+  "region": "japan_0",
+  "status": "PASSED_ISOLATED_NATIVE / RESEARCH_ONLY",
+  "rom_bytes": 33554432,
+  "original_rom_sha1": "6f8745fecc3a5e7d4918c7a73353eb0726116ded",
+  "compiler": "SGI IDO 5.3 -O2 -mips2 -G 0",
+  "new_candidate_functions": 4,
+  "native_exact_original_bytes": 144,
+  "isolated_symbolic_relocations": 15,
+  "records": [
+    {
+      "name": "func_80008500_9100",
+      "expanded_rom_offset": "0x9100",
+      "original_guest_vma": "0x80008500",
+      "original_extent_bytes": 64,
+      "original_instruction_sha256": "9e0c670ff36bc122ff1c0dd0eba9681f12c270433e272deb0558540885bbccdf",
+      "original_C_source_sha256": "af95ea6b7c1fb9997dcee38641e1e384a32d046dd364756896fa20c3e72af3b4",
+      "native_original_address_exact_bytes": 64,
+      "trailing_zero_text_alignment_bytes": 0,
+      "symbolic_relocations": [
+        {
+          "offset": 0,
+          "type": "R_MIPS_HI16",
+          "symbol": "g_system_ptr"
+        },
+        {
+          "offset": 4,
+          "type": "R_MIPS_LO16",
+          "symbol": "g_system_ptr"
+        },
+        {
+          "offset": 12,
+          "type": "R_MIPS_HI16",
+          "symbol": "D_8005B960_5C560"
+        },
+        {
+          "offset": 16,
+          "type": "R_MIPS_HI16",
+          "symbol": "D_C5F78"
+        },
+        {
+          "offset": 24,
+          "type": "R_MIPS_LO16",
+          "symbol": "D_8005B960_5C560"
+        },
+        {
+          "offset": 28,
+          "type": "R_MIPS_HI16",
+          "symbol": "D_800708B8_714B8"
+        },
+        {
+          "offset": 36,
+          "type": "R_MIPS_LO16",
+          "symbol": "D_C5F78"
+        },
+        {
+          "offset": 40,
+          "type": "R_MIPS_26",
+          "symbol": "func_800058D0_64D0"
+        },
+        {
+          "offset": 44,
+          "type": "R_MIPS_LO16",
+          "symbol": "D_800708B8_714B8"
+        }
+      ],
+      "native_instruction_match": true,
+      "original_symbolic_reloc_match": true
+    },
+    {
+      "name": "func_80008540_9140",
+      "expanded_rom_offset": "0x9140",
+      "original_guest_vma": "0x80008540",
+      "original_extent_bytes": 24,
+      "original_instruction_sha256": "03409f8639d035330cef855a3eec9ed79905a659958bf53e621ae53d2f52048c",
+      "original_C_source_sha256": "f4be3becc5fd65c714587cbedb31b674f0f9a44e1e14f1af5de4d9ab8d59e3b6",
+      "native_original_address_exact_bytes": 24,
+      "trailing_zero_text_alignment_bytes": 8,
+      "symbolic_relocations": [
+        {
+          "offset": 0,
+          "type": "R_MIPS_HI16",
+          "symbol": "g_system_ptr"
+        },
+        {
+          "offset": 4,
+          "type": "R_MIPS_LO16",
+          "symbol": "g_system_ptr"
+        },
+        {
+          "offset": 8,
+          "type": "R_MIPS_HI16",
+          "symbol": "D_C5F7C"
+        },
+        {
+          "offset": 20,
+          "type": "R_MIPS_LO16",
+          "symbol": "D_C5F7C"
+        }
+      ],
+      "native_instruction_match": true,
+      "original_symbolic_reloc_match": true
+    },
+    {
+      "name": "func_80008558_9158",
+      "expanded_rom_offset": "0x9158",
+      "original_guest_vma": "0x80008558",
+      "original_extent_bytes": 28,
+      "original_instruction_sha256": "93b349c87d8d8ed762ec8bce048afd0b97fcc22e37e8dfa0db16bc97050d9e0c",
+      "original_C_source_sha256": "0f605b18cb0c540671f592191aa0b21d734bdcfdb3a0340a4b382156cd0b7bd4",
+      "native_original_address_exact_bytes": 28,
+      "trailing_zero_text_alignment_bytes": 4,
+      "symbolic_relocations": [],
+      "native_instruction_match": true,
+      "original_symbolic_reloc_match": true
+    },
+    {
+      "name": "func_80010118_10D18",
+      "expanded_rom_offset": "0x10D18",
+      "original_guest_vma": "0x80010118",
+      "original_extent_bytes": 28,
+      "original_instruction_sha256": "516f1af9c568a09fbd7fd795ebb99b64735eb0b446534fbf83874b92ef8a65aa",
+      "original_C_source_sha256": "6f031d085ed47b2b7927cc71dda785cf6048ed4d935669fbcbfeb2c32d2a4a54",
+      "native_original_address_exact_bytes": 28,
+      "trailing_zero_text_alignment_bytes": 4,
+      "symbolic_relocations": [
+        {
+          "offset": 12,
+          "type": "R_MIPS_HI16",
+          "symbol": "D_8016D6DA_16E2DA"
+        },
+        {
+          "offset": 24,
+          "type": "R_MIPS_LO16",
+          "symbol": "D_8016D6DA_16E2DA"
+        }
+      ],
+      "native_instruction_match": true,
+      "original_symbolic_reloc_match": true
+    }
+  ],
+  "complete_japan_32MiB_rom": "NOT_RUN",
+  "complete_japan_retail_16MiB_rom": "NOT_RUN",
+  "all_7376_original_ELF_function_identities": "NOT_RUN",
+  "all_80747_original_semantic_relocations": "NOT_RUN",
+  "strict_C_ASM_inventory": "NOT_RUN",
+  "full_local_CI": "NOT_RUN",
+  "newly_promoted_C_functions": 0
+}
