@@ -1,0 +1,57 @@
+{
+  "format": "goemon-file22-verified-gbi-macro-20261122-v1",
+  "status": "RESEARCH_ONLY_FAILED_NATIVE",
+  "original_usa_decompressed_rom_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+  "original_function": "func_801CC0C4_69ECE4",
+  "original_function_size": 1808,
+  "original_function_sha256": "eaccca6679247d56785806a92a2efe4c1adb73368f723b76d4b6aab5040ef3a9",
+  "original_IDO": "5.3 -O2 -mips2",
+  "original_clean_rom_rebuild": "PASS_33554432_BYTE_EXACT",
+  "gfx_macros": {
+    "mode0": "gDPLoadTextureBlock RGBA16",
+    "mode1": "gDPLoadTextureBlock CI8",
+    "mode2": "gDPLoadTextureBlock_4b CI4"
+  },
+  "wrong_CI4_generic_emitted_word": "0x070FF800",
+  "original_CI4_expected_word": "0x070FF400",
+  "strongest_diagnostic": {
+    "native_code_bytes": 1808,
+    "original_bytes": 1808,
+    "stack_frame_bytes": 320,
+    "original_stack_frame_bytes": 320,
+    "F300_LUI": 3,
+    "E700_LUI": 3,
+    "matching_initial_instructions": 16,
+    "matching_positional_instructions": 20,
+    "original_instructions": 452,
+    "required_relocations": 2,
+    "standard_graphics_cases_passed": 20,
+    "standard_graphics_cases_total": 20,
+    "standard_graphics_commands_equal": 5304,
+    "division_guard_cases_passed": 4,
+    "nonaligned_cases_passed": 178,
+    "nonaligned_cases_excluded_unmapped": 2,
+    "native_exact": false,
+    "artificial_stack_padding": true
+  },
+  "all_three_real_macros": {
+    "native_bytes": 1840,
+    "frame_bytes": 400,
+    "standard_gfx_passed": 20,
+    "standard_gfx_total": 20
+  },
+  "intentional_wrong_4b": {
+    "native_bytes": 1808,
+    "frame_bytes": 144,
+    "standard_gfx_passed": 15,
+    "standard_gfx_total": 20,
+    "gfx_command_differences": 48
+  },
+  "source_only_artifact": "goemon-usa-file22-gbi-macro-native-research-20261122.zip",
+  "source_only_sha256": "739f14b705ed8d4f09acb028d5fd210613e7bdd560d6e96849001d54bc8b0f86",
+  "fresh_extraction_standard_replay": "PASS",
+  "extended_all_candidates_complete": false,
+  "accepted_USA_change": 0,
+  "full_candidate_rom_G2": "NOT_RUN",
+  "full_local_ci": "NOT_RUN"
+}
