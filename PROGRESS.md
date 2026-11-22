@@ -4,7 +4,7 @@
 
 - **Change:** Ported the Windows/Linux toolkit setup section added by the latest decomp README commit onto the current `main` README, preserving its newer v0.11.79 release notes. No decomp implementation or research files were copied.
 - **Reason:** Make the canonical `main` launcher and the separation between toolkit and decomp branches clear to new users.
-- **Validation:** Reviewed the copied instructions and confirmed the referenced `Run.bat`, `Run-Linux.sh`, and `docs/LINUX_TOOLKIT.md` exist on `main`; `git diff --check` is the publication check. No runtime tests are applicable to this README-only change.
+- **Validation:** Confirmed the referenced `Run.bat`, `Run-Linux.sh`, and `docs/LINUX_TOOLKIT.md` exist on `main`; `git diff --check` passes. GitHub CI caught that the new section initially displaced the required v0.11.79 first-line heading, so it was moved below the current release summary. CI reruns on this corrected commit; no runtime tests were run locally for this README-only change.
 - **Limitations:** The Windows/Linux setup steps were documented but not executed in this change.
 - **Next:** Review this focused README update and its CI before merging to `main`.
 
