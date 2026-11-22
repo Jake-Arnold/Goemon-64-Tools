@@ -35,6 +35,7 @@ _current_load_manifest = load_manifest
 def load_manifest(*args, **kwargs):
     manifest = _current_load_manifest(*args, **kwargs)
     manifest.pop('overlay_reconcile108_stage', None)
+    manifest.pop('overlay_crossregion7_stage', None)
     return manifest
 
 
@@ -1273,6 +1274,10 @@ class DecompVerificationTests(unittest.TestCase):
         if manifest.get('overlay_reconcile108_stage'):
             from decomp import usa_canonical_reconcile108 as reconcile
             sources.update(f['source_path'] for f in reconcile.fixture()['functions'])
+        if manifest.get('overlay_crossregion7_stage'):
+            from decomp import usa_crossregion7 as cross7
+            sources.update('research/usa_crossregion7_20261122/sources/'+f['source']+'.c'
+                           for f in cross7.fixture()['functions'])
         self.assertEqual(set(result['sources_sha256_lf']),sources)
         for name in sources:
             patches=[p for p in manifest.get('existing_source_patches', []) if p['source']==name]

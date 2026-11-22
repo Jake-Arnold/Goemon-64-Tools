@@ -36,6 +36,7 @@ class TestUSA49ResearchSourceGuards(unittest.TestCase):
         # guarded separately by promotion_integrity.
         manifest=verify.load_manifest(verify.ROOT/'manifest.json')
         manifest.pop('overlay_reconcile108_stage',None)
+        manifest.pop('overlay_crossregion7_stage', None)  # Historical stage projection
         existing={x['name'] for x in verify.claimed_functions(manifest)}
         names={x['name'] for x in mini.fixture()['functions']+cross.fixture()['functions']}
         self.assertEqual(names&existing,{'func_800108BC_114BC'})

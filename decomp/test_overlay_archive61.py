@@ -16,6 +16,7 @@ def load_manifest(*args, **kwargs):
     # The 233-C batch is newer than this frozen historical checkpoint.
     manifest.pop('overlay_isolated233_stage', None)
     manifest.pop('overlay_reconcile108_stage', None)  # Preserve this historical acceptance checkpoint
+    manifest.pop('overlay_crossregion7_stage', None)  # Historical stage projection
     return manifest
 
 

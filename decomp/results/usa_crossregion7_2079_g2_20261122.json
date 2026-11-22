@@ -1,0 +1,180 @@
+{
+  "format": "goemon-usa-crossregion7-2079-native-g2-v1",
+  "status": "PASSED_G2",
+  "acceptance_tier": "PASSED_G2_LOCAL",
+  "region": "USA",
+  "branch": "chatgptweb/decomp",
+  "branch_base_commit": "917d8bad5acd7b005db8a01eca1aedd2caeb6465",
+  "upstream_commit": "7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee",
+  "prior_c": 2072,
+  "prior_c_instruction_bytes": 92492,
+  "added_c": 7,
+  "added_instruction_bytes": 524,
+  "after_c": 2079,
+  "after_bytes": 93016,
+  "remaining_asm": 5284,
+  "original_rom_bytes": 33554432,
+  "original_rom_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+  "full_original_rom_match": true,
+  "original_elf_functions": 7376,
+  "semantic_relocations_unchanged": true,
+  "no_added_positive_elf_aliases": true,
+  "original_elf_function_identity_sha256": "01f41037ac83f6e18e80c83489a18b870e4fef907c67d20a345871c7c34fe787",
+  "previous_canonical_report_sha256": "586274b15497a8014029497dfc3df202968e2e811b975284f31eefc2d6e0b745",
+  "previous_canonical_inventory_sha256": "84fe3a1158e7e667b476b51eb78b22b6e7e8b28d57ef0586fd6d6c556f932fbe",
+  "combined_report_sha256": "b836cb3a137fcabc71528b24bec7c08e47780eef060c0fbb2585140fbbbbe926",
+  "inventory_sha256": "956dc75b625718a005721ab15142424d6f77571af93bcb243e42cad235185b0f",
+  "source_fixture_sha256": "8ea0be51e996f1a907d30a72e46608c6b3e42d9c5cc8f2fc45752efeb8323a68",
+  "production_adapter_sha256": "13b1751002206c4d4ee9629c632b08ddd0bed11b64fa1676d8518bb93a988be9",
+  "original_native_build_stage": {
+    "status": "PASS",
+    "promoted_functions": 7,
+    "promoted_bytes": 524,
+    "accepted_after": 2079,
+    "accepted_instruction_bytes": 93016,
+    "retained_asm": 5284,
+    "full_rom_exact": true,
+    "full_rom_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+    "original_elf_functions": 7376,
+    "semantic_relocations_unchanged": true,
+    "retained_asm_fragments": 9
+  },
+  "new_functions": [
+    {
+      "jp_name": null,
+      "jp_offset": 224356,
+      "name": "func_800363F4_36FF4",
+      "original_asm": null,
+      "original_code_sha256": "d8b9f18b40ac8a6a952ac73eb526ca5b4a074ef18e61a87adaac2a30375a9d64",
+      "rom_offset": 225268,
+      "size": 84,
+      "source": "xreg7_000",
+      "source_relocations": [],
+      "source_sha256": "3d057b66fa3bae1114911ca061cca7dc34c92f5352f3ead8f60c4846384a34f5",
+      "vma": 2147705844
+    },
+    {
+      "jp_name": null,
+      "jp_offset": 6138468,
+      "name": "func_8021A764_5D5C34",
+      "original_asm": null,
+      "original_code_sha256": "406439eb9e084eb323e008dee8139e2aecb3b9503717fb5f84c26c8d7a098369",
+      "rom_offset": 6118452,
+      "size": 132,
+      "source": "xreg7_001",
+      "source_relocations": [],
+      "source_sha256": "273a32a2a14e16ca0c83773ff43f1619eb5d84822f1acd50438a8bce71cda73f",
+      "vma": 2149689188
+    },
+    {
+      "jp_name": null,
+      "jp_offset": 6571836,
+      "name": "func_801D0B1C_63F96C",
+      "original_asm": null,
+      "original_code_sha256": "0f73182fb619ca39337d0d0f026040d55afd54e25e938ddc5fdad7eff07dfac0",
+      "rom_offset": 6551916,
+      "size": 100,
+      "source": "xreg7_002",
+      "source_relocations": [],
+      "source_sha256": "7b3d8b4823af81dd45b45eefcf21ac273b75e3196972e90389bafe60c5585172",
+      "vma": 2149387036
+    },
+    {
+      "jp_name": "func_80034FB4_35BB4",
+      "jp_offset": 220084,
+      "name": "func_80035344_35F44",
+      "original_asm": "35280.s",
+      "original_code_sha256": "0629407f89ef38bd1c7e76043a0355aaaebe90411b0c6573f0786d249924e7aa",
+      "rom_offset": 220996,
+      "size": 64,
+      "source": "xreg7_003",
+      "source_relocations": [
+        {
+          "site": 0,
+          "symbol": "D_8016DAB4_16E6B4",
+          "type": "R_MIPS_HI16"
+        },
+        {
+          "site": 4,
+          "symbol": "D_8016DAB4_16E6B4",
+          "type": "R_MIPS_LO16"
+        }
+      ],
+      "source_sha256": "206b2e173db387455fc4ad2ec9d7c538ee1e09f53deda39a7dabdb295e7ff087",
+      "vma": 2147701572
+    },
+    {
+      "jp_name": "func_801E2808_59E7D8",
+      "jp_offset": 5892056,
+      "name": "func_801DD458_599368",
+      "original_asm": "587370.s",
+      "original_code_sha256": "31a0c5ecd5f9f4a0ac0d595b23a6aee40355862ff4ccb934ac5d403beda46507",
+      "rom_offset": 5870440,
+      "size": 64,
+      "source": "xreg7_004",
+      "source_relocations": [
+        {
+          "site": 8,
+          "symbol": "func_801E307C_59EF8C",
+          "type": "R_MIPS_26"
+        }
+      ],
+      "source_sha256": "98b14c9f6ea01116d643f809bd2d9b03195934f24fc757329e8c2a34d0c91ca6",
+      "vma": 2149438552
+    },
+    {
+      "jp_name": "func_801ED718_5A96E8",
+      "jp_offset": 5936872,
+      "name": "func_801E864C_5A455C",
+      "original_asm": "587370.s",
+      "original_code_sha256": "6aa2aba3306b5a7c7cd6d1ba67808429e152ca112da73ce92d30c8d2acb77cb2",
+      "rom_offset": 5915996,
+      "size": 44,
+      "source": "xreg7_005",
+      "source_relocations": [
+        {
+          "site": 20,
+          "symbol": "func_801E8560_5A4470",
+          "type": "R_MIPS_26"
+        }
+      ],
+      "source_sha256": "14e5c9b72f25ea5c40d96a258e810218e38dca1fd1b1edb759dd165c3e89eda3",
+      "vma": 2149484108
+    },
+    {
+      "jp_name": "func_801FF30C_5BB2DC",
+      "jp_offset": 6009564,
+      "name": "func_801FA3FC_5B630C",
+      "original_asm": "587370.s",
+      "original_code_sha256": "cfd36b5e5692fe521ccfd803e7c5852888cf6cd9a9150bf91e04c520b54449e0",
+      "rom_offset": 5989132,
+      "size": 36,
+      "source": "xreg7_006",
+      "source_relocations": [
+        {
+          "site": 0,
+          "symbol": "D_802099EC_5C58FC",
+          "type": "R_MIPS_HI16"
+        },
+        {
+          "site": 4,
+          "symbol": "D_802099EC_5C58FC",
+          "type": "R_MIPS_LO16"
+        }
+      ],
+      "source_sha256": "69071a9914526ad7b568f5475fe3d0861b0e9f6a621ab8d8c488f874087c554e",
+      "vma": 2149557244
+    }
+  ],
+  "full_local_ci": "PASS",
+  "notes": "Fresh original upstream and retail-USA baseline ROM; original IDO5.3 and candidate with all previously accepted 2072 C; all original USA 33,554,432 bytes identical, 7,376 ELF identity entries and 82,103 original relocation tuples preserved. 395 decomp tests, 350 verifier/ledger tests, seven comparator tests, configured host sanitizer suites and production promotion-integrity pass. No emulator gameplay. Remote publication requires independent canonical re-fetch.",
+  "full_local_ci_evidence": {
+    "decomp_tests": 395,
+    "decomp_skipped": 3,
+    "verifier_ledger_tests": 350,
+    "comparator_tests": 7,
+    "source_sanitizer_suites": "PASS (all configured suites, ASan/UBSan host with N64-to-host ABI caveat recorded)",
+    "canonical_promotion_integrity": "PASS, 2079/2079 93016 bytes 5284 ASM"
+  },
+  "publication_status": "remote publication must be independently verified; original native G2 proof is independent"
+}

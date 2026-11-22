@@ -79,10 +79,23 @@ def audit(root:Path=ROOT)->dict:
             failures.append('Accepted reconciliation stage lacks published stage-level full-ROM/ELF proof')
         else:
             stage=json.loads(f.read_text())
-            if (stage.get('status')!='PASSED_G2_LOCAL' or stage.get('accepted_after')!=count
+            if (stage.get('status')!='PASSED_G2_LOCAL' or stage.get('accepted_after')!=2072
                     or stage.get('rom_sha1')!=ORIGINAL_SHA1 or
                     stage.get('new_C')!=108 or stage.get('semantic_relocations')!=82103):
                 failures.append('Reconcile108 stage proof mismatch')
+    if manifest.get('overlay_crossregion7_stage'):
+        from . import usa_crossregion7 as cross7
+        evidence=root/'results/usa_crossregion7_2079_g2_20261122.json'
+        if not evidence.exists():
+            failures.append('Crossregion7 accepted without dated combined original-ROM/ELF proof')
+        else:
+            doc=json.loads(evidence.read_text())
+            if (doc.get('status')!='PASSED_G2' or doc.get('after_c')!=2079 or
+                    doc.get('added_c')!=7 or doc.get('after_bytes')!=93016 or
+                    doc.get('original_rom_sha1')!=ORIGINAL_SHA1 or
+                    doc.get('original_elf_functions')!=7376 or
+                    doc.get('semantic_relocations_unchanged') is not True):
+                failures.append('Crossregion7 proof is not a reviewed full-ROM acceptance')
     return {'status':'PASS' if not failures else 'FAIL',
             'accepted_C':count,'accepted_original_bytes':code_bytes,
             'remaining_assembly':7376-count-13,'errors':failures,

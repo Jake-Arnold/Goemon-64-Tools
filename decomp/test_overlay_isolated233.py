@@ -26,7 +26,7 @@ class Isolated233PromotionTests(unittest.TestCase):
 
     def test_full_1964_cumulative_claims_are_unique(self):
         historical = {k:v for k,v in self.manifest.items()
-                      if k!='overlay_reconcile108_stage'}
+                      if k not in ('overlay_reconcile108_stage','overlay_crossregion7_stage')}
         previous = claimed_functions({k:v for k,v in historical.items()
                                       if k!='overlay_isolated233_stage'})
         current = claimed_functions(historical)

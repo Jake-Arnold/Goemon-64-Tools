@@ -22,6 +22,7 @@ class File11143PreflightTests(unittest.TestCase):
         # 143-C file_11 stage, the two Impact stages and the 36-byte dialogue C.
         cls.manifest = copy.deepcopy(cls.manifest)
         cls.manifest.pop('overlay_reconcile108_stage', None)  # Historical 210-C stage
+        cls.manifest.pop('overlay_crossregion7_stage', None)  # Preserve historical C stage
         # Historical 210-C projection omits the separately reviewed 47-C stage.
         cls.manifest.pop('overlay_crossregion47_stage', None)
         cls.manifest.pop('overlay_native87_stage', None)

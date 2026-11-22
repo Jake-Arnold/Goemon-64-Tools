@@ -1600,5 +1600,8 @@
   },
   "overlay_reconcile108_stage": {
     "format": "goemon-usa-canonical-reconcile108-v1"
+  },
+  "overlay_crossregion7_stage": {
+    "format": "goemon-usa-crossregion7-post-2072-v1"
   }
 }

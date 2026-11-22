@@ -14,9 +14,9 @@ class CanonicalPromotionIntegrityTests(unittest.TestCase):
     def test_exact_final_c_claims_and_frozen_original_addresses(self):
         manifest=load_manifest(integrity.ROOT/'manifest.json')
         claims=claimed_functions(manifest)
-        self.assertEqual(len(claims),2072)
-        self.assertEqual(sum(f['size'] for f in claims),92492)
-        self.assertEqual(len({f['name'] for f in claims}),2072)
+        self.assertEqual(len(claims),2079)
+        self.assertEqual(sum(f['size'] for f in claims),93016)
+        self.assertEqual(len({f['name'] for f in claims}),2079)
         self.assertEqual(len(reconcile.fixture()['functions']),108)
         self.assertEqual(reconcile.fixture()['source_ownership_exception'][0]['name'],
                          'func_800108BC_114BC')
@@ -28,7 +28,8 @@ class CanonicalPromotionIntegrityTests(unittest.TestCase):
         canonical=integrity.ROOT
         for path,override in [('manifest.json',manifest),('results/combined.json',proof),
                               ('results/inventory.json',inventory),
-                              ('results/usa_canonical_reconcile108_2072_g2_20261122.json',None)]:
+                              ('results/usa_canonical_reconcile108_2072_g2_20261122.json',None),
+                              ('results/usa_crossregion7_2079_g2_20261122.json',None)]:
             dst=root/path
             src=canonical/path
             if not src.is_file():
@@ -40,10 +41,11 @@ class CanonicalPromotionIntegrityTests(unittest.TestCase):
         audit=integrity.audit()
         self.assertEqual(audit['status'],'PASS',audit['errors'])
         self.assertEqual((audit['accepted_C'],audit['accepted_original_bytes']),
-                         (2072,92492))
+                         (2079,93016))
 
     def test_staged_only_manifest_from_previous_commit_fails_closed(self):
         manifest=json.loads((integrity.ROOT/'manifest.json').read_text())
+        manifest.pop('overlay_crossregion7_stage')
         manifest.pop('overlay_reconcile108_stage')
         folder,root=self._temporary(manifest=manifest)
         with folder:

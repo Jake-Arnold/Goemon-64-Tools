@@ -1,12 +1,12 @@
 {
   "format": "goemon-matching-build-result-v1",
-  "started_utc": "2026-11-22T22:00:38.832594+00:00",
+  "started_utc": "2026-11-22T22:54:11.691589+00:00",
   "status": "matched",
   "upstream_commit": "7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee",
   "retail_sha1": "df8083a54296b8c151917c5333e1c85f014a2a66",
-  "verifier_source_sha256_lf": "3543285a1892d013f1754d631fbd2afa8bad867b8ffc7b6fc8059554d6735e91",
+  "verifier_source_sha256_lf": "3d048064e2161377ee3b27834fc034925785f73c1a80c26582486728cbd878f5",
   "tool_versions": {
-    "uv": "uv 0.10.0",
+    "uv": "goemon-offline-uv-bridge/1; pinned user-owned uv.lock dependencies",
     "gcc": "gcc (Debian 14.2.0-19) 14.2.0",
     "assembler": "GNU assembler (GNU Binutils for Ubuntu) 2.45.90.20260125"
   },
@@ -2974,9 +2974,9 @@
     "expected_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
     "candidate_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
     "rom_size": 33554432,
-    "matched_functions": 2072,
-    "claimed_functions": 2072,
-    "matched_function_bytes": 92492,
+    "matched_functions": 2079,
+    "claimed_functions": 2079,
+    "matched_function_bytes": 93016,
     "functions": [
       {
         "name": "func_80023DF0_249F0",
@@ -22017,6 +22017,69 @@
         "matched": true,
         "expected_sha256": "026be357f3e29b77f0b3f5ececa76d2b1c81a385d091c04a624947ff21cc29da",
         "candidate_sha256": "026be357f3e29b77f0b3f5ececa76d2b1c81a385d091c04a624947ff21cc29da"
+      },
+      {
+        "name": "func_800363F4_36FF4",
+        "size": 84,
+        "guest_address": "0x800363F4",
+        "rom_offset": "0x36FF4",
+        "matched": true,
+        "expected_sha256": "d8b9f18b40ac8a6a952ac73eb526ca5b4a074ef18e61a87adaac2a30375a9d64",
+        "candidate_sha256": "d8b9f18b40ac8a6a952ac73eb526ca5b4a074ef18e61a87adaac2a30375a9d64"
+      },
+      {
+        "name": "func_8021A764_5D5C34",
+        "size": 132,
+        "guest_address": "0x8021A764",
+        "rom_offset": "0x5D5C34",
+        "matched": true,
+        "expected_sha256": "406439eb9e084eb323e008dee8139e2aecb3b9503717fb5f84c26c8d7a098369",
+        "candidate_sha256": "406439eb9e084eb323e008dee8139e2aecb3b9503717fb5f84c26c8d7a098369"
+      },
+      {
+        "name": "func_801D0B1C_63F96C",
+        "size": 100,
+        "guest_address": "0x801D0B1C",
+        "rom_offset": "0x63F96C",
+        "matched": true,
+        "expected_sha256": "0f73182fb619ca39337d0d0f026040d55afd54e25e938ddc5fdad7eff07dfac0",
+        "candidate_sha256": "0f73182fb619ca39337d0d0f026040d55afd54e25e938ddc5fdad7eff07dfac0"
+      },
+      {
+        "name": "func_80035344_35F44",
+        "size": 64,
+        "guest_address": "0x80035344",
+        "rom_offset": "0x35F44",
+        "matched": true,
+        "expected_sha256": "0629407f89ef38bd1c7e76043a0355aaaebe90411b0c6573f0786d249924e7aa",
+        "candidate_sha256": "0629407f89ef38bd1c7e76043a0355aaaebe90411b0c6573f0786d249924e7aa"
+      },
+      {
+        "name": "func_801DD458_599368",
+        "size": 64,
+        "guest_address": "0x801DD458",
+        "rom_offset": "0x599368",
+        "matched": true,
+        "expected_sha256": "31a0c5ecd5f9f4a0ac0d595b23a6aee40355862ff4ccb934ac5d403beda46507",
+        "candidate_sha256": "31a0c5ecd5f9f4a0ac0d595b23a6aee40355862ff4ccb934ac5d403beda46507"
+      },
+      {
+        "name": "func_801E864C_5A455C",
+        "size": 44,
+        "guest_address": "0x801E864C",
+        "rom_offset": "0x5A455C",
+        "matched": true,
+        "expected_sha256": "6aa2aba3306b5a7c7cd6d1ba67808429e152ca112da73ce92d30c8d2acb77cb2",
+        "candidate_sha256": "6aa2aba3306b5a7c7cd6d1ba67808429e152ca112da73ce92d30c8d2acb77cb2"
+      },
+      {
+        "name": "func_801FA3FC_5B630C",
+        "size": 36,
+        "guest_address": "0x801FA3FC",
+        "rom_offset": "0x5B630C",
+        "matched": true,
+        "expected_sha256": "cfd36b5e5692fe521ccfd803e7c5852888cf6cd9a9150bf91e04c520b54449e0",
+        "candidate_sha256": "cfd36b5e5692fe521ccfd803e7c5852888cf6cd9a9150bf91e04c520b54449e0"
       }
     ]
   },
@@ -23486,7 +23549,14 @@
     "research/usa_crossregion48_g2_20261122/sources/cross48_045.c": "b73d1ca45b215b72e5c6fdd66202677eae1794d8397b2323b4cfce9ec9e88995",
     "research/usa_crossregion51_recovered19_20261122/sources/donor19_000.c": "15882184d97914a34e6ec246e733fd8def5c130ca461377a0c8a5b9e1b4048eb",
     "research/usa_crossregion48_g2_20261122/sources/cross48_046.c": "7524cbaccbf556dbf9d4955e6839ec9a8051524e979c22a24a72cd71827fbbd5",
-    "research/usa_crossregion48_g2_20261122/sources/cross48_047.c": "bf1e9f4356fdfdff621354927a55ebd9efca483524b24a7d6762461febfba242"
+    "research/usa_crossregion48_g2_20261122/sources/cross48_047.c": "bf1e9f4356fdfdff621354927a55ebd9efca483524b24a7d6762461febfba242",
+    "research/usa_crossregion7_20261122/sources/xreg7_000.c": "3d057b66fa3bae1114911ca061cca7dc34c92f5352f3ead8f60c4846384a34f5",
+    "research/usa_crossregion7_20261122/sources/xreg7_001.c": "273a32a2a14e16ca0c83773ff43f1619eb5d84822f1acd50438a8bce71cda73f",
+    "research/usa_crossregion7_20261122/sources/xreg7_002.c": "7b3d8b4823af81dd45b45eefcf21ac273b75e3196972e90389bafe60c5585172",
+    "research/usa_crossregion7_20261122/sources/xreg7_003.c": "206b2e173db387455fc4ad2ec9d7c538ee1e09f53deda39a7dabdb295e7ff087",
+    "research/usa_crossregion7_20261122/sources/xreg7_004.c": "98b14c9f6ea01116d643f809bd2d9b03195934f24fc757329e8c2a34d0c91ca6",
+    "research/usa_crossregion7_20261122/sources/xreg7_005.c": "14e5c9b72f25ea5c40d96a258e810218e38dca1fd1b1edb759dd165c3e89eda3",
+    "research/usa_crossregion7_20261122/sources/xreg7_006.c": "69071a9914526ad7b568f5475fe3d0861b0e9f6a621ab8d8c488f874087c554e"
   },
   "overlay_file43_stage": {
     "ownership": {
@@ -59572,5 +59642,143 @@
       "function_entry_identity_sha256": "01f41037ac83f6e18e80c83489a18b870e4fef907c67d20a345871c7c34fe787"
     }
   },
-  "ended_utc": "2026-11-22T22:02:57.612647+00:00"
+  "overlay_crossregion7_source_plan": {
+    "functions": 7,
+    "original_bytes": 524,
+    "retained_ASM_fragments": 9
+  },
+  "overlay_crossregion7_object_layout": {
+    "functions": 7,
+    "embedded": 1,
+    "instruction_bytes": 524,
+    "C_objects": [
+      {
+        "source": "xreg7_001",
+        "relocatable": false,
+        "original_text_bytes": 132,
+        "compiler_section_bytes": 144,
+        "zero_padding_removed": 12,
+        "trimmed_object_sha256": "bb1f9164437b507203b9c9ad45079843b9060673b4852d562ee6c1f723b21a4b"
+      },
+      {
+        "source": "xreg7_002",
+        "relocatable": false,
+        "original_text_bytes": 100,
+        "compiler_section_bytes": 112,
+        "zero_padding_removed": 12,
+        "trimmed_object_sha256": "c35e981d5c8df4eb59e07c56281ec23e4edf22e036c5313c14b45948421f36c3"
+      },
+      {
+        "source": "xreg7_003",
+        "relocatable": true,
+        "original_text_bytes": 64,
+        "compiler_section_bytes": 64,
+        "zero_padding_removed": 0,
+        "trimmed_object_sha256": "b4e6b8ff8694354f00297300a897adcb4edd899a133e0bf8f802744f3e61c9a3"
+      },
+      {
+        "source": "xreg7_004",
+        "relocatable": true,
+        "original_text_bytes": 64,
+        "compiler_section_bytes": 64,
+        "zero_padding_removed": 0,
+        "trimmed_object_sha256": "be199824493be2b24f143ac142e6e1b0b7d7b9bb681a05d319372e8ff7ae8eef"
+      },
+      {
+        "source": "xreg7_005",
+        "relocatable": true,
+        "original_text_bytes": 44,
+        "compiler_section_bytes": 48,
+        "zero_padding_removed": 4,
+        "trimmed_object_sha256": "3d7781613daa44b07c9d8287a82311f1696e7043e0e15b747d61c68f66d94a65"
+      },
+      {
+        "source": "xreg7_006",
+        "relocatable": true,
+        "original_text_bytes": 36,
+        "compiler_section_bytes": 48,
+        "zero_padding_removed": 12,
+        "trimmed_object_sha256": "94281c39690723ee48e482cb6c3da59fa6d657fab612b44eb6ac4a1a17ea840a"
+      }
+    ],
+    "retained_ASM_objects": [
+      {
+        "object": "build/usa/asm/usa/35DB4_n87_03_w132_00_wsc1_00_wa61_01_w233_000_w233_000.s.o",
+        "original_text_bytes": 48,
+        "compiler_section_bytes": 48,
+        "zero_padding_removed": 0,
+        "trimmed_object_sha256": "28e2b856cb6ce58508c8c5d2a066dc2501caf060a8fcef8f46997325eaa0c618"
+      },
+      {
+        "object": "build/usa/asm/usa/596B0C_wn51_01_w233_000.s.o",
+        "original_text_bytes": 1808,
+        "compiler_section_bytes": 1808,
+        "zero_padding_removed": 0,
+        "trimmed_object_sha256": "eeadf5490c7eb8e193ec6cacb9d060feb0376938814b632e80e40053ba44688f"
+      },
+      {
+        "object": "build/usa/asm/usa/596B0C_wn51_01_w233_001.s.o",
+        "original_text_bytes": 64,
+        "compiler_section_bytes": 64,
+        "zero_padding_removed": 0,
+        "trimmed_object_sha256": "c8e37bbc12c772c474e593ea7d5a50352fa4f5c2c080cb7538b5bcfb0c3c7712"
+      },
+      {
+        "object": "build/usa/asm/usa/5A40A4_wn49_00_w233_000.s.o",
+        "original_text_bytes": 1208,
+        "compiler_section_bytes": 1216,
+        "zero_padding_removed": 8,
+        "trimmed_object_sha256": "055a3904c78a16e2bf09f68f4568f8e890127da8c20fd8baf14160b584ef54fc"
+      },
+      {
+        "object": "build/usa/asm/usa/5A40A4_wn49_00_w233_001.s.o",
+        "original_text_bytes": 2068,
+        "compiler_section_bytes": 2080,
+        "zero_padding_removed": 12,
+        "trimmed_object_sha256": "6ccf37279d05ebadab184a050240887ef0aaaa06f614c0367a726d5c24402adc"
+      },
+      {
+        "object": "build/usa/asm/usa/5B576C_wn51_01_w233_000.s.o",
+        "original_text_bytes": 608,
+        "compiler_section_bytes": 608,
+        "zero_padding_removed": 0,
+        "trimmed_object_sha256": "d980592c85f83cd9b0fbecd992332b3ec997db5389104df5f6d65d8505b2b497"
+      },
+      {
+        "object": "build/usa/asm/usa/5B576C_wn51_01_w233_001.s.o",
+        "original_text_bytes": 392,
+        "compiler_section_bytes": 400,
+        "zero_padding_removed": 8,
+        "trimmed_object_sha256": "582b9886facd562f1711666d60cb051649d9a2895a407f5db38cfd1a7b2a4af1"
+      },
+      {
+        "object": "build/usa/asm/usa/63A2B0_cross47_02_w132_06_wa33_01_wn51_01_w233_000.s.o",
+        "original_text_bytes": 524,
+        "compiler_section_bytes": 528,
+        "zero_padding_removed": 4,
+        "trimmed_object_sha256": "0b9c1b793e8fd585cfa83aa2de59f4c5d144cddcd0ef2e9ddb6eea8a17d6272a"
+      },
+      {
+        "object": "build/usa/asm/usa/file_12_gap_5D5B4C_5D5CB8_w233_000.s.o",
+        "original_text_bytes": 232,
+        "compiler_section_bytes": 240,
+        "zero_padding_removed": 8,
+        "trimmed_object_sha256": "a0148da87f8a518e43faa06ab3a598ffb70690545dd9d972b5a58108e37c0020"
+      }
+    ]
+  },
+  "overlay_crossregion7_stage": {
+    "status": "PASS",
+    "promoted_functions": 7,
+    "promoted_bytes": 524,
+    "accepted_after": 2079,
+    "accepted_instruction_bytes": 93016,
+    "retained_asm": 5284,
+    "full_rom_exact": true,
+    "full_rom_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+    "original_elf_functions": 7376,
+    "semantic_relocations_unchanged": true,
+    "retained_asm_fragments": 9
+  },
+  "ended_utc": "2026-11-22T22:56:46.778595+00:00"
 }

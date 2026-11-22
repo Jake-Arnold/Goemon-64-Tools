@@ -427,7 +427,10 @@ def reconcile108_stage(manifest):
     if stage != {'format': reconcile.FORMAT}:
         raise ValueError('Unsupported canonical reconciliation stage identity')
     # Refuse old-head assumptions, source drift and any already accepted name.
-    reconcile.claimed_previous(manifest)
+    # A later crossregion7 stage must not contaminate the frozen 1964-C
+    # predecessor identity of the published reconcile108 stage.
+    predecessor_scope={k:v for k,v in manifest.items() if k!='overlay_crossregion7_stage'}
+    reconcile.claimed_previous(predecessor_scope)
     return reconcile.fixture()
 
 
@@ -527,6 +530,12 @@ def claimed_functions(manifest):
         functions.extend({'name': f['name'], 'rom_offset': f['rom_offset'],
                           'vma': f['vma'], 'size': f['size']}
                          for f in stage['functions'])
+    if manifest.get('overlay_crossregion7_stage') is not None:
+        from . import usa_crossregion7 as cross7
+        fixture=cross7.validate_predecessor(manifest)
+        functions.extend({'name':f['name'],'rom_offset':f['rom_offset'],
+                          'vma':f['vma'],'size':f['size']}
+                         for f in fixture['functions'])
     return functions
 
 
@@ -1352,6 +1361,7 @@ def load_manifest(path):
     # against every earlier accepted claim after all legacy guards pass.
     isolated_stage_value = manifest.pop('overlay_isolated233_stage', None)
     reconcile108_stage_value = manifest.pop('overlay_reconcile108_stage', None)
+    crossregion7_stage_value = manifest.pop('overlay_crossregion7_stage', None)
     for key,length in (('upstream_commit',40),('retail_sha1',40),('decompressed_sha1',40)):
         if not re.fullmatch('[0-9a-f]{'+str(length)+'}',manifest.get(key,'')):raise ValueError('Invalid '+key)
     seen=set();assembly_seen=set();ranges=[]
@@ -1667,11 +1677,19 @@ def load_manifest(path):
     if reconcile108_stage_value is not None:
         manifest['overlay_reconcile108_stage'] = reconcile108_stage_value
         reconcile108_stage(manifest)
+    if crossregion7_stage_value is not None:
+        manifest['overlay_crossregion7_stage']=crossregion7_stage_value
+        from . import usa_crossregion7 as cross7
+        cross7.validate_predecessor(manifest)
     return manifest
 
 
 def apply_units(checkout,manifest,source_dir=ROOT,reference_rom=None):
     """Apply only to a newly cloned candidate; fail before writes on collisions."""
+    # The final crossregion7 step replaces active ASM *after* the complete
+    # 2072-C predecessor is built; it must not alter earlier stage identities.
+    if "overlay_crossregion7_stage" in manifest:
+        manifest={k:v for k,v in manifest.items() if k!="overlay_crossregion7_stage"}
     checkout=Path(checkout);source_dir=Path(source_dir)
     config=checkout/'config/usa/splat.yaml'
     text=config.read_text(encoding='utf-8')
@@ -3321,7 +3339,8 @@ def run_build(args,manifest,report):
             logged('candidate-reconcile108-combined-final-build',
                    ['make','-j'+str(args.jobs),'UV='+uv],candidate)
             proof=reconcile.validate_elf_and_inventory(
-                baseline,prev,candidate,expected,plan,manifest)
+                baseline,prev,candidate,expected,plan,
+                {k:v for k,v in manifest.items() if k!='overlay_crossregion7_stage'})
         for f in reconcile_fixture['functions']:
             report['sources_sha256_lf'][f['source_path']]=f['source_sha256']
             result['functions'].append({
@@ -3335,6 +3354,51 @@ def run_build(args,manifest,report):
             result['matched_functions']+=1
             result['matched_function_bytes']+=f['size']
         report['overlay_reconcile108_stage']=proof
+    if manifest.get('overlay_crossregion7_stage') is not None:
+        from . import usa_crossregion7 as cross7
+        from . import overlay_isolated233 as isolated
+        if (not result['full_rom_match'] or result['matched_functions']!=2072 or
+                result['matched_function_bytes']!=92492):
+            raise ValueError('Crossregion7 requires exact canonical 2072 predecessor G2')
+        cross7.validate_predecessor(manifest)
+        fixture7=cross7.validate_original_rom(expected)
+        prior=work/'accepted2072-before-crossregion7.elf'
+        shutil.copyfile(candidate/'build/usa/mnsg.elf',prior)
+        cross7.add_source_headers(candidate)
+        with cross7.source_context():
+            owners=isolated.find_owners(candidate,fixture7)
+            logged('candidate-crossregion7-original-parents',
+                   ['make','-j'+str(args.jobs),'UV='+uv,
+                    *isolated.parent_targets(owners)],candidate)
+            plan=isolated.stage_linker(candidate,expected,fixture7,owners,cross7.SRC)
+            cross7.resolve_embedded_owner_header(candidate)
+            report['overlay_crossregion7_source_plan']={
+                'functions':len(plan['functions']),
+                'original_bytes':sum(f['size'] for f in plan['functions']),
+                'retained_ASM_fragments':len(plan['assembly'])}
+            logged('candidate-crossregion7-objects',
+                   ['make','-j'+str(args.jobs),'UV='+uv,
+                    *isolated.object_targets(plan)],candidate)
+            packed=isolated.pack_objects(candidate,expected,plan)
+        packed.update(functions=7,embedded=1,instruction_bytes=524)
+        report['overlay_crossregion7_object_layout']=packed
+        for name in ('build/usa/mnsg.elf','build/usa/mnsg.z64'):
+            (candidate/name).unlink()
+        logged('candidate-crossregion7-combined-final-build',
+               ['make','-j'+str(args.jobs),'UV='+uv],candidate)
+        proof=cross7.production_exact(baseline,prior,candidate,expected,plan)
+        for f in fixture7['functions']:
+            report['sources_sha256_lf']['research/usa_crossregion7_20261122/sources/'+f['source']+'.c']=f['source_sha256']
+            result['functions'].append({'name':f['name'],'size':f['size'],
+                'guest_address':f'0x{f["vma"]:08X}',
+                'rom_offset':f'0x{f["rom_offset"]:X}',
+                'matched':True,
+                'expected_sha256':f['original_code_sha256'],
+                'candidate_sha256':f['original_code_sha256']})
+            result['claimed_functions']+=1
+            result['matched_functions']+=1
+            result['matched_function_bytes']+=f['size']
+        report['overlay_crossregion7_stage']=proof
     if not result['full_rom_match'] or result['matched_functions']!=result['claimed_functions']:
         raise ValueError('Candidate failed exact matching')
     report['stage']='complete';report['status']='matched'
