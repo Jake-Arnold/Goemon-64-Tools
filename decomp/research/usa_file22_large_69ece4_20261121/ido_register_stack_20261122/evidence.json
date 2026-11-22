@@ -1,0 +1,91 @@
+{
+  "format": "goemon-usa-file22-ido-register-stack-20261122-v1",
+  "status": "RESEARCH_ONLY_FAILED_NATIVE",
+  "target": "func_801CC0C4_69ECE4",
+  "rom_start": "0x69ECE4",
+  "guest_vma": "0x801CC0C4",
+  "original_bytes": 1808,
+  "original_usa_rom_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+  "original_function_sha256": "eaccca6679247d56785806a92a2efe4c1adb73368f723b76d4b6aab5040ef3a9",
+  "original_mips_instructions": 452,
+  "original_frame_bytes": 320,
+  "original_lui_count": 40,
+  "compiler": "original IDO 5.3 -O2 -mips2",
+  "repository_source_reference_branch": "research/usa-file22-large-69ece4-cfg-20261121",
+  "required_global_relocations": 2,
+  "diagnostics": {
+    "base_unpadded": {
+      "size": 1776,
+      "frame": 80,
+      "lui": 39,
+      "raw_matching_positions": 17,
+      "first_matching_instructions": 0
+    },
+    "all_constant_loads": {
+      "source": "diagnostic_full_constants_1808.c",
+      "size": 1808,
+      "frame": 320,
+      "lui": 40,
+      "lui_multiset_identical": true,
+      "raw_matching_positions": 19,
+      "first_matching_instructions": 12,
+      "opcode_shape_alignment": 307,
+      "private_stack_reads": 457,
+      "private_stack_writes": 79
+    },
+    "rowpixel_once": {
+      "source": "diagnostic_rowpixel_once_1808.c",
+      "size": 1808,
+      "frame": 320,
+      "lui": 40,
+      "lui_multiset_identical": true,
+      "raw_matching_positions": 32,
+      "first_matching_instructions": 12,
+      "opcode_shape_alignment": 306,
+      "private_stack_reads": 537,
+      "private_stack_writes": 88,
+      "full_external_cases_passed": 113,
+      "full_external_cases_attempted": 127,
+      "division_guards_passed": 4,
+      "memory_limit_exclusions": 10,
+      "matching_external_reads": 90910,
+      "matching_external_writes": 100869,
+      "matching_graphics_commands": 33623,
+      "rowpixel_stack_reads": 80,
+      "rowpixel_stack_writes": 9
+    },
+    "functional_stack": {
+      "source": "diagnostic_functional_stack_1840.c",
+      "size": 1840,
+      "frame": 320,
+      "lui": 39,
+      "raw_matching_positions": 26,
+      "first_matching_instructions": 13,
+      "opcode_shape_alignment": 308,
+      "private_stack_reads": 635,
+      "private_stack_writes": 94,
+      "artificial_branch_array_private_reads": 5,
+      "artificial_branch_array_private_writes": 5,
+      "original_functional_private_reads": 630,
+      "original_functional_private_writes": 89
+    }
+  },
+  "original_private_stack_reads": 630,
+  "original_private_stack_writes": 89,
+  "source_only_zip": "goemon-usa-file22-ido-register-stack-progress-20261122.zip",
+  "source_only_zip_sha256": "6e27266488a16c812a94c4f21956cd94d1ae66ab578ab4a46441e19f2134c93a",
+  "limitations": [
+    "artificial branch-local one-element volatile arrays, not recovered source",
+    "private stack-event matches do not imply identical original stack addresses",
+    "same native length and LUI multiset do not prove native matching",
+    "isolated synthetic MIPS interpreter, not a production emulator"
+  ],
+  "original_native_instruction_match": false,
+  "whole_rom_G2": "NOT_RUN",
+  "local_CI": "NOT_RUN",
+  "accepted_C_added": 0,
+  "usa_published_baseline": {
+    "functions": 1965,
+    "original_bytes": 84648
+  }
+}

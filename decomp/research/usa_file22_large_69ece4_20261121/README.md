@@ -462,6 +462,14 @@ insufficient. No promotion/full candidate original-ROM G2/full CI.
 **Unpassed gates:** Original-address machine-code/ABI match, full current accepted-ROM G2, 7,376 ELF identity audit, 82,103 semantic relocs, strict inventory and full `decomp.local_ci` were **NOT RUN** on this failed-native candidate. No production manifest or accepted C changes, no merge.
 
 
+## 22 November 2026: same-length, same-frame, 40/40 LUI and rowpixel-once IDO diagnostics
+
+[Compiler and private-stack research](ido_register_stack_20261122/README.md) documents a new candidate that **simultaneously** satisfies `1,808 B`, original `0x140` frame, all original **40** `lui` immediate frequencies and both source relocations. It is explicitly **diagnostic-only** because its branch-local volatile one-element arrays are artificial and the original instructions still differ substantially.
+
+A new, individually verified volatile row-pixel snapshot reproduces the original `sp+0x34` variable's **80 stack reads / 9 stack writes** in the default original-MIPS mode2. The combined native source moves positional exact-word matches **19→32/452**, retaining the full 113-case external read/write/Gfx equality and all four division traps. A second, 1,840-byte diagnostic reproduces functional stack *counts* after excluding five artificial stack reads and writes, but still does not match locations or machine instructions.
+
+Full source-only reproducible ZIP is linked in the chat delivery: `goemon-usa-file22-ido-register-stack-progress-20261122.zip` SHA-256 `6e27266488a16c812a94c4f21956cd94d1ae66ab578ab4a46441e19f2134c93a`. Original accepted C remains 1,965 / 84,648 B; no original code, copyrighted assets, proprietary binaries or original ASM were committed. **RESEARCH_ONLY / FAILED_NATIVE**, no current accepted-ROM G2 or CI run on this nonmatching candidate.
+
 ## Repository boundary and next technical hypothesis
 
 The executable hook integration legitimately lives in [native recompilation PR #1](https://github.com/Jake-Arnold/Goemon64Recomp-JP/pull/1), because it instruments `Goemon64Recomp-JP` runtime. **Matching C, semantics, data layout and proof are owned by this `Goemon-64-Tools` decomp research**, not the native launcher. The two need links, not duplicated runtime patch code.
