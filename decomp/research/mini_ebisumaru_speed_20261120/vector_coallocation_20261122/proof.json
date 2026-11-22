@@ -1,0 +1,51 @@
+{
+  "status": "FAILED_NATIVE_RESEARCH_ONLY",
+  "target": "func_801CD310_589220",
+  "rom_offset": "0x589220",
+  "vma": "0x801CD310",
+  "original_size": 4320,
+  "original_frame": 232,
+  "native_source_sha256": "ee2b72bd25526ec54cebc3353ef1b4766f4d64a9b79a98caf0e1d6e21c055cca",
+  "baseline_words": [
+    117,
+    917
+  ],
+  "new_words": [
+    123,
+    917
+  ],
+  "exact_relocs": [
+    30,
+    101
+  ],
+  "new_frame": 232,
+  "new_size": 4440,
+  "new_vector_bases": [
+    "0xA4",
+    "0xB0"
+  ],
+  "new_exact_instruction_offsets": [
+    "0x43C",
+    "0x450",
+    "0x464",
+    "0x468",
+    "0x50C",
+    "0x510"
+  ],
+  "previous_matches_lost": 0,
+  "original_magnitude_slot_recovered": false,
+  "original_f16_sequence_recovered": false,
+  "total_variants": 1557,
+  "successful_native_compilations": 1549,
+  "failed_compilations": 8,
+  "clean_replay": "PASS_EXPECTED_NONMATCH",
+  "pristine_expanded_rom_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+  "pristine_rom_bytes_exact": 33554432,
+  "native_full_function_match": false,
+  "candidate_integrated_full_rom": "NOT_RUN",
+  "combined_g2": "NOT_RUN",
+  "strict_inventory": "NOT_RUN",
+  "full_local_ci": "NOT_RUN",
+  "promotions": 0,
+  "conversation_artifact_sha256": "5977f4dd41ae7596fff3be39105a3739644f923c98e1cbb36f3b9f6fc8fb0500"
+}
