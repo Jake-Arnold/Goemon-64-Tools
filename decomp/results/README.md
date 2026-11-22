@@ -2,9 +2,9 @@
 
 This directory contains the published canonical verifier/inventory checkpoint, dated original-ROM G2 promotion reports, and earlier reproducibility snapshots. A later G2 report does **not** make an older original proof redundant: it records a different source fingerprint, accepted set, relocation environment and failure/acceptance history.
 
-## 22 November 2026 — USA three-function promotion PASSED_G2_LOCAL
+## 22 November 2026 — USA four-function promotion PASSED_G2_LOCAL
 
-The canonical USA `combined.json` and `inventory.json` now record a fresh 1,959-function original-ROM verification; the previous canonical 1,956-function pair is preserved as `combined_1956_pre_usa_unique_three_20261122.json` and `inventory_1956_pre_usa_unique_three_20261122.json`. The three-function promotion evidence is `usa_unique_three_g2_promotion_20261122.json`; the accepted 1,956 VM-residual ledger is preserved as `vm_residual_inventory_1956_pre_usa_unique_three_20261122.json`. Full original-ROM G2, strict inventory, 7,376 ELF identities, the complete 82,103 relocation multiset, and full `decomp.local_ci` all passed. Earlier count/retention audit below describes its 21 November snapshot.
+The canonical USA `combined.json` and `inventory.json` now record a fresh 1,960-function original-ROM verification; prior canonical 1,959 and 1,956 pairs are preserved as `combined_1959_pre_usa_menu40_20261122.json` / `inventory_1959_pre_usa_menu40_20261122.json` and `combined_1956_pre_usa_unique_three_20261122.json` / `inventory_1956_pre_usa_unique_three_20261122.json`. The four-function evidence is `usa_unique_four_g2_promotion_20261122.json`; intermediate three-function proof remains `usa_unique_three_g2_promotion_20261122.json`. VM-residual checkpoints are preserved at 1,959 and 1,956. Complete ROM G2, strict inventory, 7,376 ELF identities, all 82,103 relocation records, and full `decomp.local_ci` passed. The retention audit below describes its 21 November snapshot.
 
 ## Audited 21 November 2026
 

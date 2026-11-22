@@ -1,6 +1,6 @@
 {
   "format": "goemon-matching-build-result-v1",
-  "started_utc": "2026-11-22T18:55:04.154280+00:00",
+  "started_utc": "2026-11-22T19:18:33.181953+00:00",
   "status": "matched",
   "upstream_commit": "7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee",
   "retail_sha1": "df8083a54296b8c151917c5333e1c85f014a2a66",
@@ -2974,9 +2974,9 @@
     "expected_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
     "candidate_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
     "rom_size": 33554432,
-    "matched_functions": 1959,
-    "claimed_functions": 1959,
-    "matched_function_bytes": 84096,
+    "matched_functions": 1960,
+    "claimed_functions": 1960,
+    "matched_function_bytes": 84136,
     "functions": [
       {
         "name": "func_80023DF0_249F0",
@@ -19103,6 +19103,15 @@
         "candidate_sha256": "8218af268cd1a6dfe21fc27ceeef0493ca5a8b912221bea253265c4974ded43c"
       },
       {
+        "name": "func_800108BC_114BC",
+        "size": 40,
+        "guest_address": "0x800108BC",
+        "rom_offset": "0x114BC",
+        "matched": true,
+        "expected_sha256": "2b856135c3b09dccc933210170254d59c20068d60330c224d0f25eab42320aa7",
+        "candidate_sha256": "2b856135c3b09dccc933210170254d59c20068d60330c224d0f25eab42320aa7"
+      },
+      {
         "name": "func_80011C58_12858",
         "size": 84,
         "guest_address": "0x80011C58",
@@ -22147,6 +22156,7 @@
     "research/pending_isolated233_20261120/sources/iso233_019.c": "b9cf89025c8e570708f31385ffd0c3fe46125509c69c5f61a1aa89016c7cadff",
     "research/pending_isolated233_20261120/sources/iso233_020.c": "450b0177797af82ed83e2967108d03c04c35a98c16940708c6ed0fb725ee20c5",
     "research/pending_isolated233_20261120/sources/iso233_021.c": "5cba43141d1ded86256d3cd9ed6ab939fa0742af5f98dd6c5b249c14f355daaa",
+    "research/pending_isolated233_20261120/sources/iso233_236.c": "37eb14efded2671ea86242caffecd292c2f71c5595b0a5e51bba0c2662decbd0",
     "research/pending_isolated233_20261120/sources/iso233_022.c": "599472796c8e6ac6c28b3c7a181190606726e41b977058a2572812c15998213f",
     "research/pending_isolated233_20261120/sources/iso233_023.c": "8673b23231f40c63e851a47ef8fd4cc7f4cffd3766437daaa7eb22d366e05f41",
     "research/pending_isolated233_20261120/sources/iso233_024.c": "7f791216381759dd5d2cd3ddaf3dbaa346efc5536b20847e4e2ac18440bb5ecc",
@@ -52997,15 +53007,15 @@
     "retained_ASM_fragments": 75
   },
   "overlay_isolated233_source_plan": {
-    "functions": 236,
-    "instruction_bytes": 14752,
+    "functions": 237,
+    "instruction_bytes": 14792,
     "embedded_C_functions": 12,
-    "retained_ASM_fragments": 250
+    "retained_ASM_fragments": 251
   },
   "overlay_isolated233_object_layout": {
-    "functions": 236,
+    "functions": 237,
     "embedded": 12,
-    "instruction_bytes": 14752,
+    "instruction_bytes": 14792,
     "C_objects": [
       {
         "source": "iso233_000",
@@ -53134,6 +53144,14 @@
         "compiler_section_bytes": 64,
         "zero_padding_removed": 0,
         "trimmed_object_sha256": "52c8e5b967daeeedf6a3443671c7cfde196443e84e7b3169fccbca175e478be8"
+      },
+      {
+        "source": "iso233_236",
+        "relocatable": true,
+        "original_text_bytes": 40,
+        "compiler_section_bytes": 48,
+        "zero_padding_removed": 8,
+        "trimmed_object_sha256": "16eee49dc05b33ffa7c2acaac81a3b199f0c990ebe09be042477897e559bc229"
       },
       {
         "source": "iso233_022",
@@ -54810,10 +54828,17 @@
       },
       {
         "object": "build/usa/asm/usa/10DAC_wm2_02_w233_001.s.o",
-        "original_text_bytes": 656,
-        "compiler_section_bytes": 656,
-        "zero_padding_removed": 0,
-        "trimmed_object_sha256": "253fd4ca1abc1004c5fa6174b4061fae13b32e6b406503f86bee53f3eb2255a7"
+        "original_text_bytes": 460,
+        "compiler_section_bytes": 464,
+        "zero_padding_removed": 4,
+        "trimmed_object_sha256": "fcdebd58eaffc2f231b0c1c8289ff39f18fedafacb4d3dbb9bc08e9803464516"
+      },
+      {
+        "object": "build/usa/asm/usa/10DAC_wm2_02_w233_002.s.o",
+        "original_text_bytes": 156,
+        "compiler_section_bytes": 160,
+        "zero_padding_removed": 4,
+        "trimmed_object_sha256": "9c1abbe2473a086471a1cbeb0b3eceeff4e375942a9d935a31e3d2d647d990bb"
       },
       {
         "object": "build/usa/asm/usa/12858_n87_00_wm19_00_wa33_00_w233_001.s.o",
@@ -56555,8 +56580,8 @@
   },
   "overlay_isolated233_stage": {
     "status": "PASS",
-    "count": 236,
-    "bytes": 14752,
+    "count": 237,
+    "bytes": 14792,
     "rom_bytes": 33554432,
     "sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
     "positive_elf_function_entries": 7376,
@@ -56632,8 +56657,8 @@
       "file_79": 180,
       "file_80": 89
     },
-    "C_units": 236,
-    "retained_ASM_fragments": 250
+    "C_units": 237,
+    "retained_ASM_fragments": 251
   },
-  "ended_utc": "2026-11-22T18:57:15.947980+00:00"
+  "ended_utc": "2026-11-22T19:20:46.274975+00:00"
 }

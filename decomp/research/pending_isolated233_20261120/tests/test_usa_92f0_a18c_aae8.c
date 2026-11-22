@@ -7,7 +7,9 @@
 #include "../sources/iso233_233.c"
 #include "../sources/iso233_234.c"
 #include "../sources/iso233_235.c"
+#include "../sources/iso233_236.c"
 
+char D_800637C0_643C0[32];
 SYS_W D_8008CCC0_8D8C0;
 File92State D_8014CCC0_14D8C0;
 
@@ -31,6 +33,20 @@ int main(void){
         func_8000AB30_B730();
         assert(memcmp(&D_8008CCC0_8D8C0,&expected_sys,sizeof expected_sys)==0);
 
+        RawGfx gfx[16], expected_gfx[16];
+        for(size_t k=0;k<16;k++){
+            gfx[k].w0=randbyte(); gfx[k].w1=randbyte();
+        }
+        memcpy(expected_gfx,gfx,sizeof gfx);
+        size_t index=1+((size_t)test%13);
+        expected_gfx[index].w0=0x06000000u;
+        expected_gfx[index].w1=(unsigned)(uintptr_t)D_800637C0_643C0;
+        expected_gfx[index+1].w0=0xB8000000u;
+        expected_gfx[index+1].w1=0;
+        RawGfx *end=func_800108BC_114BC(gfx+index);
+        assert(end==gfx+index+1);
+        assert(memcmp(gfx,expected_gfx,sizeof gfx)==0);
+
         memset(&D_8014CCC0_14D8C0,randbyte(),sizeof D_8014CCC0_14D8C0);
         File92State expected_state=D_8014CCC0_14D8C0;
         expected_state.field_5D06=255;
@@ -41,6 +57,6 @@ int main(void){
         func_8000A18C_AD8C();
         assert(memcmp(&D_8014CCC0_14D8C0,&expected_state,sizeof expected_state)==0);
     }
-    puts("PASS: 4096 actual-source cases per A18C, AAE8 and AB30");
+    puts("PASS: 4096 actual-source cases per A18C, AAE8, AB30 and 108BC");
     return 0;
 }

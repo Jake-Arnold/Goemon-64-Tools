@@ -1,0 +1,387 @@
+{
+  "format": "goemon-vm-residual-inventory-v1",
+  "task_id": "G64-050",
+  "status": "RESEARCH_ONLY",
+  "snapshot_date": "2026-11-13",
+  "snapshot_commit": "4e3677f52d1b1bd4765ea9b642ae291b6588e7ab",
+  "target_branch": "chatgptweb/decomp",
+  "upstream_commit": "7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee",
+  "original_rom": {
+    "bytes": 33554432,
+    "decompressed_sha1": "6ea0ed71032ce08fc2745f412d84936382197494"
+  },
+  "scope": {
+    "unit": "decomp/script_vm.c",
+    "unit_vma_start": "0x8003CFA0",
+    "unit_rom_start": "0x3DBA0",
+    "unit_rom_end_exclusive": "0x40320",
+    "unit_text_bytes": 10112,
+    "residual_count": 13,
+    "canonical_order": "manifest.units[source=script_vm.c].assembly_functions"
+  },
+  "current_sources": {
+    "production_source": "decomp/script_vm.c",
+    "production_source_sha256": "ef69896e2c6e77d9849d18700cd828a959bfa9fa269768fc40a0ad773a8dd422",
+    "header": "decomp/script_vm.h",
+    "header_sha256": "42aa91e7c21dba3b1e6aff8732a65d32d5fe4e727a19ad1b4fc3b61a271e1cf5",
+    "manifest": "decomp/manifest.json",
+    "manifest_sha256": "a0bb697b3f1bad1b7bfd4c6307ca07ffda3856de0976da53f86e411fc8c14b5f",
+    "verifier": "decomp/verify.py",
+    "verifier_sha256": "f793e6dc972609196dfa99b65452220930e2328f9ebabc84e88e63e46686be86",
+    "script_vm_sha256": "42aa91e7c21dba3b1e6aff8732a65d32d5fe4e727a19ad1b4fc3b61a271e1cf5",
+    "verify_sha256": "f793e6dc972609196dfa99b65452220930e2328f9ebabc84e88e63e46686be86"
+  },
+  "whole_project_inventory": {
+    "report": "decomp/results/inventory.json",
+    "report_sha256": "63b553781cb4b9455a3cd13b0a70086618cb9ba01cd382098142f4acca709a31",
+    "combined_proof": "decomp/results/combined.json",
+    "combined_proof_sha256": "dca5807d0792b36d50a8f9e15b6011bce6e4d0b077ec1c79b2c8d258441495e4",
+    "matching_c_functions": 1959,
+    "matching_c_bytes": 84096,
+    "combined_c_entries": 1972,
+    "asm_entries": 5404,
+    "identified_entries": 7376,
+    "full_rom_exact": true,
+    "note": "USA 1,959 original-address matching C after three new native-exact additive functions; complete original ROM, 7,376 ELF function identities, full 82,103 semantic relocation multiset and strict inventory match the accepted 1,956 baseline.",
+    "reconciled_date": "2026-11-22"
+  },
+  "residual_functions": [
+    {
+      "symbol": "func_8003D468_3E068",
+      "vma": "0x8003D468",
+      "rom_offset": "0x3E068",
+      "original_bytes": 548,
+      "original_instruction_sha256": "ece95b38f4dbaf5268d308e09aea54a02d32d1615664137de03ecd46a0c262d7",
+      "production_owner": "GLOBAL_ASM",
+      "exactness": "ISOLATED_NONMATCH",
+      "tested_candidate": {
+        "path": "decomp/candidates/vm_loader_storage_probe.c",
+        "sha256": "a8371332983b3f785381657043356683119afa39431c73ab226dcbb252fca9e3",
+        "symbol_bytes": 556,
+        "frame_bytes": 24
+      },
+      "concrete_blocker": "Original frame is 32 bytes; candidate frame is 24. Candidate differs at +0x08, with 1/26 direct nonrelocation words and 46/58 relocation shapes matching.",
+      "next_unblock_condition": "Resolve the original 32-bit 0/1 return against the current void declaration and derive a predicted saved-register/spill layout before any new native variant.",
+      "evidence": [
+        "decomp/plans/execution/2026-11-11-g64-022-resource-types.json",
+        "decomp/plans/execution/2026-11-11-g64-026-loader-frame.json",
+        "decomp/VM_RESOURCE_CALLGRAPH.md"
+      ]
+    },
+    {
+      "symbol": "func_8003D68C_3E28C",
+      "vma": "0x8003D68C",
+      "rom_offset": "0x3E28C",
+      "original_bytes": 812,
+      "original_instruction_sha256": "e49ad551d97f2f8cac887ee126e99dfdb29924901a4ff69f0792898207bf3da5",
+      "production_owner": "GLOBAL_ASM",
+      "exactness": "NO_C_CANDIDATE",
+      "tested_candidate": null,
+      "concrete_blocker": "Original CFG is traced and guarded (203 words, 44 anchors, two dispatch tables), but no C body or native candidate exists; callback effects remain partly unknown.",
+      "next_unblock_condition": "Recover the relevant callback side effects and express one complete dispatch arm as a source-level control-flow hypothesis before using the <=2-variant budget for a function over 512 bytes.",
+      "evidence": [
+        "decomp/plans/execution/2026-11-11-g64-027-main-step-trace.json",
+        "decomp/VM_MAIN_STEP_TRACE.md",
+        "decomp/VM_RESOURCE_CALLGRAPH.md"
+      ]
+    },
+    {
+      "symbol": "func_8003DBEC_3E7EC",
+      "vma": "0x8003DBEC",
+      "rom_offset": "0x3E7EC",
+      "original_bytes": 472,
+      "original_instruction_sha256": "4ee117dd31f6b8f3ab30ca864c202eb7c974c28cc8236d233a94228b36a0a764",
+      "production_owner": "GLOBAL_ASM",
+      "exactness": "ISOLATED_NONMATCH",
+      "tested_candidate": {
+        "path": "decomp/candidates/vm_text_loop_alias_probe.c",
+        "sha256": "f6232806226db464882a2ea444d6f42e48edf3113e8e45c441ec87f7807ec4c5",
+        "symbol_bytes": 472,
+        "frame_bytes": 80
+      },
+      "concrete_blocker": "Original frame is 0x48 (72 bytes), while the size-equal native candidate uses 0x50 (80 bytes); best raw comparison is 53/95 comparable nonrelocation words and 17 relocation-layout differences. Another comparator reports 53/88 under a different relocation filter.",
+      "next_unblock_condition": "Require a source hypothesis that restores the 0x48 frame while preserving all six branch-likely delay slots and callback-reloaded cursor/bound values; no further trial is justified until it predicts the changed instructions.",
+      "evidence": [
+        "decomp/plans/execution/2026-11-11-g64-032-text-loop-frame.json",
+        "decomp/plans/execution/2026-11-11-g64-033-text-loop-differential.json",
+        "decomp/results/vm_text_loop_native_codegen_probe.json",
+        "decomp/VM_TEXT_LOOP_TRACE.md"
+      ]
+    },
+    {
+      "symbol": "func_8003DE80_3EA80",
+      "vma": "0x8003DE80",
+      "rom_offset": "0x3EA80",
+      "original_bytes": 232,
+      "original_instruction_sha256": "011db36716ef249608412e7cbfc0a20cf3b00e6653b7d3f93ff6990a7fcad9e1",
+      "production_owner": "GLOBAL_ASM",
+      "exactness": "ISOLATED_NONMATCH",
+      "tested_candidate": {
+        "path": "decomp/candidates/vm_command_walker_goto_probe.c",
+        "sha256": "420c8926215ea45bb72028a9f322fa46f87c040a4f85bbb6dc86b27e57659d59",
+        "best_variant_sha256": "2a05401f657b5ce588e7ec6d0aa287cae75d712edcf0921c66c6aacdc748d4dd",
+        "symbol_bytes": 220,
+        "frame_bytes": 40
+      },
+      "concrete_blocker": "Best bounded candidate differs in 38/56 compared words; first baseline mismatch is 0x8003DE84, while the best variant moved it to 0x8003DE88 but its bltzl target remains four bytes late. A size-equal variant has the wrong frame.",
+      "next_unblock_condition": "Keep ASM until new control-flow evidence predicts both the original branch target and delay-slot schedule; do not repeat the four completed shapes.",
+      "evidence": [
+        "decomp/plans/execution/2026-11-11-g64-034-command-walker-cfg.json",
+        "decomp/plans/execution/2026-11-11-g64-035-delay-slots.json",
+        "decomp/plans/execution/2026-11-11-g64-036-command-walker-semantics.json",
+        "decomp/VM_STREAM_MATCHING.md"
+      ]
+    },
+    {
+      "symbol": "func_8003DF98_3EB98",
+      "vma": "0x8003DF98",
+      "rom_offset": "0x3EB98",
+      "original_bytes": 528,
+      "original_instruction_sha256": "76285ca92a7f611916d867d9938f93fcb3df32ebfa2962120083f2471a501631",
+      "production_owner": "GLOBAL_ASM",
+      "exactness": "NO_C_CANDIDATE",
+      "tested_candidate": null,
+      "concrete_blocker": "ROM-bound trace covers the 132-word signed-token decoder, 40-entry dispatch table, and 54 anchors, but no C model or native candidate exists; external helper effects are not recovered.",
+      "next_unblock_condition": "Identify helper effects for a bounded token family, then write a C model that preserves signed -71..-32 dispatch, cursor returns, and callback ordering before native compilation.",
+      "evidence": [
+        "decomp/plans/execution/2026-11-11-g64-028-control-decoder-trace.json",
+        "decomp/VM_STREAM_MATCHING.md",
+        "decomp/VM_PARSER_BEHAVIOR_MATRIX.md"
+      ]
+    },
+    {
+      "symbol": "func_8003E234_3EE34",
+      "vma": "0x8003E234",
+      "rom_offset": "0x3EE34",
+      "original_bytes": 440,
+      "original_instruction_sha256": "acd6d1ecf74790033a8438ba6aae9c7652497de18d5ad7c205deaf2650268336",
+      "production_owner": "GLOBAL_ASM",
+      "exactness": "UNIT_NONMATCH",
+      "tested_candidate": {
+        "path": "decomp/candidates/vm_display_e234.c",
+        "sha256": "5b9cd11a45650b20c9f24b0fb1bedc82d2bef72fb90803f25221bed4e7bc38c6",
+        "symbol_bytes": 444,
+        "tested_variant_source_sha256": "c5168921cf74d96aa8d6209d593b3cbf43da4934d7c23dcd9a678141235b6731"
+      },
+      "concrete_blocker": "The corrected candidate is 444/440 bytes; its entry cursor register is $v0 rather than original $v1. In the full unit the first mismatch is +0x118 (0x8003D0B8) after a forward-call target shifts.",
+      "next_unblock_condition": "Only reopen with a register-lifetime derivation that matches the original entry role and keeps every sibling/forward relocation fixed; the previous V2 did not improve the first mismatch.",
+      "evidence": [
+        "decomp/plans/execution/2026-11-13-g64-041-display-emitter-trace.json",
+        "decomp/plans/execution/2026-11-13-g64-044-compiler-layouts.json",
+        "decomp/plans/execution/2026-11-13-g64-048-vm-graphics-boundaries.json"
+      ]
+    },
+    {
+      "symbol": "func_8003E6C0_3F2C0",
+      "vma": "0x8003E6C0",
+      "rom_offset": "0x3F2C0",
+      "original_bytes": 348,
+      "original_instruction_sha256": "d6ae27372e4ffc75fa81863c4a10b5ccd308d594f46d67de4573560a02c27413",
+      "production_owner": "GLOBAL_ASM",
+      "exactness": "UNIT_NONMATCH",
+      "tested_candidate": {
+        "path": "decomp/candidates/vm_callback_setup_e6c0.c",
+        "sha256": "badf1b30059e59d400a8c20b87d048e73966291393d5d10eac27a8cf0b13d63a",
+        "symbol_bytes": 356,
+        "frame_bytes": 56
+      },
+      "concrete_blocker": "Candidate is 356/348 bytes; 45/87 words differ. First mismatch at 0x8003E6CC is the saved-register spill ($s5 instead of original $s2); candidate growth shifts a forward-call relocation and unit text becomes 10,128 instead of 10,112 bytes.",
+      "next_unblock_condition": "Derive a falsifiable pointer-lifetime order that assigns the original saved-register roles and restores the 348-byte body before considering another full-unit variant.",
+      "evidence": [
+        "decomp/plans/execution/2026-11-13-g64-046-callback-setup.json",
+        "decomp/plans/execution/2026-11-13-g64-048-vm-graphics-boundaries.json"
+      ]
+    },
+    {
+      "symbol": "func_8003EBAC_3F7AC",
+      "vma": "0x8003EBAC",
+      "rom_offset": "0x3F7AC",
+      "original_bytes": 436,
+      "original_instruction_sha256": "67f4730f98adcd92a28b506c7631437629ffa8bd08101f2594011ce982201539",
+      "production_owner": "GLOBAL_ASM",
+      "exactness": "UNIT_NONMATCH",
+      "tested_candidate": {
+        "path": "decomp/candidates/vm_display_ebac.c",
+        "sha256": "d316a6ef5d85fd9311acc53940d161de17fdb83a461e1e83679145dcb63bfe19",
+        "symbol_bytes": 428,
+        "tested_variant_source_sha256": "8d83771412044cfbf473429a08db8af09426f85dcbb6770af66458b9cb44b3e2"
+      },
+      "concrete_blocker": "Corrected candidate is 428/436 bytes and starts with cursor register $v0 instead of $v1. Full-unit first mismatch is +0x118 (0x8003D0B8), with a later sibling moved despite section rounding.",
+      "next_unblock_condition": "Reopen only with an instruction-level register-lifetime model that restores the entry cursor role, 436-byte body, and ED60 position together.",
+      "evidence": [
+        "decomp/plans/execution/2026-11-13-g64-043-display-emitter-trace.json",
+        "decomp/plans/execution/2026-11-13-g64-044-compiler-layouts.json",
+        "decomp/plans/execution/2026-11-13-g64-048-vm-graphics-boundaries.json"
+      ]
+    },
+    {
+      "symbol": "func_8003ED60_3F960",
+      "vma": "0x8003ED60",
+      "rom_offset": "0x3F960",
+      "original_bytes": 592,
+      "original_instruction_sha256": "18db53295f30fa73a9808f3bed402aa085e97de238dfa36d25455f19dac8d89b",
+      "production_owner": "GLOBAL_ASM",
+      "exactness": "ISOLATED_NONMATCH",
+      "tested_candidate": {
+        "artifact": "one ignored native probe; source sha256 00f2e890deacc5f839416da4707482ed148322c85ddb3f11cb50d50cd5749e3e",
+        "symbol_bytes": 584
+      },
+      "concrete_blocker": "The isolated probe is 584/592 bytes and differs at 0x8003ED68; 136/146 positions differ. Its two calls to F038 have unresolved callee effects.",
+      "next_unblock_condition": "Characterize the two F038 call results and the twelve output-cursor updates, then predict one specific loop/register schedule before spending another native variant.",
+      "evidence": [
+        "decomp/plans/execution/2026-11-11-g64-037-ed60-trace.json",
+        "decomp/VM_ED60_TRACE.md",
+        "decomp/plans/execution/2026-11-11-g64-040-parser-production-gate.json"
+      ]
+    },
+    {
+      "symbol": "func_8003F038_3FC38",
+      "vma": "0x8003F038",
+      "rom_offset": "0x3FC38",
+      "original_bytes": 196,
+      "original_instruction_sha256": "7a258b9eae36120d3971f1997070c2a988fb9636cbd4c96f1f52ea888e7b9719",
+      "production_owner": "GLOBAL_ASM",
+      "exactness": "ISOLATED_NONMATCH",
+      "tested_candidate": {
+        "path": "decomp/candidates/vm_resource_halfword_volatile_probe.c",
+        "sha256": "c53a8ff7c8dd5d1a33b39130271b18926d70af0dff6c5aee0708ef825a453cab",
+        "symbol_bytes": 196
+      },
+      "concrete_blocker": "The equal-size probe matches 25/42 direct nonrelocation words and 3/3 relocation shapes but retains four relocation-layout differences; first mismatch is +0x28. Three refinements repeated the same mismatch profile.",
+      "next_unblock_condition": "A new candidate must predict original $v1 index-register and stack-slot roles at +0x28; no further trial without that instruction-level prediction.",
+      "evidence": [
+        "decomp/plans/execution/2026-11-11-g64-023-f038-baseline.json",
+        "decomp/plans/execution/2026-11-11-g64-024-f038-refinement.json",
+        "decomp/VM_RESOURCE_CALLGRAPH.md"
+      ]
+    },
+    {
+      "symbol": "func_8003F37C_3FF7C",
+      "vma": "0x8003F37C",
+      "rom_offset": "0x3FF7C",
+      "original_bytes": 192,
+      "original_instruction_sha256": "74867178f34d8d45b1753520e1218d6e6c2307f44937258e95c3828f1cf1efd0",
+      "production_owner": "GLOBAL_ASM",
+      "exactness": "UNIT_NONMATCH",
+      "tested_candidate": {
+        "path": "decomp/candidates/vm_setup_f37c.c",
+        "sha256": "39bf7d2549dbdeb954148db49a094fa1703e8c2fbaa57d9b5f1c2363d44f190d",
+        "symbol_bytes": 192,
+        "frame_bytes": 80
+      },
+      "concrete_blocker": "Size and frame match, but 36 target words differ; first mismatch at +0x08 swaps the original scale load to $f2 with `mtc1 $zero,$f2`, and relocation offsets move by four bytes.",
+      "next_unblock_condition": "Resolve why IDO schedules the scale and zero values into the wrong FPU registers, then predict the two initial float instructions and relocation offsets before any follow-up trial.",
+      "evidence": [
+        "decomp/plans/execution/2026-11-13-g64-045-vm-setup-abi.json",
+        "decomp/plans/execution/2026-11-13-g64-048-vm-graphics-boundaries.json"
+      ]
+    },
+    {
+      "symbol": "func_8003F480_40080",
+      "vma": "0x8003F480",
+      "rom_offset": "0x40080",
+      "original_bytes": 164,
+      "original_instruction_sha256": "39be635c405c186b22571333c4eb409b1adaf5d9a6dc7c286688597dae3e6bd6",
+      "production_owner": "GLOBAL_ASM",
+      "exactness": "ISOLATED_NONMATCH",
+      "tested_candidate": {
+        "path": "decomp/candidates/vm_digits_format_probe.c",
+        "sha256": "17654efaf43f9c7c598021a320295f0b913c5c419474c313014ceee6ac0612d4",
+        "best_symbol_bytes": 156,
+        "total_historical_variants": 15
+      },
+      "concrete_blocker": "The best historical symbol is 156/164 bytes and matches only 3/13 comparable direct words; none of 15 variants reproduces the original `bnel` delay-slot schedule. No full-unit candidate exists.",
+      "next_unblock_condition": "Keep ASM unless a new instruction-level `sprintf`/branch-likely schedule hypothesis predicts the missing delay-slot behavior; do not repeat the 15 completed variants.",
+      "evidence": [
+        "decomp/plans/execution/2026-11-13-g64-047-number-formatter.json",
+        "decomp/results/vm_next_ten_batch4.json",
+        "decomp/VM_STREAM_MATCHING.md"
+      ]
+    },
+    {
+      "symbol": "func_8003F6E8_402E8",
+      "vma": "0x8003F6E8",
+      "rom_offset": "0x402E8",
+      "original_bytes": 48,
+      "original_instruction_sha256": "fd5b89364249c531ad5a2eaed23b97dccf062444ac92c1ddd250fb9f1ca097dd",
+      "production_owner": "GLOBAL_ASM",
+      "exactness": "EXTENT_ONLY_NO_C_BODY",
+      "tested_candidate": null,
+      "concrete_blocker": "Only a 40-byte candidate prefix was observed; it omits the second `jr $ra; nop` pair. The archived 56-byte annotation is not an original extent and no complete C body was tested.",
+      "next_unblock_condition": "Recover the caller-visible behavior of both 24-byte return paths, then form a complete 48-byte C source; never promote the prefix or historical 56-byte annotation.",
+      "evidence": [
+        "decomp/plans/execution/2026-11-11-g64-038-wrapper-extent.json",
+        "decomp/VM_PARSER_BEHAVIOR_MATRIX.md"
+      ]
+    }
+  ],
+  "summary": {
+    "by_exactness": {
+      "ISOLATED_NONMATCH": 6,
+      "NO_C_CANDIDATE": 2,
+      "UNIT_NONMATCH": 4,
+      "EXTENT_ONLY_NO_C_BODY": 1
+    },
+    "all_production_owner": "GLOBAL_ASM",
+    "unit_exact_candidates": 0,
+    "matching_c_delta": 0,
+    "full_rom_g2": "NOT_RUN; no unit-exact candidate staged and production inputs unchanged",
+    "inventory_rebuild": "NOT_RUN; stored whole-project report retained"
+  },
+  "reusable_abi_lessons": [
+    "Treat the 32-bit VM program cursor at 0x80077858 as distinct from the signed-halfword text-token cursor in 0x801C77E8.",
+    "Reload globals after callbacks where original MIPS does so; host references that cache a resource/window/cursor across callbacks are not equivalent.",
+    "Preserve branch-likely delay-slot semantics and original stack-frame/spill layouts; a size-equal symbol is not instruction exact.",
+    "Keep resource ID, loaded resource base, relocation delta, and relocated program address as distinct values.",
+    "Validate every changed candidate in the complete 10,112-byte script_vm.c unit; target-local equality can still move a forward-call relocation or sibling symbol.",
+    "Main-segment VMA-to-ROM mapping is VMA minus 0x7FFFF400; overlay functions require their own file/section mapping and cannot enter this list by address similarity."
+  ],
+  "related_parallel_research": {
+    "branch": "codex/goemon-vm-overlay-followup",
+    "commit": "6b5d0d8958bd87fb850c05008acb29650579bf30",
+    "scope": "Separate file_12 overlay callbacks, not members of this 13-function script_vm.c residual list.",
+    "isolated_exact_candidates": [
+      {
+        "vma": "0x80222034",
+        "bytes": 20
+      },
+      {
+        "vma": "0x80222168",
+        "bytes": 36
+      }
+    ],
+    "status": "RESOLVED: both callbacks are staged in the production file_12 overlay path and pass linked-ELF and full-ROM verification; see plans/execution/2026-11-14-vm-file12-dialogue-call.json.",
+    "report": "decomp/plans/execution/2026-11-14-vm-file12-dialogue-call.json"
+  },
+  "decision": "All 13 manifest assembly_functions are present once, tie to the pinned decompressed ROM with original byte hashes and current production source fingerprint, and remain GLOBAL_ASM. Prior full-unit and isolated failures are reconciled by evidence; traces without C candidates are explicitly marked as such. The standard generated whole-project inventory was not edited or rebuilt.",
+  "original_rom_validation": {
+    "command": "python3 one-off verification: read the ignored usa-decompressed.z64, assert 33,554,432 bytes and SHA-1 6ea0ed71032ce08fc2745f412d84936382197494, then SHA-256 each listed [ROM offset, original_bytes) span.",
+    "result": "PASS: all 13 span hashes recorded from the pinned original image; offsets and sizes are word aligned.",
+    "limitation": "The private ROM is not required by the checked-in schema test and is not committed."
+  },
+  "validation": {
+    "original_rom_spans": "PASS: private 32 MiB decompressed ROM SHA-1 verified; all 13 original byte spans were hashed at the VMA-to-ROM offsets in this ledger.",
+    "schema_test": {
+      "command": "python3 -m unittest decomp.test_vm_residual_inventory -v",
+      "result": "PASS; 5 tests, including private ROM slice verification in this workspace."
+    },
+    "local_ci": {
+      "command": "env CC=gcc python3 -m decomp.local_ci",
+      "exit_code": 0,
+      "status": "PASS",
+      "decomp_python_tests": 230,
+      "decomp_skipped": 1,
+      "verifier_ledger_python_tests": 185,
+      "verifier_ledger_skipped": 4,
+      "task_evidence_validation": "CONSISTENT_STORED_REPORTS",
+      "display_emitter_sanitizer": "PASS; 1000 synthetic cases and zero/owner-alias tests"
+    },
+    "task_evidence_validation": "PASS: python3 -m decomp.skill_context --validate returned CONSISTENT_STORED_REPORTS for 100 tasks.",
+    "diff_check": "PASS: git diff --check",
+    "full_unit_native": "NOT_RUN: no candidate was unit-exact.",
+    "full_rom_g2": "PASS: strict 346/346 native USA original-ROM proof; SHA-1 6ea0ed71032ce08fc2745f412d84936382197494; see decomp/results/combined.json",
+    "inventory_rebuild": "PASS: 7,376 original identities; 359 total C; 7,017 ASM; zero extra aliases; see decomp/results/inventory.json",
+    "in_game": "NOT_RUN"
+  },
+  "current_proof_date": "2026-11-20"
+}
