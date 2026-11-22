@@ -1,5 +1,14 @@
 # Goemon 64 Tools — Development Progress
 
+## 2026-11-22 — Add canonical toolkit setup instructions to README
+
+- **Change:** Ported the Windows/Linux toolkit setup section added by the latest decomp README commit onto the current `main` README, preserving its newer v0.11.79 release notes. No decomp implementation or research files were copied.
+- **Reason:** Make the canonical `main` launcher and the separation between toolkit and decomp branches clear to new users.
+- **Validation:** Confirmed the referenced `Run.bat`, `Run-Linux.sh`, and `docs/LINUX_TOOLKIT.md` exist on `main`; `git diff --check` passes. GitHub CI caught that the new section initially displaced the required v0.11.79 first-line heading, so it was moved below the current release summary. CI reruns on this corrected commit; no runtime tests were run locally for this README-only change.
+- **Limitations:** The Windows/Linux setup steps were documented but not executed in this change.
+- **Next:** Review this focused README update and its CI before merging to `main`.
+
+
 ## 2026-11-20 — v0.11.80 Japanese recomp quick attachment (toolkit PR)
 
 - **Problem:** The Japanese native recomp attachment repeatedly scanned large process mappings and could re-prompt for word-swapped RAM after Linux ASLR invalidated a cached absolute address. Multiple code-bearing allocations were reported as ambiguities without eliminating impossible live game state.
