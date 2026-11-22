@@ -1,0 +1,109 @@
+{
+  "format": "goemon-usa-mini-original-cfg-native-abi-research-v1",
+  "date": "2026-11-22",
+  "status": "FAILED_NATIVE_RESEARCH_ONLY",
+  "original": {
+    "function": "func_801CD310_589220",
+    "rom_offset": "0x589220",
+    "vma": "0x801cd310",
+    "size": 4320,
+    "frame": 232,
+    "retail_sha1": "df8083a54296b8c151917c5333e1c85f014a2a66",
+    "expanded_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+    "pristine_ROM_exact_bytes": 33554432
+  },
+  "cfg": {
+    "jump_table": "jtbl_8020A85C_5C676C",
+    "entries": 18,
+    "distinct_targets": 5,
+    "scratch_ASM_only": true,
+    "original_opcodes_changed": false,
+    "complete_m2c_lines": 565,
+    "complete_m2c_characters": 23095,
+    "original_C_types_verified": false,
+    "helper_prototypes_verified": false
+  },
+  "stack": {
+    "magnitude_slot": "0x8c",
+    "magnitude_initial_float_zero": "0x218",
+    "magnitude_sqrt_overwrite": "0x4e4",
+    "magnitude_late_read": "0xfe8",
+    "magnitude_late_update": "0xffc",
+    "magnitude_late_reload": "0x1000",
+    "vecA": "0xa4",
+    "vecB": "0xb0",
+    "cos_return": "0x64",
+    "switch_second_angle": "0x6c",
+    "switch_first_angle": "0x6e",
+    "original_private_ROM_signatures_verified": 8
+  },
+  "reproduced_native": [
+    {
+      "source": "clamp_f14_strict_one_arg.c",
+      "sha256": "43f54bc681c1f1faaa33544a9effbba6750b9bc4acf49c29c36d2d73fbefb6d5",
+      "bytes": 4440,
+      "frame": 232,
+      "words": 117,
+      "comparable": 917,
+      "reloc_triples": 30,
+      "original_a1_word_at_0x198": false
+    },
+    {
+      "source": "clamp_cosine_a1_diagnostic.c",
+      "sha256": "1d0c04a3139718de1ee159125312718d571351d77c9341e69346c29f2be014cb",
+      "bytes": 4440,
+      "frame": 232,
+      "words": 123,
+      "comparable": 917,
+      "reloc_triples": 30,
+      "original_a1_word_at_0x198": true,
+      "first_two_cosine_relocation_offsets_exact": true,
+      "strict_relocation_type_symbol_sequence_matches": 99,
+      "original_F14_zero_0x1B4": true,
+      "original_F16_exact_reset": false,
+      "full_switch_original_position_comparable_words": 55,
+      "full_switch_original_position_matched_words": 55,
+      "first_nonreloc_mismatch": "0x44",
+      "jump_target_drift_bytes": [
+        0
+      ],
+      "ABI_SIGNATURE_NOT_PROVEN": true,
+      "source_language_semantics_unverified": true
+    }
+  ],
+  "original_callee": {
+    "name": "func_80003EA0_4AA0",
+    "bytes": 144,
+    "reads_a0": true,
+    "reads_a1": false,
+    "angle_mask": "0x3ff"
+  },
+  "experiments": {
+    "F14_typed_zero_random": 400,
+    "F16_lifetime": 432,
+    "F14_gate_alias": 1144,
+    "stack_layout": 1700,
+    "second_angle_pool": 84
+  },
+  "tests": {
+    "original_usa_ROM_rebuild": "PASS_33554432_BYTES",
+    "private_full_original_m2c": "PASS_565_LINES",
+    "private_ROM_stack": "PASS_8_OF_8",
+    "switch_rewriter_synthetic": "PASS_4",
+    "source_constructor": "PASS_2",
+    "two_IDO_compiles": "PASS_EXPECTED_FAILED_NATIVE",
+    "full_function_equality": "FAIL",
+    "clean_source_only_ZIP": "PASS",
+    "clean_original_CFG_replay": "PASS",
+    "candidate_integrated_ROM": "NOT_RUN",
+    "canonical_G2": "NOT_RUN",
+    "strict_inventory": "NOT_RUN",
+    "full_local_CI": "NOT_RUN",
+    "gameplay": "NOT_RUN"
+  },
+  "source_only_ZIP_sha256": "6ec59328d837e96cfa92067984266643777e7ab7093f7ef9ca4d2b5b6ff3e3f5",
+  "accepted_usa_before": 1965,
+  "accepted_usa_after": 1965,
+  "usa_accepted_original_bytes": 84648,
+  "usa_asm_remaining": 5398
+}
