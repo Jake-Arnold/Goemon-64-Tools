@@ -9,6 +9,7 @@ class UsaCrossRegion47PromotionTests(unittest.TestCase):
  @classmethod
  def setUpClass(cls):
   cls.manifest=load_manifest(ROOT/'decomp/manifest.json')
+  cls.manifest.pop('overlay_reconcile108_stage', None)  # Historical 779-C checkpoint
   cls.manifest.pop('overlay_wide132_stage', None)
   cls.manifest.pop('overlay_wide109_stage', None)
   cls.manifest.pop('overlay_resource140_stage', None)

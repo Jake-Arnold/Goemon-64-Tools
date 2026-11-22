@@ -294,6 +294,8 @@ def build_steps(host_binary: Path, *, quick: bool = False):
         ("Resumable task registry validation", [sys.executable, "-m", "decomp.task_registry", "validate"]),
         ("C-Right live-trace comparator tests", [sys.executable, "-m", "unittest", "discover",
          "-s", "decomp/tasks/cright_live_trace", "-p", "test_comparator.py", "-q"]),
+        ("Canonical promotion integrity (manifest+G2+inventory)",
+         [sys.executable, "-m", "decomp.promotion_integrity", "--validate"]),
     ])
     return steps
 

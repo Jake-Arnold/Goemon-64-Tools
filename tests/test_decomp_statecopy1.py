@@ -17,6 +17,7 @@ class Statecopy1Tests(unittest.TestCase):
         self.assertEqual(prior['comparison']['matched_functions'],1500)
         self.assertNotIn(function['name'],{f['name'] for f in prior['comparison']['functions']})
         current=load_manifest(adapter.ROOT/'manifest.json')
+        current.pop('overlay_reconcile108_stage',None)
         names=[x['name'] for x in claimed_functions({k:v for k,v in current.items() if k not in ('overlay_checkpoint500_stage','overlay_rediscovery5_stage','overlay_native49_stage','overlay_native51_stage','overlay_isolated233_stage')})]
         self.assertEqual(len(names),1617)
         self.assertEqual(len(claimed_functions({k:v for k,v in current.items() if k not in ('overlay_archive22_stage','overlay_archive33_stage','overlay_archive61_stage','overlay_checkpoint500_stage','overlay_rediscovery5_stage','overlay_native49_stage','overlay_native51_stage','overlay_isolated233_stage')})),1501)

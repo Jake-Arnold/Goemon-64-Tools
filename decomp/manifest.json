@@ -1597,5 +1597,8 @@
   },
   "overlay_isolated233_stage": {
     "format": "goemon-usa-isolated241-post-1723-v1"
+  },
+  "overlay_reconcile108_stage": {
+    "format": "goemon-usa-canonical-reconcile108-v1"
   }
 }

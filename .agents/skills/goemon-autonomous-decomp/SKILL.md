@@ -3,15 +3,15 @@ name: goemon-autonomous-decomp
 description: "Use when autonomously discovering, native-verifying, and formally promoting Goemon 64 matching-C functions during a ChatGPT or Codex session."
 ---
 
-# goemon-autonomous-decomp
+# Autonomous matching-C decomp
 
-Execute a bounded batch. Read Project `GOEMON_AUTONOMOUS_DECOMP_SESSION_PROMPT.md`, root `AGENTS.md`, `decomp/CONTINUE.md`, `decomp/plans/EXECUTOR_PROTOCOL.md`, manifest/proof/inventory **at `chatgptweb/decomp` HEAD**. Never touch `main` or re-promote C.
+Read `GOEMON_AUTONOMOUS_DECOMP_SESSION_PROMPT.md`, `AGENTS.md`, `decomp/CONTINUE.md`, `decomp/plans/EXECUTOR_PROTOCOL.md`, canonical manifest/proof/inventory **at live `chatgptweb/decomp` HEAD**. Never modify `main` or re-promote C.
 
-1. **Access:** Obtain a complete source checkout. For shell/connector mismatches use `goemon-github-source-bridge`; connector access is not a local checkout. Use `goemon-input-reproduce` to verify ROM, upstream, IDO and MIPS tools. Keep ROM/ASM/binaries out of Git.
-2. **Discovery:** Read unpromoted source/research and Issues/PRs; use `goemon-target-triage`, original MIPS, ABI and bounded probes. Deduplicate. Record ROM/VMA, region/overlay, size, callers and unit. Preserve ASM on failure.
-3. **Exactness:** Compile C with original IDO/flags; verify behavior, unit bytes, sibling layout, symbols and relocations. Isolated matching or source hash is not a promotion.
-4. **G2:** Stage candidates with **all** accepted C; run fresh `python3 -m decomp.verify`, then `python3 -m decomp.inventory` only if G2 passes. Audit ELF identities and relocations. USA must match original 33,554,432 ROM bytes and SHA-1 `6ea0ed71032ce08fc2745f412d84936382197494`.
-5. **CI:** Run full `python3 -m decomp.local_ci`, not `--quick`; run focused tests. No GitHub Actions.
-6. **Publish:** Only on PASS, update C/stages, manifest, combined proof, inventory, ledgers, tests, `decomp/CONTINUE.md` and `PROGRESS.md` together; archive prior proof. Use `goemon-evidence-publish`; verify remote SHA/count on decomp only. No force-push.
+1. **Access:** Complete checkout (`goemon-github-source-bridge` for connector limits), authenticated ROM/upstream/IDO/binutils (`goemon-input-reproduce`). No ROM, ASM or proprietary toolchain in Git.
+2. **Triage:** Check *all current canonical C ownership and pending research* by region, original ROM/VMA/size/range, not stale filenames. Record collisions; preserve ASM on failure.
+3. **Native:** Original IDO with exact code bytes, original address and relocations; preserve ELF layout. Isolated matching is **RESEARCH_ONLY**.
+4. **G2:** Stage **all** accepted C on pinned live SHA; fresh `python3 -m decomp.verify`, then strict `python3 -m decomp.inventory`. Exact 33,554,432 bytes / SHA-1 `6ea0ed71032ce08fc2745f412d84936382197494`, 7,376 ELF functions and semantic relocations.
+5. **CI:** Full `python3 -m decomp.local_ci`, not `--quick`. Mandatory `python3 -m decomp.promotion_integrity --validate` requires canonical manifest **and** `combined.json`/`inventory.json`, each original name/size and entire ROM SHA-1 to agree. Staged research never increments counts. No GitHub Actions.
+6. **Publish atomically:** One commit with native sources, canonical manifest, `decomp/results/combined.json`, `decomp/results/inventory.json`, dated G2 proof, tests, `decomp/CONTINUE.md`, `PROGRESS.md`. Preserve prior proof. Re-fetch branch and use expected-SHA lease; no force push. Re-fetch remote SHA/manifest/proof/count. Do **not** claim `PUBLISHED_REMOTE_VERIFIED` until live canonical count proves it.
 
-Missing input or failed gate: do **not** change accepted count. Report `BLOCKED_INPUT`, `FAILED_NATIVE`, `FAILED_ROM`, or `RESEARCH_ONLY` with first measured failure. Continue independent targets. Separate USA and Japan proof. No invented tests or pushes.
+Failure: retain ASM and count. Report `FAILED_NATIVE`, `FAILED_ROM`, `BLOCKED_INPUT`, `RESEARCH_ONLY` accurately. USA and JP acceptance separate.

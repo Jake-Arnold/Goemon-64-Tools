@@ -29,6 +29,15 @@ from decomp.test_overlay_file12 import relocatable_file12_callback
 
 ROOT=Path(__file__).resolve().parents[1]
 
+# The original verifier tests retain the historical stage projections; the
+# current production G2 evidence test below explicitly uses the live manifest.
+_current_load_manifest = load_manifest
+def load_manifest(*args, **kwargs):
+    manifest = _current_load_manifest(*args, **kwargs)
+    manifest.pop('overlay_reconcile108_stage', None)
+    return manifest
+
+
 def cross_claim_count(manifest):
     fixture = crossregion47_stage(manifest)
     return len(fixture['functions']) if fixture else 0
@@ -919,8 +928,10 @@ class DecompVerificationTests(unittest.TestCase):
                          (manifest.get('overlay_file43_stage') is not None)+
                          sum(374 if st['format']=='goemon-file12-registration-374-v1' else 1 for st in manifest_file12_stages(manifest))+(file11_stage_mode(manifest) or 0)+
                          len(manifest_file13_stages(manifest)) + cross_claim_count(manifest) + native_claim_count(manifest) + highbyte26_claim_count(manifest) + file27_claim_count(manifest) + wide132_claim_count(manifest) + wide109_claim_count(manifest) + expanded_claim_count(manifest) + (2 if manifest.get('overlay_menu2_stage') else 0) + (1 if manifest.get('overlay_statecopy1_stage') else 0) + (22 if manifest.get('overlay_archive22_stage') else 0) + (33 if manifest.get('overlay_archive33_stage') else 0) + (61 if manifest.get('overlay_archive61_stage') else 0) + (1 if manifest.get('overlay_checkpoint500_stage') else 0) + (5 if manifest.get('overlay_rediscovery5_stage') else 0) + (49 if manifest.get('overlay_native49_stage') else 0) + (51 if manifest.get('overlay_native51_stage') else 0) + (241 if manifest.get('overlay_isolated233_stage') else 0))
-        proof=json.loads((ROOT/'decomp/results/combined.json').read_text())
-        inventory=json.loads((ROOT/'decomp/results/inventory.json').read_text())
+        # Historical 1964-C test of the exact prior ownership graph. The
+        # live 2072-C proof and manifest are checked by promotion_integrity.
+        proof=json.loads((ROOT/'decomp/results/combined_1964_before_reconcile108_20261122.json').read_text())
+        inventory=json.loads((ROOT/'decomp/results/inventory_1964_before_reconcile108_20261122.json').read_text())
         self.assertEqual(proof['comparison']['claimed_functions'],len(claims))
         self.assertEqual(proof['comparison']['matched_functions'],len(claims))
         self.assertEqual(inventory['summary']['newly_matching_c'],len(claims))
@@ -1177,7 +1188,7 @@ class DecompVerificationTests(unittest.TestCase):
             self.assertEqual((checkout/'Makefile').read_bytes(),make_before)
             self.assertFalse((checkout/'src/unit.c').exists())
     def test_current_sources_and_manifest_have_matching_build_evidence(self):
-        manifest=load_manifest(ROOT/'decomp/manifest.json')
+        manifest=_current_load_manifest(ROOT/'decomp/manifest.json')
         result=json.loads((ROOT/'decomp/results/combined.json').read_text())
         self.assertEqual(result['status'],'matched')
         self.assertEqual(result['upstream_commit'],manifest['upstream_commit'])
@@ -1259,6 +1270,9 @@ class DecompVerificationTests(unittest.TestCase):
             from decomp import overlay_isolated233 as isolated
             sources.update('research/pending_isolated233_20261120/sources/'+f['source']+'.c'
                            for f in isolated.load_fixture()['functions'])
+        if manifest.get('overlay_reconcile108_stage'):
+            from decomp import usa_canonical_reconcile108 as reconcile
+            sources.update(f['source_path'] for f in reconcile.fixture()['functions'])
         self.assertEqual(set(result['sources_sha256_lf']),sources)
         for name in sources:
             patches=[p for p in manifest.get('existing_source_patches', []) if p['source']==name]

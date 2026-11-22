@@ -13,6 +13,7 @@ class Native100ExactC(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.manifest=load_manifest(ROOT/'manifest.json')
+        cls.manifest.pop('overlay_reconcile108_stage', None)  # Historical native100 stage
         # Retain the frozen 1623 -> 1723 proof projection.
         cls.manifest.pop('overlay_isolated233_stage',None)
         cls.a=stage49.load_fixture()

@@ -1,0 +1,85 @@
+"""Regression tests for the 2026-11-22 unintegrated-source false promotion."""
+from __future__ import annotations
+import json
+from pathlib import Path
+import shutil
+import tempfile
+import unittest
+from decomp import promotion_integrity as integrity
+from decomp import usa_canonical_reconcile108 as reconcile
+from decomp.verify import load_manifest,claimed_functions
+
+
+class CanonicalPromotionIntegrityTests(unittest.TestCase):
+    def test_exact_final_c_claims_and_frozen_original_addresses(self):
+        manifest=load_manifest(integrity.ROOT/'manifest.json')
+        claims=claimed_functions(manifest)
+        self.assertEqual(len(claims),2072)
+        self.assertEqual(sum(f['size'] for f in claims),92492)
+        self.assertEqual(len({f['name'] for f in claims}),2072)
+        self.assertEqual(len(reconcile.fixture()['functions']),108)
+        self.assertEqual(reconcile.fixture()['source_ownership_exception'][0]['name'],
+                         'func_800108BC_114BC')
+
+    def _temporary(self, *, manifest=None, proof=None, inventory=None):
+        folder=tempfile.TemporaryDirectory()
+        root=Path(folder.name)
+        (root/'results').mkdir()
+        canonical=integrity.ROOT
+        for path,override in [('manifest.json',manifest),('results/combined.json',proof),
+                              ('results/inventory.json',inventory),
+                              ('results/usa_canonical_reconcile108_2072_g2_20261122.json',None)]:
+            dst=root/path
+            src=canonical/path
+            if not src.is_file():
+                raise ValueError('Missing canonical test proof '+str(src))
+            dst.write_text(src.read_text() if override is None else json.dumps(override))
+        return folder,root
+
+    def test_current_canonical_manifest_matches_stored_g2_and_inventory(self):
+        audit=integrity.audit()
+        self.assertEqual(audit['status'],'PASS',audit['errors'])
+        self.assertEqual((audit['accepted_C'],audit['accepted_original_bytes']),
+                         (2072,92492))
+
+    def test_staged_only_manifest_from_previous_commit_fails_closed(self):
+        manifest=json.loads((integrity.ROOT/'manifest.json').read_text())
+        manifest.pop('overlay_reconcile108_stage')
+        folder,root=self._temporary(manifest=manifest)
+        with folder:
+            bad=integrity.audit(root)
+            self.assertEqual(bad['status'],'FAIL')
+            self.assertTrue(any('disagree' in e for e in bad['errors']),bad['errors'])
+
+    def test_forged_inventory_count_fails_closed(self):
+        inv=json.loads((integrity.ROOT/'results/inventory.json').read_text())
+        inv['summary']['newly_matching_c']=1964
+        folder,root=self._temporary(inventory=inv)
+        with folder:
+            bad=integrity.audit(root)
+            self.assertEqual(bad['status'],'FAIL')
+            self.assertTrue(any('inventory C count' in e for e in bad['errors']),bad['errors'])
+
+    def test_forged_full_rom_or_function_list_fails_closed(self):
+        report=json.loads((integrity.ROOT/'results/combined.json').read_text())
+        report['comparison']['full_rom_match']=False
+        report['comparison']['functions'].pop()
+        folder,root=self._temporary(proof=report)
+        with folder:
+            bad=integrity.audit(root)
+            self.assertEqual(bad['status'],'FAIL')
+            self.assertGreaterEqual(len(bad['errors']),2)
+
+    def test_stale_reconciled_stage_proof_fails_closed(self):
+        folder,root=self._temporary()
+        with folder:
+            p=root/'results/usa_canonical_reconcile108_2072_g2_20261122.json'
+            record=json.loads(p.read_text())
+            record['accepted_after']=1964
+            p.write_text(json.dumps(record))
+            bad=integrity.audit(root)
+            self.assertEqual(bad['status'],'FAIL')
+            self.assertTrue(any('stage proof mismatch' in e for e in bad['errors']))
+
+
+if __name__=='__main__':unittest.main()

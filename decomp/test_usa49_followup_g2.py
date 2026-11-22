@@ -31,7 +31,12 @@ class TestUSA49ResearchSourceGuards(unittest.TestCase):
                 self.assertTrue(a['rom_offset']+a['size']<=b['rom_offset'] or b['rom_offset']+b['size']<=a['rom_offset'],(a['name'],b['name']))
 
     def test_only_prior_canonical_overlap_is_the_promoted_menu_helper(self):
-        existing={x['name'] for x in verify.claimed_functions(verify.load_manifest(verify.ROOT/'manifest.json'))}
+        # This test checks overlap as it existed before this research was
+        # canonically reconciled. The full current 2072-C accepted set is
+        # guarded separately by promotion_integrity.
+        manifest=verify.load_manifest(verify.ROOT/'manifest.json')
+        manifest.pop('overlay_reconcile108_stage',None)
+        existing={x['name'] for x in verify.claimed_functions(manifest)}
         names={x['name'] for x in mini.fixture()['functions']+cross.fixture()['functions']}
         self.assertEqual(names&existing,{'func_800108BC_114BC'})
         self.assertEqual(len(names-existing),48)

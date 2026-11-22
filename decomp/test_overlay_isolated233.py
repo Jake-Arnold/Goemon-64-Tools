@@ -25,9 +25,11 @@ class Isolated233PromotionTests(unittest.TestCase):
         cls.functions = cls.fixture['functions']
 
     def test_full_1964_cumulative_claims_are_unique(self):
-        previous = claimed_functions({k:v for k,v in self.manifest.items()
+        historical = {k:v for k,v in self.manifest.items()
+                      if k!='overlay_reconcile108_stage'}
+        previous = claimed_functions({k:v for k,v in historical.items()
                                       if k!='overlay_isolated233_stage'})
-        current = claimed_functions(self.manifest)
+        current = claimed_functions(historical)
         self.assertEqual((len(previous),sum(f['size'] for f in previous)),(1723,69344))
         self.assertEqual((len(current),sum(f['size'] for f in current)),(1964,84708))
         self.assertEqual(len(self.functions),241)

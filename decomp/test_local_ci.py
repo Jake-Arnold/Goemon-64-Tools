@@ -13,7 +13,7 @@ class LocalCITests(unittest.TestCase):
     def test_default_runs_python_validation_then_host_sanitizers(self):
         with tempfile.TemporaryDirectory() as directory:
             steps = local_ci.build_steps(Path(directory) / "host")
-        self.assertEqual(len(steps), 38)
+        self.assertEqual(len(steps), 39)
         self.assertIn("Native100 original-C 1000-case host sanitizer test", [name for name, _ in steps])
         self.assertEqual(steps[30][0], "USA 92F0 A18C/A548/A5C4/AAE8/AB30/108BC actual-source sanitizer build")
         self.assertTrue(any(path.endswith("test_usa_92f0_a18c_aae8.c") for path in steps[30][1]))
@@ -28,6 +28,8 @@ class LocalCITests(unittest.TestCase):
         self.assertEqual(steps[36][1][-2:], ["decomp.task_registry", "validate"])
         self.assertEqual(steps[37][0], "C-Right live-trace comparator tests")
         self.assertIn("decomp/tasks/cright_live_trace", steps[37][1])
+        self.assertEqual(steps[38][0], "Canonical promotion integrity (manifest+G2+inventory)")
+        self.assertEqual(steps[38][1][-2:], ["decomp.promotion_integrity", "--validate"])
 
         self.assertTrue(any(path.endswith("test_actual109.c") for path in steps[11][1]))
         self.assertEqual(sum(path.endswith(".c") and "usa_wide109_promotion_20261118/sources" in path for path in steps[11][1]), 68)
@@ -75,7 +77,7 @@ class LocalCITests(unittest.TestCase):
     def test_quick_runs_all_python_gates_without_native_compile(self):
         with tempfile.TemporaryDirectory() as directory:
             steps = local_ci.build_steps(Path(directory) / "host", quick=True)
-        self.assertEqual(len(steps), 5)
+        self.assertEqual(len(steps), 6)
         self.assertTrue(all("cc" not in step[0].lower() for step in steps))
 
     @patch.object(local_ci.subprocess, "run")
@@ -88,7 +90,7 @@ class LocalCITests(unittest.TestCase):
     def test_success_is_not_stealth_full_rom_proof(self, run):
         run.return_value = subprocess.CompletedProcess([], 0)
         self.assertEqual(local_ci.main(["--quick"]), 0)
-        self.assertEqual(run.call_count, 5)
+        self.assertEqual(run.call_count, 6)
 
     @patch.object(local_ci.subprocess, "run", side_effect=FileNotFoundError("compiler missing"))
     def test_missing_executable_fails(self, run):
