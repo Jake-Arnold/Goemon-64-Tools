@@ -45,8 +45,13 @@ class DecompMetadataSyncTests(unittest.TestCase):
         primary = next(
             r for r in result["entries"] if r["id"] == self.example["id"])
         self.assertEqual(primary["address"], self.example["address"])
+        # The current discovery manifest already contains a preserved
+        # decomp conflict; this invocation must add exactly one *new* one.
+        before = {r["id"] for r in self.local["entries"]
+                  if r["id"].startswith("decomp:conflict:")}
         disputes = [r for r in result["entries"]
-                    if r["id"].startswith("decomp:conflict:")]
+                    if r["id"].startswith("decomp:conflict:")
+                    and r["id"] not in before]
         self.assertEqual(len(disputes), 1)
         self.assertEqual(disputes[0]["confidence"], "disputed")
         self.assertFalse(disputes[0]["live_readable"])

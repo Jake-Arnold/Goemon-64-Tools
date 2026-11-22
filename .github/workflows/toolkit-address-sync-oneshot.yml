@@ -1,0 +1,36 @@
+name: One-shot v0.11.81 address catalogue regeneration
+on:
+  push:
+    branches:
+      - toolkit/release-v01181-debugger-address-sync
+    paths:
+      - .github/workflows/toolkit-address-sync-oneshot.yml
+
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Regenerate, inspect, and commit canonical metadata on feature branch only
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$GITHUB_REF_NAME" = "toolkit/release-v01181-debugger-address-sync"
+          python -m scripts.sync_address_catalogue --write
+          python -m scripts.sync_address_catalogue --check
+          git diff --check
+          git diff --stat -- practice/data/address_catalogue_v1.json practice/data/address_catalogue_audit.json
+          if ! git diff --quiet -- practice/data/address_catalogue_v1.json practice/data/address_catalogue_audit.json; then
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add practice/data/address_catalogue_v1.json practice/data/address_catalogue_audit.json
+            git commit -m "fix(toolkit): regenerate v0.11.81 address catalogue and audit"
+            git push origin HEAD:"$GITHUB_REF_NAME"
+          fi
