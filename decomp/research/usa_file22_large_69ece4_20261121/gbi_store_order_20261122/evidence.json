@@ -1,0 +1,33 @@
+{
+  "format": "file22-gbi-macro-store-order-original-mips-vs-ido",
+  "status": "RESEARCH_ONLY_FAILED_NATIVE",
+  "original_usa_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+  "target": "func_801CC0C4_69ECE4",
+  "original_size": 1808,
+  "compiled_size": 1808,
+  "original_stack": 320,
+  "compiled_stack": 144,
+  "compiler": "original IDO 5.3 -O2 -mips2",
+  "compiler_relocs": 2,
+  "compiled_F300_lui": 3,
+  "compiled_E700_lui": 3,
+  "default_original_gfx_each": {
+    "mode0": 275,
+    "mode1": 275,
+    "mode2": 275,
+    "mode3": 240
+  },
+  "all_default_final_gfx_equal": true,
+  "all_default_external_reads_equal": true,
+  "mode0_external_guest_stores_each": 825,
+  "mode0_store_positions_different": 50,
+  "mode0_adjacent_swapped_gfx_pairs": 25,
+  "mode1_2_3_store_order_equal": true,
+  "source_only_zip_sha256": "5a6ed54d2f1ee600d3b3c406de9057ad6b63e3bc569d53c70c34acc7a2012912",
+  "fresh_extraction_replay": "PASS",
+  "original_source_identified": false,
+  "native_exact": false,
+  "full_g2": "NOT_RUN",
+  "full_ci": "NOT_RUN",
+  "accepted_count_change": 0
+}

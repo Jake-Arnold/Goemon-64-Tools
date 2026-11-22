@@ -404,6 +404,45 @@ No native exact matching C; no current original-ROM G2/ELF/relocation gate,
 strict inventory or full local CI on this nonmatching candidate. Previously
 published USA accepted total remains **1,965 / 84,648 bytes**.
 
+
+## 22 November 2026: original-versus-native GBI texture macro **store-order** negative control
+
+Source-only tested [readme](gbi_store_order_20261122/README.md) and
+[structured evidence](gbi_store_order_20261122/evidence.json).
+Following the separate GBI-macro study and 113-case external event oracle,
+we introduced the **actual original IDO 5.3 gDPLoadTextureBlock mode0 macro**
+into the latter code structure. It produces 1808 bytes and **three**
+F300 LUI / **three** E700 LUI, and all final mode0/1/2/3 64-bit
+graphics commands and non-stack reads exactly match original MIPS.
+However, native frame is **0x90** (original 0x140), so not native exact.
+
+**Important new negative control:** in the original default mode0
+execution, **25 Gfx commands in five texture changes have their two
+32-bit stores reversed**. The standard pinned GBI macro expansion writes
+first-command-word then second-command-word in five intermediate commands
+per texture setup, while the original MIPS writes second before first.
+There are 50 mismatching positions in an otherwise equal ordered list
+of 825 external guest stores, precisely 25 adjacent reversals; initial
+and final command of each seven-command texture sequence have correct order.
+Modes 1,2,3 have **0 store differences**. This proves byte-identical
+final Gfx is not enough to claim original source expansion or exact
+observable memory writes. It does **not** rule out a different historical
+GBI header, wrapper or compiler instruction schedule generating original
+write order.
+
+The source-only standalone ZIP
+goemon-usa-file22-gbi-store-order-addendum-20261122.zip
+SHA-256 **5a6ed54d2f1ee600d3b3c406de9057ad6b63e3bc569d53c70c34acc7a2012912**
+includes the C variant, actual original IDO5.3 source harness, original
+MIPS interpreter and memory-event oracle; independently fresh-extracted,
+compiled and verified with the user's original USA ROM. No copyrighted
+header/ROM/ASM/binary or original compiler is distributed.
+
+A future original-source hypothesis should reproduce **the three
+branch-local F300/E700 loads, the original stack/register arrangement AND
+the exact word-store order**. A macro-equivalent final DL alone is
+insufficient. No promotion/full candidate original-ROM G2/full CI.
+
 ## Repository boundary and next technical hypothesis
 
 The executable hook integration legitimately lives in [native recompilation PR #1](https://github.com/Jake-Arnold/Goemon64Recomp-JP/pull/1), because it instruments `Goemon64Recomp-JP` runtime. **Matching C, semantics, data layout and proof are owned by this `Goemon-64-Tools` decomp research**, not the native launcher. The two need links, not duplicated runtime patch code.
