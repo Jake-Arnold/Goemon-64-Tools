@@ -47,6 +47,8 @@ class TestWindowsPackaging(unittest.TestCase):
         self.assertIn('--icon $Icon', script)
         self.assertIn('goemon_app.py', script)
         self.assertIn('goemon_tools_logo_small.png', script)
+        self.assertIn('--collect-data practice', script)
+        self.assertIn('--collect-all tkinterdnd2', script)
 
 
 if __name__ == '__main__':
