@@ -1,0 +1,82 @@
+{
+  "format": "goemon-mini16-native-pristine-replay-v1",
+  "date": "2026-11-22",
+  "status": "PASSED_PRISTINE_FULL_ROM_ELF_RESEARCH_ONLY",
+  "private_usa_retail_sha1": "df8083a54296b8c151917c5333e1c85f014a2a66",
+  "original_expanded_usa_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+  "pinned_upstream": "7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee",
+  "newly_native_exact_functions": [
+    [
+      "func_801E2180_59E090",
+      "0x59E090",
+      160,
+      11
+    ],
+    [
+      "func_801E2220_59E130",
+      "0x59E130",
+      68,
+      3
+    ],
+    [
+      "func_801E2800_59E710",
+      "0x59E710",
+      176,
+      1
+    ],
+    [
+      "func_801E2AA0_59E9B0",
+      "0x59E9B0",
+      180,
+      4
+    ],
+    [
+      "func_801E2BA8_59EAB8",
+      "0x59EAB8",
+      168,
+      1
+    ],
+    [
+      "func_801E2CEC_59EBFC",
+      "0x59EBFC",
+      64,
+      1
+    ],
+    [
+      "func_801E2D74_59EC84",
+      "0x59EC84",
+      188,
+      2
+    ]
+  ],
+  "new_original_bytes_exact": 1004,
+  "new_original_relocations_exact": 23,
+  "total_pristine_reconstructed_C_functions": 16,
+  "total_pristine_original_instruction_bytes": 2208,
+  "whole_usa_rom_exact_bytes": 33554432,
+  "positive_elf_func_identities_exact": 7376,
+  "semantic_relocations_exact": 82216,
+  "relocation_sections_exact": 72,
+  "file_11_relocations_exact": 8825,
+  "original_elf_sha256": "83eda0f1df831d997f9e505c92a8a7fdb55728d3ad28b30d224f5e1ae975a038",
+  "sixteen_C_elf_sha256": "68cba222c1ebc2d419d12f8b8a3d9eed75c8d28a9fb10462ba9acee277b8f8f9",
+  "tests": {
+    "clean_archive_extract": "PASS",
+    "sha256sum_checked_files": 25,
+    "seven_original_address_linked_ido": "PASS",
+    "sixteen_C_complete_rom_elf": "PASS",
+    "seven_actual_C_gcc_asan_ubsan": "8192_SCENARIOS_65536_CALLS_PASS",
+    "seven_actual_C_clang_asan_ubsan": "8192_SCENARIOS_65536_CALLS_PASS",
+    "altered_source_negative_control": "REJECTED_AS_EXPECTED"
+  },
+  "source_only_zip_sha256": "7bf4bb80ec7a2a4fd5eda086e5e9d4ffa93ae7de5da0874a20ea7636e2204fea",
+  "combined_production_verify": "NOT_RUN",
+  "strict_inventory": "NOT_RUN",
+  "full_local_ci": "NOT_RUN",
+  "emulator_gameplay": "NOT_RUN",
+  "production_promotion": false,
+  "usa_accepted_before": 1965,
+  "usa_accepted_after": 1965,
+  "usa_original_accepted_bytes": 84648,
+  "usa_assembly_entries": 5398
+}
