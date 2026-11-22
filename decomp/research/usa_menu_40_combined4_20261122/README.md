@@ -1,4 +1,4 @@
-> **Later canonical result:** All four functions here passed current-branch USA native G2, strict inventory, complete ELF identity and relocation comparison, and full local CI. The fourth function `func_800108BC_114BC` was already in the crossregion48 research set, so this adds one accepted C without counting a new discovery. See [the promotion proof](../../results/usa_unique_four_g2_promotion_20261122.json).
+> **Later canonical result:** All four functions here are included in the six-function USA canonical promotion, which passed native G2, strict inventory, complete ELF identity and relocation comparison, and full local CI. `func_800108BC_114BC` was already in the crossregion48 research set. See [the six-function promotion proof](../../results/usa_92f0_six_g2_promotion_20261122.json).
 
 # USA IDO 5.3: menu graphics donor and four-function original-ROM proof
 

@@ -1,3 +1,5 @@
+> **Later canonical result:** All six functions described here passed canonical USA combined G2, full ELF/relocation comparison, strict inventory and full `decomp.local_ci`. Final canonical USA is **1,962 C / 84,340 original bytes / 5,401 ASM**. See [the six-function promotion proof](../../results/usa_92f0_six_g2_promotion_20261122.json). The research details below preserve native/source provenance and the earlier original-upstream proof.
+
 # USA six original-upstream ROM/ELF exact C functions — two newly recovered (204 bytes)
 
 **22 November 2026 · RESEARCH_ONLY. No canonical accepted-C promotion.**

@@ -1,6 +1,6 @@
 {
   "format": "goemon-matching-build-result-v1",
-  "started_utc": "2026-11-22T19:18:33.181953+00:00",
+  "started_utc": "2026-11-22T19:39:23.444310+00:00",
   "status": "matched",
   "upstream_commit": "7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee",
   "retail_sha1": "df8083a54296b8c151917c5333e1c85f014a2a66",
@@ -2974,9 +2974,9 @@
     "expected_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
     "candidate_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
     "rom_size": 33554432,
-    "matched_functions": 1960,
-    "claimed_functions": 1960,
-    "matched_function_bytes": 84136,
+    "matched_functions": 1962,
+    "claimed_functions": 1962,
+    "matched_function_bytes": 84340,
     "functions": [
       {
         "name": "func_80023DF0_249F0",
@@ -19013,6 +19013,24 @@
         "candidate_sha256": "b1a5816832347077ca2352ac74654852f9bf1d5af61a00ff2878f5bea6d6f8cc"
       },
       {
+        "name": "func_8000A548_B148",
+        "size": 124,
+        "guest_address": "0x8000A548",
+        "rom_offset": "0xB148",
+        "matched": true,
+        "expected_sha256": "c1cf2ee8a02922b916b67119f9e294b5aa65705d15be52a1cc89820abcd3a687",
+        "candidate_sha256": "c1cf2ee8a02922b916b67119f9e294b5aa65705d15be52a1cc89820abcd3a687"
+      },
+      {
+        "name": "func_8000A5C4_B1C4",
+        "size": 80,
+        "guest_address": "0x8000A5C4",
+        "rom_offset": "0xB1C4",
+        "matched": true,
+        "expected_sha256": "0f5842049608e62a458f580c7c3c10ea13681eb33fd1529593b76e7c0c902277",
+        "candidate_sha256": "0f5842049608e62a458f580c7c3c10ea13681eb33fd1529593b76e7c0c902277"
+      },
+      {
         "name": "func_8000AAE8_B6E8",
         "size": 40,
         "guest_address": "0x8000AAE8",
@@ -22146,6 +22164,8 @@
     "research/pending_isolated233_20261120/sources/iso233_011.c": "ea2c63ba6e156bec32ec93df6f3298aa98264bac6cb85fa4b63434575971060f",
     "research/pending_isolated233_20261120/sources/iso233_012.c": "26b2e76b122e8f14e1808b65b4e7ae53ac203f3b6528f212ef1de53916bf7174",
     "research/pending_isolated233_20261120/sources/iso233_013.c": "6a9571f3cb66dbb96ac980a418a93fc9fa621a02a0c9dfc3b01e9b351b35ad1e",
+    "research/pending_isolated233_20261120/sources/iso233_237.c": "5fa2a51008147b456e2231f2312472b44d449a7da2d90f484d07868f9b0a44fe",
+    "research/pending_isolated233_20261120/sources/iso233_238.c": "db144ba1eccbef05fff6247d9ee8fe3769e793ba0f87ddcce345b9502122df8e",
     "research/pending_isolated233_20261120/sources/iso233_234.c": "a23015cca3d8625fd850218b6d9d14250aad63c9fac0c3aa8323370e1c29485b",
     "research/pending_isolated233_20261120/sources/iso233_235.c": "305318d9c1dfb10881f0551086758a51e6a9fc7cd974cd2372f30d95240fe840",
     "research/pending_isolated233_20261120/sources/iso233_014.c": "17c36de53ef99b79c404d0ba086e2c56650fd66200cb7fa8ae1b64bbe5493065",
@@ -53007,15 +53027,15 @@
     "retained_ASM_fragments": 75
   },
   "overlay_isolated233_source_plan": {
-    "functions": 237,
-    "instruction_bytes": 14792,
-    "embedded_C_functions": 12,
+    "functions": 239,
+    "instruction_bytes": 14996,
+    "embedded_C_functions": 14,
     "retained_ASM_fragments": 251
   },
   "overlay_isolated233_object_layout": {
-    "functions": 237,
-    "embedded": 12,
-    "instruction_bytes": 14792,
+    "functions": 239,
+    "embedded": 14,
+    "instruction_bytes": 14996,
     "C_objects": [
       {
         "source": "iso233_000",
@@ -56580,8 +56600,8 @@
   },
   "overlay_isolated233_stage": {
     "status": "PASS",
-    "count": 237,
-    "bytes": 14792,
+    "count": 239,
+    "bytes": 14996,
     "rom_bytes": 33554432,
     "sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
     "positive_elf_function_entries": 7376,
@@ -56657,8 +56677,8 @@
       "file_79": 180,
       "file_80": 89
     },
-    "C_units": 237,
+    "C_units": 239,
     "retained_ASM_fragments": 251
   },
-  "ended_utc": "2026-11-22T19:20:46.274975+00:00"
+  "ended_utc": "2026-11-22T19:41:35.415264+00:00"
 }

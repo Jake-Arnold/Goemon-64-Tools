@@ -24,25 +24,27 @@ class Isolated233PromotionTests(unittest.TestCase):
         cls.fixture = native.load_fixture()
         cls.functions = cls.fixture['functions']
 
-    def test_full_1960_cumulative_claims_are_unique(self):
+    def test_full_1962_cumulative_claims_are_unique(self):
         previous = claimed_functions({k:v for k,v in self.manifest.items()
                                       if k!='overlay_isolated233_stage'})
         current = claimed_functions(self.manifest)
         self.assertEqual((len(previous),sum(f['size'] for f in previous)),(1723,69344))
-        self.assertEqual((len(current),sum(f['size'] for f in current)),(1960,84136))
-        self.assertEqual(len(self.functions),237)
-        self.assertEqual(sum(f['size'] for f in self.functions),14792)
-        self.assertEqual(len({f['name'] for f in current}),1960)
+        self.assertEqual((len(current),sum(f['size'] for f in current)),(1962,84340))
+        self.assertEqual(len(self.functions),239)
+        self.assertEqual(sum(f['size'] for f in self.functions),14996)
+        self.assertEqual(len({f['name'] for f in current}),1962)
         spans = sorted((f['rom_offset'],f['rom_offset']+f['size']) for f in current)
         self.assertTrue(all(left[1]<=right[0] for left,right in zip(spans,spans[1:])))
 
     def test_frozen_original_sources_and_addresses(self):
-        self.assertEqual(len(native.EMBEDDED),12)
-        self.assertEqual(len({f['rom_offset'] for f in self.functions}),237)
+        self.assertEqual(len(native.EMBEDDED),14)
+        self.assertEqual(len({f['rom_offset'] for f in self.functions}),239)
         self.assertIn('func_8000A18C_AD8C',native.EMBEDDED)
         self.assertNotIn('func_8000AAE8_B6E8',native.EMBEDDED)
         self.assertNotIn('func_8000AB30_B730',native.EMBEDDED)
         self.assertNotIn('func_800108BC_114BC',native.EMBEDDED)
+        self.assertIn('func_8000A548_B148',native.EMBEDDED)
+        self.assertIn('func_8000A5C4_B1C4',native.EMBEDDED)
         for f in self.functions:
             with self.subTest(name=f['name']):
                 p=native.SOURCE/(f['source']+'.c')

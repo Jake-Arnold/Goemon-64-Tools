@@ -3,13 +3,13 @@
   "created_utc_date": "2026-11-20",
   "canonical_branch": "chatgptweb/decomp",
   "production_accepted_baseline": {
-    "usa_functions": 1960,
-    "usa_instruction_bytes": 84136,
+    "usa_functions": 1962,
+    "usa_instruction_bytes": 84340,
     "japan_0_functions": 39,
     "japan_0_instruction_bytes": 2092
   },
   "production_proof_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
-  "purpose": "Post USA four-function canonical G2 1,960-C live accepted review baseline. Unpromoted file25 candidate remains blocked.",
+  "purpose": "Post USA six-function canonical G2 1,962-C live accepted review baseline. Unpromoted file25 candidate remains blocked.",
   "ready_for_combined_g2": {
     "functions": 0,
     "bytes": 0,

@@ -8,10 +8,14 @@
 #include "../sources/iso233_234.c"
 #include "../sources/iso233_235.c"
 #include "../sources/iso233_236.c"
+#include "../sources/iso233_237.c"
+#include "../sources/iso233_238.c"
 
 char D_800637C0_643C0[32];
 SYS_W D_8008CCC0_8D8C0;
 File92State D_8014CCC0_14D8C0;
+A5C4Struct D_8005B974_5C574;
+static SYS_W expected_sys;
 
 static uint32_t rng=0xA18C0AAEu;
 static u8 randbyte(void){rng=rng*1664525u+1013904223u;return (u8)(rng>>24);}
@@ -28,9 +32,22 @@ int main(void){
         assert(memcmp(page,expected_page,sizeof page)==0);
 
         memset(&D_8008CCC0_8D8C0,randbyte(),sizeof D_8008CCC0_8D8C0);
-        SYS_W expected_sys=D_8008CCC0_8D8C0;
+        memcpy(&expected_sys,&D_8008CCC0_8D8C0,sizeof expected_sys);
         for(int i=0;i<12;i++)expected_sys.bytes[0xC0000+i*0x374+0x3705]=0;
         func_8000AB30_B730();
+        assert(memcmp(&D_8008CCC0_8D8C0,&expected_sys,sizeof expected_sys)==0);
+
+        memset(&D_8008CCC0_8D8C0,randbyte(),sizeof D_8008CCC0_8D8C0);
+        for(int i=0;i<38;i++)D_8005B974_5C574.words[i]=randbyte();
+        memcpy(&expected_sys,&D_8008CCC0_8D8C0,sizeof expected_sys);
+        s32 start=test%9;
+        s32 loop_end=start+(test%4);
+        for(s32 i=start;i<=loop_end;i++){
+            size_t offset=0xBBB90+(size_t)i*0x98;
+            memcpy(expected_sys.bytes+offset+sizeof(u32),
+                   (u8*)&D_8005B974_5C574+sizeof(u32),sizeof(A5C4Struct)-sizeof(u32));
+        }
+        func_8000A548_B148(start,loop_end);
         assert(memcmp(&D_8008CCC0_8D8C0,&expected_sys,sizeof expected_sys)==0);
 
         RawGfx gfx[16], expected_gfx[16];
@@ -43,8 +60,8 @@ int main(void){
         expected_gfx[index].w1=(unsigned)(uintptr_t)D_800637C0_643C0;
         expected_gfx[index+1].w0=0xB8000000u;
         expected_gfx[index+1].w1=0;
-        RawGfx *end=func_800108BC_114BC(gfx+index);
-        assert(end==gfx+index+1);
+        RawGfx *gfx_end=func_800108BC_114BC(gfx+index);
+        assert(gfx_end==gfx+index+1);
         assert(memcmp(gfx,expected_gfx,sizeof gfx)==0);
 
         memset(&D_8014CCC0_14D8C0,randbyte(),sizeof D_8014CCC0_14D8C0);
@@ -57,6 +74,6 @@ int main(void){
         func_8000A18C_AD8C();
         assert(memcmp(&D_8014CCC0_14D8C0,&expected_state,sizeof expected_state)==0);
     }
-    puts("PASS: 4096 actual-source cases per A18C, AAE8, AB30 and 108BC");
+    puts("PASS: 4096 actual-source cases per A18C, A548, A5C4, AAE8, AB30 and 108BC");
     return 0;
 }

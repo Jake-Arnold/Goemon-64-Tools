@@ -13,10 +13,10 @@ from . import overlay_crossregion47 as cross
 
 ROOT=Path(__file__).resolve().parent
 SOURCE=ROOT/'research/pending_isolated233_20261120/sources'
-FIXTURE=ROOT/'research/pending_isolated233_20261120/promotion_manifest_237.json'
-FORMAT='goemon-usa-isolated237-post-1723-v1'
+FIXTURE=ROOT/'research/pending_isolated233_20261120/promotion_manifest_239.json'
+FORMAT='goemon-usa-isolated239-post-1723-v1'
 SHA1='6ea0ed71032ce08fc2745f412d84936382197494'
-COUNT=237; BYTES=14792
+COUNT=239; BYTES=14996
 # Original source units whose remaining ASM is embedded via asm-processor.
 # Replacing their pragmas must keep the companion C functions in situ.
 EMBEDDED={
@@ -26,6 +26,8 @@ EMBEDDED={
     'func_8000A344_AF44':'92F0.c',
     'func_8000A430_B030':'92F0.c',
     'func_8000A4F8_B0F8':'92F0.c',
+    'func_8000A548_B148':'92F0.c',
+    'func_8000A5C4_B1C4':'92F0.c',
     'func_8000C5E4_D1E4':'dialogue_window.c',
     'func_8000C680_D280':'dialogue_window.c',
     'func_8000C838_D438':'dialogue_window.c',
@@ -204,6 +206,7 @@ def embed_original(checkout,fixture,root=SOURCE):
             declarations=('void func_8000A344_AF44(void);\n'
                           'void func_8000A430_B030(void);\n'
                           'void func_8000A4F8_B0F8(void);\n'
+                          'void func_8000A5C4_B1C4(void *);\n'
                           'void func_8000A480_B080(CLS_GBG_W *);\n')
             code=code.replace('#include "common.h"\n','#include "common.h"\n'+declarations,1)
         path.write_text(code)
