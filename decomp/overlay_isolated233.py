@@ -1,4 +1,4 @@
-"""Fail-closed original-USA 233-function promotion candidate after 1,723-C G2.
+"""Fail-closed isolated main-segment C stage after the 1,723-C G2 baseline.
 
 All function bodies originate in the verified research source archive. This
 adapter preserves remaining ASM, checks source/ROM/ELF identity, and never
@@ -13,18 +13,21 @@ from . import overlay_crossregion47 as cross
 
 ROOT=Path(__file__).resolve().parent
 SOURCE=ROOT/'research/pending_isolated233_20261120/sources'
-FIXTURE=ROOT/'research/pending_isolated233_20261120/promotion_manifest.json'
-FORMAT='goemon-usa-isolated233-post-1723-v1'
+FIXTURE=ROOT/'research/pending_isolated233_20261120/promotion_manifest_239.json'
+FORMAT='goemon-usa-isolated239-post-1723-v1'
 SHA1='6ea0ed71032ce08fc2745f412d84936382197494'
-COUNT=233; BYTES=14596
+COUNT=239; BYTES=14996
 # Original source units whose remaining ASM is embedded via asm-processor.
 # Replacing their pragmas must keep the companion C functions in situ.
 EMBEDDED={
     'func_80008798_9398':'92F0.c',
     'func_8000A0F0_ACF0':'92F0.c',
+    'func_8000A18C_AD8C':'92F0.c',
     'func_8000A344_AF44':'92F0.c',
     'func_8000A430_B030':'92F0.c',
     'func_8000A4F8_B0F8':'92F0.c',
+    'func_8000A548_B148':'92F0.c',
+    'func_8000A5C4_B1C4':'92F0.c',
     'func_8000C5E4_D1E4':'dialogue_window.c',
     'func_8000C680_D280':'dialogue_window.c',
     'func_8000C838_D438':'dialogue_window.c',
@@ -203,6 +206,7 @@ def embed_original(checkout,fixture,root=SOURCE):
             declarations=('void func_8000A344_AF44(void);\n'
                           'void func_8000A430_B030(void);\n'
                           'void func_8000A4F8_B0F8(void);\n'
+                          'void func_8000A5C4_B1C4(void *);\n'
                           'void func_8000A480_B080(CLS_GBG_W *);\n')
             code=code.replace('#include "common.h"\n','#include "common.h"\n'+declarations,1)
         path.write_text(code)
