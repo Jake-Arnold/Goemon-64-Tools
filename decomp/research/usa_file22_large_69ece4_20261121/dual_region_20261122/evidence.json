@@ -1,0 +1,86 @@
+{
+  "format": "goemon-file22-dual-region-ido-20261122",
+  "status": "RESEARCH_ONLY_FAILED_NATIVE",
+  "pr": 161,
+  "authenticity": {
+    "usa_32m_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+    "jp_32m_sha1": "6f8745fecc3a5e7d4918c7a73353eb0726116ded",
+    "pinned_upstream": "7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee"
+  },
+  "original_function": {
+    "USA_rom": "0x69ECE4",
+    "JP_rom": "0x6A37D4",
+    "USA_vma": "0x801CC0C4",
+    "JP_vma": "0x801D17F4",
+    "bytes": 1808,
+    "instructions": 452,
+    "identical_instruction_words": 450,
+    "region_specific_reloc_word_offsets": [
+      "0x40",
+      "0x4C"
+    ],
+    "USA_display_cursor": "0x801D701C",
+    "JP_display_cursor": "0x801DC74C",
+    "overlay_vma_delta": "0x5730"
+  },
+  "native_C_research": {
+    "candidate_bytes": 1744,
+    "original_bytes": 1808,
+    "frame_bytes": 320,
+    "entry_prefix_identical_words": 13,
+    "positional_identical_words_USA": 31,
+    "positional_identical_words_JP": 31,
+    "positional_comparison_words": 436,
+    "original_F300_E700_luis": [
+      3,
+      3
+    ],
+    "candidate_F300_E700_luis": [
+      1,
+      1
+    ],
+    "valid_original_HI16_LO16_relocations": 2,
+    "matching_C": false
+  },
+  "semantic": {
+    "prior_cases": 20,
+    "prior_gfx_entries": 5304,
+    "extra_valid_geometry_cases": 64,
+    "extra_gfx_entries": 18181,
+    "total_cases": 84,
+    "total_gfx_entries": 23485,
+    "compiled_mips_gfx_mismatches": 0,
+    "source_shape_variants": [
+      {
+        "shape": "commuted page-map addends",
+        "bytes": 1744,
+        "prefix": 13,
+        "positional": 31,
+        "passes": 20
+      },
+      {
+        "shape": "sequenced lookup temporaries",
+        "bytes": 1744,
+        "prefix": 0,
+        "positional": 19,
+        "passes": 20
+      },
+      {
+        "shape": "independent texture mode ifs",
+        "bytes": 1744,
+        "prefix": 0,
+        "positional": 23,
+        "passes": 20
+      }
+    ]
+  },
+  "reproducibility": {
+    "source_only_zip": "goemon-usa-file22-dual-region-native-study-20261122.zip",
+    "sha256": "bcb95caad654d49cbef99a63e210316df9bfcb80f3f2086c2254eda5ed5af4fd",
+    "fresh_unzip_replay": "PASS",
+    "contains_rom_asm_compiler_or_mips_object": false
+  },
+  "full_USA1965_original_ROM_G2": "NOT_RUN",
+  "full_local_CI": "NOT_RUN",
+  "accepted_count_delta": 0
+}
