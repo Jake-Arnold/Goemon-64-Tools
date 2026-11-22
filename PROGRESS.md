@@ -1,3 +1,8 @@
+## 22 November 2026 — Compiler quirk knowledge-base requirement
+
+- Added a mandatory instruction to `AGENTS.md` to preserve reproducible IDO 5.3/MIPS code-generation discoveries, including failed candidate insights, in `decomp/COMPILER_QUIRKS.md` in the same future research/promotion commit. Added a structured entry template; no compiler behavior is asserted without a verified experiment.
+- Reason: reusable compiler-specific findings should survive individual matching attempts and help later functions. Tests: documentation-only change; no native build, ROM G2 or local CI executed. Limitation: existing historical quirks have not yet been migrated. Next: populate the knowledge base with verified examples during subsequent native work.
+
 ## 22 November 2026 — USA 48 additional cross-region native-exact C reconstructions (research only)
 
 - From the **recently accepted Japanese JP2369 C donor implementations**, a new expanded candidate search **excluding all 1,965 accepted USA C and 51 earlier USA research functions** identified **48 further unique original USA C functions / 3,028 original code bytes**. Original USA guest-VMA IDO 5.3 `-O2 -mips2 -G 0` native replay **48/48 entire instruction ranges (3,028/3,028 bytes) PASS**; independent original USA source assembly reference audit **130/130 relocations** matches object offset, type and original target symbol. Authenticated original USA 32 MiB ROM SHA-1 `6ea0ed71032ce08fc2745f412d84936382197494`, original 16 MiB retail `df8083a54296b8c151917c5333e1c85f014a2a66`. Existing upstream original USA ROM rebuilt byte-identically before port research. [Source, manifest, test/replay and original-address proof](decomp/research/usa_crossregion48_followup_20261122/README.md).

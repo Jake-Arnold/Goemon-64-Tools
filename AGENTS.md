@@ -75,6 +75,10 @@ Sasuke battery `0x80161DF9 & 0x20` is unverified. Do not automatically
 promote hypotheses into matching-C claims, RAM editors, freezes or warps.
 Keep `decomp/*` research separate from `main`-based toolkit PRs.
 
+## Compiler quirk knowledge base (mandatory for matching-C work)
+
+Maintain [decomp/COMPILER_QUIRKS.md](decomp/COMPILER_QUIRKS.md) as a cumulative, reusable IDO/MIPS matching-C knowledge base. During every native matching attempt, record any **new, reproducible compiler/code-generation quirk** discovered, including unsuccessful experiments that clarify a constraint. Check existing entries before trying variants; deduplicate and improve earlier entries instead of appending repeated folklore. For each entry capture: region, original function and ROM offset/VMA; compiler version and exact flags; minimal C reproducer or source reference; observed versus expected MIPS/ABI, registers, stack, branches, padding or relocations; exact successful workaround or known failure; verification scope (isolated/native/combined G2); evidence paths and commands; and confidence/limitations. Distinguish empirically verified behavior from hypotheses, and note whether a quirk is portable across functions or region-specific. Do not include copyrighted original ROM/ASM dumps or proprietary binaries. Include knowledge-base updates **in the same next implementation/research commit** as the discovery, with root `PROGRESS.md` updated as required; never delay or discard the finding merely because its candidate failed promotion. This documentation does not relax any native or full-ROM acceptance gate.
+
 ## Decomp continuation
 
 For autonomous end-to-end matching-C discovery and promotion in ChatGPT or Codex, begin with [goemon-autonomous-decomp](.agents/skills/goemon-autonomous-decomp/SKILL.md); for shell/GitHub connector access mismatches use [goemon-github-source-bridge](.agents/skills/goemon-github-source-bridge/SKILL.md). These coordinate existing narrow skills and never override native proof gates.
