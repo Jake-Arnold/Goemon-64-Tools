@@ -1,3 +1,19 @@
+## 22 November 2026 — USA Mini reset/ease 2-function canonical G2 and full CI pass; publication pending
+
+- Starting latest canonical USA baseline at `chatgptweb/decomp` HEAD `91a6d48eeb117c9ffa01b507e83ccd5ca877b9ae`: **1,962 C / 84,340 original instruction bytes / 5,401 ASM**.
+- `func_801E276C_59E67C` (USA ROM `0x59E67C`, VMA `0x801E276C`, 148B) and `func_801E3DE0_59FCF0` (`0x59FCF0`, `0x801E3DE0`, 220B), both USA file_11 owner `587370`, now pass original IDO 5.3 and full canonical G2. **2 functions / 368 original bytes** added.
+- Fresh `python3 -m decomp.verify` passed **1,964/1,964** functions and all **33,554,432 USA ROM bytes**, SHA-1 `6ea0ed71032ce08fc2745f412d84936382197494`. Strict inventory passed **1,964 C / 5,399 ASM**, 7,376 ELF entries, zero extra positive aliases.
+- Against the accepted 1,962 baseline, all **7,376 ELF identities** and all **82,103 semantic relocation records** match (SHA-256 `e39dc5baf816797a8a835730f5266bf2eedbf3d7e38f0fe18009fbdb54394208`). Full `python3 -m decomp.local_ci` passed: 381 decomp tests (3 skipped), 349 verifier/ledger tests, 7 comparator tests, and configured sanitizers; both actual source fixtures ran 4,096 cases.
+- Status **PASSED_G2_LOCAL**, pending publication. [Promotion proof](decomp/results/usa_mini_speed_two_g2_promotion_20261122.json); upstream native evidence and source hashes are linked to [PR #144](https://github.com/Jake-Arnold/Goemon-64-Tools/pull/144). No gameplay emulator run; Japan and `main` unchanged.
+
+## 22 November 2026 — USA Mini reset/ease two-function G2 and full CI pass; publication pending
+
+- Starting latest verified canonical USA baseline at `chatgptweb/decomp` HEAD `91a6d48eeb117c9ffa01b507e83ccd5ca877b9ae`: **1,962 C / 84,340 original instruction bytes / 5,401 ASM**.
+- Two previously ASM-owned USA `file_11` functions under original parent `587370` passed original IDO 5.3: `func_801E276C_59E67C` (ROM `0x59E67C`, VMA `0x801E276C`, 148B) and `func_801E3DE0_59FCF0` (`0x59FCF0`, `0x801E3DE0`, 220B). **2 functions / 368 bytes** added.
+- Fresh `python3 -m decomp.verify` passed **1,964/1,964** claimed functions and all **33,554,432 USA ROM bytes**, SHA-1 `6ea0ed71032ce08fc2745f412d84936382197494`. Strict inventory passed **1,964 C / 5,399 ASM**, 7,376 ELF entries, no extra positive aliases.
+- Against a fresh accepted-1,962 baseline, all **7,376 ELF identities** and all **82,103 semantic relocation tuples** are identical (SHA-256 `e39dc5baf816797a8a835730f5266bf2eedbf3d7e38f0fe18009fbdb54394208`). Full `python3 -m decomp.local_ci` passed: 381 decomp tests (3 skipped), 349 verifier/ledger tests, seven comparator tests, and configured sanitizers; both new actual-source tests ran 4,096 cases.
+- Status **PASSED_G2_LOCAL** pending publication. Evidence: [Mini speed G2 proof](decomp/results/usa_mini_speed_two_g2_promotion_20261122.json), [combined](decomp/results/combined.json), [inventory](decomp/results/inventory.json). Japan and `main` unchanged.
+
 ## 22 November 2026 — USA six-function promotion PUBLISHED_REMOTE_VERIFIED
 
 - Starting `chatgptweb/decomp` HEAD: `e3c18c08abcd81f67a1e972f5fd9c4a887c49209`; USA **1,956 C / 83,940 original instruction bytes / 5,407 ASM**.
