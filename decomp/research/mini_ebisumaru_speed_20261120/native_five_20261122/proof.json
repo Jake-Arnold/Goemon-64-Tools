@@ -1,0 +1,63 @@
+{
+  "status": "PASSED_ISOLATED_LINKED_NATIVE_RESEARCH_ONLY",
+  "original_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+  "original_rom_rebuild_bytes_exact": 33554432,
+  "authentic_compiler": "SGI IDO 5.3",
+  "pinned_upstream": "7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee",
+  "functions": [
+    {
+      "name": "func_801E28D8_59E7E8",
+      "original_rom_offset": "0x59E7E8",
+      "original_vma": "0x801E28D8",
+      "linked_instruction_bytes_exact": 68,
+      "original_sha256": "26bfa7d660160ededf7df5db93530e9377912751c3097c2ea379b54fdcca4f8e",
+      "relocations_exact": 1,
+      "status": "PASSED_ISOLATED_LINKED_NATIVE"
+    },
+    {
+      "name": "func_801E2B54_59EA64",
+      "original_rom_offset": "0x59EA64",
+      "original_vma": "0x801E2B54",
+      "linked_instruction_bytes_exact": 84,
+      "original_sha256": "ddea0456ee36be52f53ffac7746a35cbf3f2c58f2c9f307f23dee9abcc46379f",
+      "relocations_exact": 4,
+      "status": "PASSED_ISOLATED_LINKED_NATIVE"
+    },
+    {
+      "name": "func_801E31A8_59F0B8",
+      "original_rom_offset": "0x59F0B8",
+      "original_vma": "0x801E31A8",
+      "linked_instruction_bytes_exact": 52,
+      "original_sha256": "79e9c610c9a067e0c6f306787a224e99d704152bafe3c4630ba8bc82357dd9a2",
+      "relocations_exact": 3,
+      "status": "PASSED_ISOLATED_LINKED_NATIVE"
+    },
+    {
+      "name": "func_801E3244_59F154",
+      "original_rom_offset": "0x59F154",
+      "original_vma": "0x801E3244",
+      "linked_instruction_bytes_exact": 52,
+      "original_sha256": "b5c45954e5438cae2f9c1c594be079c723667b51ed66f447a2644cc2af677c05",
+      "relocations_exact": 3,
+      "status": "PASSED_ISOLATED_LINKED_NATIVE"
+    },
+    {
+      "name": "func_801E3278_59F188",
+      "original_rom_offset": "0x59F188",
+      "original_vma": "0x801E3278",
+      "linked_instruction_bytes_exact": 92,
+      "original_sha256": "e81d46b703cbe0b7eadd8e4bcf462b9f156f0e6bf93030c96c6dbd97b02e9063",
+      "relocations_exact": 5,
+      "status": "PASSED_ISOLATED_LINKED_NATIVE"
+    }
+  ],
+  "totals": {
+    "previously_asm_owned_new_functions": 5,
+    "complete_linked_original_native_instruction_bytes": 348,
+    "matching_original_relocations": 16
+  },
+  "combined_decomp_verify": "NOT_RUN",
+  "decomp_inventory": "NOT_RUN",
+  "full_decomp_local_ci": "NOT_RUN",
+  "promotion": "NOT_PERMITTED"
+}
