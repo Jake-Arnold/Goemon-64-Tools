@@ -272,6 +272,21 @@ def build_steps(host_binary: Path, *, quick: bool = False):
                 '-o',str(binary)]),
             ('USA 92F0 A18C/A548/A5C4/AAE8/AB30/108BC actual-source sanitizer test',[str(binary)]),
         ])
+    if not quick:
+        isolated_tests=ROOT/'decomp/research/pending_isolated233_20261120/tests'
+        compiler=shlex.split(os.environ.get('CC','cc'))
+        mini_reset=host_binary.with_name('mini-reset-actual-host')
+        speed_ease=host_binary.with_name('speed-ease-actual-host')
+        sanitizer=['-std=gnu11','-O1','-g','-Wall','-Wextra','-Werror',
+                   '-fsanitize=address,undefined','-fno-sanitize-recover=all','-fno-omit-frame-pointer']
+        steps.extend([
+            ('Mini reset 148B original-source sanitizer build',compiler+sanitizer+[
+                str((isolated_tests/'test_mini_reset_276c.c').relative_to(ROOT)),'-o',str(mini_reset)]),
+            ('Mini reset 148B original-source sanitizer test',[str(mini_reset)]),
+            ('Speed ease 220B original-source sanitizer build',compiler+sanitizer+[
+                str((isolated_tests/'test_speed_ease_3de0.c').relative_to(ROOT)),'-o',str(speed_ease)]),
+            ('Speed ease 220B original-source sanitizer test',[str(speed_ease)]),
+        ])
     # The resumable queue and read-only C-Right comparator belong to the
     # same ROM-free acceptance gate as the existing Python/ledger checks.
     # Append them, preserving existing native-host fixture ordering.

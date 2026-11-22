@@ -13,10 +13,10 @@ from . import overlay_crossregion47 as cross
 
 ROOT=Path(__file__).resolve().parent
 SOURCE=ROOT/'research/pending_isolated233_20261120/sources'
-FIXTURE=ROOT/'research/pending_isolated233_20261120/promotion_manifest_239.json'
-FORMAT='goemon-usa-isolated239-post-1723-v1'
+FIXTURE=ROOT/'research/pending_isolated233_20261120/promotion_manifest_241.json'
+FORMAT='goemon-usa-isolated241-post-1723-v1'
 SHA1='6ea0ed71032ce08fc2745f412d84936382197494'
-COUNT=239; BYTES=14996
+COUNT=241; BYTES=15364
 # Original source units whose remaining ASM is embedded via asm-processor.
 # Replacing their pragmas must keep the companion C functions in situ.
 EMBEDDED={

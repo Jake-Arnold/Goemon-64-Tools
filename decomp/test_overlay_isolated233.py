@@ -24,21 +24,21 @@ class Isolated233PromotionTests(unittest.TestCase):
         cls.fixture = native.load_fixture()
         cls.functions = cls.fixture['functions']
 
-    def test_full_1962_cumulative_claims_are_unique(self):
+    def test_full_1964_cumulative_claims_are_unique(self):
         previous = claimed_functions({k:v for k,v in self.manifest.items()
                                       if k!='overlay_isolated233_stage'})
         current = claimed_functions(self.manifest)
         self.assertEqual((len(previous),sum(f['size'] for f in previous)),(1723,69344))
-        self.assertEqual((len(current),sum(f['size'] for f in current)),(1962,84340))
-        self.assertEqual(len(self.functions),239)
-        self.assertEqual(sum(f['size'] for f in self.functions),14996)
-        self.assertEqual(len({f['name'] for f in current}),1962)
+        self.assertEqual((len(current),sum(f['size'] for f in current)),(1964,84708))
+        self.assertEqual(len(self.functions),241)
+        self.assertEqual(sum(f['size'] for f in self.functions),15364)
+        self.assertEqual(len({f['name'] for f in current}),1964)
         spans = sorted((f['rom_offset'],f['rom_offset']+f['size']) for f in current)
         self.assertTrue(all(left[1]<=right[0] for left,right in zip(spans,spans[1:])))
 
     def test_frozen_original_sources_and_addresses(self):
         self.assertEqual(len(native.EMBEDDED),14)
-        self.assertEqual(len({f['rom_offset'] for f in self.functions}),239)
+        self.assertEqual(len({f['rom_offset'] for f in self.functions}),241)
         self.assertIn('func_8000A18C_AD8C',native.EMBEDDED)
         self.assertNotIn('func_8000AAE8_B6E8',native.EMBEDDED)
         self.assertNotIn('func_8000AB30_B730',native.EMBEDDED)
