@@ -1,0 +1,82 @@
+{
+  "format": "goemon-usa-mini-eight-pristine-full-original-v1",
+  "date": "2026-11-22",
+  "status": "PASSED_PRISTINE_FULL_ROM_ELF_RESEARCH_ONLY",
+  "region": "USA",
+  "original_expanded_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+  "original_retail_sha1": "df8083a54296b8c151917c5333e1c85f014a2a66",
+  "pristine_pinned_upstream": "7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee",
+  "function_names_and_offsets": [
+    [
+      "func_801E1C90_59DBA0",
+      "0x59DBA0",
+      384,
+      "prior"
+    ],
+    [
+      "func_801E276C_59E67C",
+      "0x59E67C",
+      148,
+      "prior"
+    ],
+    [
+      "func_801E28D8_59E7E8",
+      "0x59E7E8",
+      68,
+      "new"
+    ],
+    [
+      "func_801E2B54_59EA64",
+      "0x59EA64",
+      84,
+      "new"
+    ],
+    [
+      "func_801E31A8_59F0B8",
+      "0x59F0B8",
+      52,
+      "new"
+    ],
+    [
+      "func_801E3244_59F154",
+      "0x59F154",
+      52,
+      "new"
+    ],
+    [
+      "func_801E3278_59F188",
+      "0x59F188",
+      92,
+      "new"
+    ],
+    [
+      "func_801E3DE0_59FCF0",
+      "0x59FCF0",
+      220,
+      "prior"
+    ]
+  ],
+  "replaced_original_bytes": 1100,
+  "original_byte_matches": 33554432,
+  "original_rom_bytes": 33554432,
+  "original_elf_sha256": "83eda0f1df831d997f9e505c92a8a7fdb55728d3ad28b30d224f5e1ae975a038",
+  "candidate_elf_sha256": "e09b36a378c0a089253276291c8176e2da2ac54d073d90f3d769dc619e87ce43",
+  "exact_positive_function_identities": 7376,
+  "expected_positive_function_identities": 7376,
+  "exact_semantic_relocations": 82216,
+  "original_semantic_relocations": 82216,
+  "file11_relocations_exact": 8825,
+  "original_file11_relocations": 8825,
+  "relocation_sections_exact": 72,
+  "five_new_functions_gcc_asan_ubsan": "PASS_32768_CASES",
+  "five_new_functions_clang_asan_ubsan": "PASS_32768_CASES",
+  "fresh_extracted_archive_replay": "PASS",
+  "source_hash_negative_control": "REJECTED_AS_EXPECTED",
+  "source_only_zip_sha256": "c54046936d3a30b045df47a1ce6816f9a4fade61bde35626b9efee5534352038",
+  "production_promotion": false,
+  "combined_decomp_verify": "NOT_RUN",
+  "strict_inventory": "NOT_RUN",
+  "full_local_ci": "NOT_RUN",
+  "emulator_gameplay": "NOT_RUN",
+  "reason": "Full live decomp checkout not available as local filesystem; pristine upstream proof is separate"
+}
