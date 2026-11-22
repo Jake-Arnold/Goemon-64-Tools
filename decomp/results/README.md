@@ -2,7 +2,7 @@
 
 This directory contains the published canonical verifier/inventory checkpoint, dated original-ROM G2 promotion reports, and earlier reproducibility snapshots. A later G2 report does **not** make an older original proof redundant: it records a different source fingerprint, accepted set, relocation environment and failure/acceptance history.
 
-## 22 November 2026 — USA six-function promotion PASSED_G2_LOCAL
+## 22 November 2026 — USA six-function promotion PUBLISHED_REMOTE_VERIFIED
 
 The canonical USA `combined.json` and `inventory.json` now record a fresh 1,962-function original-ROM verification. Prior 1,960, 1,959 and 1,956 proofs/inventories are preserved respectively as `combined_1960_pre_usa_92f0_two_20261122.json` / `inventory_1960_pre_usa_92f0_two_20261122.json`, `combined_1959_pre_usa_menu40_20261122.json` / `inventory_1959_pre_usa_menu40_20261122.json`, and `combined_1956_pre_usa_unique_three_20261122.json` / `inventory_1956_pre_usa_unique_three_20261122.json`. The six-function canonical proof is `usa_92f0_six_g2_promotion_20261122.json`; three- and four-function intermediate proofs remain preserved. The VM-residual ledger snapshots at 1,960, 1,959 and 1,956 are retained separately. Full original-ROM G2, strict inventory, all 7,376 ELF identities, the complete 82,103 relocation multiset and full `decomp.local_ci` all passed. Earlier count/retention audit below describes its 21 November snapshot.
 
