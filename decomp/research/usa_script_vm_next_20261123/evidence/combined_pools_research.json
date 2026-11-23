@@ -1,0 +1,46 @@
+{
+  "format": "goemon-script-vm-combined-pool-research-v1",
+  "status": "FULL_ROM_EXACT_SCRATCH_RELOCATION_BLOCKED",
+  "base_sha": "78e6303e2fe5f4e5f5a17bab50cb62fc792d241b",
+  "previous_c": 2165,
+  "previous_asm": 5198,
+  "functions": [
+    {
+      "name": "func_8003E234_3EE34",
+      "bytes": 440
+    },
+    {
+      "name": "func_8003F37C_3FF7C",
+      "bytes": 192
+    },
+    {
+      "name": "func_8003DF98_3EB98",
+      "bytes": 528
+    }
+  ],
+  "native_pool_bytes": 224,
+  "native_pool_address": "0x8007D02C",
+  "native_pool_r_mips_32_relocations": 55,
+  "whole_rom_bytes_exact": 33554432,
+  "rom_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+  "elf_sha256": "7f31c5f3f9db22c434a1eb058bc7383dfb9a93c9d44858342b80c95789c64e9f",
+  "elf_funcs_equal": 7376,
+  "stable_globals_equal": 26714,
+  "named_relocation_before": 82103,
+  "named_relocation_after": 82102,
+  "named_reloc_removed": 45,
+  "section_reloc_added": 44,
+  "original_targets_audit": "PASS",
+  "pool_hi_lo_pairs": 2,
+  "table_targets": 40,
+  "local_branch_target": "0x8003E190",
+  "negative_controls_passed": 6,
+  "independent_full_rom_replay": "PASS",
+  "native_invocations": 1235,
+  "compile_errors": 0,
+  "strict_named_relocations": "FAIL",
+  "canonical_promotion": "NOT_RUN",
+  "full_local_ci": "NOT_RUN",
+  "gameplay": "NOT_RUN",
+  "handoff_sha256": "d92d9b3603e335664e605c0da547fb4352594f20c4b325d3e098230407150055"
+}
