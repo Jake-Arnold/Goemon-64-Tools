@@ -1,5 +1,9 @@
 # IDO 5.3 / MIPS matching-C compiler quirks
 
+### C-Right file12 grid-coordinate entry: explicit integer-to-float cast versus float literal — limited two-region original IDO5.3 finding (23 November 2026)
+
+USA func_8020D2A0_5C8770 (0x5C8770, VMA 0x8020D2A0) and Japan-0 func_80212090_5CD620 (0x5CD620, VMA 0x80212090), both 204B. Original compiler and full upstream flags, authenticated private expanded original ROM, independently assembled named-relocation reference. Named signed grid dimension locals and integer coordinate locals with float half=(float)2 produce 51/51 original instructions and all 3 named relocations in each region. Changing only half=(float)2 to half=2.0f produces 34/51 in both, retains 204-byte FUNC extent and all 3 relocs; first mismatch +0xC original dimension load vs generated stack adjustment. USA positive NEW_REPRODUCIBLE_QUIRK, JP independent reproduction EXISTING_QUIRK_REPRODUCED. No general rule for literal casting inferred. Two exact source files and two single-change controls plus hashes under decomp/research/cright_spatial_native_20261123/. Full native replay and all 34 variant results in source-only user ZIP; complete ROM/G2/CI NOT_RUN, no accepted-count change.
+
 This is a cumulative evidence-led knowledge base for reusable compiler behavior found while matching original Goemon 64 functions. Consult it before variant searches. Record new findings in the same commit as the associated decomp research or promotion, even when a function remains assembly-owned.
 
 ## Per-native-attempt outcome — mandatory (23 November 2026)
