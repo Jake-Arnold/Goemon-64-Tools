@@ -1,3 +1,8 @@
+## 23 November 2026 — automated legacy branch PR redirect
+
+- Added a PR routing check to this legacy branch: any new PR targeting `main` or `chatgptweb/decomp` fails with a redirect to `stable/toolkit` or `stable/decomp`. This check runs on PR events only and is not a native decomp CI test. It is enforceable only when required by GitHub branch settings.
+- No gameplay/runtime/ROM/matching-C code changed. This legacy ref remains for historical compatibility.
+
 ## 23 November 2026 — mark legacy main/default branch read-only for agents
 
 - No new development should target `main`. Toolkit canonical baseline is `stable/toolkit` (from original `main` commit `61b5f91db12b8aa32dbcf555c8e562e7066cebdd`), decomp canonical `stable/decomp` (from original `chatgptweb/decomp` commit `6b864fac15fb4d9510a7fae5b7945b3b6cac69cf`). New topics use `toolkit/*` / `decomp/*` and target their respective `stable/*`.
