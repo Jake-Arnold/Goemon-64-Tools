@@ -65,7 +65,7 @@ before enabling it. Keyboard injection is verified for X11 only, not Wayland.
 
 ### Keep toolkit and decomp development separate
 
-For toolkit updates, run `git pull --ff-only origin stable/toolkit` from the **main**
+For toolkit updates, run `git pull --ff-only origin stable/toolkit` from the **stable/toolkit**
 checkout. The experimental C decompilation branch has separate original-ROM
 build and verification requirements; the matching-C code and research are **not**
 needed to run the toolkit. Neither branch distributes game ROMs or emulators.

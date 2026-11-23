@@ -1,3 +1,7 @@
+## 23 November 2026 — preserve historical toolkit branch provenance in README
+
+- Clarified dated PR #27 / #94 / v0.11.27 statements: those events occurred on historical `main`, not the newly created `stable/toolkit`. Active checkout/PR instructions still use the new canonical baselines. Documentation-only correction, no native/code proof changes.
+
 ## 23 November 2026 — correct canonical/legacy agent banner
 
 - Corrected `AGENTS.md` to identify `main` and `chatgptweb/decomp` as legacy refs; `stable/toolkit` and `stable/decomp` are the only canonical baselines. This fixes a documentation substitution mistake and changes no native/proof/runtime files.
