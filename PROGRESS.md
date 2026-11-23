@@ -1,3 +1,8 @@
+## 23 November 2026 — legacy decomp branch redirect only
+
+- `chatgptweb/decomp` is now a legacy ref; new matching-C work must use `stable/decomp` and `decomp/*` topic PRs. Toolkit is `stable/toolkit` and `toolkit/*`. This preserves existing research links/commits while redirecting all new agents; no ROM/native C manifest/proof/count changes.
+- Current historical head `6b864fac15fb4d9510a7fae5b7945b3b6cac69cf` published USA 2,090 accepted C and follows merged Japan PR #173 (2,370). After this doc-only warning, consult the live `stable/decomp` proof for subsequent promotions.
+
 ## 23 November 2026 — USA Mini eleven C native canonical G2 PASS; atomic publication pending
 
 - Authenticated live `chatgptweb/decomp` predecessor `cc4e1e1973770afad4c3c6cd7899731e1a64d571`: **2,079 C / 93,016 original bytes / 5,284 ASM**. Deduplicated all 16 previous Mini source candidates against this entire published USA manifest: five already accepted, eleven new non-overlapping original `file_11` functions. Exactly **11 additional C / 1,652 original instruction bytes** (10 direct functions 1,268 B, plus the original eight-entry switch/jump-table speed selector 384 B).

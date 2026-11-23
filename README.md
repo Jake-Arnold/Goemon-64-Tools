@@ -1,3 +1,5 @@
+> **LEGACY DECOMP BRANCH — NO NEW COMMITS:** Switch to [`stable/decomp`](https://github.com/Jake-Arnold/Goemon-64-Tools/tree/stable/decomp) for matching-C, with `decomp/*` topics. Toolkit is [`stable/toolkit`](https://github.com/Jake-Arnold/Goemon-64-Tools/tree/stable/toolkit). Read [BRANCHES.md](BRANCHES.md). Historical references below do not override this rule.
+
 ## Run the practice toolkit from `main` (Windows and Linux)
 
 **Use the `main` branch for the runnable practice toolkit.** The

@@ -1,5 +1,10 @@
 # Development instructions for automated contributors
 
+## LEGACY DECOMP REF — DO NOT PUBLISH HERE (23 Nov 2026)
+
+This branch (`chatgptweb/decomp`) is retained for old links and historical evidence. **All new matching-C, ROM/MIPS research and native promotions must start from `stable/decomp`**, using `decomp/<purpose>` topic branches and PR base `stable/decomp`. Toolkit development is independent: `stable/toolkit`, `toolkit/*`. Do not use default `main`, stale ZIPs or prior chat prompts as branch-selection authority. Read `BRANCHES.md` and the *live* `stable/decomp` `AGENTS.md` / `CONTINUE.md` / skills. Never merge entire codebases, force-push or promote from stale proof.
+
+
 Project: Goemon 64 speedrunning/practice toolkit (Windows Python and portable C core).
 
 ## Required delivery of task-referenced scripts

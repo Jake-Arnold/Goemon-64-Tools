@@ -5,13 +5,14 @@ description: "Use when autonomously discovering, native-verifying, and formally 
 
 # Autonomous matching-C decomp
 
-Read `GOEMON_AUTONOMOUS_DECOMP_SESSION_PROMPT.md`, `AGENTS.md`, `decomp/CONTINUE.md`, `decomp/plans/EXECUTOR_PROTOCOL.md`, canonical manifest/proof/inventory **at live `chatgptweb/decomp` HEAD**. Never modify `main` or re-promote C.
+**Base `stable/decomp`, topics `decomp/*`.** Toolkit `stable/toolkit`; `main` and `chatgptweb/decomp` legacy. Read `BRANCHES.md`, Project prompt, `AGENTS.md`, `decomp/CONTINUE.md`, `decomp/plans/EXECUTOR_PROTOCOL.md`, current manifest/proof/inventory and PRs. Fetch live SHA.
 
-1. **Access:** Complete checkout (`goemon-github-source-bridge` for connector limits), authenticated ROM/upstream/IDO/binutils (`goemon-input-reproduce`). No ROM, ASM or proprietary toolchain in Git.
-2. **Triage:** Check *all current canonical C ownership and pending research* by region, original ROM/VMA/size/range, not stale filenames. Record collisions; preserve ASM on failure.
-3. **Native:** Original IDO with exact code bytes, original address and relocations; preserve ELF layout. Isolated matching is **RESEARCH_ONLY**.
-4. **G2:** Stage **all** accepted C on pinned live SHA; fresh `python3 -m decomp.verify`, then strict `python3 -m decomp.inventory`. Exact 33,554,432 bytes / SHA-1 `6ea0ed71032ce08fc2745f412d84936382197494`, 7,376 ELF functions and semantic relocations.
-5. **CI:** Full `python3 -m decomp.local_ci`, not `--quick`. Mandatory `python3 -m decomp.promotion_integrity --validate` requires canonical manifest **and** `combined.json`/`inventory.json`, each original name/size and entire ROM SHA-1 to agree. Staged research never increments counts. No GitHub Actions.
-6. **Publish atomically:** One commit with native sources, canonical manifest, `decomp/results/combined.json`, `decomp/results/inventory.json`, dated G2 proof, tests, `decomp/CONTINUE.md`, `PROGRESS.md`. Preserve prior proof. Re-fetch branch and use expected-SHA lease; no force push. Re-fetch remote SHA/manifest/proof/count. Do **not** claim `PUBLISHED_REMOTE_VERIFIED` until live canonical count proves it.
+1. Authenticate complete checkout, ROM, upstream and pinned IDO; check region/ROM/VMA/ASM ownership, canonical C and pending PRs.
+2. **Before every native IDO attempt**, read `decomp/COMPILER_QUIRKS.md`; identify relevant verified behaviour. Classify first original/generated mismatch **before variants**; test one-variable bounded workarounds.
+3. **Every attempt** records one `EXISTING_QUIRK_REPRODUCED`, `EXISTING_QUIRK_NOT_APPLICABLE`, `NEW_REPRODUCIBLE_QUIRK`, or `NO_NEW_COMPILER_FINDING`. Include exact flags, source hashes, first instruction/relocation difference, commands and negative controls. No generality without independent reproduction.
+4. Record new reproducible or useful falsified compiler findings in central ledger and `PROGRESS.md` in **same research/implementation commit**; keep ASM if not promoted.
+5. Match original IDO at original VMA, whole unit, ELF identities and relocations. Isolated matching is research only.
+6. Stage all accepted C. Run fresh `decomp.verify`, strict `decomp.inventory`, `decomp.promotion_integrity --validate`, exact 33,554,432 ROM bytes/region hash, ELF/reloc checks and full `decomp.local_ci` (not `--quick`). GitHub Actions is not native CI.
+7. Publish C/manifest/proof/inventory/tests/ledger/`CONTINUE.md`/`PROGRESS.md` atomically with SHA lease. Verify remote counts; no force-push or duplicate promotions.
 
-Failure: retain ASM and count. Report `FAILED_NATIVE`, `FAILED_ROM`, `BLOCKED_INPUT`, `RESEARCH_ONLY` accurately. USA and JP acceptance separate.
+Failed gates retain ASM/count: `FAILED_NATIVE`, `FAILED_ROM`, `BLOCKED_INPUT` or `RESEARCH_ONLY`. USA and JP proof independent.
