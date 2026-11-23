@@ -32,7 +32,7 @@
       "region": "japan",
       "revision": "NG5J-0",
       "signed": false,
-      "source_revision": "41dc7404e23ae680a1b400357f59c729799f0710",
+      "source_revision": "c2103dd32a4c0833c6754e75edb65bf8f5e6010c",
       "sources": [
         "decomp/docs/GOEMON_VM_TWO_G2_PROMOTION_20261121.md"
       ],
@@ -71,7 +71,7 @@
       "region": "japan",
       "revision": "NG5J-0",
       "signed": false,
-      "source_revision": "41dc7404e23ae680a1b400357f59c729799f0710",
+      "source_revision": "c2103dd32a4c0833c6754e75edb65bf8f5e6010c",
       "sources": [
         "decomp/docs/GOEMON_GLITCH_RESEARCH_MASTER_20261120.md"
       ],
@@ -110,7 +110,7 @@
       "region": "japan",
       "revision": "NG5J-0",
       "signed": null,
-      "source_revision": "41dc7404e23ae680a1b400357f59c729799f0710",
+      "source_revision": "c2103dd32a4c0833c6754e75edb65bf8f5e6010c",
       "sources": [
         "decomp/docs/GOEMON_VM_TWO_G2_PROMOTION_20261121.md"
       ],
@@ -277,7 +277,7 @@
       "region": "japan",
       "revision": "NG5J-0",
       "signed": false,
-      "source_revision": "41dc7404e23ae680a1b400357f59c729799f0710",
+      "source_revision": "c2103dd32a4c0833c6754e75edb65bf8f5e6010c",
       "sources": [
         "decomp/docs/GOEMON_START_DIALOGUE_SKIP_CONTROL_FLOW_20261120.md"
       ],
@@ -571,7 +571,7 @@
       "region": "japan",
       "revision": "NG5J-0",
       "signed": false,
-      "source_revision": "41dc7404e23ae680a1b400357f59c729799f0710",
+      "source_revision": "c2103dd32a4c0833c6754e75edb65bf8f5e6010c",
       "sources": [
         "decomp/USA_JAPAN_MEMORY_CROSSWALK_PLAYBOOK.md:30@chatgptweb/decomp",
         "decomp/docs/GOEMON_START_DIALOGUE_SKIP_CONTROL_FLOW_20261120.md",
@@ -692,7 +692,7 @@
       "region": "japan",
       "revision": "NG5J-0",
       "signed": false,
-      "source_revision": "41dc7404e23ae680a1b400357f59c729799f0710",
+      "source_revision": "c2103dd32a4c0833c6754e75edb65bf8f5e6010c",
       "sources": [
         "decomp/docs/GOEMON_START_DIALOGUE_SKIP_CONTROL_FLOW_20261120.md"
       ],
@@ -6901,7 +6901,7 @@
       "region": "japan",
       "revision": "NG5J-0",
       "signed": false,
-      "source_revision": "41dc7404e23ae680a1b400357f59c729799f0710",
+      "source_revision": "c2103dd32a4c0833c6754e75edb65bf8f5e6010c",
       "sources": [
         "decomp/docs/GOEMON_DIALOGUE_GRANTS_AND_FLAG_COUPLING_20261120.md"
       ],
@@ -6981,7 +6981,7 @@
       "region": "japan",
       "revision": "NG5J-0",
       "signed": false,
-      "source_revision": "41dc7404e23ae680a1b400357f59c729799f0710",
+      "source_revision": "c2103dd32a4c0833c6754e75edb65bf8f5e6010c",
       "sources": [
         "decomp/docs/GOEMON_DIALOGUE_GRANTS_AND_FLAG_COUPLING_20261120.md"
       ],
@@ -7060,7 +7060,7 @@
       "region": "japan",
       "revision": "NG5J-0",
       "signed": false,
-      "source_revision": "41dc7404e23ae680a1b400357f59c729799f0710",
+      "source_revision": "c2103dd32a4c0833c6754e75edb65bf8f5e6010c",
       "sources": [
         "decomp/docs/GOEMON_DIALOGUE_GRANTS_AND_FLAG_COUPLING_20261120.md"
       ],
@@ -7139,7 +7139,7 @@
       "region": "japan",
       "revision": "NG5J-0",
       "signed": false,
-      "source_revision": "41dc7404e23ae680a1b400357f59c729799f0710",
+      "source_revision": "c2103dd32a4c0833c6754e75edb65bf8f5e6010c",
       "sources": [
         "decomp/docs/GOEMON_DIALOGUE_GRANTS_AND_FLAG_COUPLING_20261120.md"
       ],
@@ -7218,7 +7218,7 @@
       "region": "japan",
       "revision": "NG5J-0",
       "signed": false,
-      "source_revision": "41dc7404e23ae680a1b400357f59c729799f0710",
+      "source_revision": "c2103dd32a4c0833c6754e75edb65bf8f5e6010c",
       "sources": [
         "decomp/docs/GOEMON_DIALOGUE_GRANTS_AND_FLAG_COUPLING_20261120.md"
       ],
@@ -7298,7 +7298,7 @@
       "region": "japan",
       "revision": "NG5J-0",
       "signed": false,
-      "source_revision": "41dc7404e23ae680a1b400357f59c729799f0710",
+      "source_revision": "c2103dd32a4c0833c6754e75edb65bf8f5e6010c",
       "sources": [
         "decomp/docs/GOEMON_DIALOGUE_GRANTS_AND_FLAG_COUPLING_20261120.md"
       ],
@@ -7377,7 +7377,7 @@
       "region": "japan",
       "revision": "NG5J-0",
       "signed": false,
-      "source_revision": "41dc7404e23ae680a1b400357f59c729799f0710",
+      "source_revision": "c2103dd32a4c0833c6754e75edb65bf8f5e6010c",
       "sources": [
         "decomp/docs/GOEMON_DIALOGUE_GRANTS_AND_FLAG_COUPLING_20261120.md"
       ],
@@ -7457,7 +7457,7 @@
       "region": "japan",
       "revision": "NG5J-0",
       "signed": false,
-      "source_revision": "41dc7404e23ae680a1b400357f59c729799f0710",
+      "source_revision": "c2103dd32a4c0833c6754e75edb65bf8f5e6010c",
       "sources": [
         "decomp/docs/GOEMON_DIALOGUE_GRANTS_AND_FLAG_COUPLING_20261120.md"
       ],
@@ -7537,7 +7537,7 @@
       "region": "japan",
       "revision": "NG5J-0",
       "signed": false,
-      "source_revision": "41dc7404e23ae680a1b400357f59c729799f0710",
+      "source_revision": "c2103dd32a4c0833c6754e75edb65bf8f5e6010c",
       "sources": [
         "decomp/docs/GOEMON_DIALOGUE_GRANTS_AND_FLAG_COUPLING_20261120.md"
       ],
@@ -7617,7 +7617,7 @@
       "region": "japan",
       "revision": "NG5J-0",
       "signed": false,
-      "source_revision": "41dc7404e23ae680a1b400357f59c729799f0710",
+      "source_revision": "c2103dd32a4c0833c6754e75edb65bf8f5e6010c",
       "sources": [
         "decomp/docs/GOEMON_DIALOGUE_GRANTS_AND_FLAG_COUPLING_20261120.md"
       ],
@@ -7696,7 +7696,7 @@
       "region": "japan",
       "revision": "NG5J-0",
       "signed": false,
-      "source_revision": "41dc7404e23ae680a1b400357f59c729799f0710",
+      "source_revision": "c2103dd32a4c0833c6754e75edb65bf8f5e6010c",
       "sources": [
         "decomp/docs/GOEMON_DIALOGUE_GRANTS_AND_FLAG_COUPLING_20261120.md"
       ],
@@ -7775,7 +7775,7 @@
       "region": "japan",
       "revision": "NG5J-0",
       "signed": false,
-      "source_revision": "41dc7404e23ae680a1b400357f59c729799f0710",
+      "source_revision": "c2103dd32a4c0833c6754e75edb65bf8f5e6010c",
       "sources": [
         "decomp/docs/GOEMON_DIALOGUE_GRANTS_AND_FLAG_COUPLING_20261120.md"
       ],
@@ -7854,7 +7854,7 @@
       "region": "japan",
       "revision": "NG5J-0",
       "signed": false,
-      "source_revision": "41dc7404e23ae680a1b400357f59c729799f0710",
+      "source_revision": "c2103dd32a4c0833c6754e75edb65bf8f5e6010c",
       "sources": [
         "decomp/docs/GOEMON_DIALOGUE_GRANTS_AND_FLAG_COUPLING_20261120.md"
       ],
@@ -8082,7 +8082,7 @@
       "region": "japan",
       "revision": "NG5J-0",
       "signed": false,
-      "source_revision": "41dc7404e23ae680a1b400357f59c729799f0710",
+      "source_revision": "c2103dd32a4c0833c6754e75edb65bf8f5e6010c",
       "sources": [
         "decomp/docs/GOEMON_DIALOGUE_GRANTS_AND_FLAG_COUPLING_20261120.md"
       ],
@@ -8162,7 +8162,7 @@
       "region": "japan",
       "revision": "NG5J-0",
       "signed": false,
-      "source_revision": "41dc7404e23ae680a1b400357f59c729799f0710",
+      "source_revision": "c2103dd32a4c0833c6754e75edb65bf8f5e6010c",
       "sources": [
         "decomp/docs/GOEMON_DIALOGUE_GRANTS_AND_FLAG_COUPLING_20261120.md"
       ],
@@ -8236,7 +8236,7 @@
       "region": "japan",
       "revision": "NG5J-0",
       "signed": false,
-      "source_revision": "41dc7404e23ae680a1b400357f59c729799f0710",
+      "source_revision": "c2103dd32a4c0833c6754e75edb65bf8f5e6010c",
       "sources": [
         "decomp/docs/GOEMON_DIALOGUE_GRANTS_AND_FLAG_COUPLING_20261120.md"
       ],
@@ -8443,7 +8443,7 @@
       "region": "japan",
       "revision": "NG5J-0",
       "signed": false,
-      "source_revision": "41dc7404e23ae680a1b400357f59c729799f0710",
+      "source_revision": "c2103dd32a4c0833c6754e75edb65bf8f5e6010c",
       "sources": [
         "decomp/docs/GOEMON_GLITCH_RESEARCH_MASTER_20261120.md"
       ],
@@ -8481,7 +8481,7 @@
       "region": "japan",
       "revision": "NG5J-0",
       "signed": false,
-      "source_revision": "41dc7404e23ae680a1b400357f59c729799f0710",
+      "source_revision": "c2103dd32a4c0833c6754e75edb65bf8f5e6010c",
       "sources": [
         "decomp/docs/GOEMON_GLITCH_RESEARCH_MASTER_20261120.md"
       ],
@@ -8519,7 +8519,7 @@
       "region": "japan",
       "revision": "NG5J-0",
       "signed": false,
-      "source_revision": "41dc7404e23ae680a1b400357f59c729799f0710",
+      "source_revision": "c2103dd32a4c0833c6754e75edb65bf8f5e6010c",
       "sources": [
         "decomp/docs/GOEMON_GLITCH_RESEARCH_MASTER_20261120.md"
       ],
@@ -8557,7 +8557,7 @@
       "region": "japan",
       "revision": "NG5J-0",
       "signed": false,
-      "source_revision": "41dc7404e23ae680a1b400357f59c729799f0710",
+      "source_revision": "c2103dd32a4c0833c6754e75edb65bf8f5e6010c",
       "sources": [
         "decomp/docs/GOEMON_DIALOGUE_GRANTS_AND_FLAG_COUPLING_20261120.md"
       ],
@@ -8637,7 +8637,7 @@
       "region": "japan",
       "revision": "NG5J-0",
       "signed": false,
-      "source_revision": "41dc7404e23ae680a1b400357f59c729799f0710",
+      "source_revision": "c2103dd32a4c0833c6754e75edb65bf8f5e6010c",
       "sources": [
         "decomp/docs/GOEMON_DIALOGUE_GRANTS_AND_FLAG_COUPLING_20261120.md"
       ],
@@ -8716,7 +8716,7 @@
       "region": "japan",
       "revision": "NG5J-0",
       "signed": false,
-      "source_revision": "41dc7404e23ae680a1b400357f59c729799f0710",
+      "source_revision": "c2103dd32a4c0833c6754e75edb65bf8f5e6010c",
       "sources": [
         "decomp/docs/GOEMON_DIALOGUE_GRANTS_AND_FLAG_COUPLING_20261120.md"
       ],
@@ -8795,7 +8795,7 @@
       "region": "japan",
       "revision": "NG5J-0",
       "signed": false,
-      "source_revision": "41dc7404e23ae680a1b400357f59c729799f0710",
+      "source_revision": "c2103dd32a4c0833c6754e75edb65bf8f5e6010c",
       "sources": [
         "decomp/docs/GOEMON_DIALOGUE_GRANTS_AND_FLAG_COUPLING_20261120.md"
       ],
@@ -8917,7 +8917,7 @@
       "region": "japan",
       "revision": "NG5J-0",
       "signed": false,
-      "source_revision": "41dc7404e23ae680a1b400357f59c729799f0710",
+      "source_revision": "c2103dd32a4c0833c6754e75edb65bf8f5e6010c",
       "sources": [
         "decomp/docs/GOEMON_DIALOGUE_GRANTS_AND_FLAG_COUPLING_20261120.md"
       ],
@@ -9461,7 +9461,7 @@
       "region": "japan",
       "revision": "NG5J-0",
       "signed": false,
-      "source_revision": "41dc7404e23ae680a1b400357f59c729799f0710",
+      "source_revision": "c2103dd32a4c0833c6754e75edb65bf8f5e6010c",
       "sources": [
         "decomp/docs/GOEMON_GLITCH_RESEARCH_MASTER_20261120.md"
       ],
@@ -9716,7 +9716,7 @@
       "region": "japan",
       "revision": "NG5J-0",
       "signed": false,
-      "source_revision": "41dc7404e23ae680a1b400357f59c729799f0710",
+      "source_revision": "c2103dd32a4c0833c6754e75edb65bf8f5e6010c",
       "sources": [
         "decomp/docs/GOEMON_GLITCH_RESEARCH_MASTER_20261120.md"
       ],
@@ -9755,7 +9755,7 @@
       "region": "japan",
       "revision": "NG5J-0",
       "signed": true,
-      "source_revision": "41dc7404e23ae680a1b400357f59c729799f0710",
+      "source_revision": "c2103dd32a4c0833c6754e75edb65bf8f5e6010c",
       "sources": [
         "decomp/docs/GOEMON_VM_TWO_G2_PROMOTION_20261121.md"
       ],
@@ -9794,7 +9794,7 @@
       "region": "japan",
       "revision": "NG5J-0",
       "signed": false,
-      "source_revision": "41dc7404e23ae680a1b400357f59c729799f0710",
+      "source_revision": "c2103dd32a4c0833c6754e75edb65bf8f5e6010c",
       "sources": [
         "decomp/docs/GOEMON_GLITCH_RESEARCH_MASTER_20261120.md"
       ],
@@ -9834,7 +9834,7 @@
       "region": "japan",
       "revision": "NG5J-0",
       "signed": false,
-      "source_revision": "41dc7404e23ae680a1b400357f59c729799f0710",
+      "source_revision": "c2103dd32a4c0833c6754e75edb65bf8f5e6010c",
       "sources": [
         "decomp/docs/GOEMON_GLITCH_RESEARCH_MASTER_20261120.md"
       ],
@@ -12180,7 +12180,7 @@
       "region": "usa",
       "revision": "NG5E-0",
       "signed": false,
-      "source_revision": "41dc7404e23ae680a1b400357f59c729799f0710",
+      "source_revision": "c2103dd32a4c0833c6754e75edb65bf8f5e6010c",
       "sources": [
         "decomp/docs/GOEMON_VM_TWO_G2_PROMOTION_20261121.md"
       ],
@@ -12278,7 +12278,7 @@
       "region": "usa",
       "revision": "NG5E-0",
       "signed": null,
-      "source_revision": "41dc7404e23ae680a1b400357f59c729799f0710",
+      "source_revision": "c2103dd32a4c0833c6754e75edb65bf8f5e6010c",
       "sources": [
         "decomp/docs/GOEMON_VM_TWO_G2_PROMOTION_20261121.md"
       ],
@@ -12496,7 +12496,7 @@
       "region": "usa",
       "revision": "NG5E-0",
       "signed": false,
-      "source_revision": "41dc7404e23ae680a1b400357f59c729799f0710",
+      "source_revision": "c2103dd32a4c0833c6754e75edb65bf8f5e6010c",
       "sources": [
         "decomp/docs/GOEMON_START_DIALOGUE_SKIP_CONTROL_FLOW_20261120.md"
       ],
@@ -12883,7 +12883,7 @@
       "region": "usa",
       "revision": "NG5E-0",
       "signed": false,
-      "source_revision": "41dc7404e23ae680a1b400357f59c729799f0710",
+      "source_revision": "c2103dd32a4c0833c6754e75edb65bf8f5e6010c",
       "sources": [
         "decomp/USA_JAPAN_MEMORY_CROSSWALK_PLAYBOOK.md:30@chatgptweb/decomp",
         "decomp/docs/GOEMON_START_DIALOGUE_SKIP_CONTROL_FLOW_20261120.md",
@@ -13096,7 +13096,7 @@
       "region": "usa",
       "revision": "NG5E-0",
       "signed": false,
-      "source_revision": "41dc7404e23ae680a1b400357f59c729799f0710",
+      "source_revision": "c2103dd32a4c0833c6754e75edb65bf8f5e6010c",
       "sources": [
         "decomp/docs/GOEMON_START_DIALOGUE_SKIP_CONTROL_FLOW_20261120.md"
       ],
@@ -13301,6 +13301,201 @@
       ],
       "updated": "2026-11-17",
       "width": null
+    },
+    {
+      "address": "0x801529C6",
+      "aliases": [],
+      "category": "engine_state",
+      "confidence": "research_observed",
+      "confidence_sources": [
+        {
+          "confidence": "research_observed",
+          "evidence": "Original USA func_8000A18C_AD8C and Japan func_8000A03C_AC3C access the corresponding field at +0x5D06; JP g_system+0xC0000 resolves to 0x801524B0.",
+          "source_id": "research:usa_92f0_state_5D06"
+        }
+      ],
+      "context": "Offset-named field in a fixed main-segment state object; semantic name and complete object lifetime are unknown. The Japanese counterpart is original-MIPS traced, not live-game observed.",
+      "control": null,
+      "counterpart": "0x801581B6",
+      "data_type": "s16",
+      "discovered": "2026-11-22",
+      "endian": "big",
+      "evidence": "Original USA func_8000A18C_AD8C and Japan func_8000A03C_AC3C access the corresponding field at +0x5D06; JP g_system+0xC0000 resolves to 0x801524B0.",
+      "id": "research:usa_92f0_state_5D06",
+      "id_aliases": [],
+      "live_readable": false,
+      "mask": null,
+      "mips_refs": [
+        "func_8000A18C_AD8C",
+        "func_8000A03C_AC3C"
+      ],
+      "name": "92F0 raw main-state field +0x5D06",
+      "owner": "D_8014CCC0_14D8C0 / g_system+0xC0000 partial structure",
+      "region": "usa",
+      "revision": "NG5E-0",
+      "signed": true,
+      "source_revision": "c2103dd32a4c0833c6754e75edb65bf8f5e6010c",
+      "sources": [
+        "decomp/research/usa_unique_three_20261122/crosswalk.json"
+      ],
+      "updated": "2026-11-22",
+      "width": 2
+    },
+    {
+      "address": "0x801529C8",
+      "aliases": [],
+      "category": "engine_state",
+      "confidence": "research_observed",
+      "confidence_sources": [
+        {
+          "confidence": "research_observed",
+          "evidence": "Original USA func_8000A18C_AD8C and Japan func_8000A03C_AC3C access the corresponding field at +0x5D08; JP g_system+0xC0000 resolves to 0x801524B0.",
+          "source_id": "research:usa_92f0_state_5D08"
+        }
+      ],
+      "context": "Offset-named field in a fixed main-segment state object; semantic name and complete object lifetime are unknown. The Japanese counterpart is original-MIPS traced, not live-game observed.",
+      "control": null,
+      "counterpart": "0x801581B8",
+      "data_type": "s16",
+      "discovered": "2026-11-22",
+      "endian": "big",
+      "evidence": "Original USA func_8000A18C_AD8C and Japan func_8000A03C_AC3C access the corresponding field at +0x5D08; JP g_system+0xC0000 resolves to 0x801524B0.",
+      "id": "research:usa_92f0_state_5D08",
+      "id_aliases": [],
+      "live_readable": false,
+      "mask": null,
+      "mips_refs": [
+        "func_8000A18C_AD8C",
+        "func_8000A03C_AC3C"
+      ],
+      "name": "92F0 raw main-state field +0x5D08",
+      "owner": "D_8014CCC0_14D8C0 / g_system+0xC0000 partial structure",
+      "region": "usa",
+      "revision": "NG5E-0",
+      "signed": true,
+      "source_revision": "c2103dd32a4c0833c6754e75edb65bf8f5e6010c",
+      "sources": [
+        "decomp/research/usa_unique_three_20261122/crosswalk.json"
+      ],
+      "updated": "2026-11-22",
+      "width": 2
+    },
+    {
+      "address": "0x801529CA",
+      "aliases": [],
+      "category": "engine_state",
+      "confidence": "research_observed",
+      "confidence_sources": [
+        {
+          "confidence": "research_observed",
+          "evidence": "Original USA func_8000A18C_AD8C and Japan func_8000A03C_AC3C access the corresponding field at +0x5D0A; JP g_system+0xC0000 resolves to 0x801524B0.",
+          "source_id": "research:usa_92f0_state_5D0A"
+        }
+      ],
+      "context": "Offset-named field in a fixed main-segment state object; semantic name and complete object lifetime are unknown. The Japanese counterpart is original-MIPS traced, not live-game observed.",
+      "control": null,
+      "counterpart": "0x801581BA",
+      "data_type": "s16",
+      "discovered": "2026-11-22",
+      "endian": "big",
+      "evidence": "Original USA func_8000A18C_AD8C and Japan func_8000A03C_AC3C access the corresponding field at +0x5D0A; JP g_system+0xC0000 resolves to 0x801524B0.",
+      "id": "research:usa_92f0_state_5D0A",
+      "id_aliases": [],
+      "live_readable": false,
+      "mask": null,
+      "mips_refs": [
+        "func_8000A18C_AD8C",
+        "func_8000A03C_AC3C"
+      ],
+      "name": "92F0 raw main-state field +0x5D0A",
+      "owner": "D_8014CCC0_14D8C0 / g_system+0xC0000 partial structure",
+      "region": "usa",
+      "revision": "NG5E-0",
+      "signed": true,
+      "source_revision": "c2103dd32a4c0833c6754e75edb65bf8f5e6010c",
+      "sources": [
+        "decomp/research/usa_unique_three_20261122/crosswalk.json"
+      ],
+      "updated": "2026-11-22",
+      "width": 2
+    },
+    {
+      "address": "0x801529CC",
+      "aliases": [],
+      "category": "engine_state",
+      "confidence": "research_observed",
+      "confidence_sources": [
+        {
+          "confidence": "research_observed",
+          "evidence": "Original USA func_8000A18C_AD8C and Japan func_8000A03C_AC3C access the corresponding field at +0x5D0C; JP g_system+0xC0000 resolves to 0x801524B0.",
+          "source_id": "research:usa_92f0_state_5D0C"
+        }
+      ],
+      "context": "Offset-named field in a fixed main-segment state object; semantic name and complete object lifetime are unknown. The Japanese counterpart is original-MIPS traced, not live-game observed.",
+      "control": null,
+      "counterpart": "0x801581BC",
+      "data_type": "s16",
+      "discovered": "2026-11-22",
+      "endian": "big",
+      "evidence": "Original USA func_8000A18C_AD8C and Japan func_8000A03C_AC3C access the corresponding field at +0x5D0C; JP g_system+0xC0000 resolves to 0x801524B0.",
+      "id": "research:usa_92f0_state_5D0C",
+      "id_aliases": [],
+      "live_readable": false,
+      "mask": null,
+      "mips_refs": [
+        "func_8000A18C_AD8C",
+        "func_8000A03C_AC3C"
+      ],
+      "name": "92F0 raw main-state field +0x5D0C",
+      "owner": "D_8014CCC0_14D8C0 / g_system+0xC0000 partial structure",
+      "region": "usa",
+      "revision": "NG5E-0",
+      "signed": true,
+      "source_revision": "c2103dd32a4c0833c6754e75edb65bf8f5e6010c",
+      "sources": [
+        "decomp/research/usa_unique_three_20261122/crosswalk.json"
+      ],
+      "updated": "2026-11-22",
+      "width": 2
+    },
+    {
+      "address": "0x801529D0",
+      "aliases": [],
+      "category": "engine_state",
+      "confidence": "research_observed",
+      "confidence_sources": [
+        {
+          "confidence": "research_observed",
+          "evidence": "Original USA func_8000A18C_AD8C and Japan func_8000A03C_AC3C access the corresponding field at +0x5D10; JP g_system+0xC0000 resolves to 0x801524B0.",
+          "source_id": "research:usa_92f0_state_5D10"
+        }
+      ],
+      "context": "Offset-named field in a fixed main-segment state object; semantic name and complete object lifetime are unknown. The Japanese counterpart is original-MIPS traced, not live-game observed.",
+      "control": null,
+      "counterpart": "0x801581C0",
+      "data_type": "s32",
+      "discovered": "2026-11-22",
+      "endian": "big",
+      "evidence": "Original USA func_8000A18C_AD8C and Japan func_8000A03C_AC3C access the corresponding field at +0x5D10; JP g_system+0xC0000 resolves to 0x801524B0.",
+      "id": "research:usa_92f0_state_5D10",
+      "id_aliases": [],
+      "live_readable": false,
+      "mask": null,
+      "mips_refs": [
+        "func_8000A18C_AD8C",
+        "func_8000A03C_AC3C"
+      ],
+      "name": "92F0 raw main-state field +0x5D10",
+      "owner": "D_8014CCC0_14D8C0 / g_system+0xC0000 partial structure",
+      "region": "usa",
+      "revision": "NG5E-0",
+      "signed": true,
+      "source_revision": "c2103dd32a4c0833c6754e75edb65bf8f5e6010c",
+      "sources": [
+        "decomp/research/usa_unique_three_20261122/crosswalk.json"
+      ],
+      "updated": "2026-11-22",
+      "width": 4
     },
     {
       "address": "0x8015C574",
@@ -21198,7 +21393,7 @@
       "region": "usa",
       "revision": "NG5E-0",
       "signed": false,
-      "source_revision": "41dc7404e23ae680a1b400357f59c729799f0710",
+      "source_revision": "c2103dd32a4c0833c6754e75edb65bf8f5e6010c",
       "sources": [
         "decomp/docs/GOEMON_DIALOGUE_GRANTS_AND_FLAG_COUPLING_20261120.md"
       ],
@@ -21278,7 +21473,7 @@
       "region": "usa",
       "revision": "NG5E-0",
       "signed": false,
-      "source_revision": "41dc7404e23ae680a1b400357f59c729799f0710",
+      "source_revision": "c2103dd32a4c0833c6754e75edb65bf8f5e6010c",
       "sources": [
         "decomp/docs/GOEMON_DIALOGUE_GRANTS_AND_FLAG_COUPLING_20261120.md"
       ],
@@ -21358,7 +21553,7 @@
       "region": "usa",
       "revision": "NG5E-0",
       "signed": false,
-      "source_revision": "41dc7404e23ae680a1b400357f59c729799f0710",
+      "source_revision": "c2103dd32a4c0833c6754e75edb65bf8f5e6010c",
       "sources": [
         "decomp/docs/GOEMON_DIALOGUE_GRANTS_AND_FLAG_COUPLING_20261120.md"
       ],
@@ -21438,7 +21633,7 @@
       "region": "usa",
       "revision": "NG5E-0",
       "signed": false,
-      "source_revision": "41dc7404e23ae680a1b400357f59c729799f0710",
+      "source_revision": "c2103dd32a4c0833c6754e75edb65bf8f5e6010c",
       "sources": [
         "decomp/docs/GOEMON_DIALOGUE_GRANTS_AND_FLAG_COUPLING_20261120.md"
       ],
@@ -21518,7 +21713,7 @@
       "region": "usa",
       "revision": "NG5E-0",
       "signed": false,
-      "source_revision": "41dc7404e23ae680a1b400357f59c729799f0710",
+      "source_revision": "c2103dd32a4c0833c6754e75edb65bf8f5e6010c",
       "sources": [
         "decomp/docs/GOEMON_DIALOGUE_GRANTS_AND_FLAG_COUPLING_20261120.md"
       ],
@@ -21598,7 +21793,7 @@
       "region": "usa",
       "revision": "NG5E-0",
       "signed": false,
-      "source_revision": "41dc7404e23ae680a1b400357f59c729799f0710",
+      "source_revision": "c2103dd32a4c0833c6754e75edb65bf8f5e6010c",
       "sources": [
         "decomp/docs/GOEMON_DIALOGUE_GRANTS_AND_FLAG_COUPLING_20261120.md"
       ],
@@ -21678,7 +21873,7 @@
       "region": "usa",
       "revision": "NG5E-0",
       "signed": false,
-      "source_revision": "41dc7404e23ae680a1b400357f59c729799f0710",
+      "source_revision": "c2103dd32a4c0833c6754e75edb65bf8f5e6010c",
       "sources": [
         "decomp/docs/GOEMON_DIALOGUE_GRANTS_AND_FLAG_COUPLING_20261120.md"
       ],
@@ -21758,7 +21953,7 @@
       "region": "usa",
       "revision": "NG5E-0",
       "signed": false,
-      "source_revision": "41dc7404e23ae680a1b400357f59c729799f0710",
+      "source_revision": "c2103dd32a4c0833c6754e75edb65bf8f5e6010c",
       "sources": [
         "decomp/docs/GOEMON_DIALOGUE_GRANTS_AND_FLAG_COUPLING_20261120.md"
       ],
@@ -21838,7 +22033,7 @@
       "region": "usa",
       "revision": "NG5E-0",
       "signed": false,
-      "source_revision": "41dc7404e23ae680a1b400357f59c729799f0710",
+      "source_revision": "c2103dd32a4c0833c6754e75edb65bf8f5e6010c",
       "sources": [
         "decomp/docs/GOEMON_DIALOGUE_GRANTS_AND_FLAG_COUPLING_20261120.md"
       ],
@@ -21918,7 +22113,7 @@
       "region": "usa",
       "revision": "NG5E-0",
       "signed": false,
-      "source_revision": "41dc7404e23ae680a1b400357f59c729799f0710",
+      "source_revision": "c2103dd32a4c0833c6754e75edb65bf8f5e6010c",
       "sources": [
         "decomp/docs/GOEMON_DIALOGUE_GRANTS_AND_FLAG_COUPLING_20261120.md",
         "practice/MEMORY_MAP.md:56@toolkit/unlocks-items-and-flags-20261117",
@@ -22006,7 +22201,7 @@
       "region": "usa",
       "revision": "NG5E-0",
       "signed": false,
-      "source_revision": "41dc7404e23ae680a1b400357f59c729799f0710",
+      "source_revision": "c2103dd32a4c0833c6754e75edb65bf8f5e6010c",
       "sources": [
         "decomp/docs/GOEMON_DIALOGUE_GRANTS_AND_FLAG_COUPLING_20261120.md"
       ],
@@ -22086,7 +22281,7 @@
       "region": "usa",
       "revision": "NG5E-0",
       "signed": false,
-      "source_revision": "41dc7404e23ae680a1b400357f59c729799f0710",
+      "source_revision": "c2103dd32a4c0833c6754e75edb65bf8f5e6010c",
       "sources": [
         "decomp/docs/GOEMON_DIALOGUE_GRANTS_AND_FLAG_COUPLING_20261120.md"
       ],
@@ -22166,7 +22361,7 @@
       "region": "usa",
       "revision": "NG5E-0",
       "signed": false,
-      "source_revision": "41dc7404e23ae680a1b400357f59c729799f0710",
+      "source_revision": "c2103dd32a4c0833c6754e75edb65bf8f5e6010c",
       "sources": [
         "decomp/docs/GOEMON_DIALOGUE_GRANTS_AND_FLAG_COUPLING_20261120.md"
       ],
@@ -22438,7 +22633,7 @@
       "region": "usa",
       "revision": "NG5E-0",
       "signed": false,
-      "source_revision": "41dc7404e23ae680a1b400357f59c729799f0710",
+      "source_revision": "c2103dd32a4c0833c6754e75edb65bf8f5e6010c",
       "sources": [
         "decomp/docs/GOEMON_DIALOGUE_GRANTS_AND_FLAG_COUPLING_20261120.md",
         "practice/MEMORY_MAP.md:58@toolkit/unlocks-items-and-flags-20261117",
@@ -22523,7 +22718,7 @@
       "region": "usa",
       "revision": "NG5E-0",
       "signed": false,
-      "source_revision": "41dc7404e23ae680a1b400357f59c729799f0710",
+      "source_revision": "c2103dd32a4c0833c6754e75edb65bf8f5e6010c",
       "sources": [
         "decomp/docs/GOEMON_DIALOGUE_GRANTS_AND_FLAG_COUPLING_20261120.md"
       ],
@@ -22603,7 +22798,7 @@
       "region": "usa",
       "revision": "NG5E-0",
       "signed": false,
-      "source_revision": "41dc7404e23ae680a1b400357f59c729799f0710",
+      "source_revision": "c2103dd32a4c0833c6754e75edb65bf8f5e6010c",
       "sources": [
         "decomp/docs/GOEMON_DIALOGUE_GRANTS_AND_FLAG_COUPLING_20261120.md"
       ],
@@ -22814,7 +23009,7 @@
       "region": "usa",
       "revision": "NG5E-0",
       "signed": false,
-      "source_revision": "41dc7404e23ae680a1b400357f59c729799f0710",
+      "source_revision": "c2103dd32a4c0833c6754e75edb65bf8f5e6010c",
       "sources": [
         "decomp/docs/GOEMON_GLITCH_RESEARCH_MASTER_20261120.md"
       ],
@@ -22852,7 +23047,7 @@
       "region": "usa",
       "revision": "NG5E-0",
       "signed": false,
-      "source_revision": "41dc7404e23ae680a1b400357f59c729799f0710",
+      "source_revision": "c2103dd32a4c0833c6754e75edb65bf8f5e6010c",
       "sources": [
         "decomp/docs/GOEMON_GLITCH_RESEARCH_MASTER_20261120.md"
       ],
@@ -22890,7 +23085,7 @@
       "region": "usa",
       "revision": "NG5E-0",
       "signed": false,
-      "source_revision": "41dc7404e23ae680a1b400357f59c729799f0710",
+      "source_revision": "c2103dd32a4c0833c6754e75edb65bf8f5e6010c",
       "sources": [
         "decomp/docs/GOEMON_GLITCH_RESEARCH_MASTER_20261120.md"
       ],
@@ -22928,7 +23123,7 @@
       "region": "usa",
       "revision": "NG5E-0",
       "signed": false,
-      "source_revision": "41dc7404e23ae680a1b400357f59c729799f0710",
+      "source_revision": "c2103dd32a4c0833c6754e75edb65bf8f5e6010c",
       "sources": [
         "decomp/docs/GOEMON_DIALOGUE_GRANTS_AND_FLAG_COUPLING_20261120.md"
       ],
@@ -23009,7 +23204,7 @@
       "region": "usa",
       "revision": "NG5E-0",
       "signed": false,
-      "source_revision": "41dc7404e23ae680a1b400357f59c729799f0710",
+      "source_revision": "c2103dd32a4c0833c6754e75edb65bf8f5e6010c",
       "sources": [
         "decomp/docs/GOEMON_DIALOGUE_GRANTS_AND_FLAG_COUPLING_20261120.md"
       ],
@@ -23090,7 +23285,7 @@
       "region": "usa",
       "revision": "NG5E-0",
       "signed": false,
-      "source_revision": "41dc7404e23ae680a1b400357f59c729799f0710",
+      "source_revision": "c2103dd32a4c0833c6754e75edb65bf8f5e6010c",
       "sources": [
         "decomp/docs/GOEMON_DIALOGUE_GRANTS_AND_FLAG_COUPLING_20261120.md"
       ],
@@ -23171,7 +23366,7 @@
       "region": "usa",
       "revision": "NG5E-0",
       "signed": false,
-      "source_revision": "41dc7404e23ae680a1b400357f59c729799f0710",
+      "source_revision": "c2103dd32a4c0833c6754e75edb65bf8f5e6010c",
       "sources": [
         "decomp/docs/GOEMON_DIALOGUE_GRANTS_AND_FLAG_COUPLING_20261120.md"
       ],
@@ -23254,7 +23449,7 @@
       "region": "usa",
       "revision": "NG5E-0",
       "signed": false,
-      "source_revision": "41dc7404e23ae680a1b400357f59c729799f0710",
+      "source_revision": "c2103dd32a4c0833c6754e75edb65bf8f5e6010c",
       "sources": [
         "decomp/docs/GOEMON_DIALOGUE_GRANTS_AND_FLAG_COUPLING_20261120.md"
       ],
@@ -23760,7 +23955,7 @@
       "region": "usa",
       "revision": "NG5E-0",
       "signed": false,
-      "source_revision": "41dc7404e23ae680a1b400357f59c729799f0710",
+      "source_revision": "c2103dd32a4c0833c6754e75edb65bf8f5e6010c",
       "sources": [
         "decomp/docs/GOEMON_GLITCH_RESEARCH_MASTER_20261120.md"
       ],
@@ -23976,7 +24171,7 @@
       "region": "usa",
       "revision": "NG5E-0",
       "signed": null,
-      "source_revision": "41dc7404e23ae680a1b400357f59c729799f0710",
+      "source_revision": "c2103dd32a4c0833c6754e75edb65bf8f5e6010c",
       "sources": [
         "decomp/VM_RUNTIME_CURSOR_FIELD_REPORT.md"
       ],
@@ -24130,7 +24325,7 @@
       "region": "usa",
       "revision": "NG5E-0",
       "signed": null,
-      "source_revision": "41dc7404e23ae680a1b400357f59c729799f0710",
+      "source_revision": "c2103dd32a4c0833c6754e75edb65bf8f5e6010c",
       "sources": [
         "decomp/VM_RUNTIME_CURSOR_FIELD_REPORT.md",
         "decomp/VM_RUNTIME_CURSOR_FIELD_REPORT.md:83@chatgptweb/decomp"
@@ -24169,7 +24364,7 @@
       "region": "usa",
       "revision": "NG5E-0",
       "signed": null,
-      "source_revision": "41dc7404e23ae680a1b400357f59c729799f0710",
+      "source_revision": "c2103dd32a4c0833c6754e75edb65bf8f5e6010c",
       "sources": [
         "decomp/VM_RUNTIME_CURSOR_FIELD_REPORT.md",
         "decomp/VM_RUNTIME_CURSOR_FIELD_REPORT.md:65@chatgptweb/decomp"
@@ -24258,7 +24453,7 @@
       "region": "usa",
       "revision": "NG5E-0",
       "signed": false,
-      "source_revision": "41dc7404e23ae680a1b400357f59c729799f0710",
+      "source_revision": "c2103dd32a4c0833c6754e75edb65bf8f5e6010c",
       "sources": [
         "decomp/CONTINUE.md:49@chatgptweb/decomp",
         "decomp/VM_RUNTIME_CURSOR_FIELD_REPORT.md",
@@ -24293,7 +24488,9 @@
       "endian": "big",
       "evidence": "Conflicts with canonical research:vm_active_countdown at 0x801C77F8. ROM: func_8003F460 copies countdown input and func_8003E654 decrements state 7; original JP func_8003E2C4_3EEC4 is native-G2 identical and corresponds to accepted USA func_8003E654_3F254",
       "id": "decomp:conflict:research:vm_active_countdown:41dc7404e23a:801c77f8",
-      "id_aliases": [],
+      "id_aliases": [
+        "decomp:conflict:research:vm_active_countdown:c2103dd32a4c:801c77f8"
+      ],
       "live_readable": false,
       "mask": null,
       "mips_refs": [
@@ -24387,7 +24584,7 @@
       "region": "usa",
       "revision": "NG5E-0",
       "signed": false,
-      "source_revision": "41dc7404e23ae680a1b400357f59c729799f0710",
+      "source_revision": "c2103dd32a4c0833c6754e75edb65bf8f5e6010c",
       "sources": [
         "decomp/VM_RUNTIME_CURSOR_FIELD_REPORT.md",
         "decomp/VM_RUNTIME_CURSOR_FIELD_REPORT.md:32@chatgptweb/decomp",
@@ -24427,7 +24624,7 @@
       "region": "usa",
       "revision": "NG5E-0",
       "signed": false,
-      "source_revision": "41dc7404e23ae680a1b400357f59c729799f0710",
+      "source_revision": "c2103dd32a4c0833c6754e75edb65bf8f5e6010c",
       "sources": [
         "decomp/VM_RUNTIME_CURSOR_FIELD_REPORT.md",
         "decomp/VM_RUNTIME_CURSOR_FIELD_REPORT.md:95@chatgptweb/decomp"
@@ -24516,7 +24713,7 @@
       "region": "usa",
       "revision": "NG5E-0",
       "signed": null,
-      "source_revision": "41dc7404e23ae680a1b400357f59c729799f0710",
+      "source_revision": "c2103dd32a4c0833c6754e75edb65bf8f5e6010c",
       "sources": [
         "decomp/VM_RUNTIME_CURSOR_FIELD_REPORT.md",
         "decomp/VM_RUNTIME_CURSOR_FIELD_REPORT.md:92@chatgptweb/decomp"
@@ -24556,7 +24753,7 @@
       "region": "usa",
       "revision": "NG5E-0",
       "signed": false,
-      "source_revision": "41dc7404e23ae680a1b400357f59c729799f0710",
+      "source_revision": "c2103dd32a4c0833c6754e75edb65bf8f5e6010c",
       "sources": [
         "decomp/VM_RUNTIME_CURSOR_FIELD_REPORT.md",
         "decomp/VM_RUNTIME_CURSOR_FIELD_REPORT.md:32@chatgptweb/decomp",
@@ -25268,6 +25465,7 @@
     "decomp/docs/GOEMON_GLITCH_RESEARCH_MASTER_20261120.md",
     "decomp/docs/GOEMON_START_DIALOGUE_SKIP_CONTROL_FLOW_20261120.md",
     "decomp/docs/GOEMON_VM_TWO_G2_PROMOTION_20261121.md",
+    "decomp/research/usa_unique_three_20261122/crosswalk.json",
     "docs/EBISUMARU_TRANSFORMATION_RUNTIME_FINDINGS_2026-11-14.md",
     "docs/EBISUMARU_TRANSFORMATION_RUNTIME_FINDINGS_2026-11-14.md:103@main",
     "docs/EBISUMARU_TRANSFORMATION_RUNTIME_FINDINGS_2026-11-14.md:105@main",
