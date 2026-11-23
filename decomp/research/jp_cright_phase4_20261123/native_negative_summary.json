@@ -1,0 +1,61 @@
+{
+  "format": "goemon-cright-negative-ido-20261123",
+  "variants": [
+    {
+      "file": "native_negative_controls/phase88_v1.c",
+      "source_sha256": "90f0dedfd5bbf169d9db8f3d22435d6884484324e3d1f7bf1846bac64c7cf030",
+      "original_function": "func_8000339C_3F9C",
+      "native_compiler": "IDO5.3",
+      "outcome": "FAILED_NATIVE",
+      "mismatch_class": "register allocation / instruction scheduling / code length",
+      "quirk_outcome": "NO_NEW_COMPILER_FINDING"
+    },
+    {
+      "file": "native_negative_controls/resource80_v2.c",
+      "source_sha256": "5078e7fd463bb8a024ed2abaa456904fbae937930ce8e97e7f2b3c99763dc2c5",
+      "original_function": "func_80013654_14254",
+      "native_compiler": "IDO5.3",
+      "outcome": "FAILED_NATIVE",
+      "mismatch_class": "register allocation / instruction scheduling / code length",
+      "quirk_outcome": "NO_NEW_COMPILER_FINDING"
+    },
+    {
+      "file": "native_negative_controls/resource80_v3.c",
+      "source_sha256": "382193216df5d18f5f256e55756e9e6aa6dbae836f24609043bc655eb90b9e7c",
+      "original_function": "func_80013654_14254",
+      "native_compiler": "IDO5.3",
+      "outcome": "FAILED_NATIVE",
+      "mismatch_class": "register allocation / instruction scheduling / code length",
+      "quirk_outcome": "NO_NEW_COMPILER_FINDING"
+    },
+    {
+      "file": "native_negative_controls/slot04.c",
+      "source_sha256": "e07f6b324ecb39a525f17caf5f454f77235b0eccd06a0f94288ebe95fd522ba8",
+      "original_function": "func_800041AC_4DAC",
+      "native_compiler": "IDO5.3",
+      "outcome": "FAILED_NATIVE",
+      "mismatch_class": "register allocation / instruction scheduling / code length",
+      "quirk_outcome": "EXISTING_QUIRK_NOT_APPLICABLE"
+    },
+    {
+      "file": "native_negative_controls/slot15.c",
+      "source_sha256": "4e20388affe56859ecb87dbcada76e5a9d2fc6a52d9d49d8feb24d8ac0aee577",
+      "original_function": "func_800041AC_4DAC",
+      "native_compiler": "IDO5.3",
+      "outcome": "FAILED_NATIVE",
+      "mismatch_class": "register allocation / instruction scheduling / code length",
+      "quirk_outcome": "EXISTING_QUIRK_NOT_APPLICABLE"
+    },
+    {
+      "file": "native_negative_controls/slot16.c",
+      "source_sha256": "a1da6e422d97bdcf822099ab99d32346759a445eed54de84eceb5c523787be89",
+      "original_function": "func_800041AC_4DAC",
+      "native_compiler": "IDO5.3",
+      "outcome": "FAILED_NATIVE",
+      "mismatch_class": "register allocation / instruction scheduling / code length",
+      "quirk_outcome": "EXISTING_QUIRK_NOT_APPLICABLE"
+    }
+  ],
+  "128B_callback_prior_attempt": "negative_periodic128_v1.c in prior reset16 research; FAILED_NATIVE 132B vs 128B",
+  "new_matching_functions": 0
+}

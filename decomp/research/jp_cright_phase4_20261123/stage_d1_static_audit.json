@@ -1,0 +1,59 @@
+{
+  "format": "goemon-cright-stage-d1-static-readwrite-v1",
+  "region": "japan_0",
+  "source": "authenticated-original-jp0-Splat-ASM",
+  "source_rom_expanded_sha1": "6f8745fecc3a5e7d4918c7a73353eb0726116ded",
+  "source_pinned_commit": "7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee",
+  "asm_files_scanned": 2546,
+  "instructions_scanned": 567959,
+  "stage_symbol_referencing_files": 48,
+  "direct_hits": [
+    {
+      "function": "func_80212514_5CDAA4",
+      "pc": "0x802125C4",
+      "rom_offset": "0x5CDB54",
+      "op": "sb",
+      "kind": "write",
+      "address": "0x801624F1"
+    },
+    {
+      "function": "func_80212514_5CDAA4",
+      "pc": "0x80212680",
+      "rom_offset": "0x5CDC10",
+      "op": "sb",
+      "kind": "write",
+      "address": "0x801624F1"
+    },
+    {
+      "function": "func_8021DB74_5D9104",
+      "pc": "0x8021DBC0",
+      "rom_offset": "0x5D9150",
+      "op": "sb",
+      "kind": "write",
+      "address": "0x801624F1"
+    },
+    {
+      "function": "func_8021EA10_5D9FA0",
+      "pc": "0x8021EA60",
+      "rom_offset": "0x5D9FF0",
+      "op": "sb",
+      "kind": "write",
+      "address": "0x801624F0"
+    }
+  ],
+  "read_hits_through_statically_resolved_global_base": [],
+  "interpretation": "No statically resolved direct reads in bounded conservative scan; NOT proof of absence of indirect readers, code overlays, VM, DMA or aliases. Reset function was ALREADY accepted matching C in jp1686 batch; do not claim novel accepted conversion.",
+  "reset_function_ownership": "ALREADY_ACCEPTED_JP1686",
+  "reset_function": "func_8021DB74_5D9104",
+  "reset_bytes": 120,
+  "native_independent_reproduction": "ISOLATED_EXACT_RELOC_MASKED",
+  "native_nonrelocation_words": "28/28",
+  "native_relocation_types": [
+    "R_MIPS_HI16",
+    "R_MIPS_LO16"
+  ],
+  "full_32mib_rom_rebuild": "NOT_RUN",
+  "four_adjacent_targets": "FAILED_NATIVE_PREVIOUS_OR_THIS_SESSION",
+  "subsequent_freeze_observed": "NO",
+  "project64_phase4_runtime_test": "NOT_RUN"
+}
