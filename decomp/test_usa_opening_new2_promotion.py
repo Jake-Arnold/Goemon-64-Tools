@@ -37,7 +37,7 @@ class OpeningNew2Tests(unittest.TestCase):
         self.assertEqual(sum(f['size'] for f in d['functions']),92)
         self.assertEqual(tuple((f['name'],f['rom_offset'],f['vma'],f['size']) for f in d['functions']),stage.EXPECTED)
     def test_current_claims_are_exactly_post2090(self):
-        m=verify.load_manifest(verify.ROOT/'manifest.json');fs=verify.claimed_functions(m)
+        m=verify.load_manifest(verify.ROOT/'manifest.json');m.pop('overlay_usa_short72_stage',None);fs=verify.claimed_functions(m)
         self.assertEqual(len(fs),2092)
         self.assertEqual(sum(f['size'] for f in fs),94760)
         old={k:v for k,v in m.items() if k!='overlay_usa_opening_new2_stage'}

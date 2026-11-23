@@ -18,6 +18,7 @@ _historical_load_manifest = load_manifest
 
 def load_manifest(*args, **kwargs):
     manifest = _historical_load_manifest(*args, **kwargs)
+    manifest.pop('overlay_usa_short72_stage', None)  # Post2092 source stage; preserve historical original-C checkpoint
     # The 2090-C Mini stages postdate this fixed historical test checkpoint.
     manifest.pop('overlay_mini10_stage', None)
     manifest.pop('overlay_mini_selector_stage', None)

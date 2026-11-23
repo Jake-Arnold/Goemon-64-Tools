@@ -18,6 +18,7 @@ class AllPendingFile11PromotionTests(unittest.TestCase):
         cls.manifest = load_manifest(ROOT / 'decomp/manifest.json')
         # This test deliberately reconstructs a predecessor C stage.
         cls.manifest.pop('overlay_usa_opening_new2_stage',None)
+        cls.manifest.pop('overlay_usa_short72_stage',None)
         cls.manifest.pop('overlay_wide132_stage', None)
         cls.manifest.pop('overlay_wide109_stage', None)
         cls.manifest.pop('overlay_resource140_stage', None)

@@ -1,0 +1,730 @@
+{
+  "format": "goemon-usa-short72-post2092-v1",
+  "region": "usa",
+  "original_rom_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+  "upstream_commit": "7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee",
+  "prior_c": 2092,
+  "prior_bytes": 94760,
+  "functions": [
+    {
+      "name": "func_080023E4_6C1B34",
+      "rom_offset": 7084852,
+      "vma": 134226916,
+      "size": 68,
+      "source": "short72_000",
+      "source_sha256": "3733307eae678ba3be75fce0f9e7eba9aa7cccb9191df5fe86223d2f7fc56ba4",
+      "original_code_sha256": "fb58a0234068790ea72c76a6b0d6ad61b548d1ddda547628b97b5e258e5b575f",
+      "original_asm": "file_30"
+    },
+    {
+      "name": "func_08003DFC_6DDCCC",
+      "rom_offset": 7199948,
+      "vma": 134233596,
+      "size": 68,
+      "source": "short72_001",
+      "source_sha256": "fb6f3505538ea77f1aade5b3d8f837fc402b6b50714eabd3f57f930efe95c679",
+      "original_code_sha256": "45592f91005c761cc69f2ba14e0aed95d569a8c6a833cffe2667c8b926204b9e",
+      "original_asm": "file_36"
+    },
+    {
+      "name": "func_08000664_6E4644",
+      "rom_offset": 7226948,
+      "vma": 134219364,
+      "size": 68,
+      "source": "short72_002",
+      "source_sha256": "e1f0f13c7bc8c92917ce3cd3acdd7b2fde425583206daae3f5402acdad323c81",
+      "original_code_sha256": "05a44587d44c6f315b53b6451653aa245fdcb9e8e13c3fb8c3b7c50d8f5f27d4",
+      "original_asm": "file_38"
+    },
+    {
+      "name": "func_08001F78_6E5F58",
+      "rom_offset": 7233368,
+      "vma": 134225784,
+      "size": 68,
+      "source": "short72_003",
+      "source_sha256": "1824d67566d2598d76793eec42dc5d753ac29b3509a6e44ade58867463eb8254",
+      "original_code_sha256": "f77d74219c386515e58a172c90905f359574bb36bfe2da5d2e3facacda8482e4",
+      "original_asm": "file_38"
+    },
+    {
+      "name": "func_08002584_6E6564",
+      "rom_offset": 7234916,
+      "vma": 134227332,
+      "size": 68,
+      "source": "short72_004",
+      "source_sha256": "1eaf72ac38811ea9c6506649510867e2b70a84e18641bef1e0fcce880322fb3f",
+      "original_code_sha256": "fa44fb47d4dc3912a5cf10e0b1a8a09795ac523eb03f05ad137fed8f63928311",
+      "original_asm": "file_38"
+    },
+    {
+      "name": "func_08002A84_6E6A64",
+      "rom_offset": 7236196,
+      "vma": 134228612,
+      "size": 68,
+      "source": "short72_005",
+      "source_sha256": "6b4e80469e90d035be200ee060519d2cf00fa1ec0561523e202b2982c6940406",
+      "original_code_sha256": "9ae550b3a76479fbe12a405aafd1922c2464b6a856b037c58449bec9fd99368a",
+      "original_asm": "file_38"
+    },
+    {
+      "name": "func_08003634_704734",
+      "rom_offset": 7358260,
+      "vma": 134231604,
+      "size": 68,
+      "source": "short72_006",
+      "source_sha256": "a39ba1a5ec9950d5b5d65b9a0a0f6a3d4e80786176d52dee65096ede97ba6b08",
+      "original_code_sha256": "54443c2757af9449e5abdde2f47297c65dc2df7ee8f4ce3a87b46bad3db51686",
+      "original_asm": "file_46"
+    },
+    {
+      "name": "func_08002BB4_6E1D54",
+      "rom_offset": 7216468,
+      "vma": 134228916,
+      "size": 68,
+      "source": "short72_007",
+      "source_sha256": "a84bb5e775877bd0afcc6f6a865eb15367ab06532ca006c465198e7556113663",
+      "original_code_sha256": "04a3ea7b3d7ed20da6418c43c2fc978b4f6219c5f5c2169ba5afba24eac07fd8",
+      "original_asm": "file_37"
+    },
+    {
+      "name": "func_080037C0_6CB9D0",
+      "rom_offset": 7125456,
+      "vma": 134232000,
+      "size": 68,
+      "source": "short72_008",
+      "source_sha256": "b7b82a4325b749d82a872438c091d49aec9be0fa99521547adce72bd3a4ad16a",
+      "original_code_sha256": "7431cf1f3c1fd2fc7a72d58a587732fc4360d3d7759779f95e660a2dc23372af",
+      "original_asm": "file_31"
+    },
+    {
+      "name": "func_08004B14_6F7FF4",
+      "rom_offset": 7307252,
+      "vma": 134236948,
+      "size": 68,
+      "source": "short72_009",
+      "source_sha256": "d62b3db8807633c1507297a26f62be99c335d8f1c1b68c352486913139357f10",
+      "original_code_sha256": "6f38e7b0605cb4a588756fe3af7f12237dfd7ba3a54d54507432a71860843395",
+      "original_asm": "file_43"
+    },
+    {
+      "name": "func_08004BBC_6F809C",
+      "rom_offset": 7307420,
+      "vma": 134237116,
+      "size": 68,
+      "source": "short72_010",
+      "source_sha256": "1955c206b35a742f9d3f3d1bac97c9bea2b5213a05007fc3ebf4370f00658cb5",
+      "original_code_sha256": "de20a396f016a8d1d38d02085e3fd4544de1bfc8bc14583baeede5ce3e021535",
+      "original_asm": "file_43"
+    },
+    {
+      "name": "func_08001AFC_6D0BDC",
+      "rom_offset": 7146460,
+      "vma": 134224636,
+      "size": 68,
+      "source": "short72_011",
+      "source_sha256": "f446753044d72069f95fe1c127f6f16d296c403b352e9f9be1a7094b1f38170f",
+      "original_code_sha256": "3307a7506fdcbeabd971bd162d1e5dcb649db0fa0b131cdd7159544d99842661",
+      "original_asm": "file_32"
+    },
+    {
+      "name": "func_0800309C_6D217C",
+      "rom_offset": 7151996,
+      "vma": 134230172,
+      "size": 68,
+      "source": "short72_012",
+      "source_sha256": "e25f7e7accc21948eb6b8af494fbffe9cdaf4249d4d64ad16737d292aaddf30f",
+      "original_code_sha256": "3cfcb3ea5f98e7e03b262526142c68875b3e1837e6182bdbf50dc1d6ae2c7ff3",
+      "original_asm": "file_32"
+    },
+    {
+      "name": "func_080024F0_6B5790",
+      "rom_offset": 7034768,
+      "vma": 134227184,
+      "size": 68,
+      "source": "short72_013",
+      "source_sha256": "a08ca22a5213dbb7f4381d3705cf1e5efef879a453107c7bfecae14a8b7c55f2",
+      "original_code_sha256": "8f6faafdf0b83978f5cc4f25fce8c7da75b377ad9c701f886433b305e64686e6",
+      "original_asm": "file_29"
+    },
+    {
+      "name": "func_08002EC8_6B6168",
+      "rom_offset": 7037288,
+      "vma": 134229704,
+      "size": 68,
+      "source": "short72_014",
+      "source_sha256": "d7841ad3a496ff1c00d442a6d0cb5c55173454bd4b581f7308ea5753c26e0255",
+      "original_code_sha256": "0dc8f7cb5f7ce0b6acd599f3926e8604b518a1a4c0bc6cef408c984ea66817d0",
+      "original_asm": "file_29"
+    },
+    {
+      "name": "func_08002F0C_6B61AC",
+      "rom_offset": 7037356,
+      "vma": 134229772,
+      "size": 68,
+      "source": "short72_015",
+      "source_sha256": "4503a5ecd2e5433e55a106c9d1c6826a040b47ed0276a4ddfd46214e35cbc735",
+      "original_code_sha256": "d4b95ac0f83fb04732e183f9c7cde5598751446dbc7fac4ff7902b30fa363377",
+      "original_asm": "file_29"
+    },
+    {
+      "name": "func_0800738C_6BA62C",
+      "rom_offset": 7054892,
+      "vma": 134247308,
+      "size": 68,
+      "source": "short72_016",
+      "source_sha256": "31503759be3e449e407781f8666d37152f90b3494652f3943abb9d0224774380",
+      "original_code_sha256": "ebf1d69da08ae836d2fe700a70ffa616d4a9ec9f22c2ee3e9e0ea772e9a420b4",
+      "original_asm": "file_29"
+    },
+    {
+      "name": "func_080082F8_6BB598",
+      "rom_offset": 7058840,
+      "vma": 134251256,
+      "size": 68,
+      "source": "short72_017",
+      "source_sha256": "91a070c83087081f62363bec615154bbf4166fe04b91b4a5c6c615765063f71e",
+      "original_code_sha256": "6b251de616e4de646e6e069a5569d58a898a3da71753e97170b66672c3f5a878",
+      "original_asm": "file_29"
+    },
+    {
+      "name": "func_08002A98_6C21E8",
+      "rom_offset": 7086568,
+      "vma": 134228632,
+      "size": 52,
+      "source": "short72_018",
+      "source_sha256": "084874fa611559638a7fedfc448151e4bef0f7545985e1204a1fb5b2cddb6f94",
+      "original_code_sha256": "5f1360e15f3ede62639c9c42604e5a1e1bc75014f892fad9499d7818f41b1b30",
+      "original_asm": "file_30"
+    },
+    {
+      "name": "func_08002D64_6C24B4",
+      "rom_offset": 7087284,
+      "vma": 134229348,
+      "size": 52,
+      "source": "short72_019",
+      "source_sha256": "ba938e6bd1e09e7859d2c3c4b8ae7350d2666501114e6d827084b790401ba030",
+      "original_code_sha256": "6ba178fce70e64e5f8371315f4e78f4b2093f8b6e1cabca2f1856dbdb22b5a85",
+      "original_asm": "file_30"
+    },
+    {
+      "name": "func_080074D4_6C6C24",
+      "rom_offset": 7105572,
+      "vma": 134247636,
+      "size": 52,
+      "source": "short72_020",
+      "source_sha256": "3cfd46e88e53dad623135939f784cb9910ca7d9d32246c58d2a73d4da3a46e57",
+      "original_code_sha256": "8df12a7107cfc9fd6be871964e2c483ad42ddf2d763293a1c9bbc9a0bce44e4f",
+      "original_asm": "file_30"
+    },
+    {
+      "name": "func_080079C8_6C7118",
+      "rom_offset": 7106840,
+      "vma": 134248904,
+      "size": 52,
+      "source": "short72_021",
+      "source_sha256": "048478f65ba41855b8a59da8f4fe8c4be00f2c92ccdaae359f2ba703d4ae3323",
+      "original_code_sha256": "bdad14fbf43dc64d83d04b8674fa773335f035ade874f4952184ee79c256794c",
+      "original_asm": "file_30"
+    },
+    {
+      "name": "func_08002CA4_6DCB74",
+      "rom_offset": 7195508,
+      "vma": 134229156,
+      "size": 52,
+      "source": "short72_022",
+      "source_sha256": "f715709a2e2082d37e1794eaeef0f1b4acd32143e11ec6c6e0764a328a630502",
+      "original_code_sha256": "d013a8948ffe7021b5ce2cf4ec51f08de44444b525a22b4a07a318de3fbbef09",
+      "original_asm": "file_36"
+    },
+    {
+      "name": "func_080036C8_6DD598",
+      "rom_offset": 7198104,
+      "vma": 134231752,
+      "size": 52,
+      "source": "short72_023",
+      "source_sha256": "9dfadfd1ae393ac65fdcb7b147a360551e53e052745ed7be2deb8244b7600a2b",
+      "original_code_sha256": "fdcd6204e01aacdb9b171e9514d5ec5d6e29e6c9f7ca57f8b898da0075071d26",
+      "original_asm": "file_36"
+    },
+    {
+      "name": "func_08000120_6E7430",
+      "rom_offset": 7238704,
+      "vma": 134218016,
+      "size": 52,
+      "source": "short72_024",
+      "source_sha256": "3ee8fd56364c452864776fd7127c497981537ed5e36f52fdd4dcb3c07f7be355",
+      "original_code_sha256": "294df285b5fdf6f1290c7cbf417e6156a730ce400c7fb981fc2180f6706fe937",
+      "original_asm": "file_39"
+    },
+    {
+      "name": "func_08001BBC_6E5B9C",
+      "rom_offset": 7232412,
+      "vma": 134224828,
+      "size": 52,
+      "source": "short72_025",
+      "source_sha256": "31988c17f8500931ae9d418606e80c551d14baf08ab6e6623248fb42d21f2f7d",
+      "original_code_sha256": "93f96caeedae61003b7333a8e0de216fdb872d6a80b094da392b6c62c0a2e564",
+      "original_asm": "file_38"
+    },
+    {
+      "name": "func_08002F58_704058",
+      "rom_offset": 7356504,
+      "vma": 134229848,
+      "size": 52,
+      "source": "short72_026",
+      "source_sha256": "40301b156aea5306e9e0dd395d27ef90db02e58f8ca969226ddb12be33c4027b",
+      "original_code_sha256": "cd0899bb159990da1243d6d9110272fe8a98ed214e07a4288fe9eb637ee692b4",
+      "original_asm": "file_46"
+    },
+    {
+      "name": "func_08002B2C_6F600C",
+      "rom_offset": 7299084,
+      "vma": 134228780,
+      "size": 52,
+      "source": "short72_027",
+      "source_sha256": "fa5481b689d1210342e902195c687de824b08d32b84df715e71b3159d0a4b4d3",
+      "original_code_sha256": "e7b0f3b17f6b0ab55173029147be005222b4837781a1c85b0b6e363cbbec1d10",
+      "original_asm": "file_43"
+    },
+    {
+      "name": "func_08000950_6E9AA0",
+      "rom_offset": 7248544,
+      "vma": 134220112,
+      "size": 52,
+      "source": "short72_028",
+      "source_sha256": "668137c109dcdc37c9d3d0b1e2aed08b889a2a10d762f8b3c59dcefbf9988f8e",
+      "original_code_sha256": "5ba1ad8138ae5f8ba85574b13fdd21f35a4b89677b5feedcfaab82938da0b907",
+      "original_asm": "file_40"
+    },
+    {
+      "name": "func_08002E00_6B60A0",
+      "rom_offset": 7037088,
+      "vma": 134229504,
+      "size": 52,
+      "source": "short72_029",
+      "source_sha256": "3d34206c8d32c7292217f49784a3633847ff2785640daad23b873e02e429a512",
+      "original_code_sha256": "fa55ae7764effe7027f636e24afaacd053428676defcc07f2512042435705f14",
+      "original_asm": "file_29"
+    },
+    {
+      "name": "func_08005B1C_6B8DBC",
+      "rom_offset": 7048636,
+      "vma": 134241052,
+      "size": 52,
+      "source": "short72_030",
+      "source_sha256": "a787291f0e58d6bb29938995df83a9ad6d4eb67b660e9007195b1c2ed50ea705",
+      "original_code_sha256": "8cf5f42e48d573ae399c6f7ad061512f8ab8b01492cbbff7b130cd9c8faabd01",
+      "original_asm": "file_29"
+    },
+    {
+      "name": "func_08006638_6B98D8",
+      "rom_offset": 7051480,
+      "vma": 134243896,
+      "size": 52,
+      "source": "short72_031",
+      "source_sha256": "6f583747736746e7598d2c2e3eb84310cf0ecaa741e02011f86b9a0d0a1feecf",
+      "original_code_sha256": "021ac5c42c47533aad9338a9de228e03b730d7a2903458cf367849cb4ae0ffd0",
+      "original_asm": "file_29"
+    },
+    {
+      "name": "func_0800781C_6BAABC",
+      "rom_offset": 7056060,
+      "vma": 134248476,
+      "size": 52,
+      "source": "short72_032",
+      "source_sha256": "a13fc59b6cbe825f33655fbeb33357f94a82eb344df7e0e337bcf7d04dbce044",
+      "original_code_sha256": "021ac5c42c47533aad9338a9de228e03b730d7a2903458cf367849cb4ae0ffd0",
+      "original_asm": "file_29"
+    },
+    {
+      "name": "func_080079B0_6BAC50",
+      "rom_offset": 7056464,
+      "vma": 134248880,
+      "size": 52,
+      "source": "short72_033",
+      "source_sha256": "c91b512ad36d4732ff618ce98db6742927066aa1deb4813c586c0c537644ae32",
+      "original_code_sha256": "2153adae15e3a88854b35dfad7d27df44e53b30ed28d8b981fe8dd67c73d7d3e",
+      "original_asm": "file_29"
+    },
+    {
+      "name": "func_08008A04_6BBCA4",
+      "rom_offset": 7060644,
+      "vma": 134253060,
+      "size": 52,
+      "source": "short72_034",
+      "source_sha256": "708c39acf325d6ae33de26de5df5df3f6460f2ab0a048f8c216e7ac903922360",
+      "original_code_sha256": "31593445ccd6f138970c9b86441f2c40417ded2f6a58d38117e923b19cf2dc34",
+      "original_asm": "file_29"
+    },
+    {
+      "name": "func_08001F24_6E5F04",
+      "rom_offset": 7233284,
+      "vma": 134225700,
+      "size": 84,
+      "source": "short72_035",
+      "source_sha256": "bd9e2f0b1580d8028c8a97aa8066b09dcec85eaec367b1be3692ec4a9917dc9c",
+      "original_code_sha256": "d7ba12c2c0d35e3ec29cf906fe4875d9bdc6a205871a1664956bf1b02dc59f85",
+      "original_asm": "file_38"
+    },
+    {
+      "name": "func_08002A30_6E6A10",
+      "rom_offset": 7236112,
+      "vma": 134228528,
+      "size": 84,
+      "source": "short72_036",
+      "source_sha256": "6d4f5f08956cf30ff3523336668b9239246d89cda96ea03e4ad1b4366203be3b",
+      "original_code_sha256": "53ec14a773de7499da5bd50dfc0e5a0625a837aa723637478900bd16825e95b0",
+      "original_asm": "file_38"
+    },
+    {
+      "name": "func_08000198_6D3C28",
+      "rom_offset": 7158824,
+      "vma": 134218136,
+      "size": 84,
+      "source": "short72_037",
+      "source_sha256": "f4686d37301118645b02510a90388eae217de60ff2631956a9512d73355a833e",
+      "original_code_sha256": "beed94ca265c8d7c70eac5c3c519ff9d074e9999af283dbd6bd571e7dca80643",
+      "original_asm": "file_33"
+    },
+    {
+      "name": "func_08000734_6CF814",
+      "rom_offset": 7141396,
+      "vma": 134219572,
+      "size": 84,
+      "source": "short72_038",
+      "source_sha256": "ea95ecceda28c4b4e238aa998c80968b69167cfc9e77aaa872dab07507404362",
+      "original_code_sha256": "5d0c6e2ef8b6485bcafea81850a01b24f9636c4c9a82478ac609c672f2bbc854",
+      "original_asm": "file_32"
+    },
+    {
+      "name": "func_08003048_6D2128",
+      "rom_offset": 7151912,
+      "vma": 134230088,
+      "size": 84,
+      "source": "short72_039",
+      "source_sha256": "e67c54d37279685c4f5b7e3824342a4801f01c34f3dec5fbe0eecc794bb66413",
+      "original_code_sha256": "d82189e9b0eccdc6f6903826c9c9710960bd80231c68920fc548726eed114a94",
+      "original_asm": "file_32"
+    },
+    {
+      "name": "func_08001400_71CE80",
+      "rom_offset": 7458432,
+      "vma": 134222848,
+      "size": 84,
+      "source": "short72_040",
+      "source_sha256": "17ea03c14d8c80e4fb8e7a3f67615caedaace8524c3dd9ff491c33a638bcc584",
+      "original_code_sha256": "dc422587af52d9f8cf0278dda09e6942a0a80ad9af587f79d038dd3bb7f749c1",
+      "original_asm": "file_59"
+    },
+    {
+      "name": "func_08001680_71D100",
+      "rom_offset": 7459072,
+      "vma": 134223488,
+      "size": 84,
+      "source": "short72_041",
+      "source_sha256": "8e47582e1db42203fcac1755de97c029578f02c39f09c0ce88f6abcd69d2ae63",
+      "original_code_sha256": "dc422587af52d9f8cf0278dda09e6942a0a80ad9af587f79d038dd3bb7f749c1",
+      "original_asm": "file_59"
+    },
+    {
+      "name": "func_0800173C_71D1BC",
+      "rom_offset": 7459260,
+      "vma": 134223676,
+      "size": 84,
+      "source": "short72_042",
+      "source_sha256": "0aaf27a81b49b08ffe5e8a4b907922e27a3a0c6307858ebfdaa30b643f699156",
+      "original_code_sha256": "dc422587af52d9f8cf0278dda09e6942a0a80ad9af587f79d038dd3bb7f749c1",
+      "original_asm": "file_59"
+    },
+    {
+      "name": "func_080017F8_71D278",
+      "rom_offset": 7459448,
+      "vma": 134223864,
+      "size": 84,
+      "source": "short72_043",
+      "source_sha256": "e4590ca7d3d37046200088ab13f2f5b0a18c3ca26dfdaad445d7f24469e089a4",
+      "original_code_sha256": "dc422587af52d9f8cf0278dda09e6942a0a80ad9af587f79d038dd3bb7f749c1",
+      "original_asm": "file_59"
+    },
+    {
+      "name": "func_080018B4_71D334",
+      "rom_offset": 7459636,
+      "vma": 134224052,
+      "size": 84,
+      "source": "short72_044",
+      "source_sha256": "9a3bed73b32b1cb51f21f0d21aebcdbaf15e1260ff814d4e6c4ac5054da47a3a",
+      "original_code_sha256": "dc422587af52d9f8cf0278dda09e6942a0a80ad9af587f79d038dd3bb7f749c1",
+      "original_asm": "file_59"
+    },
+    {
+      "name": "func_08001970_71D3F0",
+      "rom_offset": 7459824,
+      "vma": 134224240,
+      "size": 84,
+      "source": "short72_045",
+      "source_sha256": "8c12b23cede9f75efbee65243e45f21d250899ba3c0601d8021f4f8c54694c51",
+      "original_code_sha256": "dc422587af52d9f8cf0278dda09e6942a0a80ad9af587f79d038dd3bb7f749c1",
+      "original_asm": "file_59"
+    },
+    {
+      "name": "func_08001A4C_71D4CC",
+      "rom_offset": 7460044,
+      "vma": 134224460,
+      "size": 84,
+      "source": "short72_046",
+      "source_sha256": "9b95531e9cd216c1ecac3886f48d9e33d7e0103446564f19e5d394b3c8afdd4f",
+      "original_code_sha256": "6afdd420db84ae6d43be1f411804790bd62c73cdbb5ac97b720ba1f048bcf65e",
+      "original_asm": "file_59"
+    },
+    {
+      "name": "func_08001B28_71D5A8",
+      "rom_offset": 7460264,
+      "vma": 134224680,
+      "size": 84,
+      "source": "short72_047",
+      "source_sha256": "b35062950040d9f5fb60eec55e3fb74acdac9d1482b662d365fbd46afdfc2aac",
+      "original_code_sha256": "6afdd420db84ae6d43be1f411804790bd62c73cdbb5ac97b720ba1f048bcf65e",
+      "original_asm": "file_59"
+    },
+    {
+      "name": "func_08001BE4_71D664",
+      "rom_offset": 7460452,
+      "vma": 134224868,
+      "size": 84,
+      "source": "short72_048",
+      "source_sha256": "d52ce7e3b4e1ca304c936be3ff54d681707da18a96ede04f314e6284ba2b763f",
+      "original_code_sha256": "dc422587af52d9f8cf0278dda09e6942a0a80ad9af587f79d038dd3bb7f749c1",
+      "original_asm": "file_59"
+    },
+    {
+      "name": "func_08000AA8_739178",
+      "rom_offset": 7573880,
+      "vma": 134220456,
+      "size": 68,
+      "source": "short72_049",
+      "source_sha256": "4daa88aec4bff53f67242bce7ecd3f68015c4544b07052504861ccbf382fb3cd",
+      "original_code_sha256": "dde7df123a82721f6eb83403407b71a841cba2d6dac77b5777078b03c2bad823",
+      "original_asm": "file_75"
+    },
+    {
+      "name": "func_08000C44_72A1E4",
+      "rom_offset": 7512548,
+      "vma": 134220868,
+      "size": 68,
+      "source": "short72_050",
+      "source_sha256": "8903c15ef5e92d0909b99e5fd6d7e42619f4426026e77cdc971ebefacab93733",
+      "original_code_sha256": "dde7df123a82721f6eb83403407b71a841cba2d6dac77b5777078b03c2bad823",
+      "original_asm": "file_67"
+    },
+    {
+      "name": "func_08000D7C_73060C",
+      "rom_offset": 7538188,
+      "vma": 134221180,
+      "size": 68,
+      "source": "short72_051",
+      "source_sha256": "886dc995bda3bb336ef35ad263b2929948c5d971eaf680389f0dcb397904fa5f",
+      "original_code_sha256": "dde7df123a82721f6eb83403407b71a841cba2d6dac77b5777078b03c2bad823",
+      "original_asm": "file_71"
+    },
+    {
+      "name": "func_08000C64_733B94",
+      "rom_offset": 7551892,
+      "vma": 134220900,
+      "size": 68,
+      "source": "short72_052",
+      "source_sha256": "5b06165f820c479cffff63a33a81da146c62cadf3622672547066aa0b8ffd9f9",
+      "original_code_sha256": "dde7df123a82721f6eb83403407b71a841cba2d6dac77b5777078b03c2bad823",
+      "original_asm": "file_73"
+    },
+    {
+      "name": "func_08001330_6E8640",
+      "rom_offset": 7243328,
+      "vma": 134222640,
+      "size": 88,
+      "source": "short72_053",
+      "source_sha256": "eb0827e8f9d46cf0844547c84a978a4aa4e165f2488a53dfbc4e29651b7210b5",
+      "original_code_sha256": "89f81e42d0cad18d5029f7e618bb025464fb755a311ca300c55ac60fda61ad5c",
+      "original_asm": "file_39"
+    },
+    {
+      "name": "func_0800060C_6E45EC",
+      "rom_offset": 7226860,
+      "vma": 134219276,
+      "size": 88,
+      "source": "short72_054",
+      "source_sha256": "98fb60b987093a96a13a1c57b3ec6ea4441f4d0d2a1dea827b745456a38b6cc0",
+      "original_code_sha256": "9a55a89f55833a01c05c28141432559c5c1f17ccd1c6c2e55986862205bb2fb0",
+      "original_asm": "file_38"
+    },
+    {
+      "name": "func_08002B5C_6E1CFC",
+      "rom_offset": 7216380,
+      "vma": 134228828,
+      "size": 88,
+      "source": "short72_055",
+      "source_sha256": "9d619c134b635683cfd5183bdc628767f42a9abc6d9aefc9a80c535cf925c6b3",
+      "original_code_sha256": "15d86bde1a6923f5d103dd8873e93d48c7cd4ccb3fa1c3c35eeae7d3c6ac3ad1",
+      "original_asm": "file_37"
+    },
+    {
+      "name": "func_08001AA4_6D0B84",
+      "rom_offset": 7146372,
+      "vma": 134224548,
+      "size": 88,
+      "source": "short72_056",
+      "source_sha256": "7a87377eebc0e081fb57215f890c726e9024e519035d23a9851af87626e57093",
+      "original_code_sha256": "fb2da1d747d9579a59977348ebf5fc64b234613b1d362a30d0cf0276b9feb625",
+      "original_asm": "file_32"
+    },
+    {
+      "name": "func_801E12E8_59D1F8",
+      "rom_offset": 5886456,
+      "vma": 2149454568,
+      "size": 68,
+      "source": "short72_057",
+      "source_sha256": "6d8168978694a6ea559371baef52c0e414ae766624169eefc118f186d1eceea1",
+      "original_code_sha256": "10300b4e998e1d1c12fc1dc6ebee7a3b8da75133723fbf41b176ce1ccfe64117",
+      "original_asm": "587370"
+    },
+    {
+      "name": "func_801E132C_59D23C",
+      "rom_offset": 5886524,
+      "vma": 2149454636,
+      "size": 68,
+      "source": "short72_058",
+      "source_sha256": "f63e580ad033e2389a9bcf9c9d7c5ee24fa47679b6db20eb5b8524a31e52c77d",
+      "original_code_sha256": "d606499c5c3af71dd5215bf7eb8c4ca6502e7584cd59cb3d0e4540431898f4f7",
+      "original_asm": "587370"
+    },
+    {
+      "name": "func_801E13D0_59D2E0",
+      "rom_offset": 5886688,
+      "vma": 2149454800,
+      "size": 68,
+      "source": "short72_059",
+      "source_sha256": "9082cbb9f59f179393a3093f10a887e3ef524384be74dd6f613f2d57724d7ad3",
+      "original_code_sha256": "90c1d4da1d388cbdcd989d18bfa60dfcc84861cf1320ae5d3cd00444f659a16a",
+      "original_asm": "587370"
+    },
+    {
+      "name": "func_801E1414_59D324",
+      "rom_offset": 5886756,
+      "vma": 2149454868,
+      "size": 68,
+      "source": "short72_060",
+      "source_sha256": "38c3d18a9acbbc079db498c3835f9d43c5a8be649c2e0252e425022a3a8bdcda",
+      "original_code_sha256": "da0f96a43cd9ba8de5feb3d2b11a78387b6f201fd6c95bca7a63f702cc89e628",
+      "original_asm": "587370"
+    },
+    {
+      "name": "func_0800601C_6C576C",
+      "rom_offset": 7100268,
+      "vma": 134242332,
+      "size": 44,
+      "source": "short72_061",
+      "source_sha256": "25351c12db697a8b04d3c254eff126532c5218f3f1ea94b357db1e9b44dcef36",
+      "original_code_sha256": "989eb6dd0ef9b5c049f5de4284b83cf5ae70807ba5ce473c3120a97094b94226",
+      "original_asm": "file_30"
+    },
+    {
+      "name": "func_08006138_6C5888",
+      "rom_offset": 7100552,
+      "vma": 134242616,
+      "size": 44,
+      "source": "short72_062",
+      "source_sha256": "d6063b5f386ec9bd4fb5a72e4c2ac055aa10018236a39bd4243f2a1112d1af7d",
+      "original_code_sha256": "b5e67ff58a9ee868d853779086405e674dd851c049b5bb39ecb1259a55aad678",
+      "original_asm": "file_30"
+    },
+    {
+      "name": "func_0800214C_6E612C",
+      "rom_offset": 7233836,
+      "vma": 134226252,
+      "size": 88,
+      "source": "short72_063",
+      "source_sha256": "1103c3848030eaa8ff70db508fbf4524814fbefcdce89fb4319981b03adbc9a4",
+      "original_code_sha256": "3d90e84fa32fe30cd5d566e241184157b257dd9f005d3cf291a2980cdd747d55",
+      "original_asm": "file_38"
+    },
+    {
+      "name": "func_08000A8C_6CFB6C",
+      "rom_offset": 7142252,
+      "vma": 134220428,
+      "size": 88,
+      "source": "short72_064",
+      "source_sha256": "6a4a78c01cb8e61931a2929f6b046cefb87719287a7b874724f0546fcca09ab3",
+      "original_code_sha256": "e9d477ce1bd71be18e88b25d045c67a7e823b430b8fc70fc8360013d14f5d72f",
+      "original_asm": "file_32"
+    },
+    {
+      "name": "func_08000B60_6CFC40",
+      "rom_offset": 7142464,
+      "vma": 134220640,
+      "size": 88,
+      "source": "short72_065",
+      "source_sha256": "72a3808f0da24ae43ef4d498799bc03caa91eb3a3d18a41f6bafa012f6529b8f",
+      "original_code_sha256": "43555c3b6ba1233dde097d1e8c5a07b88c348c65ec743af2089303be0654596a",
+      "original_asm": "file_32"
+    },
+    {
+      "name": "func_801F1B78_61CF58",
+      "rom_offset": 6410072,
+      "vma": 2149522296,
+      "size": 48,
+      "source": "short72_066",
+      "source_sha256": "b11e979c6c0745bf2e81bddcd9c9b4e7edcb4529b65565d1ad08b0114e8eb530",
+      "original_code_sha256": "cce3b5af47a878fd4bada52a721a25b675e15ffeb583e5ee2dab1c0ab7e6ad80",
+      "original_asm": "5F6840"
+    },
+    {
+      "name": "func_801F1BA8_61CF88",
+      "rom_offset": 6410120,
+      "vma": 2149522344,
+      "size": 48,
+      "source": "short72_067",
+      "source_sha256": "e64fc480a4c75543ffdcc45aaab5f12bc4e0c4f5ea9e1a21d628f486633d6e6b",
+      "original_code_sha256": "31cd462bfbbcc6393d431dd1bad75e95d1afc2c58b598b9362288f404617f8fb",
+      "original_asm": "5F6840"
+    },
+    {
+      "name": "func_80200948_62BD28",
+      "rom_offset": 6470952,
+      "vma": 2149583176,
+      "size": 48,
+      "source": "short72_068",
+      "source_sha256": "094283dee9e5f2a3d9e2ba1bd1ec252ec5d33fd82f2c1e87272b24bb8d9be1b7",
+      "original_code_sha256": "3389e10e56cdd718629c94fdba999905e0fabef69f09ad13ca88b17762855299",
+      "original_asm": "5F6840"
+    },
+    {
+      "name": "func_801E0F88_59CE98",
+      "rom_offset": 5885592,
+      "vma": 2149453704,
+      "size": 56,
+      "source": "short72_069",
+      "source_sha256": "5afaa6cd846aba5804d8c0f8c85d35302ee404c6126c7757eac90051f4130107",
+      "original_code_sha256": "e25d8f91735d93e349a0aaf6da69fcb5f2d20247c16889534a5d5d3720fad758",
+      "original_asm": "587370"
+    },
+    {
+      "name": "func_801E0FC0_59CED0",
+      "rom_offset": 5885648,
+      "vma": 2149453760,
+      "size": 56,
+      "source": "short72_070",
+      "source_sha256": "7f3b1f84f91846405822b6229a0845521ea4d0c8091fd737bc3f247a9163e40f",
+      "original_code_sha256": "219e29d373ad2dce89f279c88cfceb9b5ff97e445b06df68a084a6ba800580ff",
+      "original_asm": "587370"
+    },
+    {
+      "name": "func_801E0FF8_59CF08",
+      "rom_offset": 5885704,
+      "vma": 2149453816,
+      "size": 56,
+      "source": "short72_071",
+      "source_sha256": "87cfeb9a451dff32319cbff4f1454f12a570ac2c887c88c30abec0875936f1eb",
+      "original_code_sha256": "a9470454d915fddbc361741592859974bc2ced026f9369ef573c94fa330f2d2c",
+      "original_asm": "587370"
+    }
+  ]
+}

@@ -1612,5 +1612,8 @@
   },
   "overlay_usa_opening_new2_stage": {
     "format": "goemon-usa-file18-new2-post2090-v1"
+  },
+  "overlay_usa_short72_stage": {
+    "format": "goemon-usa-short72-post2092-v1"
   }
 }

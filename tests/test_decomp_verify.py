@@ -39,6 +39,7 @@ def load_manifest(*args, **kwargs):
     manifest.pop('overlay_mini10_stage', None)
     manifest.pop('overlay_reconcile108_stage', None)
     manifest.pop('overlay_crossregion7_stage', None)
+    manifest.pop('overlay_usa_short72_stage', None)
     return manifest
 
 
@@ -1317,6 +1318,10 @@ class DecompVerificationTests(unittest.TestCase):
             from decomp import usa_opening_new2_promotion as opening
             sources.update('research/usa_file18_new2_20261123/sources/'+f['source']+'.c'
                            for f in opening.fixture()['functions'])
+        if manifest.get('overlay_usa_short72_stage') is not None:
+            from decomp import usa_short72_promotion as short72
+            sources.update('research/usa_short72_20261123/sources/'+f['source']+'.c'
+                           for f in short72.fixture()['functions'])
         self.assertEqual(set(result['sources_sha256_lf']),sources)
         for name in sources:
             patches=[p for p in manifest.get('existing_source_patches', []) if p['source']==name]

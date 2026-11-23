@@ -23,6 +23,7 @@ class Isolated233PromotionTests(unittest.TestCase):
         cls.manifest = load_manifest(ROOT/'manifest.json')
         # Historical checkpoint projection: post2090 functions were not yet accepted.
         cls.manifest.pop('overlay_usa_opening_new2_stage',None)
+        cls.manifest.pop('overlay_usa_short72_stage',None)
         cls.fixture = native.load_fixture()
         cls.functions = cls.fixture['functions']
 
