@@ -1,10 +1,10 @@
 {
   "format": "goemon-matching-build-result-v1",
-  "started_utc": "2026-11-23T22:46:47.193848+00:00",
+  "started_utc": "2026-11-23T23:18:47.209278+00:00",
   "status": "matched",
   "upstream_commit": "7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee",
   "retail_sha1": "df8083a54296b8c151917c5333e1c85f014a2a66",
-  "verifier_source_sha256_lf": "9a1bc56e1e503a27ba4a76c2a0c92662a770eaec837a2daedcf735d2424c6b01",
+  "verifier_source_sha256_lf": "f435c996fb3a13f0a5ba99a72cac24744ff14fa8156c98a45bd8fefd72e54882",
   "tool_versions": {
     "uv": "offline archived dependency launcher (Python 3.12.16; not uv)",
     "gcc": "gcc (Debian 14.2.0-19) 14.2.0",
@@ -63746,7 +63746,7 @@
       "source_sha256": "fe68d28efacebd0cc72d7892152ae3684ecc48515e32e7cc4d7ac8e25e02dbab",
       "mixed_unit_sha256": "13266e90f8320fba00d33e8281b3f5b766cb159854964ddcd5a9f0c735049273",
       "compiler_quirk_outcome": "NO_NEW_COMPILER_FINDING",
-      "ledger_sha256": "859c4a7d33f0989af8810bcd26063d42e6a60c4fef77ac1f94ae1b57179d14c3"
+      "ledger_sha256": "0d96f21c456cf58a887286dea392a3a2388f8400c5e16cc1de336563d5a3754a"
     },
     "abs_metadata_fixes": [
       {
@@ -64080,7 +64080,7 @@
     },
     "ownership_exact": true,
     "compiler_quirk_outcome": "EXISTING_QUIRK_REPRODUCED",
-    "ledger_sha256": "859c4a7d33f0989af8810bcd26063d42e6a60c4fef77ac1f94ae1b57179d14c3",
+    "ledger_sha256": "0d96f21c456cf58a887286dea392a3a2388f8400c5e16cc1de336563d5a3754a",
     "gameplay": "NOT_RUN"
   },
   "usa_script_vm_dual_reference": {
@@ -64155,5 +64155,5 @@
     "compiler_quirk_outcome": "EXISTING_QUIRK_REPRODUCED",
     "gameplay": "NOT_RUN"
   },
-  "ended_utc": "2026-11-23T22:52:26.095761+00:00"
+  "ended_utc": "2026-11-23T23:24:21.795738+00:00"
 }

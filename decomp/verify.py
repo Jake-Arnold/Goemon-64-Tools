@@ -7,6 +7,9 @@ storage, not Git. Does not deploy, launch a game or submit upstream patches.
 """
 from __future__ import annotations
 from collections import Counter
+from contextvars import ContextVar
+from copy import deepcopy
+from functools import wraps
 
 import argparse
 from datetime import datetime, timezone
@@ -434,8 +437,60 @@ def reconcile108_stage(manifest):
     return reconcile.fixture()
 
 
+# A single validation traverses a directed acyclic graph of historical manifest
+# projections. Many stage validators ask for an identical predecessor that the
+# caller has already fully checked. Memoize successful traversals only within
+# the current invocation; never reuse a validation across independent calls.
+_CLAIM_TRAVERSAL = ContextVar('goemon_claim_traversal', default=None)
+
+
+def _claim_traversal_scope(fn):
+    @wraps(fn)
+    def scoped(*args, **kwargs):
+        if _CLAIM_TRAVERSAL.get() is not None:
+            return fn(*args, **kwargs)
+        token = _CLAIM_TRAVERSAL.set({})
+        try:
+            return fn(*args, **kwargs)
+        finally:
+            _CLAIM_TRAVERSAL.reset(token)
+    return scoped
+
+
+def _claim_traversal_key(value):
+    kind = type(value)
+    if kind is dict:
+        if any(type(key) is not str for key in value):
+            raise TypeError('non-JSON manifest key')
+        return (dict, tuple((key, _claim_traversal_key(item))
+                            for key, item in value.items()))
+    if kind is list:
+        return (list, tuple(_claim_traversal_key(item) for item in value))
+    if kind in (str, int, bool, type(None)):
+        return (kind, value)
+    raise TypeError('non-JSON manifest value')
+
+
+@_claim_traversal_scope
 def claimed_functions(manifest):
     """All C claims, with explicit overlay functions outside main mapping."""
+    cache = _CLAIM_TRAVERSAL.get()
+    # The manifest is plain JSON data. Keep the entire typed structure as
+    # the key, not merely a stage name, count, object identity or digest.
+    # Unexpected Python objects are not cacheable; the original validator
+    # still decides whether to accept or reject them.
+    try:
+        key = _claim_traversal_key(manifest)
+    except (TypeError, RecursionError):
+        return _claimed_functions(manifest)
+    if key in cache:
+        return deepcopy(cache[key])
+    result = _claimed_functions(manifest)
+    cache[key] = deepcopy(result)
+    return result
+
+
+def _claimed_functions(manifest):
     if manifest.get('usa_script_vm_dual_reference') is not None:
         from . import usa_script_vm_dual_reference as vmdual
         prior={k:v for k,v in manifest.items() if k!=vmdual.KEY}
@@ -1410,6 +1465,7 @@ def prepare_file12_stage_objects(candidate_checkout, stage):
     return result
 
 
+@_claim_traversal_scope
 def load_manifest(path):
     manifest=json.loads(Path(path).read_text(encoding='utf-8'))
     if manifest.get('format')!='goemon-matching-decomp-v1':raise ValueError('Unsupported manifest format')
