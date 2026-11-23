@@ -1,0 +1,2 @@
+typedef struct {char pad[0xCC];unsigned char state;} Actor;
+int func_801ECEC8_5A8E98(Actor*a){return a->state >= 0 && a->state < 4;}
