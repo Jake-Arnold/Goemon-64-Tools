@@ -1,0 +1,80 @@
+{
+  "format": "goemon-original-retail-rom-crossregion-full-census-20261123-v2",
+  "canonical_commit": "838e9f87c3a860973e9d168b58fcf88bd456bfb4",
+  "original_upstream_commit": "7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee",
+  "regional_original_expanded_sha1": {
+    "usa": "6ea0ed71032ce08fc2745f412d84936382197494",
+    "japan_0": "6f8745fecc3a5e7d4918c7a73353eb0726116ded"
+  },
+  "original_positive_ELF_functions": {
+    "usa": 7376,
+    "japan_0": 7376
+  },
+  "official_accepted_c": {
+    "usa": 2164,
+    "japan_0": 2398
+  },
+  "official_assembly_remaining": {
+    "usa": 5199,
+    "japan_0": 4978
+  },
+  "signature_counts": {
+    "usa": {
+      "exact_unique": 677,
+      "exact_ambiguous": 442,
+      "structural_unique": 4447,
+      "structural_ambiguous": 1541,
+      "no_signature": 269
+    },
+    "japan_0": {
+      "exact_unique": 677,
+      "exact_ambiguous": 441,
+      "structural_unique": 4447,
+      "structural_ambiguous": 1546,
+      "no_signature": 265
+    }
+  },
+  "unique_signature_pairs": 5124,
+  "destinations_with_accepted_other_region_C_donor": {
+    "usa": 405,
+    "japan_0": 178,
+    "total": 583
+  },
+  "donor_priorities": {
+    "usa": {
+      "A_exact_unique": 1,
+      "B_exact_ambiguous": 4,
+      "C_one_diff_unique": 40,
+      "D_two_to_four_diff_unique": 108,
+      "E_five_to_eight_diff_unique": 133,
+      "F_more_diff_unique": 31,
+      "G_structural_ambiguous": 88
+    },
+    "japan_0": {
+      "A_exact_unique": 27,
+      "B_exact_ambiguous": 4,
+      "C_one_diff_unique": 11,
+      "D_two_to_four_diff_unique": 17,
+      "E_five_to_eight_diff_unique": 45,
+      "F_more_diff_unique": 16,
+      "G_structural_ambiguous": 58
+    }
+  },
+  "fuzzy_no_signature_functions": 534,
+  "excluded_usa_unmarked_candidates": [
+    "func_8000A480_B080",
+    "func_80013C70_14870"
+  ],
+  "verification": {
+    "original_USA_exact_rebuild": "PASS_33554432_ROM_BYTES",
+    "original_Japan_ROM_SHA1": "PASS",
+    "original_Japan_relaxed_link_research_ELF": "NON_NATIVE_SYMBOL_CENSUS_ONLY",
+    "original_function_hashes_recomputed": 14752,
+    "local_metadata_invariant_tests": "PASS_8",
+    "new_native_IDO_attempts": "NOT_RUN",
+    "new_C_full_ROM_G2": "NOT_RUN",
+    "new_full_decomp_local_ci": "NOT_RUN",
+    "accepted_C_delta": 0
+  },
+  "deliverable": "Same-session downloadable source-only ZIP, with all per-function rows, 583 ranked destination C donors, 5124 bidirectional unique pairs, original sparse/ambiguous candidate edges, 534 fuzzy unresolved analyses, tests, and source-only reproducible scripts. Not embedded into the Git repository because original retail inputs remain private."
+}
