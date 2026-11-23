@@ -1,0 +1,61 @@
+{
+  "status": "RESEARCH_ONLY",
+  "base": "1ddb1b0941b0f39d4db6b0a3534fc1f230b51e0e",
+  "compiler_sha256": "76d796c9591c9f5504949f85b29c32a6039a663791afe2f36f34ca18425b64d0",
+  "native_source_variants": 34,
+  "nonmatches": 32,
+  "independent_replay": "PASS",
+  "matches": [
+    {
+      "region": "usa",
+      "function": "func_8020D2A0_5C8770",
+      "rom_offset": "0x5C8770",
+      "vma": "0x8020D2A0",
+      "size": 204,
+      "words": 51,
+      "relocations": 3,
+      "source_sha256": "17803dccf2a3119d21ab7ef0ccf7eb7f0bd3876a4eb286556bf09470d4c55697",
+      "original_code_sha256": "8cc9df271fc7012065257140ef02fde48ff477233afde570e129267c6bfd08c1",
+      "quirk": "NEW_REPRODUCIBLE_QUIRK"
+    },
+    {
+      "region": "japan_0",
+      "function": "func_80212090_5CD620",
+      "rom_offset": "0x5CD620",
+      "vma": "0x80212090",
+      "size": 204,
+      "words": 51,
+      "relocations": 3,
+      "source_sha256": "96ef2307beefed45ddd7bac30d2e6b57a448917686df667d152573856b2b03ad",
+      "original_code_sha256": "f4bd41998df608865d99874e31b3b467bfbf92f9f4f6f14cdbd0053bf18bd5dd",
+      "quirk": "EXISTING_QUIRK_REPRODUCED"
+    }
+  ],
+  "negative_controls": [
+    {
+      "region": "usa",
+      "source_sha256": "f6e2582fc5ce2bcdb05b11186a5983ec543945073650efd60893c3c3c4fc4253",
+      "exact_words": 34,
+      "first_mismatch": 12
+    },
+    {
+      "region": "japan_0",
+      "source_sha256": "b9d8616e47050431a9f27ca407f4b2fe70eeb3acb213a0ecd4355876a2d64d05",
+      "exact_words": 34,
+      "first_mismatch": 12
+    }
+  ],
+  "actual_source_host_cases": 32,
+  "host_compilers": [
+    "gcc",
+    "clang"
+  ],
+  "sanitizers": [
+    "address",
+    "undefined"
+  ],
+  "whole_rom": "NOT_RUN",
+  "canonical_local_ci": "NOT_RUN",
+  "new_canonical_C": 0,
+  "zip_sha256": "38ec7fcca72d8d5add420cc81d8cb6444040daab54fcbaf28d620037c0abbc4e"
+}
