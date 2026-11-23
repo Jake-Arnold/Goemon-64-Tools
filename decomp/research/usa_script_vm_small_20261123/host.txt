@@ -1,0 +1,3 @@
+VM resource halfword lookup: 3000/3000 synthetic mock cases passed
+VM digits host: 1000/1000 deterministic cases passed
+VM command walker: 1100 cases across 11 explicit scenarios passed

@@ -1,0 +1,56 @@
+{
+  "status": "RESEARCH_ONLY",
+  "base": "878d8cffdf3baf98a5dfcf4dc6fc5cb5b7ca45d1",
+  "upstream": "7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee",
+  "native_compiler_sha256": "76d796c9591c9f5504949f85b29c32a6039a663791afe2f36f34ca18425b64d0",
+  "ledger_at_compile_sha256": "0d96f21c456cf58a887286dea392a3a2388f8400c5e16cc1de336563d5a3754a",
+  "original_usa_rom_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+  "original_japan_rom_sha1": "6f8745fecc3a5e7d4918c7a73353eb0726116ded",
+  "distinct_sources": 27,
+  "total_native_invocations": 58,
+  "replayed_native_code_hashes_exact": 27,
+  "full_native_matches": 0,
+  "usa_published_c": 2319,
+  "vm_published_c": 60,
+  "vm_total": 69,
+  "dual_return_tail_functions": 80,
+  "dual_return_tail_accepted_c": 0,
+  "regional_candidates": [
+    [
+      "8003F6E8",
+      "8003F354",
+      "0x3FF54",
+      12
+    ],
+    [
+      "8003F038",
+      "8003ECA4",
+      "0x3F8A4",
+      49
+    ],
+    [
+      "8003F480",
+      "8003F0EC",
+      "0x3FCEC",
+      41
+    ],
+    [
+      "8003DE80",
+      "8003DAF0",
+      "0x3E6F0",
+      58
+    ]
+  ],
+  "regional_candidates_accepted_c": 0,
+  "regional_adjacent_address_controls_rejected": 8,
+  "tail_negative_controls_rejected": 2,
+  "host_asan_ubsan_cases": {
+    "F038": 3000,
+    "F480": 1000,
+    "DE80": 1100
+  },
+  "new_claim_G2": "NOT_RUN",
+  "new_claim_CI": "NOT_RUN",
+  "gameplay": "NOT_RUN",
+  "downloadable_replay_zip_sha256": "901aa4def876951f550069d41ccc4f24e69577c5020e5633c282634b92b114a0"
+}
