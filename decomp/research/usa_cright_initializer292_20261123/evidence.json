@@ -1,0 +1,41 @@
+{
+  "format": "goemon-cright-usa-init292-research-v1",
+  "date": "2026-11-23",
+  "base_sha": "878d8cffdf3baf98a5dfcf4dc6fc5cb5b7ca45d1",
+  "artifact_id": 14872623805,
+  "region": "usa",
+  "function": "func_8020D724_5C8BF4",
+  "rom_offset": "0x5C8BF4",
+  "vma": "0x8020D724",
+  "size": 292,
+  "native_words": {
+    "positive": "73/73",
+    "negative": "68/73",
+    "first_negative_mismatch": "+0x3C"
+  },
+  "relocations": "19/19 named tuples exact",
+  "elf_func_extent": "292B exact",
+  "repeat_native": "PASS",
+  "positive_sha256": "08da2274111ae48009ce285843ca564a855c394bfc05a183c98b8d319ad0af27",
+  "negative_sha256": "ff3cacfdc23c61618c5a5147367b490bea4700d0cd1e31fad923c47954208146",
+  "compiler_sha256": "76d796c9591c9f5504949f85b29c32a6039a663791afe2f36f34ca18425b64d0",
+  "compiler_flags": "-c -G 0 -non_shared -O2 -mips2 (plus pinned original flags)",
+  "quirk_outcome": "EXISTING_QUIRK_REPRODUCED",
+  "original_upstream_pristine_rom": {
+    "status": "PASS",
+    "bytes": "33554432/33554432",
+    "sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+    "elf_positive_func": "7376/7376",
+    "semantic_relocations": "82216/82216",
+    "guarded_global_symtab_type_metadata_only_corrections": 3
+  },
+  "canonical_usa_count_before": 2319,
+  "canonical_usa_count_after": 2319,
+  "canonical_g2": "NOT_RUN",
+  "canonical_integrity": "NOT_RUN",
+  "canonical_inventory": "NOT_RUN",
+  "full_local_ci": "NOT_PASSED_TIMEOUT_WITH_VERIFIER_LEDGER_EXIT9_AND_COMPILER_MISSING",
+  "native_gameplay": "NOT_RUN",
+  "status": "RESEARCH_ONLY",
+  "source_only_kit": "Goemon_CRight_USA_Initializer_292_Research_20261123.zip"
+}
