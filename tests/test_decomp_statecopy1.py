@@ -19,6 +19,7 @@ class Statecopy1Tests(unittest.TestCase):
         current=load_manifest(adapter.ROOT/'manifest.json')
         # This test deliberately reconstructs a predecessor C stage.
         current.pop('overlay_usa_opening_new2_stage',None)
+        current.pop('overlay_usa_short72_stage',None)
         current.pop('overlay_reconcile108_stage',None)
         # Historical checkpoint: exclude the newer Mini stages before older ones.
         current.pop('overlay_mini_selector_stage', None)

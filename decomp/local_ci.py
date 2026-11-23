@@ -162,6 +162,21 @@ def build_steps(host_binary: Path, *, quick: bool = False):
                 '-lm','-o',str(binary)]),
             ('Archive22 actual-source sanitizer test',[str(binary)]),
         ])
+    if not quick and (ROOT/'decomp/research/usa_short72_20261123/manifest.json').exists():
+        short72=ROOT/'decomp/research/usa_short72_20261123'
+        compiler=shlex.split(os.environ.get('CC','cc'))
+        steps.extend([
+          ('USA short72 actual 48B timer-C ASan/UBSan build',compiler+[
+              '-std=c11','-O1','-g','-Wall','-Wextra','-Werror',
+              '-fsanitize=address,undefined','-fno-sanitize-recover=all',
+              '-fno-omit-frame-pointer',
+              str((short72/'test_host_short72.c').relative_to(ROOT)),
+              str((short72/'sources/short72_066.c').relative_to(ROOT)),
+              str((short72/'sources/short72_067.c').relative_to(ROOT)),
+              '-o',str(host_binary.with_name('short72-original-timers-host'))]),
+          ('USA short72 original-C 4096-pair ASan/UBSan cases',
+              [str(host_binary.with_name('short72-original-timers-host'))]),
+        ])
     if not quick:
         # Authenticated 33 original USA C sources are run through ASan/UBSan;
         # the native exact original-MIPS match is a separate required gate.

@@ -11,6 +11,7 @@ class UsaCrossRegion47PromotionTests(unittest.TestCase):
   cls.manifest=load_manifest(ROOT/'decomp/manifest.json')
   # Earlier C stage, not a current canonical 2092 view.
   cls.manifest.pop('overlay_usa_opening_new2_stage',None)
+  cls.manifest.pop('overlay_usa_short72_stage',None)
   cls.manifest.pop('overlay_reconcile108_stage', None)  # Historical 779-C checkpoint
   # Historical checkpoint: exclude the newer Mini stages before older ones.
   cls.manifest.pop('overlay_mini_selector_stage', None)

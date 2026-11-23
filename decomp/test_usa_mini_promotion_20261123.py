@@ -26,9 +26,9 @@ class TestUSAMiniPromotion20261123(unittest.TestCase):
     def test_current_manifest_preserves_mini_and_new2_distinct_claims(self):
         manifest=verify.load_manifest(verify.ROOT/'manifest.json')
         claimed=verify.claimed_functions(manifest)
-        self.assertEqual(len(claimed),2092)
-        self.assertEqual(sum(x['size'] for x in claimed),94760)
-        self.assertEqual(len({f['name'] for f in claimed}),2092)
+        self.assertEqual(len(claimed),2164)
+        self.assertEqual(sum(x['size'] for x in claimed),99604)
+        self.assertEqual(len({f['name'] for f in claimed}),2164)
         ranges=sorted((f['rom_offset'],f['rom_offset']+f['size']) for f in claimed)
         self.assertTrue(all(x[1]<=y[0] for x,y in zip(ranges,ranges[1:])))
 

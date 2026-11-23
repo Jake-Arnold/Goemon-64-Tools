@@ -99,7 +99,24 @@ def audit(root:Path=ROOT)->dict:
     # Post2090 C stages preserve the original published Mini11 predecessor proof
     # and inventory as immutable historical evidence, rather than rewriting its
     # ELF object fingerprints to equal later candidate link outputs.
+    short72_stage = manifest.get('overlay_usa_short72_stage') is not None
     new2_stage = manifest.get('overlay_usa_opening_new2_stage') is not None
+    short72_predecessor_inv=inv
+    if short72_stage:
+        short72_predecessor_proof=root/'results/combined_2092_before_short72_20261123.json'
+        short72_predecessor_inv_path=root/'results/inventory_2092_before_short72_20261123.json'
+        if not short72_predecessor_proof.is_file() or not short72_predecessor_inv_path.is_file():
+            failures.append('Post2092 short72 historical canonical predecessor evidence missing')
+        else:
+            oldproof=json.loads(short72_predecessor_proof.read_text())
+            short72_predecessor_inv=json.loads(short72_predecessor_inv_path.read_text())
+            if (oldproof.get('status')!='matched' or
+                oldproof.get('comparison',{}).get('matched_functions')!=2092 or
+                oldproof.get('comparison',{}).get('matched_function_bytes')!=94760 or
+                oldproof.get('comparison',{}).get('full_rom_match') is not True or
+                short72_predecessor_inv.get('summary',{}).get('newly_matching_c')!=2092):
+                failures.append('Post2092 short72 historical canonical predecessor mismatch')
+
     mini_predecessor_inv=inv
     if new2_stage:
         historical_proof=root/'results/combined_2090_pre_opening_new2_20261123.json'
@@ -145,7 +162,7 @@ def audit(root:Path=ROOT)->dict:
                 doc.get('canonical_inventory_status')!='PASS' or
                 any(doc.get('stages',{}).get(k,{}).get('status')!='PASSED_G2_LOCAL' for k in ('mini10','selector'))):
                 failures.append('Mini11 current combined original-ROM/ELF G2 proof mismatch')
-            if (count,code_bytes)!=((2092,94760) if new2_stage else (2090,94668)):
+            if (count,code_bytes)!=((2164,99604) if short72_stage else (2092,94760) if new2_stage else (2090,94668)):
                 failures.append('Mini11/post2090 accepted count and ROM bytes changed')
             if len(doc.get('functions',[]))!=11 or sum(f['size'] for f in doc.get('functions',[]))!=1652:
                 failures.append('Mini11 native source/size ledger incomplete')
@@ -166,7 +183,7 @@ def audit(root:Path=ROOT)->dict:
                 e.get('full_rom_sha1')!=ORIGINAL_SHA1 or
                 e.get('complete_semantic_relocations')!=82103 or
                 e.get('semantic_relocation_sha256')!=opening.RELOC_HASH or
-                e.get('candidate_elf_sha256')!=inv.get('candidate_elf_sha256') or
+                e.get('candidate_elf_sha256')!=short72_predecessor_inv.get('candidate_elf_sha256') or
                 e.get('baseline_elf_sha256')!=inv.get('baseline_elf_sha256') or
                 e.get('source_manifest_sha256')!=opening.FIXTURE_HASH or
                 e.get('strict_inventory')!='PASS' or
@@ -178,6 +195,37 @@ def audit(root:Path=ROOT)->dict:
                 len(e.get('new_functions',[]))!=2 or
                 sum(x.get('size',0) for x in e.get('new_functions',[]))!=92):
                 failures.append('Post2090 new2 full canonical G2/ELF/inventory proof mismatch')
+    if short72_stage:
+        from . import usa_short72_promotion as short72
+        evidence=root/'results/usa_short72_2164_g2_20261123.json'
+        if manifest.get('overlay_usa_short72_stage')!={'format':short72.FORMAT}:
+            failures.append('Post2092 short72 source-stage format mismatch')
+        if not evidence.is_file():
+            failures.append('Post2092 short72 current whole-ROM G2 evidence missing')
+        else:
+            e=json.loads(evidence.read_text())
+            stage=proof.get('overlay_usa_short72_stage') or {}
+            if (e.get('status')!='PASSED_G2_LOCAL' or
+                e.get('prior_c')!=2092 or e.get('accepted_c_after')!=2164 or
+                e.get('added_c')!=72 or e.get('added_original_bytes')!=4844 or
+                e.get('accepted_original_bytes_after')!=99604 or
+                e.get('original_rom_sha1')!=ORIGINAL_SHA1 or
+                e.get('original_32MiB_ROM_bytes_exact')!=33554432 or
+                e.get('positive_elf_function_identities_exact')!=7376 or
+                e.get('semantic_relocations_exact')!=82103 or
+                e.get('semantic_relocation_sha256')!=short72.RELOC_HASH or
+                e.get('stable_global_symbol_identities_exact')!=26714 or
+                e.get('original_elf_sha256')!=inv.get('baseline_elf_sha256') or
+                e.get('candidate_elf_sha256')!=inv.get('candidate_elf_sha256') or
+                e.get('original_source_manifest_sha256')!=short72.FROZEN_FIXTURE_HASH or
+                e.get('strict_inventory')!='PASS' or
+                e.get('complete_local_ci')!='PASS' or
+                stage.get('status')!='PASSED_G2_LOCAL' or
+                stage.get('accepted_c_after')!=2164 or
+                stage.get('all_semantic_relocations_equal') is not True or
+                stage.get('stable_ELF_globals_equal') is not True or
+                (count,code_bytes)!=(2164,99604)):
+                failures.append('Post2092 short72 atomic canonical G2/ELF/relocation/local CI evidence mismatch')
     return {'status':'PASS' if not failures else 'FAIL',
             'accepted_C':count,'accepted_original_bytes':code_bytes,
             'remaining_assembly':7376-count-13,'errors':failures,

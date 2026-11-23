@@ -15,6 +15,7 @@ def manifest():
     m['overlay_file11_stage'] = {'format': stage.STAGE_FORMAT}
     # This test deliberately reconstructs a predecessor C stage.
     m.pop('overlay_usa_opening_new2_stage',None)
+    m.pop('overlay_usa_short72_stage',None)
     m.pop('overlay_crossregion47_stage', None)
     m.pop('overlay_wide132_stage', None)
     m.pop('overlay_wide109_stage', None)

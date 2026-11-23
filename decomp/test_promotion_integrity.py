@@ -14,9 +14,9 @@ class CanonicalPromotionIntegrityTests(unittest.TestCase):
     def test_exact_final_c_claims_and_frozen_original_addresses(self):
         manifest=load_manifest(integrity.ROOT/'manifest.json')
         claims=claimed_functions(manifest)
-        self.assertEqual(len(claims),2092)
-        self.assertEqual(sum(f['size'] for f in claims),94760)
-        self.assertEqual(len({f['name'] for f in claims}),2092)
+        self.assertEqual(len(claims),2164)
+        self.assertEqual(sum(f['size'] for f in claims),99604)
+        self.assertEqual(len({f['name'] for f in claims}),2164)
         self.assertEqual(len(reconcile.fixture()['functions']),108)
         self.assertEqual(reconcile.fixture()['source_ownership_exception'][0]['name'],
                          'func_800108BC_114BC')
@@ -33,7 +33,10 @@ class CanonicalPromotionIntegrityTests(unittest.TestCase):
                               ('results/usa_mini11_2090_g2_20261123.json',None),
                               ('results/combined_2090_pre_opening_new2_20261123.json',None),
                               ('results/inventory_2090_pre_opening_new2_20261123.json',None),
-                              ('results/usa_file18_new2_2092_g2_20261123.json',None)]:
+                              ('results/usa_file18_new2_2092_g2_20261123.json',None),
+                              ('results/combined_2092_before_short72_20261123.json',None),
+                              ('results/inventory_2092_before_short72_20261123.json',None),
+                              ('results/usa_short72_2164_g2_20261123.json',None)]:
             dst=root/path
             src=canonical/path
             if not src.is_file():
@@ -45,10 +48,11 @@ class CanonicalPromotionIntegrityTests(unittest.TestCase):
         audit=integrity.audit()
         self.assertEqual(audit['status'],'PASS',audit['errors'])
         self.assertEqual((audit['accepted_C'],audit['accepted_original_bytes']),
-                         (2092,94760))
+                         (2164,99604))
 
     def test_staged_only_manifest_from_previous_commit_fails_closed(self):
         manifest=json.loads((integrity.ROOT/'manifest.json').read_text())
+        manifest.pop('overlay_usa_short72_stage')  # This is a historical post2092 source stage.
         manifest.pop('overlay_usa_opening_new2_stage')  # This is a historical predecessor projection.
         manifest.pop('overlay_mini_selector_stage')
         manifest.pop('overlay_mini10_stage')

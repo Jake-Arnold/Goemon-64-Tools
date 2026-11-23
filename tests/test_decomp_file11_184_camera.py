@@ -12,6 +12,7 @@ class Camera184StageTests(unittest.TestCase):
         result = json.loads((stage.ROOT/'manifest.json').read_text())
         # This test deliberately reconstructs a predecessor C stage.
         result.pop('overlay_usa_opening_new2_stage',None)
+        result.pop('overlay_usa_short72_stage',None)
         # Historical camera fixture must remain independently reproducible.
         result['overlay_file11_stage'] = {'format': stage.STAGE_FORMAT}
         result.pop('overlay_wide132_stage', None)

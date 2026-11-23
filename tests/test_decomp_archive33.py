@@ -43,6 +43,7 @@ class Archive33Acceptance(unittest.TestCase):
         m=load_manifest(ROOT/'decomp/manifest.json')
         # This test deliberately reconstructs a predecessor C stage.
         m.pop('overlay_usa_opening_new2_stage',None)
+        m.pop('overlay_usa_short72_stage',None)
         # Project current manifest onto historical archive33 checkpoint.
         m.pop('overlay_mini_selector_stage', None)
         m.pop('overlay_mini10_stage', None)

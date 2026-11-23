@@ -436,6 +436,11 @@ def reconcile108_stage(manifest):
 
 def claimed_functions(manifest):
     """All C claims, with explicit overlay functions outside main mapping."""
+    if manifest.get('overlay_usa_short72_stage') is not None:
+        from . import usa_short72_promotion as short72
+        d=short72.validate_predecessor(manifest)
+        predecessor={k:v for k,v in manifest.items() if k!='overlay_usa_short72_stage'}
+        return claimed_functions(predecessor)+[{k:f[k] for k in ('name','rom_offset','vma','size')} for f in d['functions']]
     if manifest.get('overlay_usa_opening_new2_stage') is not None:
         from . import usa_opening_new2_promotion as opening
         d=opening.validate_predecessor(manifest)
@@ -1381,6 +1386,7 @@ def load_manifest(path):
     mini10_stage_value = manifest.pop('overlay_mini10_stage', None)
     selector_stage_value = manifest.pop('overlay_mini_selector_stage', None)
     opening_new2_stage_value = manifest.pop('overlay_usa_opening_new2_stage', None)
+    short72_stage_value = manifest.pop('overlay_usa_short72_stage', None)
     for key,length in (('upstream_commit',40),('retail_sha1',40),('decompressed_sha1',40)):
         if not re.fullmatch('[0-9a-f]{'+str(length)+'}',manifest.get(key,'')):raise ValueError('Invalid '+key)
     seen=set();assembly_seen=set();ranges=[]
@@ -1712,6 +1718,10 @@ def load_manifest(path):
         manifest['overlay_usa_opening_new2_stage']=opening_new2_stage_value
         from . import usa_opening_new2_promotion as opening
         opening.validate_predecessor(manifest)
+    if short72_stage_value is not None:
+        manifest['overlay_usa_short72_stage']=short72_stage_value
+        from . import usa_short72_promotion as short72
+        short72.validate_predecessor(manifest)
     return manifest
 
 
@@ -2568,6 +2578,7 @@ def validate_baseline_cache(checkout, manifest):
 
 
 def run_build(args,manifest,report):
+    short72_stage_value=manifest.pop('overlay_usa_short72_stage',None)
     opening_new2_stage_value=manifest.pop('overlay_usa_opening_new2_stage',None)
     selector_stage_value=manifest.pop('overlay_mini_selector_stage',None)
     mini10_stage_value=manifest.pop('overlay_mini10_stage',None)
@@ -3561,6 +3572,49 @@ def run_build(args,manifest,report):
             result['matched_functions']+=1
             result['matched_function_bytes']+=f['size']
         report['overlay_usa_opening_new2_stage']=proof
+    if short72_stage_value is not None:
+        from . import usa_short72_promotion as short72
+        from . import overlay_isolated233 as splice
+        if short72_stage_value!={'format':short72.FORMAT}:raise ValueError('Unreviewed post2092 short72 stage')
+        if (not result['full_rom_match'] or result['matched_functions']!=2092 or
+              result['matched_function_bytes']!=94760):raise ValueError('Short72 requires exact accepted 2092 C ROM')
+        manifest['overlay_usa_short72_stage']=short72_stage_value
+        fs=short72.validate_predecessor(manifest,expected)
+        prev=work/'accepted2092-before-short72.elf'
+        shutil.copyfile(candidate/'build/usa/mnsg.elf',prev)
+        owners=splice.find_owners(candidate,fs)
+        logged('candidate-72-original-ASM-parents',
+               ['make','-j'+str(args.jobs),'UV='+uv,*splice.parent_targets(owners)],candidate)
+        plan=splice.stage_linker(candidate,expected,fs,owners,short72.SOURCE)
+        report['overlay_usa_short72_source_plan']={'functions':len(plan['functions']),
+            'original_instruction_bytes':sum(f['size'] for f in fs['functions']),
+            'ASM_fragments':len(plan['assembly']),'segments':plan['sections']}
+        logged('candidate-short72-native-IDO-objects',
+               ['make','-j'+str(args.jobs),'UV='+uv,*splice.object_targets(plan)],candidate)
+        packed=splice.pack_objects(candidate,expected,plan)
+        if packed['instruction_bytes']!=4844 or len(packed['C_objects'])!=72:raise ValueError('72 object extent mismatch')
+        report['overlay_usa_short72_object_layout']=packed
+        for target in ('build/usa/mnsg.elf','build/usa/mnsg.z64'):
+            (candidate/target).unlink()
+        logged('candidate-2164-C-complete-original-USA-ROM',
+               ['make','-j'+str(args.jobs),'UV='+uv],candidate)
+        # Inline original ABS FUNC label became NOTYPE after splitting an ASM
+        # parent. Check all its original metadata, alter only the ELF symbol
+        # provenance bit, and never touch compiled MIPS or ROM/relocations.
+        report['overlay_usa_short72_abs_label_adapter']=short72.restore_original_abs_label_type(
+            candidate/'build/usa/mnsg.elf',prev)
+        proof=short72.verify_combined(baseline,prev,candidate,expected,plan)
+        # Prior ELF copy lives at a separately frozen path because candidate
+        # is relinked in place; construct proof with the old ELF path directly.
+        for f in fs['functions']:
+            report['sources_sha256_lf']['research/usa_short72_20261123/sources/'+f['source']+'.c']=f['source_sha256']
+            result['functions'].append({'name':f['name'],'size':f['size'],
+                'guest_address':f'0x{f["vma"]:08X}','rom_offset':f'0x{f["rom_offset"]:X}',
+                'matched':True,'expected_sha256':f['original_code_sha256'],
+                'candidate_sha256':f['original_code_sha256']})
+            result['claimed_functions']+=1; result['matched_functions']+=1
+            result['matched_function_bytes']+=f['size']
+        report['overlay_usa_short72_stage']=proof
     if not result['full_rom_match'] or result['matched_functions']!=result['claimed_functions']:
         raise ValueError('Candidate failed exact matching')
     report['stage']='complete';report['status']='matched'
