@@ -1,0 +1,16 @@
+typedef unsigned char u8;
+void func_8021B29C_684C7C(u8 *obj, u8 value) {
+    float curr = (float)value;
+    float old;
+    float delta;
+    u8 *p = obj+0x5c;
+    *(float *)(obj+0xa0) = curr;
+    old = *(float *)(obj + 0x9c);
+    if (curr < old) {
+        delta = -(*(float *)(p+0x44)-*(float *)(p+0x40));
+    } else {
+        delta = *(float *)(p+0x44)-*(float *)(p+0x40);
+    }
+    p[2] = 1;
+    *(float *)(p+0x48) = delta / *(float *)(p+8);
+}
