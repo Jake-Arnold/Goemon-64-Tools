@@ -1,0 +1,2 @@
+typedef int s32; extern s32 D_8021C0F8_67AF68[];extern s32 D_8021C100_67AF70[];
+void func_8021B4BC_67A32C(s32 *arg0){ volatile int native_negative_control = 1;if(arg0){s32 i=0;do{arg0[i]=D_8021C0F8_67AF68[i];i++;}while(D_8021C100_67AF70 != &D_8021C0F8_67AF68[i]);}}

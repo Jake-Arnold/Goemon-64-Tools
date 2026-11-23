@@ -1,0 +1,2566 @@
+{
+  "status": "PASS_ISOLATED_NATIVE_REPLAY_ONLY",
+  "matches": 142,
+  "negative_controls_rejected": 142,
+  "bytes": 9580,
+  "relocations": 594,
+  "full_G2": "NOT_RUN",
+  "records": [
+    {
+      "region": "japan_0",
+      "name": "func_80011518_12118",
+      "rom_offset": 74008,
+      "bytes": 72,
+      "positive": {
+        "exact": true,
+        "reason": "EXACT",
+        "first_difference": null,
+        "relocation_count": 7
+      },
+      "negative": {
+        "exact": false,
+        "reason": "FUNC_EXTENT_MISMATCH",
+        "first_difference": 0,
+        "relocation_count": 7
+      }
+    },
+    {
+      "region": "japan_0",
+      "name": "func_80018CF0_198F0",
+      "rom_offset": 104688,
+      "bytes": 108,
+      "positive": {
+        "exact": true,
+        "reason": "EXACT",
+        "first_difference": null,
+        "relocation_count": 1
+      },
+      "negative": {
+        "exact": false,
+        "reason": "FUNC_EXTENT_MISMATCH",
+        "first_difference": 0,
+        "relocation_count": 1
+      }
+    },
+    {
+      "region": "japan_0",
+      "name": "func_8001B4A8_1C0A8",
+      "rom_offset": 114856,
+      "bytes": 56,
+      "positive": {
+        "exact": true,
+        "reason": "EXACT",
+        "first_difference": null,
+        "relocation_count": 1
+      },
+      "negative": {
+        "exact": false,
+        "reason": "FUNC_EXTENT_MISMATCH",
+        "first_difference": 0,
+        "relocation_count": 1
+      }
+    },
+    {
+      "region": "japan_0",
+      "name": "func_80024548_25148",
+      "rom_offset": 151880,
+      "bytes": 52,
+      "positive": {
+        "exact": true,
+        "reason": "EXACT",
+        "first_difference": null,
+        "relocation_count": 3
+      },
+      "negative": {
+        "exact": false,
+        "reason": "FUNC_EXTENT_MISMATCH",
+        "first_difference": 0,
+        "relocation_count": 3
+      }
+    },
+    {
+      "region": "japan_0",
+      "name": "func_8003CD20_3D920",
+      "rom_offset": 252192,
+      "bytes": 204,
+      "positive": {
+        "exact": true,
+        "reason": "EXACT",
+        "first_difference": null,
+        "relocation_count": 17
+      },
+      "negative": {
+        "exact": false,
+        "reason": "FUNC_EXTENT_MISMATCH",
+        "first_difference": 0,
+        "relocation_count": 17
+      }
+    },
+    {
+      "region": "japan_0",
+      "name": "func_801E7118_5A30E8",
+      "rom_offset": 5910760,
+      "bytes": 48,
+      "positive": {
+        "exact": true,
+        "reason": "EXACT",
+        "first_difference": null,
+        "relocation_count": 1
+      },
+      "negative": {
+        "exact": false,
+        "reason": "FUNC_EXTENT_MISMATCH",
+        "first_difference": 0,
+        "relocation_count": 1
+      }
+    },
+    {
+      "region": "japan_0",
+      "name": "func_801E72E8_5A32B8",
+      "rom_offset": 5911224,
+      "bytes": 224,
+      "positive": {
+        "exact": true,
+        "reason": "EXACT",
+        "first_difference": null,
+        "relocation_count": 12
+      },
+      "negative": {
+        "exact": false,
+        "reason": "FUNC_EXTENT_MISMATCH",
+        "first_difference": 0,
+        "relocation_count": 12
+      }
+    },
+    {
+      "region": "japan_0",
+      "name": "func_801E79B4_5A3984",
+      "rom_offset": 5912964,
+      "bytes": 148,
+      "positive": {
+        "exact": true,
+        "reason": "EXACT",
+        "first_difference": null,
+        "relocation_count": 4
+      },
+      "negative": {
+        "exact": false,
+        "reason": "FUNC_EXTENT_MISMATCH",
+        "first_difference": 0,
+        "relocation_count": 4
+      }
+    },
+    {
+      "region": "japan_0",
+      "name": "func_801E848C_5A445C",
+      "rom_offset": 5915740,
+      "bytes": 92,
+      "positive": {
+        "exact": true,
+        "reason": "EXACT",
+        "first_difference": null,
+        "relocation_count": 5
+      },
+      "negative": {
+        "exact": false,
+        "reason": "FUNC_EXTENT_MISMATCH",
+        "first_difference": 0,
+        "relocation_count": 5
+      }
+    },
+    {
+      "region": "japan_0",
+      "name": "func_801F9FB0_5B5F80",
+      "rom_offset": 5988224,
+      "bytes": 44,
+      "positive": {
+        "exact": true,
+        "reason": "EXACT",
+        "first_difference": null,
+        "relocation_count": 1
+      },
+      "negative": {
+        "exact": false,
+        "reason": "FUNC_EXTENT_MISMATCH",
+        "first_difference": 0,
+        "relocation_count": 1
+      }
+    },
+    {
+      "region": "japan_0",
+      "name": "func_801FA030_5B6000",
+      "rom_offset": 5988352,
+      "bytes": 44,
+      "positive": {
+        "exact": true,
+        "reason": "EXACT",
+        "first_difference": null,
+        "relocation_count": 1
+      },
+      "negative": {
+        "exact": false,
+        "reason": "FUNC_EXTENT_MISMATCH",
+        "first_difference": 0,
+        "relocation_count": 1
+      }
+    },
+    {
+      "region": "japan_0",
+      "name": "func_801FA6FC_5B66CC",
+      "rom_offset": 5990092,
+      "bytes": 72,
+      "positive": {
+        "exact": true,
+        "reason": "EXACT",
+        "first_difference": null,
+        "relocation_count": 1
+      },
+      "negative": {
+        "exact": false,
+        "reason": "FUNC_EXTENT_MISMATCH",
+        "first_difference": 0,
+        "relocation_count": 1
+      }
+    },
+    {
+      "region": "japan_0",
+      "name": "func_802198E4_5D4E74",
+      "rom_offset": 6114932,
+      "bytes": 60,
+      "positive": {
+        "exact": true,
+        "reason": "EXACT",
+        "first_difference": null,
+        "relocation_count": 4
+      },
+      "negative": {
+        "exact": false,
+        "reason": "FUNC_EXTENT_MISMATCH",
+        "first_difference": 0,
+        "relocation_count": 4
+      }
+    },
+    {
+      "region": "japan_0",
+      "name": "func_8021F3B4_5DA944",
+      "rom_offset": 6138180,
+      "bytes": 56,
+      "positive": {
+        "exact": true,
+        "reason": "EXACT",
+        "first_difference": null,
+        "relocation_count": 1
+      },
+      "negative": {
+        "exact": false,
+        "reason": "FUNC_EXTENT_MISMATCH",
+        "first_difference": 0,
+        "relocation_count": 1
+      }
+    },
+    {
+      "region": "japan_0",
+      "name": "func_80225138_5E06C8",
+      "rom_offset": 6162120,
+      "bytes": 72,
+      "positive": {
+        "exact": true,
+        "reason": "EXACT",
+        "first_difference": null,
+        "relocation_count": 4
+      },
+      "negative": {
+        "exact": false,
+        "reason": "FUNC_EXTENT_MISMATCH",
+        "first_difference": 0,
+        "relocation_count": 4
+      }
+    },
+    {
+      "region": "japan_0",
+      "name": "func_80226C60_5E21F0",
+      "rom_offset": 6169072,
+      "bytes": 68,
+      "positive": {
+        "exact": true,
+        "reason": "EXACT",
+        "first_difference": null,
+        "relocation_count": 3
+      },
+      "negative": {
+        "exact": false,
+        "reason": "FUNC_EXTENT_MISMATCH",
+        "first_difference": 0,
+        "relocation_count": 3
+      }
+    },
+    {
+      "region": "japan_0",
+      "name": "func_80226EFC_5E248C",
+      "rom_offset": 6169740,
+      "bytes": 72,
+      "positive": {
+        "exact": true,
+        "reason": "EXACT",
+        "first_difference": null,
+        "relocation_count": 4
+      },
+      "negative": {
+        "exact": false,
+        "reason": "FUNC_EXTENT_MISMATCH",
+        "first_difference": 0,
+        "relocation_count": 4
+      }
+    },
+    {
+      "region": "japan_0",
+      "name": "func_802279A4_5E2F34",
+      "rom_offset": 6172468,
+      "bytes": 68,
+      "positive": {
+        "exact": true,
+        "reason": "EXACT",
+        "first_difference": null,
+        "relocation_count": 2
+      },
+      "negative": {
+        "exact": false,
+        "reason": "FUNC_EXTENT_MISMATCH",
+        "first_difference": 0,
+        "relocation_count": 2
+      }
+    },
+    {
+      "region": "japan_0",
+      "name": "func_801EA2F0_614D70",
+      "rom_offset": 6376816,
+      "bytes": 52,
+      "positive": {
+        "exact": true,
+        "reason": "EXACT",
+        "first_difference": null,
+        "relocation_count": 6
+      },
+      "negative": {
+        "exact": false,
+        "reason": "FUNC_EXTENT_MISMATCH",
+        "first_difference": 0,
+        "relocation_count": 6
+      }
+    },
+    {
+      "region": "japan_0",
+      "name": "func_801F613C_620BBC",
+      "rom_offset": 6425532,
+      "bytes": 68,
+      "positive": {
+        "exact": true,
+        "reason": "EXACT",
+        "first_difference": null,
+        "relocation_count": 6
+      },
+      "negative": {
+        "exact": false,
+        "reason": "FUNC_EXTENT_MISMATCH",
+        "first_difference": 0,
+        "relocation_count": 6
+      }
+    },
+    {
+      "region": "japan_0",
+      "name": "func_801F9164_623BE4",
+      "rom_offset": 6437860,
+      "bytes": 52,
+      "positive": {
+        "exact": true,
+        "reason": "EXACT",
+        "first_difference": null,
+        "relocation_count": 6
+      },
+      "negative": {
+        "exact": false,
+        "reason": "FUNC_EXTENT_MISMATCH",
+        "first_difference": 0,
+        "relocation_count": 6
+      }
+    },
+    {
+      "region": "japan_0",
+      "name": "func_80205DB4_630834",
+      "rom_offset": 6490164,
+      "bytes": 44,
+      "positive": {
+        "exact": true,
+        "reason": "EXACT",
+        "first_difference": null,
+        "relocation_count": 3
+      },
+      "negative": {
+        "exact": false,
+        "reason": "FUNC_EXTENT_MISMATCH",
+        "first_difference": 0,
+        "relocation_count": 3
+      }
+    },
+    {
+      "region": "japan_0",
+      "name": "func_8020AAB0_635530",
+      "rom_offset": 6509872,
+      "bytes": 48,
+      "positive": {
+        "exact": true,
+        "reason": "EXACT",
+        "first_difference": null,
+        "relocation_count": 2
+      },
+      "negative": {
+        "exact": false,
+        "reason": "FUNC_EXTENT_MISMATCH",
+        "first_difference": 0,
+        "relocation_count": 2
+      }
+    },
+    {
+      "region": "japan_0",
+      "name": "func_8021B4BC_67A32C",
+      "rom_offset": 6791980,
+      "bytes": 52,
+      "positive": {
+        "exact": true,
+        "reason": "EXACT",
+        "first_difference": null,
+        "relocation_count": 4
+      },
+      "negative": {
+        "exact": false,
+        "reason": "FUNC_EXTENT_MISMATCH",
+        "first_difference": 0,
+        "relocation_count": 4
+      }
+    },
+    {
+      "region": "japan_0",
+      "name": "func_8021B4F0_67A360",
+      "rom_offset": 6792032,
+      "bytes": 68,
+      "positive": {
+        "exact": true,
+        "reason": "EXACT",
+        "first_difference": null,
+        "relocation_count": 4
+      },
+      "negative": {
+        "exact": false,
+        "reason": "FUNC_EXTENT_MISMATCH",
+        "first_difference": 0,
+        "relocation_count": 4
+      }
+    },
+    {
+      "region": "japan_0",
+      "name": "func_802190D8_6827C8",
+      "rom_offset": 6825928,
+      "bytes": 72,
+      "positive": {
+        "exact": true,
+        "reason": "EXACT",
+        "first_difference": null,
+        "relocation_count": 0
+      },
+      "negative": {
+        "exact": false,
+        "reason": "FUNC_EXTENT_MISMATCH",
+        "first_difference": 0,
+        "relocation_count": 0
+      }
+    },
+    {
+      "region": "japan_0",
+      "name": "func_8021C4E0_685BD0",
+      "rom_offset": 6839248,
+      "bytes": 84,
+      "positive": {
+        "exact": true,
+        "reason": "EXACT",
+        "first_difference": null,
+        "relocation_count": 1
+      },
+      "negative": {
+        "exact": false,
+        "reason": "FUNC_EXTENT_MISMATCH",
+        "first_difference": 0,
+        "relocation_count": 1
+      }
+    },
+    {
+      "region": "japan_0",
+      "name": "func_8021FF3C_68962C",
+      "rom_offset": 6854188,
+      "bytes": 96,
+      "positive": {
+        "exact": true,
+        "reason": "EXACT",
+        "first_difference": null,
+        "relocation_count": 0
+      },
+      "negative": {
+        "exact": false,
+        "reason": "FUNC_EXTENT_MISMATCH",
+        "first_difference": 0,
+        "relocation_count": 0
+      }
+    },
+    {
+      "region": "japan_0",
+      "name": "func_8022007C_68976C",
+      "rom_offset": 6854508,
+      "bytes": 124,
+      "positive": {
+        "exact": true,
+        "reason": "EXACT",
+        "first_difference": null,
+        "relocation_count": 0
+      },
+      "negative": {
+        "exact": false,
+        "reason": "FUNC_EXTENT_MISMATCH",
+        "first_difference": 0,
+        "relocation_count": 0
+      }
+    },
+    {
+      "region": "japan_0",
+      "name": "func_802200F8_6897E8",
+      "rom_offset": 6854632,
+      "bytes": 52,
+      "positive": {
+        "exact": true,
+        "reason": "EXACT",
+        "first_difference": null,
+        "relocation_count": 0
+      },
+      "negative": {
+        "exact": false,
+        "reason": "FUNC_EXTENT_MISMATCH",
+        "first_difference": 0,
+        "relocation_count": 0
+      }
+    },
+    {
+      "region": "japan_0",
+      "name": "func_80224110_68D800",
+      "rom_offset": 6871040,
+      "bytes": 44,
+      "positive": {
+        "exact": true,
+        "reason": "EXACT",
+        "first_difference": null,
+        "relocation_count": 3
+      },
+      "negative": {
+        "exact": false,
+        "reason": "FUNC_EXTENT_MISMATCH",
+        "first_difference": 0,
+        "relocation_count": 3
+      }
+    },
+    {
+      "region": "japan_0",
+      "name": "func_80224644_68DD34",
+      "rom_offset": 6872372,
+      "bytes": 52,
+      "positive": {
+        "exact": true,
+        "reason": "EXACT",
+        "first_difference": null,
+        "relocation_count": 3
+      },
+      "negative": {
+        "exact": false,
+        "reason": "FUNC_EXTENT_MISMATCH",
+        "first_difference": 0,
+        "relocation_count": 3
+      }
+    },
+    {
+      "region": "japan_0",
+      "name": "func_80228E90_692580",
+      "rom_offset": 6890880,
+      "bytes": 96,
+      "positive": {
+        "exact": true,
+        "reason": "EXACT",
+        "first_difference": null,
+        "relocation_count": 0
+      },
+      "negative": {
+        "exact": false,
+        "reason": "FUNC_EXTENT_MISMATCH",
+        "first_difference": 0,
+        "relocation_count": 0
+      }
+    },
+    {
+      "region": "japan_0",
+      "name": "func_8022DA34_697124",
+      "rom_offset": 6910244,
+      "bytes": 72,
+      "positive": {
+        "exact": true,
+        "reason": "EXACT",
+        "first_difference": null,
+        "relocation_count": 0
+      },
+      "negative": {
+        "exact": false,
+        "reason": "FUNC_EXTENT_MISMATCH",
+        "first_difference": 0,
+        "relocation_count": 0
+      }
+    },
+    {
+      "region": "japan_0",
+      "name": "func_08000348_6B36A8",
+      "rom_offset": 7026344,
+      "bytes": 188,
+      "positive": {
+        "exact": true,
+        "reason": "EXACT",
+        "first_difference": null,
+        "relocation_count": 14
+      },
+      "negative": {
+        "exact": false,
+        "reason": "FUNC_EXTENT_MISMATCH",
+        "first_difference": 0,
+        "relocation_count": 14
+      }
+    },
+    {
+      "region": "japan_0",
+      "name": "func_080024D0_6BA250",
+      "rom_offset": 7053904,
+      "bytes": 72,
+      "positive": {
+        "exact": true,
+        "reason": "EXACT",
+        "first_difference": null,
+        "relocation_count": 6
+      },
+      "negative": {
+        "exact": false,
+        "reason": "FUNC_EXTENT_MISMATCH",
+        "first_difference": 0,
+        "relocation_count": 6
+      }
+    },
+    {
+      "region": "japan_0",
+      "name": "func_08000BB8_6D46B8",
+      "rom_offset": 7161528,
+      "bytes": 72,
+      "positive": {
+        "exact": true,
+        "reason": "EXACT",
+        "first_difference": null,
+        "relocation_count": 4
+      },
+      "negative": {
+        "exact": false,
+        "reason": "FUNC_EXTENT_MISMATCH",
+        "first_difference": 0,
+        "relocation_count": 4
+      }
+    },
+    {
+      "region": "japan_0",
+      "name": "func_080048AC_6E303C",
+      "rom_offset": 7221308,
+      "bytes": 72,
+      "positive": {
+        "exact": true,
+        "reason": "EXACT",
+        "first_difference": null,
+        "relocation_count": 4
+      },
+      "negative": {
+        "exact": false,
+        "reason": "FUNC_EXTENT_MISMATCH",
+        "first_difference": 0,
+        "relocation_count": 4
+      }
+    },
+    {
+      "region": "japan_0",
+      "name": "func_080048F4_6E3084",
+      "rom_offset": 7221380,
+      "bytes": 72,
+      "positive": {
+        "exact": true,
+        "reason": "EXACT",
+        "first_difference": null,
+        "relocation_count": 6
+      },
+      "negative": {
+        "exact": false,
+        "reason": "FUNC_EXTENT_MISMATCH",
+        "first_difference": 0,
+        "relocation_count": 6
+      }
+    },
+    {
+      "region": "japan_0",
+      "name": "func_08000F20_6E9670",
+      "rom_offset": 7247472,
+      "bytes": 48,
+      "positive": {
+        "exact": true,
+        "reason": "EXACT",
+        "first_difference": null,
+        "relocation_count": 2
+      },
+      "negative": {
+        "exact": false,
+        "reason": "FUNC_EXTENT_MISMATCH",
+        "first_difference": 0,
+        "relocation_count": 2
+      }
+    },
+    {
+      "region": "japan_0",
+      "name": "func_08001318_6F5C38",
+      "rom_offset": 7298104,
+      "bytes": 68,
+      "positive": {
+        "exact": true,
+        "reason": "EXACT",
+        "first_difference": null,
+        "relocation_count": 2
+      },
+      "negative": {
+        "exact": false,
+        "reason": "FUNC_EXTENT_MISMATCH",
+        "first_difference": 0,
+        "relocation_count": 2
+      }
+    },
+    {
+      "region": "japan_0",
+      "name": "func_0800135C_6F5C7C",
+      "rom_offset": 7298172,
+      "bytes": 64,
+      "positive": {
+        "exact": true,
+        "reason": "EXACT",
+        "first_difference": null,
+        "relocation_count": 2
+      },
+      "negative": {
+        "exact": false,
+        "reason": "FUNC_EXTENT_MISMATCH",
+        "first_difference": 0,
+        "relocation_count": 2
+      }
+    },
+    {
+      "region": "japan_0",
+      "name": "func_08000EC4_715A54",
+      "rom_offset": 7428692,
+      "bytes": 72,
+      "positive": {
+        "exact": true,
+        "reason": "EXACT",
+        "first_difference": null,
+        "relocation_count": 6
+      },
+      "negative": {
+        "exact": false,
+        "reason": "FUNC_EXTENT_MISMATCH",
+        "first_difference": 0,
+        "relocation_count": 6
+      }
+    },
+    {
+      "region": "japan_0",
+      "name": "func_08000534_7179D4",
+      "rom_offset": 7436756,
+      "bytes": 56,
+      "positive": {
+        "exact": true,
+        "reason": "EXACT",
+        "first_difference": null,
+        "relocation_count": 3
+      },
+      "negative": {
+        "exact": false,
+        "reason": "FUNC_EXTENT_MISMATCH",
+        "first_difference": 0,
+        "relocation_count": 3
+      }
+    },
+    {
+      "region": "japan_0",
+      "name": "func_08000EAC_72E86C",
+      "rom_offset": 7530604,
+      "bytes": 60,
+      "positive": {
+        "exact": true,
+        "reason": "EXACT",
+        "first_difference": null,
+        "relocation_count": 2
+      },
+      "negative": {
+        "exact": false,
+        "reason": "FUNC_EXTENT_MISMATCH",
+        "first_difference": 0,
+        "relocation_count": 2
+      }
+    },
+    {
+      "region": "japan_0",
+      "name": "func_08001704_7389E4",
+      "rom_offset": 7571940,
+      "bytes": 48,
+      "positive": {
+        "exact": true,
+        "reason": "EXACT",
+        "first_difference": null,
+        "relocation_count": 4
+      },
+      "negative": {
+        "exact": false,
+        "reason": "FUNC_EXTENT_MISMATCH",
+        "first_difference": 0,
+        "relocation_count": 4
+      }
+    },
+    {
+      "region": "usa",
+      "name": "func_8000B4DC_C0DC",
+      "rom_offset": 49372,
+      "bytes": 64,
+      "positive": {
+        "exact": true,
+        "reason": "EXACT",
+        "first_difference": null,
+        "relocation_count": 4
+      },
+      "negative": {
+        "exact": false,
+        "reason": "FUNC_EXTENT_MISMATCH",
+        "first_difference": 0,
+        "relocation_count": 4
+      }
+    },
+    {
+      "region": "usa",
+      "name": "func_8001198C_1258C",
+      "rom_offset": 75148,
+      "bytes": 72,
+      "positive": {
+        "exact": true,
+        "reason": "EXACT",
+        "first_difference": null,
+        "relocation_count": 7
+      },
+      "negative": {
+        "exact": false,
+        "reason": "FUNC_EXTENT_MISMATCH",
+        "first_difference": 0,
+        "relocation_count": 7
+      }
+    },
+    {
+      "region": "usa",
+      "name": "func_80023840_24440",
+      "rom_offset": 148544,
+      "bytes": 64,
+      "positive": {
+        "exact": true,
+        "reason": "EXACT",
+        "first_difference": null,
+        "relocation_count": 3
+      },
+      "negative": {
+        "exact": false,
+        "reason": "FUNC_EXTENT_MISMATCH",
+        "first_difference": 0,
+        "relocation_count": 3
+      }
+    },
+    {
+      "region": "usa",
+      "name": "func_80024888_25488",
+      "rom_offset": 152712,
+      "bytes": 52,
+      "positive": {
+        "exact": true,
+        "reason": "EXACT",
+        "first_difference": null,
+        "relocation_count": 3
+      },
+      "negative": {
+        "exact": false,
+        "reason": "FUNC_EXTENT_MISMATCH",
+        "first_difference": 0,
+        "relocation_count": 3
+      }
+    },
+    {
+      "region": "usa",
+      "name": "func_80034E98_35A98",
+      "rom_offset": 219800,
+      "bytes": 60,
+      "positive": {
+        "exact": true,
+        "reason": "EXACT",
+        "first_difference": null,
+        "relocation_count": 2
+      },
+      "negative": {
+        "exact": false,
+        "reason": "FUNC_EXTENT_MISMATCH",
+        "first_difference": 0,
+        "relocation_count": 2
+      }
+    },
+    {
+      "region": "usa",
+      "name": "func_801D2B58_58EA68",
+      "rom_offset": 5827176,
+      "bytes": 52,
+      "positive": {
+        "exact": true,
+        "reason": "EXACT",
+        "first_difference": null,
+        "relocation_count": 2
+      },
+      "negative": {
+        "exact": false,
+        "reason": "FUNC_EXTENT_MISMATCH",
+        "first_difference": 0,
+        "relocation_count": 2
+      }
+    },
+    {
+      "region": "usa",
+      "name": "func_801DE600_59A510",
+      "rom_offset": 5874960,
+      "bytes": 68,
+      "positive": {
+        "exact": true,
+        "reason": "EXACT",
+        "first_difference": null,
+        "relocation_count": 2
+      },
+      "negative": {
+        "exact": false,
+        "reason": "FUNC_EXTENT_MISMATCH",
+        "first_difference": 0,
+        "relocation_count": 2
+      }
+    },
+    {
+      "region": "usa",
+      "name": "func_801DEB50_59AA60",
+      "rom_offset": 5876320,
+      "bytes": 48,
+      "positive": {
+        "exact": true,
+        "reason": "EXACT",
+        "first_difference": null,
+        "relocation_count": 2
+      },
+      "negative": {
+        "exact": false,
+        "reason": "FUNC_EXTENT_MISMATCH",
+        "first_difference": 0,
+        "relocation_count": 2
+      }
+    },
+    {
+      "region": "usa",
+      "name": "func_801E0664_59C574",
+      "rom_offset": 5883252,
+      "bytes": 44,
+      "positive": {
+        "exact": true,
+        "reason": "EXACT",
+        "first_difference": null,
+        "relocation_count": 3
+      },
+      "negative": {
+        "exact": false,
+        "reason": "FUNC_EXTENT_MISMATCH",
+        "first_difference": 0,
+        "relocation_count": 3
+      }
+    },
+    {
+      "region": "usa",
+      "name": "func_801E0690_59C5A0",
+      "rom_offset": 5883296,
+      "bytes": 60,
+      "positive": {
+        "exact": true,
+        "reason": "EXACT",
+        "first_difference": null,
+        "relocation_count": 4
+      },
+      "negative": {
+        "exact": false,
+        "reason": "FUNC_EXTENT_MISMATCH",
+        "first_difference": 0,
+        "relocation_count": 4
+      }
+    },
+    {
+      "region": "usa",
+      "name": "func_801E06CC_59C5DC",
+      "rom_offset": 5883356,
+      "bytes": 60,
+      "positive": {
+        "exact": true,
+        "reason": "EXACT",
+        "first_difference": null,
+        "relocation_count": 4
+      },
+      "negative": {
+        "exact": false,
+        "reason": "FUNC_EXTENT_MISMATCH",
+        "first_difference": 0,
+        "relocation_count": 4
+      }
+    },
+    {
+      "region": "usa",
+      "name": "func_801E1ED0_59DDE0",
+      "rom_offset": 5889504,
+      "bytes": 48,
+      "positive": {
+        "exact": true,
+        "reason": "EXACT",
+        "first_difference": null,
+        "relocation_count": 1
+      },
+      "negative": {
+        "exact": false,
+        "reason": "FUNC_EXTENT_MISMATCH",
+        "first_difference": 0,
+        "relocation_count": 1
+      }
+    },
+    {
+      "region": "usa",
+      "name": "func_801F692C_5B283C",
+      "rom_offset": 5974076,
+      "bytes": 68,
+      "positive": {
+        "exact": true,
+        "reason": "EXACT",
+        "first_difference": null,
+        "relocation_count": 1
+      },
+      "negative": {
+        "exact": false,
+        "reason": "FUNC_EXTENT_MISMATCH",
+        "first_difference": 0,
+        "relocation_count": 1
+      }
+    },
+    {
+      "region": "usa",
+      "name": "func_801FACC4_5B6BD4",
+      "rom_offset": 5991380,
+      "bytes": 44,
+      "positive": {
+        "exact": true,
+        "reason": "EXACT",
+        "first_difference": null,
+        "relocation_count": 5
+      },
+      "negative": {
+        "exact": false,
+        "reason": "FUNC_EXTENT_MISMATCH",
+        "first_difference": 0,
+        "relocation_count": 5
+      }
+    },
+    {
+      "region": "usa",
+      "name": "func_80214B4C_5D001C",
+      "rom_offset": 6094876,
+      "bytes": 60,
+      "positive": {
+        "exact": true,
+        "reason": "EXACT",
+        "first_difference": null,
+        "relocation_count": 4
+      },
+      "negative": {
+        "exact": false,
+        "reason": "FUNC_EXTENT_MISMATCH",
+        "first_difference": 0,
+        "relocation_count": 4
+      }
+    },
+    {
+      "region": "usa",
+      "name": "func_80221F34_5DD404",
+      "rom_offset": 6149124,
+      "bytes": 60,
+      "positive": {
+        "exact": true,
+        "reason": "EXACT",
+        "first_difference": null,
+        "relocation_count": 2
+      },
+      "negative": {
+        "exact": false,
+        "reason": "FUNC_EXTENT_MISMATCH",
+        "first_difference": 0,
+        "relocation_count": 2
+      }
+    },
+    {
+      "region": "usa",
+      "name": "func_80222B30_5DE000",
+      "rom_offset": 6152192,
+      "bytes": 60,
+      "positive": {
+        "exact": true,
+        "reason": "EXACT",
+        "first_difference": null,
+        "relocation_count": 1
+      },
+      "negative": {
+        "exact": false,
+        "reason": "FUNC_EXTENT_MISMATCH",
+        "first_difference": 0,
+        "relocation_count": 1
+      }
+    },
+    {
+      "region": "usa",
+      "name": "func_80222C34_5DE104",
+      "rom_offset": 6152452,
+      "bytes": 68,
+      "positive": {
+        "exact": true,
+        "reason": "EXACT",
+        "first_difference": null,
+        "relocation_count": 2
+      },
+      "negative": {
+        "exact": false,
+        "reason": "FUNC_EXTENT_MISMATCH",
+        "first_difference": 0,
+        "relocation_count": 2
+      }
+    },
+    {
+      "region": "usa",
+      "name": "func_80223CE0_5DF1B0",
+      "rom_offset": 6156720,
+      "bytes": 48,
+      "positive": {
+        "exact": true,
+        "reason": "EXACT",
+        "first_difference": null,
+        "relocation_count": 5
+      },
+      "negative": {
+        "exact": false,
+        "reason": "FUNC_EXTENT_MISMATCH",
+        "first_difference": 0,
+        "relocation_count": 5
+      }
+    },
+    {
+      "region": "usa",
+      "name": "func_80223D10_5DF1E0",
+      "rom_offset": 6156768,
+      "bytes": 48,
+      "positive": {
+        "exact": true,
+        "reason": "EXACT",
+        "first_difference": null,
+        "relocation_count": 5
+      },
+      "negative": {
+        "exact": false,
+        "reason": "FUNC_EXTENT_MISMATCH",
+        "first_difference": 0,
+        "relocation_count": 5
+      }
+    },
+    {
+      "region": "usa",
+      "name": "func_801E4BC0_60FFA0",
+      "rom_offset": 6356896,
+      "bytes": 52,
+      "positive": {
+        "exact": true,
+        "reason": "EXACT",
+        "first_difference": null,
+        "relocation_count": 6
+      },
+      "negative": {
+        "exact": false,
+        "reason": "FUNC_EXTENT_MISMATCH",
+        "first_difference": 0,
+        "relocation_count": 6
+      }
+    },
+    {
+      "region": "usa",
+      "name": "func_801E4C5C_61003C",
+      "rom_offset": 6357052,
+      "bytes": 60,
+      "positive": {
+        "exact": true,
+        "reason": "EXACT",
+        "first_difference": null,
+        "relocation_count": 4
+      },
+      "negative": {
+        "exact": false,
+        "reason": "FUNC_EXTENT_MISMATCH",
+        "first_difference": 0,
+        "relocation_count": 4
+      }
+    },
+    {
+      "region": "usa",
+      "name": "func_801EF84C_61AC2C",
+      "rom_offset": 6401068,
+      "bytes": 60,
+      "positive": {
+        "exact": true,
+        "reason": "EXACT",
+        "first_difference": null,
+        "relocation_count": 6
+      },
+      "negative": {
+        "exact": false,
+        "reason": "FUNC_EXTENT_MISMATCH",
+        "first_difference": 0,
+        "relocation_count": 6
+      }
+    },
+    {
+      "region": "usa",
+      "name": "func_801EF888_61AC68",
+      "rom_offset": 6401128,
+      "bytes": 64,
+      "positive": {
+        "exact": true,
+        "reason": "EXACT",
+        "first_difference": null,
+        "relocation_count": 5
+      },
+      "negative": {
+        "exact": false,
+        "reason": "FUNC_EXTENT_MISMATCH",
+        "first_difference": 0,
+        "relocation_count": 5
+      }
+    },
+    {
+      "region": "usa",
+      "name": "func_801F0A0C_61BDEC",
+      "rom_offset": 6405612,
+      "bytes": 68,
+      "positive": {
+        "exact": true,
+        "reason": "EXACT",
+        "first_difference": null,
+        "relocation_count": 6
+      },
+      "negative": {
+        "exact": false,
+        "reason": "FUNC_EXTENT_MISMATCH",
+        "first_difference": 0,
+        "relocation_count": 6
+      }
+    },
+    {
+      "region": "usa",
+      "name": "func_801F3A34_61EE14",
+      "rom_offset": 6417940,
+      "bytes": 52,
+      "positive": {
+        "exact": true,
+        "reason": "EXACT",
+        "first_difference": null,
+        "relocation_count": 6
+      },
+      "negative": {
+        "exact": false,
+        "reason": "FUNC_EXTENT_MISMATCH",
+        "first_difference": 0,
+        "relocation_count": 6
+      }
+    },
+    {
+      "region": "usa",
+      "name": "func_801FCA6C_627E4C",
+      "rom_offset": 6454860,
+      "bytes": 72,
+      "positive": {
+        "exact": true,
+        "reason": "EXACT",
+        "first_difference": null,
+        "relocation_count": 2
+      },
+      "negative": {
+        "exact": false,
+        "reason": "FUNC_EXTENT_MISMATCH",
+        "first_difference": 0,
+        "relocation_count": 2
+      }
+    },
+    {
+      "region": "usa",
+      "name": "func_801CFBE8_63EA38",
+      "rom_offset": 6548024,
+      "bytes": 68,
+      "positive": {
+        "exact": true,
+        "reason": "EXACT",
+        "first_difference": null,
+        "relocation_count": 2
+      },
+      "negative": {
+        "exact": false,
+        "reason": "FUNC_EXTENT_MISMATCH",
+        "first_difference": 0,
+        "relocation_count": 2
+      }
+    },
+    {
+      "region": "usa",
+      "name": "func_801D09F8_63F848",
+      "rom_offset": 6551624,
+      "bytes": 76,
+      "positive": {
+        "exact": true,
+        "reason": "EXACT",
+        "first_difference": null,
+        "relocation_count": 2
+      },
+      "negative": {
+        "exact": false,
+        "reason": "FUNC_EXTENT_MISMATCH",
+        "first_difference": 0,
+        "relocation_count": 2
+      }
+    },
+    {
+      "region": "usa",
+      "name": "func_801CCC80_65FB30",
+      "rom_offset": 6683440,
+      "bytes": 44,
+      "positive": {
+        "exact": true,
+        "reason": "EXACT",
+        "first_difference": null,
+        "relocation_count": 1
+      },
+      "negative": {
+        "exact": false,
+        "reason": "FUNC_EXTENT_MISMATCH",
+        "first_difference": 0,
+        "relocation_count": 1
+      }
+    },
+    {
+      "region": "usa",
+      "name": "func_801CCDCC_65FC7C",
+      "rom_offset": 6683772,
+      "bytes": 76,
+      "positive": {
+        "exact": true,
+        "reason": "EXACT",
+        "first_difference": null,
+        "relocation_count": 7
+      },
+      "negative": {
+        "exact": false,
+        "reason": "FUNC_EXTENT_MISMATCH",
+        "first_difference": 0,
+        "relocation_count": 7
+      }
+    },
+    {
+      "region": "usa",
+      "name": "func_80228C54_692634",
+      "rom_offset": 6891060,
+      "bytes": 72,
+      "positive": {
+        "exact": true,
+        "reason": "EXACT",
+        "first_difference": null,
+        "relocation_count": 0
+      },
+      "negative": {
+        "exact": false,
+        "reason": "FUNC_EXTENT_MISMATCH",
+        "first_difference": 0,
+        "relocation_count": 0
+      }
+    },
+    {
+      "region": "usa",
+      "name": "func_801CB460_6A9920",
+      "rom_offset": 6986016,
+      "bytes": 68,
+      "positive": {
+        "exact": true,
+        "reason": "EXACT",
+        "first_difference": null,
+        "relocation_count": 7
+      },
+      "negative": {
+        "exact": false,
+        "reason": "FUNC_EXTENT_MISMATCH",
+        "first_difference": 0,
+        "relocation_count": 7
+      }
+    },
+    {
+      "region": "usa",
+      "name": "func_0800301C_6B242C",
+      "rom_offset": 7021612,
+      "bytes": 64,
+      "positive": {
+        "exact": true,
+        "reason": "EXACT",
+        "first_difference": null,
+        "relocation_count": 4
+      },
+      "negative": {
+        "exact": false,
+        "reason": "FUNC_EXTENT_MISMATCH",
+        "first_difference": 0,
+        "relocation_count": 4
+      }
+    },
+    {
+      "region": "usa",
+      "name": "func_08003C68_6B6F08",
+      "rom_offset": 7040776,
+      "bytes": 60,
+      "positive": {
+        "exact": true,
+        "reason": "EXACT",
+        "first_difference": null,
+        "relocation_count": 4
+      },
+      "negative": {
+        "exact": false,
+        "reason": "FUNC_EXTENT_MISMATCH",
+        "first_difference": 0,
+        "relocation_count": 4
+      }
+    },
+    {
+      "region": "usa",
+      "name": "func_08006548_6B97E8",
+      "rom_offset": 7051240,
+      "bytes": 68,
+      "positive": {
+        "exact": true,
+        "reason": "EXACT",
+        "first_difference": null,
+        "relocation_count": 6
+      },
+      "negative": {
+        "exact": false,
+        "reason": "FUNC_EXTENT_MISMATCH",
+        "first_difference": 0,
+        "relocation_count": 6
+      }
+    },
+    {
+      "region": "usa",
+      "name": "func_0800666C_6B990C",
+      "rom_offset": 7051532,
+      "bytes": 68,
+      "positive": {
+        "exact": true,
+        "reason": "EXACT",
+        "first_difference": null,
+        "relocation_count": 2
+      },
+      "negative": {
+        "exact": false,
+        "reason": "FUNC_EXTENT_MISMATCH",
+        "first_difference": 0,
+        "relocation_count": 2
+      }
+    },
+    {
+      "region": "usa",
+      "name": "func_08007488_6BA728",
+      "rom_offset": 7055144,
+      "bytes": 68,
+      "positive": {
+        "exact": true,
+        "reason": "EXACT",
+        "first_difference": null,
+        "relocation_count": 6
+      },
+      "negative": {
+        "exact": false,
+        "reason": "FUNC_EXTENT_MISMATCH",
+        "first_difference": 0,
+        "relocation_count": 6
+      }
+    },
+    {
+      "region": "usa",
+      "name": "func_08007984_6BAC24",
+      "rom_offset": 7056420,
+      "bytes": 44,
+      "positive": {
+        "exact": true,
+        "reason": "EXACT",
+        "first_difference": null,
+        "relocation_count": 2
+      },
+      "negative": {
+        "exact": false,
+        "reason": "FUNC_EXTENT_MISMATCH",
+        "first_difference": 0,
+        "relocation_count": 2
+      }
+    },
+    {
+      "region": "usa",
+      "name": "func_08008888_6BBB28",
+      "rom_offset": 7060264,
+      "bytes": 60,
+      "positive": {
+        "exact": true,
+        "reason": "EXACT",
+        "first_difference": null,
+        "relocation_count": 4
+      },
+      "negative": {
+        "exact": false,
+        "reason": "FUNC_EXTENT_MISMATCH",
+        "first_difference": 0,
+        "relocation_count": 4
+      }
+    },
+    {
+      "region": "usa",
+      "name": "func_08001CCC_6C141C",
+      "rom_offset": 7083036,
+      "bytes": 64,
+      "positive": {
+        "exact": true,
+        "reason": "EXACT",
+        "first_difference": null,
+        "relocation_count": 4
+      },
+      "negative": {
+        "exact": false,
+        "reason": "FUNC_EXTENT_MISMATCH",
+        "first_difference": 0,
+        "relocation_count": 4
+      }
+    },
+    {
+      "region": "usa",
+      "name": "func_080024AC_6C1BFC",
+      "rom_offset": 7085052,
+      "bytes": 56,
+      "positive": {
+        "exact": true,
+        "reason": "EXACT",
+        "first_difference": null,
+        "relocation_count": 4
+      },
+      "negative": {
+        "exact": false,
+        "reason": "FUNC_EXTENT_MISMATCH",
+        "first_difference": 0,
+        "relocation_count": 4
+      }
+    },
+    {
+      "region": "usa",
+      "name": "func_08007494_6C6BE4",
+      "rom_offset": 7105508,
+      "bytes": 64,
+      "positive": {
+        "exact": true,
+        "reason": "EXACT",
+        "first_difference": null,
+        "relocation_count": 4
+      },
+      "negative": {
+        "exact": false,
+        "reason": "FUNC_EXTENT_MISMATCH",
+        "first_difference": 0,
+        "relocation_count": 4
+      }
+    },
+    {
+      "region": "usa",
+      "name": "func_080076B4_6C6E04",
+      "rom_offset": 7106052,
+      "bytes": 64,
+      "positive": {
+        "exact": true,
+        "reason": "EXACT",
+        "first_difference": null,
+        "relocation_count": 4
+      },
+      "negative": {
+        "exact": false,
+        "reason": "FUNC_EXTENT_MISMATCH",
+        "first_difference": 0,
+        "relocation_count": 4
+      }
+    },
+    {
+      "region": "usa",
+      "name": "func_080078A0_6C6FF0",
+      "rom_offset": 7106544,
+      "bytes": 64,
+      "positive": {
+        "exact": true,
+        "reason": "EXACT",
+        "first_difference": null,
+        "relocation_count": 4
+      },
+      "negative": {
+        "exact": false,
+        "reason": "FUNC_EXTENT_MISMATCH",
+        "first_difference": 0,
+        "relocation_count": 4
+      }
+    },
+    {
+      "region": "usa",
+      "name": "func_0800055C_6D64AC",
+      "rom_offset": 7169196,
+      "bytes": 60,
+      "positive": {
+        "exact": true,
+        "reason": "EXACT",
+        "first_difference": null,
+        "relocation_count": 3
+      },
+      "negative": {
+        "exact": false,
+        "reason": "FUNC_EXTENT_MISMATCH",
+        "first_difference": 0,
+        "relocation_count": 3
+      }
+    },
+    {
+      "region": "usa",
+      "name": "func_0800281C_6D876C",
+      "rom_offset": 7178092,
+      "bytes": 56,
+      "positive": {
+        "exact": true,
+        "reason": "EXACT",
+        "first_difference": null,
+        "relocation_count": 4
+      },
+      "negative": {
+        "exact": false,
+        "reason": "FUNC_EXTENT_MISMATCH",
+        "first_difference": 0,
+        "relocation_count": 4
+      }
+    },
+    {
+      "region": "usa",
+      "name": "func_0800069C_6DF83C",
+      "rom_offset": 7206972,
+      "bytes": 68,
+      "positive": {
+        "exact": true,
+        "reason": "EXACT",
+        "first_difference": null,
+        "relocation_count": 4
+      },
+      "negative": {
+        "exact": false,
+        "reason": "FUNC_EXTENT_MISMATCH",
+        "first_difference": 0,
+        "relocation_count": 4
+      }
+    },
+    {
+      "region": "usa",
+      "name": "func_0800372C_6E28CC",
+      "rom_offset": 7219404,
+      "bytes": 68,
+      "positive": {
+        "exact": true,
+        "reason": "EXACT",
+        "first_difference": null,
+        "relocation_count": 4
+      },
+      "negative": {
+        "exact": false,
+        "reason": "FUNC_EXTENT_MISMATCH",
+        "first_difference": 0,
+        "relocation_count": 4
+      }
+    },
+    {
+      "region": "usa",
+      "name": "func_08004878_6E3A18",
+      "rom_offset": 7223832,
+      "bytes": 64,
+      "positive": {
+        "exact": true,
+        "reason": "EXACT",
+        "first_difference": null,
+        "relocation_count": 4
+      },
+      "negative": {
+        "exact": false,
+        "reason": "FUNC_EXTENT_MISMATCH",
+        "first_difference": 0,
+        "relocation_count": 4
+      }
+    },
+    {
+      "region": "usa",
+      "name": "func_08000F78_6E4F58",
+      "rom_offset": 7229272,
+      "bytes": 48,
+      "positive": {
+        "exact": true,
+        "reason": "EXACT",
+        "first_difference": null,
+        "relocation_count": 2
+      },
+      "negative": {
+        "exact": false,
+        "reason": "FUNC_EXTENT_MISMATCH",
+        "first_difference": 0,
+        "relocation_count": 2
+      }
+    },
+    {
+      "region": "usa",
+      "name": "func_0800254C_6E652C",
+      "rom_offset": 7234860,
+      "bytes": 56,
+      "positive": {
+        "exact": true,
+        "reason": "EXACT",
+        "first_difference": null,
+        "relocation_count": 4
+      },
+      "negative": {
+        "exact": false,
+        "reason": "FUNC_EXTENT_MISMATCH",
+        "first_difference": 0,
+        "relocation_count": 4
+      }
+    },
+    {
+      "region": "usa",
+      "name": "func_0800295C_6E693C",
+      "rom_offset": 7235900,
+      "bytes": 68,
+      "positive": {
+        "exact": true,
+        "reason": "EXACT",
+        "first_difference": null,
+        "relocation_count": 4
+      },
+      "negative": {
+        "exact": false,
+        "reason": "FUNC_EXTENT_MISMATCH",
+        "first_difference": 0,
+        "relocation_count": 4
+      }
+    },
+    {
+      "region": "usa",
+      "name": "func_08000FC0_6E82D0",
+      "rom_offset": 7242448,
+      "bytes": 68,
+      "positive": {
+        "exact": true,
+        "reason": "EXACT",
+        "first_difference": null,
+        "relocation_count": 4
+      },
+      "negative": {
+        "exact": false,
+        "reason": "FUNC_EXTENT_MISMATCH",
+        "first_difference": 0,
+        "relocation_count": 4
+      }
+    },
+    {
+      "region": "usa",
+      "name": "func_080010EC_6E83FC",
+      "rom_offset": 7242748,
+      "bytes": 64,
+      "positive": {
+        "exact": true,
+        "reason": "EXACT",
+        "first_difference": null,
+        "relocation_count": 4
+      },
+      "negative": {
+        "exact": false,
+        "reason": "FUNC_EXTENT_MISMATCH",
+        "first_difference": 0,
+        "relocation_count": 4
+      }
+    },
+    {
+      "region": "usa",
+      "name": "func_08001388_6E8698",
+      "rom_offset": 7243416,
+      "bytes": 68,
+      "positive": {
+        "exact": true,
+        "reason": "EXACT",
+        "first_difference": null,
+        "relocation_count": 4
+      },
+      "negative": {
+        "exact": false,
+        "reason": "FUNC_EXTENT_MISMATCH",
+        "first_difference": 0,
+        "relocation_count": 4
+      }
+    },
+    {
+      "region": "usa",
+      "name": "func_08000008_6F0218",
+      "rom_offset": 7275032,
+      "bytes": 44,
+      "positive": {
+        "exact": true,
+        "reason": "EXACT",
+        "first_difference": null,
+        "relocation_count": 4
+      },
+      "negative": {
+        "exact": false,
+        "reason": "FUNC_EXTENT_MISMATCH",
+        "first_difference": 0,
+        "relocation_count": 4
+      }
+    },
+    {
+      "region": "usa",
+      "name": "func_08001318_6F1528",
+      "rom_offset": 7279912,
+      "bytes": 68,
+      "positive": {
+        "exact": true,
+        "reason": "EXACT",
+        "first_difference": null,
+        "relocation_count": 2
+      },
+      "negative": {
+        "exact": false,
+        "reason": "FUNC_EXTENT_MISMATCH",
+        "first_difference": 0,
+        "relocation_count": 2
+      }
+    },
+    {
+      "region": "usa",
+      "name": "func_0800135C_6F156C",
+      "rom_offset": 7279980,
+      "bytes": 64,
+      "positive": {
+        "exact": true,
+        "reason": "EXACT",
+        "first_difference": null,
+        "relocation_count": 2
+      },
+      "negative": {
+        "exact": false,
+        "reason": "FUNC_EXTENT_MISMATCH",
+        "first_difference": 0,
+        "relocation_count": 2
+      }
+    },
+    {
+      "region": "usa",
+      "name": "func_08001738_6F1948",
+      "rom_offset": 7280968,
+      "bytes": 56,
+      "positive": {
+        "exact": true,
+        "reason": "EXACT",
+        "first_difference": null,
+        "relocation_count": 2
+      },
+      "negative": {
+        "exact": false,
+        "reason": "FUNC_EXTENT_MISMATCH",
+        "first_difference": 0,
+        "relocation_count": 2
+      }
+    },
+    {
+      "region": "usa",
+      "name": "func_08001770_6F1980",
+      "rom_offset": 7281024,
+      "bytes": 52,
+      "positive": {
+        "exact": true,
+        "reason": "EXACT",
+        "first_difference": null,
+        "relocation_count": 2
+      },
+      "negative": {
+        "exact": false,
+        "reason": "FUNC_EXTENT_MISMATCH",
+        "first_difference": 0,
+        "relocation_count": 2
+      }
+    },
+    {
+      "region": "usa",
+      "name": "func_08001B4C_6F502C",
+      "rom_offset": 7295020,
+      "bytes": 68,
+      "positive": {
+        "exact": true,
+        "reason": "EXACT",
+        "first_difference": null,
+        "relocation_count": 6
+      },
+      "negative": {
+        "exact": false,
+        "reason": "FUNC_EXTENT_MISMATCH",
+        "first_difference": 0,
+        "relocation_count": 6
+      }
+    },
+    {
+      "region": "usa",
+      "name": "func_08003C54_6F7134",
+      "rom_offset": 7303476,
+      "bytes": 60,
+      "positive": {
+        "exact": true,
+        "reason": "EXACT",
+        "first_difference": null,
+        "relocation_count": 2
+      },
+      "negative": {
+        "exact": false,
+        "reason": "FUNC_EXTENT_MISMATCH",
+        "first_difference": 0,
+        "relocation_count": 2
+      }
+    },
+    {
+      "region": "usa",
+      "name": "func_08003C90_6F7170",
+      "rom_offset": 7303536,
+      "bytes": 48,
+      "positive": {
+        "exact": true,
+        "reason": "EXACT",
+        "first_difference": null,
+        "relocation_count": 2
+      },
+      "negative": {
+        "exact": false,
+        "reason": "FUNC_EXTENT_MISMATCH",
+        "first_difference": 0,
+        "relocation_count": 2
+      }
+    },
+    {
+      "region": "usa",
+      "name": "func_08000784_6FB984",
+      "rom_offset": 7321988,
+      "bytes": 60,
+      "positive": {
+        "exact": true,
+        "reason": "EXACT",
+        "first_difference": null,
+        "relocation_count": 4
+      },
+      "negative": {
+        "exact": false,
+        "reason": "FUNC_EXTENT_MISMATCH",
+        "first_difference": 0,
+        "relocation_count": 4
+      }
+    },
+    {
+      "region": "usa",
+      "name": "func_08000894_6FBA94",
+      "rom_offset": 7322260,
+      "bytes": 64,
+      "positive": {
+        "exact": true,
+        "reason": "EXACT",
+        "first_difference": null,
+        "relocation_count": 4
+      },
+      "negative": {
+        "exact": false,
+        "reason": "FUNC_EXTENT_MISMATCH",
+        "first_difference": 0,
+        "relocation_count": 4
+      }
+    },
+    {
+      "region": "usa",
+      "name": "func_08000E28_6FC028",
+      "rom_offset": 7323688,
+      "bytes": 60,
+      "positive": {
+        "exact": true,
+        "reason": "EXACT",
+        "first_difference": null,
+        "relocation_count": 4
+      },
+      "negative": {
+        "exact": false,
+        "reason": "FUNC_EXTENT_MISMATCH",
+        "first_difference": 0,
+        "relocation_count": 4
+      }
+    },
+    {
+      "region": "usa",
+      "name": "func_08000060_705E50",
+      "rom_offset": 7364176,
+      "bytes": 44,
+      "positive": {
+        "exact": true,
+        "reason": "EXACT",
+        "first_difference": null,
+        "relocation_count": 4
+      },
+      "negative": {
+        "exact": false,
+        "reason": "FUNC_EXTENT_MISMATCH",
+        "first_difference": 0,
+        "relocation_count": 4
+      }
+    },
+    {
+      "region": "usa",
+      "name": "func_08000060_707AA0",
+      "rom_offset": 7371424,
+      "bytes": 44,
+      "positive": {
+        "exact": true,
+        "reason": "EXACT",
+        "first_difference": null,
+        "relocation_count": 4
+      },
+      "negative": {
+        "exact": false,
+        "reason": "FUNC_EXTENT_MISMATCH",
+        "first_difference": 0,
+        "relocation_count": 4
+      }
+    },
+    {
+      "region": "usa",
+      "name": "func_08000060_70A0A0",
+      "rom_offset": 7381152,
+      "bytes": 44,
+      "positive": {
+        "exact": true,
+        "reason": "EXACT",
+        "first_difference": null,
+        "relocation_count": 4
+      },
+      "negative": {
+        "exact": false,
+        "reason": "FUNC_EXTENT_MISMATCH",
+        "first_difference": 0,
+        "relocation_count": 4
+      }
+    },
+    {
+      "region": "usa",
+      "name": "func_0800093C_70D15C",
+      "rom_offset": 7393628,
+      "bytes": 60,
+      "positive": {
+        "exact": true,
+        "reason": "EXACT",
+        "first_difference": null,
+        "relocation_count": 4
+      },
+      "negative": {
+        "exact": false,
+        "reason": "FUNC_EXTENT_MISMATCH",
+        "first_difference": 0,
+        "relocation_count": 4
+      }
+    },
+    {
+      "region": "usa",
+      "name": "func_080006B4_70DDF4",
+      "rom_offset": 7396852,
+      "bytes": 68,
+      "positive": {
+        "exact": true,
+        "reason": "EXACT",
+        "first_difference": null,
+        "relocation_count": 4
+      },
+      "negative": {
+        "exact": false,
+        "reason": "FUNC_EXTENT_MISMATCH",
+        "first_difference": 0,
+        "relocation_count": 4
+      }
+    },
+    {
+      "region": "usa",
+      "name": "func_08000218_710878",
+      "rom_offset": 7407736,
+      "bytes": 68,
+      "positive": {
+        "exact": true,
+        "reason": "EXACT",
+        "first_difference": null,
+        "relocation_count": 6
+      },
+      "negative": {
+        "exact": false,
+        "reason": "FUNC_EXTENT_MISMATCH",
+        "first_difference": 0,
+        "relocation_count": 6
+      }
+    },
+    {
+      "region": "usa",
+      "name": "func_0800025C_7108BC",
+      "rom_offset": 7407804,
+      "bytes": 64,
+      "positive": {
+        "exact": true,
+        "reason": "EXACT",
+        "first_difference": null,
+        "relocation_count": 6
+      },
+      "negative": {
+        "exact": false,
+        "reason": "FUNC_EXTENT_MISMATCH",
+        "first_difference": 0,
+        "relocation_count": 6
+      }
+    },
+    {
+      "region": "usa",
+      "name": "func_08000534_7134A4",
+      "rom_offset": 7419044,
+      "bytes": 56,
+      "positive": {
+        "exact": true,
+        "reason": "EXACT",
+        "first_difference": null,
+        "relocation_count": 3
+      },
+      "negative": {
+        "exact": false,
+        "reason": "FUNC_EXTENT_MISMATCH",
+        "first_difference": 0,
+        "relocation_count": 3
+      }
+    },
+    {
+      "region": "usa",
+      "name": "func_0800193C_7187DC",
+      "rom_offset": 7440348,
+      "bytes": 68,
+      "positive": {
+        "exact": true,
+        "reason": "EXACT",
+        "first_difference": null,
+        "relocation_count": 4
+      },
+      "negative": {
+        "exact": false,
+        "reason": "FUNC_EXTENT_MISMATCH",
+        "first_difference": 0,
+        "relocation_count": 4
+      }
+    },
+    {
+      "region": "usa",
+      "name": "func_080004B4_71A9C4",
+      "rom_offset": 7449028,
+      "bytes": 68,
+      "positive": {
+        "exact": true,
+        "reason": "EXACT",
+        "first_difference": null,
+        "relocation_count": 6
+      },
+      "negative": {
+        "exact": false,
+        "reason": "FUNC_EXTENT_MISMATCH",
+        "first_difference": 0,
+        "relocation_count": 6
+      }
+    },
+    {
+      "region": "usa",
+      "name": "func_080001C8_71BC48",
+      "rom_offset": 7453768,
+      "bytes": 104,
+      "positive": {
+        "exact": true,
+        "reason": "EXACT",
+        "first_difference": null,
+        "relocation_count": 14
+      },
+      "negative": {
+        "exact": false,
+        "reason": "FUNC_EXTENT_MISMATCH",
+        "first_difference": 0,
+        "relocation_count": 14
+      }
+    },
+    {
+      "region": "usa",
+      "name": "func_08000284_71BD04",
+      "rom_offset": 7453956,
+      "bytes": 104,
+      "positive": {
+        "exact": true,
+        "reason": "EXACT",
+        "first_difference": null,
+        "relocation_count": 14
+      },
+      "negative": {
+        "exact": false,
+        "reason": "FUNC_EXTENT_MISMATCH",
+        "first_difference": 0,
+        "relocation_count": 14
+      }
+    },
+    {
+      "region": "usa",
+      "name": "func_08001398_71CE18",
+      "rom_offset": 7458328,
+      "bytes": 104,
+      "positive": {
+        "exact": true,
+        "reason": "EXACT",
+        "first_difference": null,
+        "relocation_count": 14
+      },
+      "negative": {
+        "exact": false,
+        "reason": "FUNC_EXTENT_MISMATCH",
+        "first_difference": 0,
+        "relocation_count": 14
+      }
+    },
+    {
+      "region": "usa",
+      "name": "func_08001618_71D098",
+      "rom_offset": 7458968,
+      "bytes": 104,
+      "positive": {
+        "exact": true,
+        "reason": "EXACT",
+        "first_difference": null,
+        "relocation_count": 14
+      },
+      "negative": {
+        "exact": false,
+        "reason": "FUNC_EXTENT_MISMATCH",
+        "first_difference": 0,
+        "relocation_count": 14
+      }
+    },
+    {
+      "region": "usa",
+      "name": "func_080016D4_71D154",
+      "rom_offset": 7459156,
+      "bytes": 104,
+      "positive": {
+        "exact": true,
+        "reason": "EXACT",
+        "first_difference": null,
+        "relocation_count": 14
+      },
+      "negative": {
+        "exact": false,
+        "reason": "FUNC_EXTENT_MISMATCH",
+        "first_difference": 0,
+        "relocation_count": 14
+      }
+    },
+    {
+      "region": "usa",
+      "name": "func_08001790_71D210",
+      "rom_offset": 7459344,
+      "bytes": 104,
+      "positive": {
+        "exact": true,
+        "reason": "EXACT",
+        "first_difference": null,
+        "relocation_count": 14
+      },
+      "negative": {
+        "exact": false,
+        "reason": "FUNC_EXTENT_MISMATCH",
+        "first_difference": 0,
+        "relocation_count": 14
+      }
+    },
+    {
+      "region": "usa",
+      "name": "func_08001908_71D388",
+      "rom_offset": 7459720,
+      "bytes": 104,
+      "positive": {
+        "exact": true,
+        "reason": "EXACT",
+        "first_difference": null,
+        "relocation_count": 14
+      },
+      "negative": {
+        "exact": false,
+        "reason": "FUNC_EXTENT_MISMATCH",
+        "first_difference": 0,
+        "relocation_count": 14
+      }
+    },
+    {
+      "region": "usa",
+      "name": "func_08001B7C_71D5FC",
+      "rom_offset": 7460348,
+      "bytes": 104,
+      "positive": {
+        "exact": true,
+        "reason": "EXACT",
+        "first_difference": null,
+        "relocation_count": 14
+      },
+      "negative": {
+        "exact": false,
+        "reason": "FUNC_EXTENT_MISMATCH",
+        "first_difference": 0,
+        "relocation_count": 14
+      }
+    },
+    {
+      "region": "usa",
+      "name": "func_08000A88_721358",
+      "rom_offset": 7476056,
+      "bytes": 56,
+      "positive": {
+        "exact": true,
+        "reason": "EXACT",
+        "first_difference": null,
+        "relocation_count": 2
+      },
+      "negative": {
+        "exact": false,
+        "reason": "FUNC_EXTENT_MISMATCH",
+        "first_difference": 0,
+        "relocation_count": 2
+      }
+    },
+    {
+      "region": "usa",
+      "name": "func_080000D0_726560",
+      "rom_offset": 7497056,
+      "bytes": 60,
+      "positive": {
+        "exact": true,
+        "reason": "EXACT",
+        "first_difference": null,
+        "relocation_count": 5
+      },
+      "negative": {
+        "exact": false,
+        "reason": "FUNC_EXTENT_MISMATCH",
+        "first_difference": 0,
+        "relocation_count": 5
+      }
+    },
+    {
+      "region": "usa",
+      "name": "func_08002BBC_72904C",
+      "rom_offset": 7508044,
+      "bytes": 60,
+      "positive": {
+        "exact": true,
+        "reason": "EXACT",
+        "first_difference": null,
+        "relocation_count": 4
+      },
+      "negative": {
+        "exact": false,
+        "reason": "FUNC_EXTENT_MISMATCH",
+        "first_difference": 0,
+        "relocation_count": 4
+      }
+    },
+    {
+      "region": "usa",
+      "name": "func_08002BF8_729088",
+      "rom_offset": 7508104,
+      "bytes": 40,
+      "positive": {
+        "exact": true,
+        "reason": "EXACT",
+        "first_difference": null,
+        "relocation_count": 2
+      },
+      "negative": {
+        "exact": false,
+        "reason": "FUNC_EXTENT_MISMATCH",
+        "first_difference": 0,
+        "relocation_count": 2
+      }
+    },
+    {
+      "region": "usa",
+      "name": "func_08002C20_7290B0",
+      "rom_offset": 7508144,
+      "bytes": 60,
+      "positive": {
+        "exact": true,
+        "reason": "EXACT",
+        "first_difference": null,
+        "relocation_count": 4
+      },
+      "negative": {
+        "exact": false,
+        "reason": "FUNC_EXTENT_MISMATCH",
+        "first_difference": 0,
+        "relocation_count": 4
+      }
+    },
+    {
+      "region": "usa",
+      "name": "func_08000EF0_72A490",
+      "rom_offset": 7513232,
+      "bytes": 60,
+      "positive": {
+        "exact": true,
+        "reason": "EXACT",
+        "first_difference": null,
+        "relocation_count": 2
+      },
+      "negative": {
+        "exact": false,
+        "reason": "FUNC_EXTENT_MISMATCH",
+        "first_difference": 0,
+        "relocation_count": 2
+      }
+    },
+    {
+      "region": "usa",
+      "name": "func_08000060_72B8B0",
+      "rom_offset": 7518384,
+      "bytes": 44,
+      "positive": {
+        "exact": true,
+        "reason": "EXACT",
+        "first_difference": null,
+        "relocation_count": 4
+      },
+      "negative": {
+        "exact": false,
+        "reason": "FUNC_EXTENT_MISMATCH",
+        "first_difference": 0,
+        "relocation_count": 4
+      }
+    },
+    {
+      "region": "usa",
+      "name": "func_08001704_734634",
+      "rom_offset": 7554612,
+      "bytes": 48,
+      "positive": {
+        "exact": true,
+        "reason": "EXACT",
+        "first_difference": null,
+        "relocation_count": 4
+      },
+      "negative": {
+        "exact": false,
+        "reason": "FUNC_EXTENT_MISMATCH",
+        "first_difference": 0,
+        "relocation_count": 4
+      }
+    },
+    {
+      "region": "usa",
+      "name": "func_08002C98_737428",
+      "rom_offset": 7566376,
+      "bytes": 68,
+      "positive": {
+        "exact": true,
+        "reason": "EXACT",
+        "first_difference": null,
+        "relocation_count": 2
+      },
+      "negative": {
+        "exact": false,
+        "reason": "FUNC_EXTENT_MISMATCH",
+        "first_difference": 0,
+        "relocation_count": 2
+      }
+    },
+    {
+      "region": "usa",
+      "name": "func_0800396C_7380FC",
+      "rom_offset": 7569660,
+      "bytes": 40,
+      "positive": {
+        "exact": true,
+        "reason": "EXACT",
+        "first_difference": null,
+        "relocation_count": 2
+      },
+      "negative": {
+        "exact": false,
+        "reason": "FUNC_EXTENT_MISMATCH",
+        "first_difference": 0,
+        "relocation_count": 2
+      }
+    },
+    {
+      "region": "usa",
+      "name": "func_0800077C_73C37C",
+      "rom_offset": 7586684,
+      "bytes": 44,
+      "positive": {
+        "exact": true,
+        "reason": "EXACT",
+        "first_difference": null,
+        "relocation_count": 2
+      },
+      "negative": {
+        "exact": false,
+        "reason": "FUNC_EXTENT_MISMATCH",
+        "first_difference": 0,
+        "relocation_count": 2
+      }
+    }
+  ]
+}

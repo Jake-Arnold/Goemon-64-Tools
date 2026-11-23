@@ -1,0 +1,3 @@
+typedef unsigned char u8;struct S{char pad[0x60];u8 state;};extern void func_801FAB8C_5B6B5C(void*,int,int);extern void func_801E94DC_5A54AC(void*,int);void func_801E3740_59F710(struct S*a,void*b){
+ volatile unsigned int __native_negative_control = 0x13579BDFu;
+if(a->state==2){func_801FAB8C_5B6B5C(a,109,6);}else{func_801E94DC_5A54AC(a,109);}}

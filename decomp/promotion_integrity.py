@@ -28,6 +28,18 @@ def audit(root:Path=ROOT)->dict:
         claims=claimed_functions(manifest)
     except (ValueError,KeyError,FileNotFoundError) as exc:
         return {'status':'FAIL','errors':['Canonical manifest/source invalid: '+str(exc)]}
+    try:
+        proof=json.loads((root/'results/combined.json').read_text())
+        inv=json.loads((root/'results/inventory.json').read_text())
+    except (FileNotFoundError,ValueError) as exc:
+        return {'status':'FAIL','errors':['Missing/malformed canonical proof/inventory: '+str(exc)]}
+    if manifest.get('usa_native151_promotion'):
+        return _audit_native151(root,manifest,proof,inv)
+    return _audit_historical(root,manifest,proof,inv,claims)
+
+
+def _audit_historical(root,manifest,proof,inv,claims):
+    failures=[]
     count=len(claims)
     code_bytes=sum(f['size'] for f in claims)
     names=[f['name'] for f in claims]
@@ -36,11 +48,6 @@ def audit(root:Path=ROOT)->dict:
         failures.append('Canonical C names repeat')
     if any(a[1]>b[0] for a,b in zip(ranges,ranges[1:])):
         failures.append('Canonical C ROM ranges overlap')
-    try:
-        proof=json.loads((root/'results/combined.json').read_text())
-        inv=json.loads((root/'results/inventory.json').read_text())
-    except (FileNotFoundError,ValueError) as exc:
-        return {'status':'FAIL','errors':['Missing/malformed canonical proof/inventory: '+str(exc)]}
     # The original 2164-C proof and ELF inventory must remain immutable.
     # A VM436 promotion is an additive final stage, not a rewrite of short72.
     vm436_stage = manifest.get('usa_script_vm436_promotion') is not None
@@ -295,6 +302,44 @@ def audit(root:Path=ROOT)->dict:
             'accepted_C':count,'accepted_original_bytes':code_bytes,
             'remaining_assembly':7376-count-13,'errors':failures,
             'notice':'Stored published canonical proof only; original-ROM G2 and ELF audits must be freshly run before promotion.'}
+
+
+def _audit_native151(root,manifest,proof,inv):
+    from .verify import claimed_functions,load_manifest
+    from . import native251_promotion as stage
+    failures=[]
+    frozen={
+        'manifest_2165_before_native151_20261123.json':'b1f5dbf5fd60bf3cd3e44a5a0fa878b63f9ac7b3be8deeee4f92b67a5e837ce3',
+        'combined_2165_before_native151_20261123.json':'3af4fde80100020bc88b8696c6f7cc5b59e5c8e0300383ec02efc6f9ca9eb9dc',
+        'inventory_2165_before_native151_20261123.json':'33dc55248db3654de72639c3e7ceed80b85c9ce142661db75a2ee573d5e9b0e3'}
+    try:
+        for file,expected in frozen.items():
+            if hashlib.sha256((root/'results'/file).read_bytes()).hexdigest()!=expected:raise ValueError('Historical proof changed: '+file)
+        previous=load_manifest(root/'results/manifest_2165_before_native151_20261123.json')
+        prior={k:v for k,v in manifest.items() if k!='usa_native151_promotion'}
+        if previous!=prior:raise ValueError('Native151 changed original accepted predecessor manifest')
+        oldproof=json.loads((root/'results/combined_2165_before_native151_20261123.json').read_text());oldinv=json.loads((root/'results/inventory_2165_before_native151_20261123.json').read_text())
+        a=_audit_historical(root,previous,oldproof,oldinv,claimed_functions(previous));failures.extend(a['errors'])
+        fs=stage.validate_predecessor(manifest)
+    except (ValueError,KeyError,FileNotFoundError) as exc:
+        return {'status':'FAIL','errors':['Native151 predecessor disagree: '+str(exc)]}
+    claims=claimed_functions(manifest);count=len(claims);size=sum(x['size'] for x in claims)
+    c=proof.get('comparison') or {};i=inv.get('summary') or {};p=proof.get('usa_native151_promotion') or {}
+    if proof.get('status')!='matched' or not c.get('full_rom_match') or (c.get('matched_functions'),c.get('claimed_functions'),c.get('matched_function_bytes'))!=(count,count,size):failures.append('Native151 manifest and full ROM G2 disagree')
+    if (c.get('expected_sha1'),c.get('candidate_sha1'),c.get('rom_size'),inv.get('decompressed_sha1'))!=(ORIGINAL_SHA1,ORIGINAL_SHA1,33554432,ORIGINAL_SHA1):failures.append('Native151 original ROM identity mismatch')
+    if (i.get('newly_matching_c'),i.get('current_unmarked_entries'),i.get('remaining_assembly_entries'),i.get('identified_function_entries'),i.get('extra_positive_alias_entries'))!=(count,count+13,7376-count-13,7376,0):failures.append('Native151 inventory C count/ownership mismatch')
+    if inv.get('baseline_elf_sha256')!=oldinv.get('baseline_elf_sha256') or i.get('function_entry_identity_sha256')!=oldinv['summary']['function_entry_identity_sha256'] or i.get('size_annotation_differences')!=oldinv['summary']['size_annotation_differences']:failures.append('Native151 historical ELF identity changed')
+    rows=c.get('functions',[]);expected={(x['name'],x['size'],x['rom_offset']) for x in claims}
+    try:actual={(x['name'],x['size'],int(x['rom_offset'],16)) for x in rows}
+    except (KeyError,ValueError,TypeError):actual=set()
+    if len(rows)!=count or actual!=expected or any(x.get('matched') is not True for x in rows):failures.append('Native151 full original function list mismatch')
+    if (p.get('status'),p.get('base_c'),p.get('accepted_c_after'),p.get('added_c'),p.get('added_original_bytes'),p.get('accepted_original_bytes_after'),p.get('original_32MiB_ROM_bytes_exact'),p.get('positive_elf_function_identities_exact'),p.get('semantic_relocations_exact'),p.get('stable_global_symbols_exact'),p.get('source_manifest_sha256'),p.get('semantic_relocation_sha256'),p.get('candidate_elf_sha256'),p.get('original_elf_sha256'))!=('PASSED_G2_LOCAL',2165,2316,151,9808,109848,33554432,7376,82103,26714,stage.MANIFEST_SHA,stage.RELOCS['usa'][1],inv.get('candidate_elf_sha256'),inv.get('baseline_elf_sha256')) or p.get('full_rom_match') is not True or p.get('ownership_exact') is not True:
+        failures.append('Native151 current canonical ELF/relocation transaction mismatch')
+    fingerprints={x['name']:x for x in rows}
+    for x in fs:
+        row=fingerprints.get(x['name'],{});key='research/promotion251_20261123/'+x['source']
+        if row.get('guest_address')!=f'0x{x["vma"]:08X}' or row.get('expected_sha256')!=x['code_sha256'] or row.get('candidate_sha256')!=x['code_sha256'] or proof.get('sources_sha256_lf',{}).get(key)!=x['source_sha256']:failures.append('Native151 function/source fingerprint mismatch '+x['name'])
+    return {'status':'FAIL' if failures else 'PASS','accepted_C':count,'accepted_original_bytes':size,'remaining_assembly':7376-count-13,'errors':failures,'notice':'Stored proof only; fresh G2 and full CI separately required.'}
 
 
 def main(argv=None):

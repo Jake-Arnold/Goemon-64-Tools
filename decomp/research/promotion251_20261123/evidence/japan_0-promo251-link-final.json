@@ -1,0 +1,23 @@
+{
+  "region": "japan_0",
+  "rom_exact": true,
+  "rom_sha1": "6f8745fecc3a5e7d4918c7a73353eb0726116ded",
+  "first_rom_difference": null,
+  "rom_size": 33554432,
+  "func_exact": true,
+  "func_removed": [],
+  "func_added": [],
+  "relocs_exact": true,
+  "relocs_count": 80745,
+  "relocs_sha256": "43a133b21ac2b18d8e1d00f8c4e5718776b001a1f45c54e807dae12165e797c0",
+  "relocs_removed": [],
+  "relocs_added": [],
+  "globals_exact": true,
+  "globals_removed": [],
+  "globals_added": [],
+  "ownership_exact": true,
+  "new_ownership": 100,
+  "ownership_missing": [],
+  "ownership_unexpected": [],
+  "ownership_regressed": []
+}

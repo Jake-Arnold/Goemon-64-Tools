@@ -14,9 +14,9 @@ class CanonicalPromotionIntegrityTests(unittest.TestCase):
     def test_exact_final_c_claims_and_frozen_original_addresses(self):
         manifest=load_manifest(integrity.ROOT/'manifest.json')
         claims=claimed_functions(manifest)
-        self.assertEqual(len(claims),2165)
-        self.assertEqual(sum(f['size'] for f in claims),100040)
-        self.assertEqual(len({f['name'] for f in claims}),2165)
+        self.assertEqual(len(claims),2316)
+        self.assertEqual(sum(f['size'] for f in claims),109848)
+        self.assertEqual(len({f['name'] for f in claims}),2316)
         self.assertEqual(len(reconcile.fixture()['functions']),108)
         self.assertEqual(reconcile.fixture()['source_ownership_exception'][0]['name'],
                          'func_800108BC_114BC')
@@ -39,7 +39,10 @@ class CanonicalPromotionIntegrityTests(unittest.TestCase):
                               ('results/usa_short72_2164_g2_20261123.json',None),
                               ('results/combined_2164_before_vm436_20261123.json',None),
                               ('results/inventory_2164_before_vm436_20261123.json',None),
-                              ('results/usa_script_vm436_2165_g2_20261123.json',None)]:
+                              ('results/usa_script_vm436_2165_g2_20261123.json',None),
+                              ('results/manifest_2165_before_native151_20261123.json',None),
+                              ('results/combined_2165_before_native151_20261123.json',None),
+                              ('results/inventory_2165_before_native151_20261123.json',None)]:
             dst=root/path
             src=canonical/path
             if not src.is_file():
@@ -51,10 +54,11 @@ class CanonicalPromotionIntegrityTests(unittest.TestCase):
         audit=integrity.audit()
         self.assertEqual(audit['status'],'PASS',audit['errors'])
         self.assertEqual((audit['accepted_C'],audit['accepted_original_bytes']),
-                         (2165,100040))
+                         (2316,109848))
 
     def test_staged_only_manifest_from_previous_commit_fails_closed(self):
         manifest=json.loads((integrity.ROOT/'manifest.json').read_text())
+        manifest.pop('usa_native151_promotion')
         manifest.pop('usa_script_vm436_promotion')  # Project original 2164/earlier historical view.
         manifest.pop('overlay_usa_short72_stage')  # This is a historical post2092 source stage.
         manifest.pop('overlay_usa_opening_new2_stage')  # This is a historical predecessor projection.

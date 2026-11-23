@@ -1618,5 +1618,8 @@
   },
   "usa_script_vm436_promotion": {
     "format": "goemon-usa-script-vm436-post2164-v1"
+  },
+  "usa_native151_promotion": {
+    "format": "goemon-usa-native151-post2165-v1"
   }
 }

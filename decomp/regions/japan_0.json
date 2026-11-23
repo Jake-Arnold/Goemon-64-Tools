@@ -1165,5 +1165,18 @@
     "stable_global_symbol_identities_exact": 26393,
     "status": "PUBLISHED_REMOTE_VERIFIED",
     "published_git_commit": "360a9f6c3e381b0a9f5c7a939f36c16a338516a0"
+  },
+  "native100_promotion": {
+    "status": "PASSED_G2_LOCAL",
+    "base_original_C": 2428,
+    "new_original_C": 100,
+    "accepted_original_C": 2528,
+    "accepted_original_bytes": 137404,
+    "asm_remaining": 4848,
+    "canonical_semantic_relocations": 80745,
+    "full_original_elf_identities": 7376,
+    "source_manifest": "decomp/regions/japan_0_native100_2528.json",
+    "proof": "decomp/results/japan_0_2528_native100_g2_20261123.json",
+    "inventory": "decomp/results/japan_0_2528_native100_inventory_20261123.json"
   }
 }
