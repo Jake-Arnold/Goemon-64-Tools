@@ -1,0 +1,19 @@
+{
+  "status": "RESEARCH_ONLY_ALL_DELTA_RECORDS_EXACT_AGAINST_INDEPENDENT_REFERENCE",
+  "original_named_removed": 45,
+  "native_section_records_added": 44,
+  "verified_jump_table_targets": 40,
+  "verified_pool_pairs": 2,
+  "verified_local_branch": 1,
+  "negative_controls_rejected": [
+    "wrong_removed_symbol",
+    "wrong_added_target",
+    "missing_table_reference",
+    "wrong_count",
+    "wrong_pool_entry",
+    "wrong_branch",
+    "wrong_pool_addend"
+  ],
+  "strict_named_relocation_gate": "FAIL",
+  "canonical_promotion": "NOT_RUN"
+}

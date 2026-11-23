@@ -33,6 +33,10 @@ def audit(root:Path=ROOT)->dict:
         inv=json.loads((root/'results/inventory.json').read_text())
     except (FileNotFoundError,ValueError) as exc:
         return {'status':'FAIL','errors':['Missing/malformed canonical proof/inventory: '+str(exc)]}
+    if manifest.get('usa_script_vm_dual_reference'):
+        return _audit_vmdual(root,manifest,proof,inv)
+    if manifest.get('usa_script_vm440_promotion'):
+        return _audit_vm440(root,manifest,proof,inv)
     if manifest.get('usa_native151_promotion'):
         return _audit_native151(root,manifest,proof,inv)
     return _audit_historical(root,manifest,proof,inv,claims)
@@ -340,6 +344,98 @@ def _audit_native151(root,manifest,proof,inv):
         row=fingerprints.get(x['name'],{});key='research/promotion251_20261123/'+x['source']
         if row.get('guest_address')!=f'0x{x["vma"]:08X}' or row.get('expected_sha256')!=x['code_sha256'] or row.get('candidate_sha256')!=x['code_sha256'] or proof.get('sources_sha256_lf',{}).get(key)!=x['source_sha256']:failures.append('Native151 function/source fingerprint mismatch '+x['name'])
     return {'status':'FAIL' if failures else 'PASS','accepted_C':count,'accepted_original_bytes':size,'remaining_assembly':7376-count-13,'errors':failures,'notice':'Stored proof only; fresh G2 and full CI separately required.'}
+
+
+def _audit_vm440(root,manifest,proof,inv):
+    from .verify import claimed_functions,load_manifest
+    from . import usa_script_vm440_promotion as stage
+    failures=[]
+    frozen={
+        'manifest_2316_before_vm440_20261123.json':'4eaa2acc8468abecb5d2f2c7f89d7892e25e57cd65361be8b6ca00f8dd8d7b31',
+        'combined_2316_before_vm440_20261123.json':'94a445d074af7107515f06e009cce7f9b024abbaf1591e2f3ec8b919fb956ebd',
+        'inventory_2316_before_vm440_20261123.json':'5461ea400968d2e5fab865a6a447a5f7c45bfac91b6ac866260dfc3202d90055'}
+    try:
+        for name,h in frozen.items():
+            if hashlib.sha256((root/'results'/name).read_bytes()).hexdigest()!=h:raise ValueError('Historical proof changed: '+name)
+        before=load_manifest(root/'results/manifest_2316_before_vm440_20261123.json')
+        if before!={k:v for k,v in manifest.items() if k!=stage.KEY}:raise ValueError('VM440 predecessor manifest changed')
+        oldproof=json.loads((root/'results/combined_2316_before_vm440_20261123.json').read_text())
+        oldinv=json.loads((root/'results/inventory_2316_before_vm440_20261123.json').read_text())
+        failures.extend(_audit_native151(root,before,oldproof,oldinv)['errors'])
+        stage.validate_predecessor(manifest)
+    except (ValueError,KeyError,FileNotFoundError) as exc:
+        return {'status':'FAIL','errors':['VM440 predecessor disagree: '+str(exc)]}
+    claims=claimed_functions(manifest);count=len(claims);size=sum(f['size'] for f in claims)
+    c=proof.get('comparison') or {};i=inv.get('summary') or {};p=proof.get(stage.KEY) or {}
+    if proof.get('status')!='matched' or c.get('full_rom_match') is not True or (c.get('matched_functions'),c.get('claimed_functions'),c.get('matched_function_bytes'))!=(count,count,size):failures.append('VM440 manifest and full ROM G2 disagree')
+    if (c.get('expected_sha1'),c.get('candidate_sha1'),c.get('rom_size'),inv.get('decompressed_sha1'))!=(ORIGINAL_SHA1,ORIGINAL_SHA1,33554432,ORIGINAL_SHA1):failures.append('VM440 original ROM identity mismatch')
+    if (count,size)!=(2317,110288) or (i.get('newly_matching_c'),i.get('current_unmarked_entries'),i.get('remaining_assembly_entries'),i.get('identified_function_entries'),i.get('extra_positive_alias_entries'))!=(count,count+13,7376-count-13,7376,0):failures.append('VM440 inventory C count/ownership mismatch')
+    if inv.get('baseline_elf_sha256')!=oldinv.get('baseline_elf_sha256') or i.get('function_entry_identity_sha256')!=oldinv['summary']['function_entry_identity_sha256'] or i.get('size_annotation_differences')!=oldinv['summary']['size_annotation_differences']:failures.append('VM440 historical ELF identity changed')
+    rows=c.get('functions',[]);oldrows=oldproof['comparison']['functions'];oldby={x['name']:x for x in oldrows};newby={x['name']:x for x in rows}
+    expected={(x['name'],x['size'],x['rom_offset'],x.get('vma',x['rom_offset']+0x80000000-0xC00)) for x in claims}
+    try:actual={(x['name'],x['size'],int(x['rom_offset'],16),int(x['guest_address'],16)) for x in rows}
+    except (KeyError,ValueError,TypeError):actual=set()
+    if len(rows)!=count or actual!=expected or any(x.get('matched') is not True or x.get('expected_sha256')!=x.get('candidate_sha256') for x in rows):failures.append('VM440 full original function list mismatch')
+    if set(newby)-set(oldby)!={stage.NAME} or any(newby.get(name)!=row for name,row in oldby.items()):failures.append('VM440 earlier function proof changed')
+    row=newby.get(stage.NAME,{})
+    key=stage.SOURCE.relative_to(ROOT).as_posix()
+    oldsources=oldproof['sources_sha256_lf'];sources=proof.get('sources_sha256_lf',{})
+    if row.get('expected_sha256')!=stage.CODE_SHA or sources.get(key)!=stage.SOURCE_SHA or any(sources.get(k)!=v for k,v in oldsources.items()) or set(sources)-set(oldsources)!={key}:failures.append('VM440 original source or code fingerprint mismatch')
+    checks={'status':'PASSED_G2_LOCAL','base_c':2316,'accepted_c_after':2317,'added_c':1,'added_original_bytes':440,'accepted_original_bytes_after':110288,'remaining_assembly':5046,'full_rom_match':True,'original_rom_sha1':ORIGINAL_SHA1,'original_32MiB_ROM_bytes_exact':33554432,'positive_elf_function_identities_exact':7376,'semantic_relocations_exact':82103,'semantic_relocation_sha256':stage.RELOC_SHA,'stable_global_symbols_exact':26714,'source_sha256':stage.SOURCE_SHA,'mixed_source_sha256':stage.MERGED_SHA,'original_code_sha256':stage.CODE_SHA,'original_elf_sha256':inv.get('baseline_elf_sha256'),'predecessor_elf_sha256':oldinv.get('candidate_elf_sha256'),'candidate_elf_sha256':inv.get('candidate_elf_sha256'),'unit_text_bytes_exact':10112,'unit_text_relocations_exact':740,'unit_rodata_relocations_exact':15,'metadata_only_changed_bytes':2,'ownership_exact':True,'compiler_quirk_outcome':'EXISTING_QUIRK_REPRODUCED'}
+    if any(p.get(k)!=v for k,v in checks.items()):failures.append('VM440 current canonical ELF/relocation transaction mismatch')
+    try:
+        dated=json.loads((root/'results/usa_script_vm440_2317_g2_20261123.json').read_text())
+        if dated!=p:failures.append('VM440 dated G2 proof mismatch')
+    except (FileNotFoundError,ValueError):failures.append('VM440 missing dated G2 proof')
+    if stage.NAME in proof.get('retained_assembly_functions',[]):failures.append('VM440 still retained as ASM')
+    return {'status':'FAIL' if failures else 'PASS','accepted_C':count,'accepted_original_bytes':size,'remaining_assembly':7376-count-13,'errors':failures,'notice':'Stored proof only; fresh G2 and full CI separately required.'}
+
+
+
+def _audit_vmdual(root,manifest,proof,inv):
+    from .verify import claimed_functions,load_manifest
+    from . import usa_script_vm_dual_reference as stage
+    failures=[]
+    frozen={
+        'manifest_2317_before_vmdual_20261123.json':'7b3b2f83da1934b71bba77cc3971e8611ee7349d7fc0af5c122dabbd1377eaee',
+        'combined_2317_before_vmdual_20261123.json':'a951b4a3511a16dffb2c1cfd9d1c709742810684229f3b3db451385ed7b2d18a',
+        'inventory_2317_before_vmdual_20261123.json':'54a7e786fc50acaa670f3199a0c219875db8247ccb670d0b14b2b0f518e8bad2'}
+    try:
+        for name,h in frozen.items():
+            if hashlib.sha256((root/'results'/name).read_bytes()).hexdigest()!=h:raise ValueError('Historical proof changed: '+name)
+        before=load_manifest(root/'results/manifest_2317_before_vmdual_20261123.json')
+        if before!={k:v for k,v in manifest.items() if k!=stage.KEY}:raise ValueError('VM dual predecessor manifest changed')
+        oldproof=json.loads((root/'results/combined_2317_before_vmdual_20261123.json').read_text())
+        oldinv=json.loads((root/'results/inventory_2317_before_vmdual_20261123.json').read_text())
+        failures.extend(_audit_vm440(root,before,oldproof,oldinv)['errors'])
+        prior=stage.validate_predecessor(manifest)
+    except (ValueError,KeyError,FileNotFoundError) as exc:
+        return {'status':'FAIL','errors':['VM dual predecessor disagree: '+str(exc)]}
+    claims=prior+stage.claims();count=len(claims);size=sum(f['size'] for f in claims)
+    c=proof.get('comparison') or {};i=inv.get('summary') or {};p=proof.get(stage.KEY) or {}
+    if proof.get('status')!='matched' or c.get('full_rom_match') is not True or (c.get('matched_functions'),c.get('claimed_functions'),c.get('matched_function_bytes'))!=(count,count,size):failures.append('VM dual manifest and full ROM G2 disagree')
+    if (c.get('expected_sha1'),c.get('candidate_sha1'),c.get('rom_size'),inv.get('decompressed_sha1'))!=(ORIGINAL_SHA1,ORIGINAL_SHA1,33554432,ORIGINAL_SHA1):failures.append('VM dual original ROM identity mismatch')
+    if (count,size)!=(2319,111008) or (i.get('newly_matching_c'),i.get('current_unmarked_entries'),i.get('remaining_assembly_entries'),i.get('identified_function_entries'),i.get('extra_positive_alias_entries'))!=(count,count+13,7376-count-13,7376,0):failures.append('VM dual inventory C count/ownership mismatch')
+    if inv.get('baseline_elf_sha256')!=oldinv.get('baseline_elf_sha256') or inv.get('candidate_elf_sha256')!=stage.NEW_ELF or i.get('function_entry_identity_sha256')!=oldinv['summary']['function_entry_identity_sha256'] or i.get('size_annotation_differences')!=oldinv['summary']['size_annotation_differences']:failures.append('VM dual historical ELF identity changed')
+    rows=c.get('functions',[]);oldby={x['name']:x for x in oldproof['comparison']['functions']};newby={x['name']:x for x in rows}
+    expected={(x['name'],x['size'],x['rom_offset'],x.get('vma',x['rom_offset']+0x80000000-0xC00)) for x in claims}
+    try:actual={(x['name'],x['size'],int(x['rom_offset'],16),int(x['guest_address'],16)) for x in rows}
+    except (KeyError,ValueError,TypeError):actual=set()
+    if len(rows)!=count or actual!=expected or any(x.get('matched') is not True or x.get('expected_sha256')!=x.get('candidate_sha256') for x in rows):failures.append('VM dual full original function list mismatch')
+    if set(newby)-set(oldby)!={f['name'] for f in stage.TARGETS} or any(newby.get(name)!=row for name,row in oldby.items()):failures.append('VM dual earlier function proof changed')
+    oldsources=oldproof['sources_sha256_lf'];sources=proof.get('sources_sha256_lf',{})
+    if any(sources.get(k)!=v for k,v in oldsources.items()) or set(sources)-set(oldsources)!={f['source'] for f in stage.TARGETS}:failures.append('VM dual earlier source proof changed')
+    for f in stage.TARGETS:
+        if newby.get(f['name'],{}).get('expected_sha256')!=f['code_sha256'] or sources.get(f['source'])!=f['source_sha256'] or f['name'] in proof.get('retained_assembly_functions',[]):failures.append('VM dual original source/ownership mismatch '+f['name'])
+    checks={'status':'PASSED_G2_DUAL_REFERENCE_LOCAL','base_c':2317,'accepted_c_after':2319,'added_c':2,'added_original_bytes':720,'accepted_original_bytes_after':111008,'remaining_assembly':5044,'original_rom_sha1':ORIGINAL_SHA1,'full_rom_match':True,'original_32MiB_ROM_bytes_exact':33554432,'retail_rom_sha1':stage.RETAIL_SHA,'retail_rom_exact':True,'original_16MiB_ROM_bytes_exact':16777216,'predecessor_elf_sha256':stage.PRIOR_ELF,'candidate_elf_sha256':stage.NEW_ELF,'original_asm_sha256':stage.ORIG_ASM,'original_data_sha256':stage.ORIG_DATA,'independent_prior_asm_sha256':stage.PRIOR_ASM,'independent_shadow_asm_sha256':stage.SHADOW_ASM,'mixed_source_sha256':stage.MIXED_SHA,'targets':[dict(x) for x in stage.TARGETS],'native_object_relocations_unmodified':True,'original_named_relocations':82103,'independent_prior_relocations':82103,'native_relocations':82102,'independent_shadow_relocations':82102,'native_predecessor_relocation_sha256':stage.vm440.RELOC_SHA,'native_shadow_relocation_sha256':stage.NEW_RELOC,'entire_reference_relocations_equal':True,'removed_named_records':45,'added_section_records':44,'native_function_identities':7376,'native_stable_globals':26714,'independent_function_identities':7376,'independent_stable_globals':26714,'unchanged_cross_reference_metadata_sha256':stage.CROSS_METADATA,'original_named_relocation_gate_exact':False,'ordinary_comparator_unchanged':True,'compiler_quirk_outcome':'EXISTING_QUIRK_REPRODUCED'}
+    if any(p.get(k)!=v for k,v in checks.items()):failures.append('VM dual independent reference/ROM/ELF transaction mismatch')
+    if set(p.get('negative_controls_rejected',[]))!={'wrong_removed_symbol','wrong_added_target','missing_table_reference','wrong_count','wrong_pool_entry','wrong_branch','wrong_pool_addend'}:failures.append('VM dual negative controls incomplete')
+    if p.get('independent_prior_elf_sha256')!='3f3aea199f8cf79d879399199e710a4a0884f4cf72e360e90e71c4aab1d4c666' or p.get('independent_shadow_elf_sha256')!='9462f9ca428f72765323b0dbcdfcb15c92c960114e5a0178cf7a472bf6019bd6':failures.append('VM dual independent reference ELF fingerprint changed')
+    try:
+        dated=json.loads((root/'results/usa_script_vm_dual_2319_g2_20261123.json').read_text())
+        if dated!=p:failures.append('VM dual dated G2 proof mismatch')
+    except (FileNotFoundError,ValueError):failures.append('VM dual missing dated G2 proof')
+    return {'status':'FAIL' if failures else 'PASS','accepted_C':count,'accepted_original_bytes':size,'remaining_assembly':7376-count-13,'errors':failures,'notice':'Stored dual-reference proof only; fresh G2 and full CI separately required.'}
 
 
 def main(argv=None):

@@ -22,6 +22,8 @@ class Crossregion7StageTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.current=load_manifest(ROOT/'manifest.json')
+        cls.current.pop('usa_script_vm_dual_reference',None)  # Preserve USA2079 checkpoint
+        cls.current.pop('usa_script_vm440_promotion',None)  # Preserve USA2079 checkpoint
         cls.current.pop('usa_native151_promotion',None)  # Preserve USA2079 checkpoint
         cls.current.pop('usa_script_vm436_promotion',None)  # prior 2079 stage is immutable
         # Historical checkpoint projection: post2090 functions were not yet accepted.

@@ -1,0 +1,24 @@
+{
+  "base": "1ddb1b0941b0f39d4db6b0a3534fc1f230b51e0e",
+  "fresh_verify_exit": 0,
+  "strict_inventory_exit": 0,
+  "promotion_integrity_exit": 0,
+  "stored_proof_consistency_exit": 0,
+  "focused_dual_reference_tests": {
+    "passed": 5
+  },
+  "focused_ci_orchestration_tests": {
+    "passed": 5
+  },
+  "initial_e234_ci": {
+    "exit": 1,
+    "tests": 480,
+    "failures": 1,
+    "skips": 3,
+    "failure": "stale CI step count assertion",
+    "focused_fix": "PASS"
+  },
+  "full_corrected_ci": "INTERRUPTED_NOT_PASS",
+  "publication": "NOT_PUBLISHED",
+  "gameplay": "NOT_RUN"
+}

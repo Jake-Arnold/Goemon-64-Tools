@@ -375,6 +375,32 @@ def build_steps(host_binary: Path, *, quick: bool = False):
                 '-o',str(binary)]),
             ('VM436 actual-source 4096-case ASan/UBSan regression',[str(binary)]),
         ])
+    if not quick:
+        fixture=ROOT/'decomp/research/usa_script_vm440_20261123/host_emitter_test.c'
+        compiler=shlex.split(os.environ.get('CC','cc'))
+        binary=host_binary.with_name('vm440-actual-source-host')
+        steps.extend([
+            ('VM440 actual-source ASan/UBSan build',compiler+[
+                '-std=gnu99','-O1','-g','-Wno-error=int-conversion',
+                '-fsanitize=address,undefined','-fno-sanitize-recover=all',
+                '-fno-omit-frame-pointer',str(fixture.relative_to(ROOT)),
+                '-o',str(binary)]),
+            ('VM440 actual-source 4096-case ASan/UBSan regression',[str(binary)]),
+        ])
+    if not quick:
+        fixture=ROOT/'decomp/research/usa_script_vm_combined2319_20261123/host_candidates.c'
+        compiler=shlex.split(os.environ.get('CC','cc'))
+        binary=host_binary.with_name('vmdual-actual-source-host')
+        steps.extend([
+            ('VM dual native-source ASan/UBSan build',compiler+[
+                '-std=c11','-O1','-g','-fsanitize=address,undefined',
+                '-fno-sanitize-recover=all','-fno-omit-frame-pointer',
+                str(fixture.relative_to(ROOT)),
+                'decomp/research/usa_script_vm_f37c_reference_20261123/f37c.c',
+                'decomp/research/usa_script_vm_df98_reference_20261123/df98.c',
+                '-o',str(binary)]),
+            ('VM dual 135168 actual-source ASan/UBSan cases',[str(binary)]),
+        ])
     # The resumable queue and read-only C-Right comparator belong to the
     # same ROM-free acceptance gate as the existing Python/ledger checks.
     # Append them, preserving existing native-host fixture ordering.
