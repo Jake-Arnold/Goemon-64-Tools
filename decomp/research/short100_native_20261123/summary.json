@@ -1,0 +1,15 @@
+{
+  "status": "RESEARCH_ONLY",
+  "base": "4b289a015a2ffd9f47ca3356d09a248836e8dee8",
+  "archive_sha256": "b8733ae1670e0a7345f26744b41c33c25c44f1088247000610dc32cfa9b39226",
+  "native_isolated": 100,
+  "usa": 72,
+  "japan_0": 28,
+  "original_bytes": 6824,
+  "relocations": 478,
+  "negative_controls": 100,
+  "full_local_ci": "PASS_CLEAN_BASE_ROM_FREE",
+  "native_units": "NOT_RUN",
+  "complete_original_rom": "NOT_RUN",
+  "canonically_promoted": 0
+}
