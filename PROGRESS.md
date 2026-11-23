@@ -1,3 +1,23 @@
+## 23 November 2026 — C-Right final-loop source-shape retry and structural audit (FAILED_NATIVE / RESEARCH_ONLY)
+
+- Ten new IDO5.3 variants and two prior combined-depth baselines independently replayed identically. All 256B/6 exact relocation tuples; best remains 21/64 aligned words, prefix 12 bytes. Register-number and verified symbolic operand normalized diagnostic independently reproduces 62/64 aligned shapes in USA and JP, with only +0xEC/+0xF0 structural differences; register dataflow/semantic equivalence not verified. First exact mismatch +0xC. Explicit tail break, next-value assignments and narrow return did not improve; integer marker snapshot regressed. Retain ASM, no G2/CI/gameplay or accepted-count change. Source-only full replay kit delivered; representative sources and limitations in decomp/research/cright_stage_helper_retry_20261123/.
+
+## 23 November 2026 — combined C-Right helper hypothesis (FAILED_NATIVE / RESEARCH_ONLY)
+
+- Combining direct volatile global with separate traversal pointers/depth locals reaches original 256B, 21/64 aligned words and all six original named relocation tuples exact in both regions. Prior 260B variants reproduced; shared-pointer negative 260B, zero aligned words, nonexact relocations. 14 compiled variants independently replayed, four prior controls replayed. First mismatch remains +0xC register allocation, final branch/delay slot also differs. No exact native match, preserve ASM. No full ROM/G2/CI/gameplay. Research ZIP and verified sources retained in decomp/research/cright_stage_helper_retry_20261123/; canonical counts unchanged.
+
+## 23 November 2026 — third C-Right stage helper bounded retry (FAILED_NATIVE / RESEARCH_ONLY)
+
+- 16 new native IDO5.3 variants independently replayed identically. Both 256B helpers: direct global 260B and six relocations (callback positions shifted +4), separate traversal scopes 260B and 4/64 aligned words, 12-byte exact prefix unchanged. Both comparators still 9/19. No exact matches, ASM retained; no G2, inventory, full CI or gameplay. Source-only kit and representative verified controls in decomp/research/cright_stage_helper_retry_20261123/.
+
+## 23 November 2026 — further C-Right native retry (FAILED_NATIVE / RESEARCH_ONLY)
+
+- 20 new original IDO5.3 variants independently replayed, zero exact. Stage helpers remain 264B vs 256B, best 12-byte prefix; comparators unchanged 9/19. USA grid cached scale 764B vs 772B, 4/193 aligned words, stack frame 168 vs 176; main loader fixed base 1188B vs 1072B, 21/268, 80-byte prefix. All original ASM retained; no canonical G2, inventory, full CI or gameplay run. Full source-only replay ZIP and source hashes delivered in chat; follow-up evidence in decomp/research/cright_stage_helper_retry_20261123/README.md.
+
+## 23 November 2026 — C-Right stage helper and large-loader native retry (FAILED_NATIVE / RESEARCH_ONLY)
+
+- Pinned live stable/decomp 1ddb1b0941b0f39d4db6b0a3534fc1f230b51e0e, authenticated source archive, original regional ROMs, clean pinned upstream and original SGI IDO5.3; 26 new compiled variants independently replayed identically, no exact matches. USA/JP 256B marker helpers each 264B, best exact prefix improved 8 to 12 bytes by reversing marker local initializations; 3/64 aligned words, extra global HI16/LO16 and wrong traversal registers. Both 76B comparators still 9/19 exact, correct original extent and relocations. USA grid radius-local variant 756B vs original 772B (prior 848B) but only 2/193 exact aligned words, original frame -176 vs generated -152; not evidence of semantic equality. Main loader remains 1200B vs 1072B, first 80 bytes exact. Larger JP counterparts not attempted. Negative findings retained in COMPILER_QUIRKS.md; no new exact native matches, original ASM remains, no canonical G2/strict inventory/full local CI or runtime run. Source-only ZIP delivered with all 26 new sources, six prior controls, replay and exact evidence; key source-control pairs under decomp/research/cright_stage_helper_retry_20261123/.
+
 ## 23 November 2026 — 251 native original C functions: full regional G2 PASS, publication pending
 
 - Authenticated live `stable/decomp@78e6303e2fe5f4e5f5a17bab50cb62fc792d241b`, exact source archive, original retail ROMs and pinned upstream `7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee` with original SGI IDO 5.3. Deduplicated PR #194, #200 and #202 against canonical ownership; **251/251 isolated native positive matches and 251/251 compiled negative controls rejected** in fresh independent replays. Batch manifest SHA-256 `09c4568258a6a0d31efdef7ff1e43083ba434371c998da4a7f5d7f10a94c84ee`.
