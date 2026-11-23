@@ -1,0 +1,2169 @@
+{
+  "format": "goemon-region-function-source-donor-links-v1",
+  "generated_from_stable_decomp_sha": "56e4754255403f012cc9bc88ba39ec1f4fadfb6c",
+  "upstream_original_source_commit": "7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee",
+  "regions": {
+    "usa_original_decompressed_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+    "japan_0_original_decompressed_sha1": "6f8745fecc3a5e7d4918c7a73353eb0726116ded"
+  },
+  "scope": "Explicit, previously native-G2-ported cross-region C source donor links; non-exhaustive; NOT a one-to-one semantic correspondence table or a new matching-C promotion.",
+  "accepted_C_snapshot": {
+    "usa": 2164,
+    "japan_0": 2370
+  },
+  "stats": {
+    "links": 118,
+    "distinct_usa_originals": 92,
+    "distinct_japan_0_originals": 109,
+    "USA_to_Japan_links": 99,
+    "Japan_to_USA_links": 19
+  },
+  "expected_original_ELF_function_identifications_per_region": 7376,
+  "relationship_rules": [
+    "Links are directional source donor evidence; read either endpoint to locate the other region's corresponding donor.",
+    "Multiple USA or Japan code locations may share one donor. Do not impose a one-to-one function identity.",
+    "Identical original instruction bytes and prior matching-C ports do not establish functional semantic equivalence or exact matching in a different new translation unit.",
+    "Unlisted pairs have unknown relationship; no fixed arithmetic translation of ROM offsets, VMA or overlay code addresses.",
+    "Canonical accepted C and full original-ROM proof remain governed by the region manifests and inventories."
+  ],
+  "known_same_label_non_equivalence": [
+    {
+      "usa": {
+        "name": "func_80004170_4D70",
+        "original_rom_offset": "0x4D70"
+      },
+      "japan_0": {
+        "name": "func_80004170_4D70",
+        "original_rom_offset": "0x4D70"
+      },
+      "reason": "Original ROM bodies differ across regions; USA initialises a fixed global pointer and Japan reads/reset-clears a system table. Do not reuse based on name alone.",
+      "evidence": "decomp/CONTINUE.md"
+    }
+  ],
+  "links": [
+    {
+      "usa": {
+        "name": "func_800041E0_4DE0",
+        "original_rom_offset": "0x4DE0"
+      },
+      "japan_0": {
+        "name": "func_80004110_4D10",
+        "original_rom_offset": "0x4D10"
+      },
+      "original_code_bytes": 40,
+      "original_code_sha256": "b8668f9c588a0b46a8502493019814be377ceb43a3e67c6f17302942235f21a4",
+      "relation": "byte_identical_C_source_donor",
+      "provenance": {
+        "manifest": "decomp/regions/japan_0_main2.json",
+        "original_native_result": "historical_full_rom_G2_port",
+        "direction": "USA_to_Japan"
+      }
+    },
+    {
+      "usa": {
+        "name": "func_80004208_4E08",
+        "original_rom_offset": "0x4E08"
+      },
+      "japan_0": {
+        "name": "func_80004138_4D38",
+        "original_rom_offset": "0x4D38"
+      },
+      "original_code_bytes": 48,
+      "original_code_sha256": "df747ebdd00d4d4d398d7222fee964e20be88af1bf38029e77ab91718527a949",
+      "relation": "byte_identical_C_source_donor",
+      "provenance": {
+        "manifest": "decomp/regions/japan_0_main2.json",
+        "original_native_result": "historical_full_rom_G2_port",
+        "direction": "USA_to_Japan"
+      }
+    },
+    {
+      "usa": {
+        "name": "func_8001018C_10D8C",
+        "original_rom_offset": "0x10D8C"
+      },
+      "japan_0": {
+        "name": "func_8000FF4C_10B4C",
+        "original_rom_offset": "0x10B4C"
+      },
+      "original_code_bytes": 32,
+      "original_code_sha256": "ab5308302557648ef39f94f7e32d8743087658e0b435912bcfadcc6548ede7fd",
+      "relation": "byte_identical_C_source_donor",
+      "provenance": {
+        "manifest": "decomp/regions/japan_0_main3.json",
+        "original_native_result": "historical_full_rom_G2_port",
+        "direction": "USA_to_Japan"
+      }
+    },
+    {
+      "usa": {
+        "name": "func_800124AC_130AC",
+        "original_rom_offset": "0x130AC"
+      },
+      "japan_0": {
+        "name": "func_8001203C_12C3C",
+        "original_rom_offset": "0x12C3C"
+      },
+      "original_code_bytes": 84,
+      "original_code_sha256": "394436616aaea7e291a5be9c7ff86ce83e970e002c648cb82a6339fa63cc8b25",
+      "relation": "byte_identical_C_source_donor",
+      "provenance": {
+        "manifest": "decomp/research/usa_crossregion51_recovered19_20261122/manifest.json",
+        "original_native_result": "historical_full_rom_G2_port",
+        "direction": "Japan_to_USA"
+      }
+    },
+    {
+      "usa": {
+        "name": "func_80012764_13364",
+        "original_rom_offset": "0x13364"
+      },
+      "japan_0": {
+        "name": "func_800122F4_12EF4",
+        "original_rom_offset": "0x12EF4"
+      },
+      "original_code_bytes": 84,
+      "original_code_sha256": "ffb3948385193d837d9c22321baedae0dbba3deb669cde490deeb4207b9f0f66",
+      "relation": "byte_identical_C_source_donor",
+      "provenance": {
+        "manifest": "decomp/research/usa_crossregion51_recovered19_20261122/manifest.json",
+        "original_native_result": "historical_full_rom_G2_port",
+        "direction": "Japan_to_USA"
+      }
+    },
+    {
+      "usa": {
+        "name": "func_8001F878_20478",
+        "original_rom_offset": "0x20478"
+      },
+      "japan_0": {
+        "name": "func_8001F53C_2013C",
+        "original_rom_offset": "0x2013C"
+      },
+      "original_code_bytes": 56,
+      "original_code_sha256": "0340c73abc01e154f93a5dd550b73594a000c588f361751713376b59714b2ca6",
+      "relation": "byte_identical_C_source_donor",
+      "provenance": {
+        "manifest": "decomp/regions/japan_0_main3.json",
+        "original_native_result": "historical_full_rom_G2_port",
+        "direction": "USA_to_Japan"
+      }
+    },
+    {
+      "usa": {
+        "name": "func_8003D9B8_3E5B8",
+        "original_rom_offset": "0x3E5B8"
+      },
+      "japan_0": {
+        "name": "func_8003D628_3E228",
+        "original_rom_offset": "0x3E228"
+      },
+      "original_code_bytes": 340,
+      "original_code_sha256": "bfa8ec5494880607e6b7d822dc952b22da49d7617ab50d59c6e920cbc45983a0",
+      "relation": "byte_identical_C_source_donor",
+      "provenance": {
+        "manifest": "decomp/regions/japan_0_main3.json",
+        "original_native_result": "historical_full_rom_G2_port",
+        "direction": "USA_to_Japan"
+      }
+    },
+    {
+      "usa": {
+        "name": "func_801E7D78_5A3C88",
+        "original_rom_offset": "0x5A3C88"
+      },
+      "japan_0": {
+        "name": "func_801ECEA0_5A8E70",
+        "original_rom_offset": "0x5A8E70"
+      },
+      "original_code_bytes": 40,
+      "original_code_sha256": "47d34fd849e6abe20f35d49739d2ec505bfe5feee3955520afe5c470ff0f6405",
+      "relation": "byte_identical_C_source_donor",
+      "provenance": {
+        "manifest": "decomp/regions/japan_0_grouped4.json",
+        "original_native_result": "historical_full_rom_G2_port",
+        "direction": "USA_to_Japan"
+      }
+    },
+    {
+      "usa": {
+        "name": "func_801F23C8_5AE2D8",
+        "original_rom_offset": "0x5AE2D8"
+      },
+      "japan_0": {
+        "name": "func_801F73D4_5B33A4",
+        "original_rom_offset": "0x5B33A4"
+      },
+      "original_code_bytes": 32,
+      "original_code_sha256": "7b68d8cd198ca2ead83e644d7b037bcf4d80ae32a693429d334481d52df2b06e",
+      "relation": "byte_identical_C_source_donor",
+      "provenance": {
+        "manifest": "decomp/regions/japan_0_grouped4.json",
+        "original_native_result": "historical_full_rom_G2_port",
+        "direction": "USA_to_Japan"
+      }
+    },
+    {
+      "usa": {
+        "name": "func_801F3AD0_5AF9E0",
+        "original_rom_offset": "0x5AF9E0"
+      },
+      "japan_0": {
+        "name": "func_801F8AE0_5B4AB0",
+        "original_rom_offset": "0x5B4AB0"
+      },
+      "original_code_bytes": 32,
+      "original_code_sha256": "b0b50f6e45d2a53ac3ccd0ca619f8e8a83a22863ec4bf458426d1620c64661c4",
+      "relation": "byte_identical_C_source_donor",
+      "provenance": {
+        "manifest": "decomp/regions/japan_0_grouped4.json",
+        "original_native_result": "historical_full_rom_G2_port",
+        "direction": "USA_to_Japan"
+      }
+    },
+    {
+      "usa": {
+        "name": "func_80217114_5D25E4",
+        "original_rom_offset": "0x5D25E4"
+      },
+      "japan_0": {
+        "name": "func_8021BE84_5D7414",
+        "original_rom_offset": "0x5D7414"
+      },
+      "original_code_bytes": 48,
+      "original_code_sha256": "91a32e49a41b20fdc54bd78e0c4c2e8eea19fe5f188f7eda168d1dc2417f8736",
+      "relation": "byte_identical_C_source_donor",
+      "provenance": {
+        "manifest": "decomp/regions/japan_0_equiv36.json",
+        "original_native_result": "historical_full_rom_G2_port",
+        "direction": "USA_to_Japan"
+      }
+    },
+    {
+      "usa": {
+        "name": "func_80219E08_5D52D8",
+        "original_rom_offset": "0x5D52D8"
+      },
+      "japan_0": {
+        "name": "func_8021EB78_5DA108",
+        "original_rom_offset": "0x5DA108"
+      },
+      "original_code_bytes": 56,
+      "original_code_sha256": "0ddd322f03eea6e5f7e7e50a0932d6cc9fabc005e3f215ffa1e346be26f0fb66",
+      "relation": "byte_identical_C_source_donor",
+      "provenance": {
+        "manifest": "decomp/regions/japan_0_equiv36.json",
+        "original_native_result": "historical_full_rom_G2_port",
+        "direction": "USA_to_Japan"
+      }
+    },
+    {
+      "usa": {
+        "name": "func_80219E08_5D52D8",
+        "original_rom_offset": "0x5D52D8"
+      },
+      "japan_0": {
+        "name": "func_80215440_69CB40",
+        "original_rom_offset": "0x69CB40"
+      },
+      "original_code_bytes": 56,
+      "original_code_sha256": "0ddd322f03eea6e5f7e7e50a0932d6cc9fabc005e3f215ffa1e346be26f0fb66",
+      "relation": "byte_identical_C_source_donor",
+      "provenance": {
+        "manifest": "decomp/regions/japan_0_equiv37_more.json",
+        "original_native_result": "historical_full_rom_G2_port",
+        "direction": "USA_to_Japan"
+      }
+    },
+    {
+      "usa": {
+        "name": "func_80219E08_5D52D8",
+        "original_rom_offset": "0x5D52D8"
+      },
+      "japan_0": {
+        "name": "func_802156F4_69CDF4",
+        "original_rom_offset": "0x69CDF4"
+      },
+      "original_code_bytes": 56,
+      "original_code_sha256": "0ddd322f03eea6e5f7e7e50a0932d6cc9fabc005e3f215ffa1e346be26f0fb66",
+      "relation": "byte_identical_C_source_donor",
+      "provenance": {
+        "manifest": "decomp/regions/japan_0_equiv37_more.json",
+        "original_native_result": "historical_full_rom_G2_port",
+        "direction": "USA_to_Japan"
+      }
+    },
+    {
+      "usa": {
+        "name": "func_80219E08_5D52D8",
+        "original_rom_offset": "0x5D52D8"
+      },
+      "japan_0": {
+        "name": "func_802158AC_69CFAC",
+        "original_rom_offset": "0x69CFAC"
+      },
+      "original_code_bytes": 56,
+      "original_code_sha256": "0ddd322f03eea6e5f7e7e50a0932d6cc9fabc005e3f215ffa1e346be26f0fb66",
+      "relation": "byte_identical_C_source_donor",
+      "provenance": {
+        "manifest": "decomp/regions/japan_0_equiv37_more.json",
+        "original_native_result": "historical_full_rom_G2_port",
+        "direction": "USA_to_Japan"
+      }
+    },
+    {
+      "usa": {
+        "name": "func_80219E08_5D52D8",
+        "original_rom_offset": "0x5D52D8"
+      },
+      "japan_0": {
+        "name": "func_80215DD8_69D4D8",
+        "original_rom_offset": "0x69D4D8"
+      },
+      "original_code_bytes": 56,
+      "original_code_sha256": "0ddd322f03eea6e5f7e7e50a0932d6cc9fabc005e3f215ffa1e346be26f0fb66",
+      "relation": "byte_identical_C_source_donor",
+      "provenance": {
+        "manifest": "decomp/regions/japan_0_equiv37_more.json",
+        "original_native_result": "historical_full_rom_G2_port",
+        "direction": "USA_to_Japan"
+      }
+    },
+    {
+      "usa": {
+        "name": "func_80219E40_5D5310",
+        "original_rom_offset": "0x5D5310"
+      },
+      "japan_0": {
+        "name": "func_8021EBB0_5DA140",
+        "original_rom_offset": "0x5DA140"
+      },
+      "original_code_bytes": 48,
+      "original_code_sha256": "7a72f91209f176571c4f7447b680a5e19fd6075c003f405efb64763968032635",
+      "relation": "byte_identical_C_source_donor",
+      "provenance": {
+        "manifest": "decomp/regions/japan_0_equiv36.json",
+        "original_native_result": "historical_full_rom_G2_port",
+        "direction": "USA_to_Japan"
+      }
+    },
+    {
+      "usa": {
+        "name": "func_8021A7E8_5D5CB8",
+        "original_rom_offset": "0x5D5CB8"
+      },
+      "japan_0": {
+        "name": "func_8021F558_5DAAE8",
+        "original_rom_offset": "0x5DAAE8"
+      },
+      "original_code_bytes": 112,
+      "original_code_sha256": "7aeac228688e091b10fdff57b220846880cc8ab5b7744dbcadbd10da147e03a7",
+      "relation": "byte_identical_C_source_donor",
+      "provenance": {
+        "manifest": "decomp/regions/japan_0_grouped4.json",
+        "original_native_result": "historical_full_rom_G2_port",
+        "direction": "USA_to_Japan"
+      }
+    },
+    {
+      "usa": {
+        "name": "func_8021C628_5D7AF8",
+        "original_rom_offset": "0x5D7AF8"
+      },
+      "japan_0": {
+        "name": "func_80221398_5DC928",
+        "original_rom_offset": "0x5DC928"
+      },
+      "original_code_bytes": 44,
+      "original_code_sha256": "2558a8998c5204b2b20cccda95e975c066338fc7b07f7dcb9b7cc39eae714fdc",
+      "relation": "byte_identical_C_source_donor",
+      "provenance": {
+        "manifest": "decomp/regions/japan_0_equiv36.json",
+        "original_native_result": "historical_full_rom_G2_port",
+        "direction": "USA_to_Japan"
+      }
+    },
+    {
+      "usa": {
+        "name": "func_80222C10_5DE0E0",
+        "original_rom_offset": "0x5DE0E0"
+      },
+      "japan_0": {
+        "name": "func_80227980_5E2F10",
+        "original_rom_offset": "0x5E2F10"
+      },
+      "original_code_bytes": 36,
+      "original_code_sha256": "df30eb1b1957d2ebfc9da1ecd24f6222ddf45ce7f6aecf6e3199272de50e4477",
+      "relation": "byte_identical_C_source_donor",
+      "provenance": {
+        "manifest": "decomp/regions/japan_0_equiv36.json",
+        "original_native_result": "historical_full_rom_G2_port",
+        "direction": "USA_to_Japan"
+      }
+    },
+    {
+      "usa": {
+        "name": "func_801D600C_6013EC",
+        "original_rom_offset": "0x6013EC"
+      },
+      "japan_0": {
+        "name": "func_801DB72C_6061AC",
+        "original_rom_offset": "0x6061AC"
+      },
+      "original_code_bytes": 48,
+      "original_code_sha256": "993e3d9a3d9bd13ca9267d28cbce470d49b9337af75400784f83887f9bc942fb",
+      "relation": "byte_identical_C_source_donor",
+      "provenance": {
+        "manifest": "decomp/regions/japan_0_equiv11.json",
+        "original_native_result": "historical_full_rom_G2_port",
+        "direction": "USA_to_Japan"
+      }
+    },
+    {
+      "usa": {
+        "name": "func_801D603C_60141C",
+        "original_rom_offset": "0x60141C"
+      },
+      "japan_0": {
+        "name": "func_801DB75C_6061DC",
+        "original_rom_offset": "0x6061DC"
+      },
+      "original_code_bytes": 48,
+      "original_code_sha256": "b1223dc38a334b1b5dba0d478d614d46e69b12f6b84dd73ccd301347a145d3ae",
+      "relation": "byte_identical_C_source_donor",
+      "provenance": {
+        "manifest": "decomp/regions/japan_0_equiv11.json",
+        "original_native_result": "historical_full_rom_G2_port",
+        "direction": "USA_to_Japan"
+      }
+    },
+    {
+      "usa": {
+        "name": "func_801D606C_60144C",
+        "original_rom_offset": "0x60144C"
+      },
+      "japan_0": {
+        "name": "func_801DB78C_60620C",
+        "original_rom_offset": "0x60620C"
+      },
+      "original_code_bytes": 48,
+      "original_code_sha256": "b2e8bafbe4902465d65bbe52caec9bb45779413233db6d2eccd5c715d542957a",
+      "relation": "byte_identical_C_source_donor",
+      "provenance": {
+        "manifest": "decomp/regions/japan_0_equiv11.json",
+        "original_native_result": "historical_full_rom_G2_port",
+        "direction": "USA_to_Japan"
+      }
+    },
+    {
+      "usa": {
+        "name": "func_801D60E4_6014C4",
+        "original_rom_offset": "0x6014C4"
+      },
+      "japan_0": {
+        "name": "func_801DB804_606284",
+        "original_rom_offset": "0x606284"
+      },
+      "original_code_bytes": 64,
+      "original_code_sha256": "dd3583f9576ea3928b1411a21997e50ca44e46def3b28120594142a447d5dc78",
+      "relation": "byte_identical_C_source_donor",
+      "provenance": {
+        "manifest": "decomp/regions/japan_0_equiv11.json",
+        "original_native_result": "historical_full_rom_G2_port",
+        "direction": "USA_to_Japan"
+      }
+    },
+    {
+      "usa": {
+        "name": "func_801D6124_601504",
+        "original_rom_offset": "0x601504"
+      },
+      "japan_0": {
+        "name": "func_801DB844_6062C4",
+        "original_rom_offset": "0x6062C4"
+      },
+      "original_code_bytes": 40,
+      "original_code_sha256": "712baa58bdf7c5afc19aa138daa12ffb2c57d64382d3f443f3e028ebe79bb82e",
+      "relation": "byte_identical_C_source_donor",
+      "provenance": {
+        "manifest": "decomp/regions/japan_0_equiv11.json",
+        "original_native_result": "historical_full_rom_G2_port",
+        "direction": "USA_to_Japan"
+      }
+    },
+    {
+      "usa": {
+        "name": "func_801D614C_60152C",
+        "original_rom_offset": "0x60152C"
+      },
+      "japan_0": {
+        "name": "func_801DB86C_6062EC",
+        "original_rom_offset": "0x6062EC"
+      },
+      "original_code_bytes": 80,
+      "original_code_sha256": "ed672a2338e0100d28b4aec1d12ef14c37dcb5528f46756a001e00154fba17dd",
+      "relation": "byte_identical_C_source_donor",
+      "provenance": {
+        "manifest": "decomp/regions/japan_0_equiv11.json",
+        "original_native_result": "historical_full_rom_G2_port",
+        "direction": "USA_to_Japan"
+      }
+    },
+    {
+      "usa": {
+        "name": "func_801D619C_60157C",
+        "original_rom_offset": "0x60157C"
+      },
+      "japan_0": {
+        "name": "func_801DB8BC_60633C",
+        "original_rom_offset": "0x60633C"
+      },
+      "original_code_bytes": 56,
+      "original_code_sha256": "a057b4e228e4e07afdf82baee5dbd53ecfdb8843192279d3e1d6d3267a5f2b16",
+      "relation": "byte_identical_C_source_donor",
+      "provenance": {
+        "manifest": "decomp/regions/japan_0_equiv11.json",
+        "original_native_result": "historical_full_rom_G2_port",
+        "direction": "USA_to_Japan"
+      }
+    },
+    {
+      "usa": {
+        "name": "func_801D61E8_6015C8",
+        "original_rom_offset": "0x6015C8"
+      },
+      "japan_0": {
+        "name": "func_801DB908_606388",
+        "original_rom_offset": "0x606388"
+      },
+      "original_code_bytes": 36,
+      "original_code_sha256": "6dc466a4616bff10cc1b45ec815c59d1b26d7cce0bd72b4f466df2606830dde8",
+      "relation": "byte_identical_C_source_donor",
+      "provenance": {
+        "manifest": "decomp/regions/japan_0_equiv11.json",
+        "original_native_result": "historical_full_rom_G2_port",
+        "direction": "USA_to_Japan"
+      }
+    },
+    {
+      "usa": {
+        "name": "func_801D6CB0_602090",
+        "original_rom_offset": "0x602090"
+      },
+      "japan_0": {
+        "name": "func_801DC3D0_606E50",
+        "original_rom_offset": "0x606E50"
+      },
+      "original_code_bytes": 144,
+      "original_code_sha256": "fd65ca17a36906e7bf3b9d43a37187f2220bac999e4700fbfa6e26a3fa03f069",
+      "relation": "byte_identical_C_source_donor",
+      "provenance": {
+        "manifest": "decomp/regions/japan_0_equiv11.json",
+        "original_native_result": "historical_full_rom_G2_port",
+        "direction": "USA_to_Japan"
+      }
+    },
+    {
+      "usa": {
+        "name": "func_801D721C_6025FC",
+        "original_rom_offset": "0x6025FC"
+      },
+      "japan_0": {
+        "name": "func_801DC93C_6073BC",
+        "original_rom_offset": "0x6073BC"
+      },
+      "original_code_bytes": 64,
+      "original_code_sha256": "22ca2e277b2292837e77c1b7c5617c43637aa91182a0b47f8d33bab3bb112bca",
+      "relation": "byte_identical_C_source_donor",
+      "provenance": {
+        "manifest": "decomp/regions/japan_0_equiv11.json",
+        "original_native_result": "historical_full_rom_G2_port",
+        "direction": "USA_to_Japan"
+      }
+    },
+    {
+      "usa": {
+        "name": "func_801D725C_60263C",
+        "original_rom_offset": "0x60263C"
+      },
+      "japan_0": {
+        "name": "func_801DC97C_6073FC",
+        "original_rom_offset": "0x6073FC"
+      },
+      "original_code_bytes": 100,
+      "original_code_sha256": "8c7fac8fc6520155e9dd8bf1e1d7f3a6221848dfbba238cd927604cac51ea86e",
+      "relation": "byte_identical_C_source_donor",
+      "provenance": {
+        "manifest": "decomp/regions/japan_0_equiv11.json",
+        "original_native_result": "historical_full_rom_G2_port",
+        "direction": "USA_to_Japan"
+      }
+    },
+    {
+      "usa": {
+        "name": "func_801D825C_60363C",
+        "original_rom_offset": "0x60363C"
+      },
+      "japan_0": {
+        "name": "func_801DD97C_6083FC",
+        "original_rom_offset": "0x6083FC"
+      },
+      "original_code_bytes": 52,
+      "original_code_sha256": "073511b229d2c7bd1db426f62d0d831999c9e3d86bb93d1f1bb892b6d286e6f8",
+      "relation": "byte_identical_C_source_donor",
+      "provenance": {
+        "manifest": "decomp/regions/japan_0_equiv36.json",
+        "original_native_result": "historical_full_rom_G2_port",
+        "direction": "USA_to_Japan"
+      }
+    },
+    {
+      "usa": {
+        "name": "func_80202A54_62DE34",
+        "original_rom_offset": "0x62DE34"
+      },
+      "japan_0": {
+        "name": "func_80208184_632C04",
+        "original_rom_offset": "0x632C04"
+      },
+      "original_code_bytes": 72,
+      "original_code_sha256": "8b14ddc2be5ce9bf966c078bcf9a1247e927d439ea33fec776c4b957b15629ef",
+      "relation": "byte_identical_C_source_donor",
+      "provenance": {
+        "manifest": "decomp/regions/japan_0_equiv36.json",
+        "original_native_result": "historical_full_rom_G2_port",
+        "direction": "USA_to_Japan"
+      }
+    },
+    {
+      "usa": {
+        "name": "func_80202D34_62E114",
+        "original_rom_offset": "0x62E114"
+      },
+      "japan_0": {
+        "name": "func_80208464_632EE4",
+        "original_rom_offset": "0x632EE4"
+      },
+      "original_code_bytes": 72,
+      "original_code_sha256": "c6ad0194a5751d1a95966a14bdad3d48687ff98e8d6e6eac0581508bc25e4f43",
+      "relation": "byte_identical_C_source_donor",
+      "provenance": {
+        "manifest": "decomp/regions/japan_0_equiv36.json",
+        "original_native_result": "historical_full_rom_G2_port",
+        "direction": "USA_to_Japan"
+      }
+    },
+    {
+      "usa": {
+        "name": "func_80203F5C_62F33C",
+        "original_rom_offset": "0x62F33C"
+      },
+      "japan_0": {
+        "name": "func_8020968C_63410C",
+        "original_rom_offset": "0x63410C"
+      },
+      "original_code_bytes": 44,
+      "original_code_sha256": "0cf94a64bf58c6035ebd619accc408ec6c53843d1a91747e02d697157f6bb713",
+      "relation": "byte_identical_C_source_donor",
+      "provenance": {
+        "manifest": "decomp/regions/japan_0_equiv36.json",
+        "original_native_result": "historical_full_rom_G2_port",
+        "direction": "USA_to_Japan"
+      }
+    },
+    {
+      "usa": {
+        "name": "func_801CC148_63AF98",
+        "original_rom_offset": "0x63AF98"
+      },
+      "japan_0": {
+        "name": "func_801D1878_63FD68",
+        "original_rom_offset": "0x63FD68"
+      },
+      "original_code_bytes": 32,
+      "original_code_sha256": "39614780b94f17de69125e5b5f09b9b8578ce7fd88413b9725039a4ef5ebe006",
+      "relation": "byte_identical_C_source_donor",
+      "provenance": {
+        "manifest": "decomp/regions/japan_0_equiv36.json",
+        "original_native_result": "historical_full_rom_G2_port",
+        "direction": "USA_to_Japan"
+      }
+    },
+    {
+      "usa": {
+        "name": "func_801CC7E0_63B630",
+        "original_rom_offset": "0x63B630"
+      },
+      "japan_0": {
+        "name": "func_801D1F10_640400",
+        "original_rom_offset": "0x640400"
+      },
+      "original_code_bytes": 52,
+      "original_code_sha256": "7d1cf6122a110b0dbac16f1af16c8e147fd235fd2905b781e45a0e6254fb708d",
+      "relation": "byte_identical_C_source_donor",
+      "provenance": {
+        "manifest": "decomp/regions/japan_0_equiv36.json",
+        "original_native_result": "historical_full_rom_G2_port",
+        "direction": "USA_to_Japan"
+      }
+    },
+    {
+      "usa": {
+        "name": "func_801D0B80_63F9D0",
+        "original_rom_offset": "0x63F9D0"
+      },
+      "japan_0": {
+        "name": "func_801D62B0_6447A0",
+        "original_rom_offset": "0x6447A0"
+      },
+      "original_code_bytes": 56,
+      "original_code_sha256": "24ec13861e40e55d7c8fc7791e998c9bdcbe7b10a574cc5d3303a909f64cb1db",
+      "relation": "byte_identical_C_source_donor",
+      "provenance": {
+        "manifest": "decomp/regions/japan_0_equiv36.json",
+        "original_native_result": "historical_full_rom_G2_port",
+        "direction": "USA_to_Japan"
+      }
+    },
+    {
+      "usa": {
+        "name": "func_801D17C0_640610",
+        "original_rom_offset": "0x640610"
+      },
+      "japan_0": {
+        "name": "func_801D6EF0_6453E0",
+        "original_rom_offset": "0x6453E0"
+      },
+      "original_code_bytes": 40,
+      "original_code_sha256": "2bc676f233e6b6f007bd5a51aef467fd0d392b7058333d40da8aaf980fa5eb58",
+      "relation": "byte_identical_C_source_donor",
+      "provenance": {
+        "manifest": "decomp/regions/japan_0_equiv36.json",
+        "original_native_result": "historical_full_rom_G2_port",
+        "direction": "USA_to_Japan"
+      }
+    },
+    {
+      "usa": {
+        "name": "func_801D1918_640768",
+        "original_rom_offset": "0x640768"
+      },
+      "japan_0": {
+        "name": "func_801D7048_645538",
+        "original_rom_offset": "0x645538"
+      },
+      "original_code_bytes": 40,
+      "original_code_sha256": "8704f69e0bb04fbb69b3f1899511d89f2cb185cf15d7669462de0f7faeb8c5f6",
+      "relation": "byte_identical_C_source_donor",
+      "provenance": {
+        "manifest": "decomp/regions/japan_0_equiv36.json",
+        "original_native_result": "historical_full_rom_G2_port",
+        "direction": "USA_to_Japan"
+      }
+    },
+    {
+      "usa": {
+        "name": "func_801D1940_640790",
+        "original_rom_offset": "0x640790"
+      },
+      "japan_0": {
+        "name": "func_801D7070_645560",
+        "original_rom_offset": "0x645560"
+      },
+      "original_code_bytes": 52,
+      "original_code_sha256": "c62ef447531bf3d61aa1ccb79906573c27cf1f5acbdc5db950e02c31ca0414e7",
+      "relation": "byte_identical_C_source_donor",
+      "provenance": {
+        "manifest": "decomp/regions/japan_0_equiv36.json",
+        "original_native_result": "historical_full_rom_G2_port",
+        "direction": "USA_to_Japan"
+      }
+    },
+    {
+      "usa": {
+        "name": "func_801D2138_640F88",
+        "original_rom_offset": "0x640F88"
+      },
+      "japan_0": {
+        "name": "func_801D7868_645D58",
+        "original_rom_offset": "0x645D58"
+      },
+      "original_code_bytes": 32,
+      "original_code_sha256": "a8dbb3b6c47a94ea9abcebcb3ad0ea5a5cdda2e0b7fda487b9b93dd61b6b8315",
+      "relation": "byte_identical_C_source_donor",
+      "provenance": {
+        "manifest": "decomp/regions/japan_0_equiv36.json",
+        "original_native_result": "historical_full_rom_G2_port",
+        "direction": "USA_to_Japan"
+      }
+    },
+    {
+      "usa": {
+        "name": "func_801D84E8_647338",
+        "original_rom_offset": "0x647338"
+      },
+      "japan_0": {
+        "name": "func_801DDC18_64C108",
+        "original_rom_offset": "0x64C108"
+      },
+      "original_code_bytes": 32,
+      "original_code_sha256": "a3e7255ac27b2f924a5b0f1de1e1b82a4aa8f3e005bc339d0be4ad4dc736631b",
+      "relation": "byte_identical_C_source_donor",
+      "provenance": {
+        "manifest": "decomp/regions/japan_0_equiv36.json",
+        "original_native_result": "historical_full_rom_G2_port",
+        "direction": "USA_to_Japan"
+      }
+    },
+    {
+      "usa": {
+        "name": "func_801CC20C_65F0BC",
+        "original_rom_offset": "0x65F0BC"
+      },
+      "japan_0": {
+        "name": "func_801D191C_663E6C",
+        "original_rom_offset": "0x663E6C"
+      },
+      "original_code_bytes": 32,
+      "original_code_sha256": "1b8e6cd9c2a651734be2c809920c8718a0889de44d8ee4ea6ec74ac83e72b65b",
+      "relation": "byte_identical_C_source_donor",
+      "provenance": {
+        "manifest": "decomp/regions/japan_0_equiv36.json",
+        "original_native_result": "historical_full_rom_G2_port",
+        "direction": "USA_to_Japan"
+      }
+    },
+    {
+      "usa": {
+        "name": "func_801CC5A8_65F458",
+        "original_rom_offset": "0x65F458"
+      },
+      "japan_0": {
+        "name": "func_801D1CB8_664208",
+        "original_rom_offset": "0x664208"
+      },
+      "original_code_bytes": 32,
+      "original_code_sha256": "16bf73f64c039ee28aa6dcf91a4f4c4b0600d94b4d1be2576d0223e84f345d5f",
+      "relation": "byte_identical_C_source_donor",
+      "provenance": {
+        "manifest": "decomp/regions/japan_0_equiv36.json",
+        "original_native_result": "historical_full_rom_G2_port",
+        "direction": "USA_to_Japan"
+      }
+    },
+    {
+      "usa": {
+        "name": "func_8020DD88_66CD38",
+        "original_rom_offset": "0x66CD38"
+      },
+      "japan_0": {
+        "name": "func_801D72DC_66982C",
+        "original_rom_offset": "0x66982C"
+      },
+      "original_code_bytes": 84,
+      "original_code_sha256": "6f41f3421edbb730bfec84293bd9824f5c065c64ceded3fbfc40594d6e4ac487",
+      "relation": "byte_identical_C_source_donor",
+      "provenance": {
+        "manifest": "decomp/research/usa_crossregion51_recovered19_20261122/manifest.json",
+        "original_native_result": "historical_full_rom_G2_port",
+        "direction": "Japan_to_USA"
+      }
+    },
+    {
+      "usa": {
+        "name": "func_8020E328_66D2D8",
+        "original_rom_offset": "0x66D2D8"
+      },
+      "japan_0": {
+        "name": "func_80213118_671F88",
+        "original_rom_offset": "0x671F88"
+      },
+      "original_code_bytes": 36,
+      "original_code_sha256": "7889daeaec70daa31af7c53958c220fa5b62e8b8f00035bf8fc611e539731d37",
+      "relation": "byte_identical_C_source_donor",
+      "provenance": {
+        "manifest": "decomp/regions/japan_0_equiv36.json",
+        "original_native_result": "historical_full_rom_G2_port",
+        "direction": "USA_to_Japan"
+      }
+    },
+    {
+      "usa": {
+        "name": "func_8020D4EC_676ECC",
+        "original_rom_offset": "0x676ECC"
+      },
+      "japan_0": {
+        "name": "func_801D72DC_66982C",
+        "original_rom_offset": "0x66982C"
+      },
+      "original_code_bytes": 84,
+      "original_code_sha256": "6f41f3421edbb730bfec84293bd9824f5c065c64ceded3fbfc40594d6e4ac487",
+      "relation": "byte_identical_C_source_donor",
+      "provenance": {
+        "manifest": "decomp/research/usa_crossregion51_recovered19_20261122/manifest.json",
+        "original_native_result": "historical_full_rom_G2_port",
+        "direction": "Japan_to_USA"
+      }
+    },
+    {
+      "usa": {
+        "name": "func_802124FC_67BEDC",
+        "original_rom_offset": "0x67BEDC"
+      },
+      "japan_0": {
+        "name": "func_802172DC_6809CC",
+        "original_rom_offset": "0x6809CC"
+      },
+      "original_code_bytes": 84,
+      "original_code_sha256": "1e96cfa3bb024af6ae1ae4332e35d3ab1f7a4b71855f5d51c1fb9d11722b6588",
+      "relation": "byte_identical_C_source_donor",
+      "provenance": {
+        "manifest": "decomp/research/usa_crossregion51_recovered19_20261122/manifest.json",
+        "original_native_result": "historical_full_rom_G2_port",
+        "direction": "Japan_to_USA"
+      }
+    },
+    {
+      "usa": {
+        "name": "func_802138C0_67D2A0",
+        "original_rom_offset": "0x67D2A0"
+      },
+      "japan_0": {
+        "name": "func_802186A0_681D90",
+        "original_rom_offset": "0x681D90"
+      },
+      "original_code_bytes": 40,
+      "original_code_sha256": "c6ebba138a1fc82d23412bf23bfc4dbc54d988f6ca97f4cea066371ea7364261",
+      "relation": "byte_identical_C_source_donor",
+      "provenance": {
+        "manifest": "decomp/regions/japan_0_equiv36.json",
+        "original_native_result": "historical_full_rom_G2_port",
+        "direction": "USA_to_Japan"
+      }
+    },
+    {
+      "usa": {
+        "name": "func_80214A3C_67E41C",
+        "original_rom_offset": "0x67E41C"
+      },
+      "japan_0": {
+        "name": "func_8021981C_682F0C",
+        "original_rom_offset": "0x682F0C"
+      },
+      "original_code_bytes": 80,
+      "original_code_sha256": "1513b600f37dae953e8be022146bee04010f5838804eb79dd6994d0a889572d2",
+      "relation": "byte_identical_C_source_donor",
+      "provenance": {
+        "manifest": "decomp/regions/japan_0_equiv37_more.json",
+        "original_native_result": "historical_full_rom_G2_port",
+        "direction": "USA_to_Japan"
+      }
+    },
+    {
+      "usa": {
+        "name": "func_8021526C_67EC4C",
+        "original_rom_offset": "0x67EC4C"
+      },
+      "japan_0": {
+        "name": "func_8021A04C_68373C",
+        "original_rom_offset": "0x68373C"
+      },
+      "original_code_bytes": 80,
+      "original_code_sha256": "093a8ce87e961c90e7a6847367ae9e9ffe5d9b77bf026e23f711e6f0d8b80f79",
+      "relation": "byte_identical_C_source_donor",
+      "provenance": {
+        "manifest": "decomp/regions/japan_0_equiv37_more.json",
+        "original_native_result": "historical_full_rom_G2_port",
+        "direction": "USA_to_Japan"
+      }
+    },
+    {
+      "usa": {
+        "name": "func_8021526C_67EC4C",
+        "original_rom_offset": "0x67EC4C"
+      },
+      "japan_0": {
+        "name": "func_8021B688_684D78",
+        "original_rom_offset": "0x684D78"
+      },
+      "original_code_bytes": 80,
+      "original_code_sha256": "093a8ce87e961c90e7a6847367ae9e9ffe5d9b77bf026e23f711e6f0d8b80f79",
+      "relation": "byte_identical_C_source_donor",
+      "provenance": {
+        "manifest": "decomp/regions/japan_0_equiv37_more.json",
+        "original_native_result": "historical_full_rom_G2_port",
+        "direction": "USA_to_Japan"
+      }
+    },
+    {
+      "usa": {
+        "name": "func_80215D60_67F740",
+        "original_rom_offset": "0x67F740"
+      },
+      "japan_0": {
+        "name": "func_8021AB40_684230",
+        "original_rom_offset": "0x684230"
+      },
+      "original_code_bytes": 84,
+      "original_code_sha256": "48907d6474c3fe85454c92d7396b7993851accb2114abeb7d3e084a26e5abab8",
+      "relation": "byte_identical_C_source_donor",
+      "provenance": {
+        "manifest": "decomp/research/usa_crossregion51_recovered19_20261122/manifest.json",
+        "original_native_result": "historical_full_rom_G2_port",
+        "direction": "Japan_to_USA"
+      }
+    },
+    {
+      "usa": {
+        "name": "func_80215DB4_67F794",
+        "original_rom_offset": "0x67F794"
+      },
+      "japan_0": {
+        "name": "func_8021AB94_684284",
+        "original_rom_offset": "0x684284"
+      },
+      "original_code_bytes": 84,
+      "original_code_sha256": "eb74c7b9ee284d87e050f27f02ad5e4b08f9aa3fb80807e77393a5d93c96adb4",
+      "relation": "byte_identical_C_source_donor",
+      "provenance": {
+        "manifest": "decomp/research/usa_crossregion51_recovered19_20261122/manifest.json",
+        "original_native_result": "historical_full_rom_G2_port",
+        "direction": "Japan_to_USA"
+      }
+    },
+    {
+      "usa": {
+        "name": "func_80217320_680D00",
+        "original_rom_offset": "0x680D00"
+      },
+      "japan_0": {
+        "name": "func_8021C100_6857F0",
+        "original_rom_offset": "0x6857F0"
+      },
+      "original_code_bytes": 116,
+      "original_code_sha256": "d7d1f43bee3a5f4d9b00dbd889da2787c9be917b970d9c75b879ff960756fed8",
+      "relation": "byte_identical_C_source_donor",
+      "provenance": {
+        "manifest": "decomp/regions/japan_0_equiv37_more.json",
+        "original_native_result": "historical_full_rom_G2_port",
+        "direction": "USA_to_Japan"
+      }
+    },
+    {
+      "usa": {
+        "name": "func_8021B1FC_684BDC",
+        "original_rom_offset": "0x684BDC"
+      },
+      "japan_0": {
+        "name": "func_8021FFDC_6896CC",
+        "original_rom_offset": "0x6896CC"
+      },
+      "original_code_bytes": 116,
+      "original_code_sha256": "c522f2bd431a97059c34fda5bcb0239b434bba67602474611c4e2ef2a47e6b5c",
+      "relation": "byte_identical_C_source_donor",
+      "provenance": {
+        "manifest": "decomp/regions/japan_0_equiv37_more.json",
+        "original_native_result": "historical_full_rom_G2_port",
+        "direction": "USA_to_Japan"
+      }
+    },
+    {
+      "usa": {
+        "name": "func_8021B270_684C50",
+        "original_rom_offset": "0x684C50"
+      },
+      "japan_0": {
+        "name": "func_80220050_689740",
+        "original_rom_offset": "0x689740"
+      },
+      "original_code_bytes": 44,
+      "original_code_sha256": "0af5e9221b6472db7a1e59b2c67f01ca29a8368f4cf458a6a6a400aa5032fe93",
+      "relation": "byte_identical_C_source_donor",
+      "provenance": {
+        "manifest": "decomp/regions/japan_0_equiv36.json",
+        "original_native_result": "historical_full_rom_G2_port",
+        "direction": "USA_to_Japan"
+      }
+    },
+    {
+      "usa": {
+        "name": "func_8021B8E4_6852C4",
+        "original_rom_offset": "0x6852C4"
+      },
+      "japan_0": {
+        "name": "func_8021AB40_684230",
+        "original_rom_offset": "0x684230"
+      },
+      "original_code_bytes": 84,
+      "original_code_sha256": "48907d6474c3fe85454c92d7396b7993851accb2114abeb7d3e084a26e5abab8",
+      "relation": "byte_identical_C_source_donor",
+      "provenance": {
+        "manifest": "decomp/research/usa_crossregion51_recovered19_20261122/manifest.json",
+        "original_native_result": "historical_full_rom_G2_port",
+        "direction": "Japan_to_USA"
+      }
+    },
+    {
+      "usa": {
+        "name": "func_8021B938_685318",
+        "original_rom_offset": "0x685318"
+      },
+      "japan_0": {
+        "name": "func_8021AB94_684284",
+        "original_rom_offset": "0x684284"
+      },
+      "original_code_bytes": 84,
+      "original_code_sha256": "eb74c7b9ee284d87e050f27f02ad5e4b08f9aa3fb80807e77393a5d93c96adb4",
+      "relation": "byte_identical_C_source_donor",
+      "provenance": {
+        "manifest": "decomp/research/usa_crossregion51_recovered19_20261122/manifest.json",
+        "original_native_result": "historical_full_rom_G2_port",
+        "direction": "Japan_to_USA"
+      }
+    },
+    {
+      "usa": {
+        "name": "func_8021BE14_6857F4",
+        "original_rom_offset": "0x6857F4"
+      },
+      "japan_0": {
+        "name": "func_80220BF4_68A2E4",
+        "original_rom_offset": "0x68A2E4"
+      },
+      "original_code_bytes": 36,
+      "original_code_sha256": "46ebc1a026eedd354d2845fe2cb046f477b10426d19a0e53e31bf774db904700",
+      "relation": "byte_identical_C_source_donor",
+      "provenance": {
+        "manifest": "decomp/regions/japan_0_equiv36.json",
+        "original_native_result": "historical_full_rom_G2_port",
+        "direction": "USA_to_Japan"
+      }
+    },
+    {
+      "usa": {
+        "name": "func_8021BE14_6857F4",
+        "original_rom_offset": "0x6857F4"
+      },
+      "japan_0": {
+        "name": "func_0800B328_6C30A8",
+        "original_rom_offset": "0x6C30A8"
+      },
+      "original_code_bytes": 36,
+      "original_code_sha256": "46ebc1a026eedd354d2845fe2cb046f477b10426d19a0e53e31bf774db904700",
+      "relation": "byte_identical_C_source_donor",
+      "provenance": {
+        "manifest": "decomp/regions/japan_0_equiv2_remaining.json",
+        "original_native_result": "historical_full_rom_G2_port",
+        "direction": "USA_to_Japan"
+      }
+    },
+    {
+      "usa": {
+        "name": "func_8021BE14_6857F4",
+        "original_rom_offset": "0x6857F4"
+      },
+      "japan_0": {
+        "name": "func_08000FA8_70CF38",
+        "original_rom_offset": "0x70CF38"
+      },
+      "original_code_bytes": 36,
+      "original_code_sha256": "46ebc1a026eedd354d2845fe2cb046f477b10426d19a0e53e31bf774db904700",
+      "relation": "byte_identical_C_source_donor",
+      "provenance": {
+        "manifest": "decomp/regions/japan_0_equiv37_more.json",
+        "original_native_result": "historical_full_rom_G2_port",
+        "direction": "USA_to_Japan"
+      }
+    },
+    {
+      "usa": {
+        "name": "func_8021BE14_6857F4",
+        "original_rom_offset": "0x6857F4"
+      },
+      "japan_0": {
+        "name": "func_080009E4_70EF54",
+        "original_rom_offset": "0x70EF54"
+      },
+      "original_code_bytes": 36,
+      "original_code_sha256": "46ebc1a026eedd354d2845fe2cb046f477b10426d19a0e53e31bf774db904700",
+      "relation": "byte_identical_C_source_donor",
+      "provenance": {
+        "manifest": "decomp/regions/japan_0_equiv37_more.json",
+        "original_native_result": "historical_full_rom_G2_port",
+        "direction": "USA_to_Japan"
+      }
+    },
+    {
+      "usa": {
+        "name": "func_8021BE14_6857F4",
+        "original_rom_offset": "0x6857F4"
+      },
+      "japan_0": {
+        "name": "func_08000EE8_72E8A8",
+        "original_rom_offset": "0x72E8A8"
+      },
+      "original_code_bytes": 36,
+      "original_code_sha256": "46ebc1a026eedd354d2845fe2cb046f477b10426d19a0e53e31bf774db904700",
+      "relation": "byte_identical_C_source_donor",
+      "provenance": {
+        "manifest": "decomp/regions/japan_0_equiv37_more.json",
+        "original_native_result": "historical_full_rom_G2_port",
+        "direction": "USA_to_Japan"
+      }
+    },
+    {
+      "usa": {
+        "name": "func_8021BE14_6857F4",
+        "original_rom_offset": "0x6857F4"
+      },
+      "japan_0": {
+        "name": "func_08001058_730B98",
+        "original_rom_offset": "0x730B98"
+      },
+      "original_code_bytes": 36,
+      "original_code_sha256": "46ebc1a026eedd354d2845fe2cb046f477b10426d19a0e53e31bf774db904700",
+      "relation": "byte_identical_C_source_donor",
+      "provenance": {
+        "manifest": "decomp/regions/japan_0_equiv37_more.json",
+        "original_native_result": "historical_full_rom_G2_port",
+        "direction": "USA_to_Japan"
+      }
+    },
+    {
+      "usa": {
+        "name": "func_8021BE14_6857F4",
+        "original_rom_offset": "0x6857F4"
+      },
+      "japan_0": {
+        "name": "func_0800148C_730FCC",
+        "original_rom_offset": "0x730FCC"
+      },
+      "original_code_bytes": 36,
+      "original_code_sha256": "46ebc1a026eedd354d2845fe2cb046f477b10426d19a0e53e31bf774db904700",
+      "relation": "byte_identical_C_source_donor",
+      "provenance": {
+        "manifest": "decomp/regions/japan_0_equiv37_more.json",
+        "original_native_result": "historical_full_rom_G2_port",
+        "direction": "USA_to_Japan"
+      }
+    },
+    {
+      "usa": {
+        "name": "func_8021BE14_6857F4",
+        "original_rom_offset": "0x6857F4"
+      },
+      "japan_0": {
+        "name": "func_08001328_734DA8",
+        "original_rom_offset": "0x734DA8"
+      },
+      "original_code_bytes": 36,
+      "original_code_sha256": "46ebc1a026eedd354d2845fe2cb046f477b10426d19a0e53e31bf774db904700",
+      "relation": "byte_identical_C_source_donor",
+      "provenance": {
+        "manifest": "decomp/regions/japan_0_equiv37_more.json",
+        "original_native_result": "historical_full_rom_G2_port",
+        "direction": "USA_to_Japan"
+      }
+    },
+    {
+      "usa": {
+        "name": "func_8021BE14_6857F4",
+        "original_rom_offset": "0x6857F4"
+      },
+      "japan_0": {
+        "name": "func_080012A4_738584",
+        "original_rom_offset": "0x738584"
+      },
+      "original_code_bytes": 36,
+      "original_code_sha256": "46ebc1a026eedd354d2845fe2cb046f477b10426d19a0e53e31bf774db904700",
+      "relation": "byte_identical_C_source_donor",
+      "provenance": {
+        "manifest": "decomp/regions/japan_0_equiv37_more.json",
+        "original_native_result": "historical_full_rom_G2_port",
+        "direction": "USA_to_Japan"
+      }
+    },
+    {
+      "usa": {
+        "name": "func_8021BE14_6857F4",
+        "original_rom_offset": "0x6857F4"
+      },
+      "japan_0": {
+        "name": "func_080007A8_740678",
+        "original_rom_offset": "0x740678"
+      },
+      "original_code_bytes": 36,
+      "original_code_sha256": "46ebc1a026eedd354d2845fe2cb046f477b10426d19a0e53e31bf774db904700",
+      "relation": "byte_identical_C_source_donor",
+      "provenance": {
+        "manifest": "decomp/regions/japan_0_equiv37_more.json",
+        "original_native_result": "historical_full_rom_G2_port",
+        "direction": "USA_to_Japan"
+      }
+    },
+    {
+      "usa": {
+        "name": "func_8021C2B4_685C94",
+        "original_rom_offset": "0x685C94"
+      },
+      "japan_0": {
+        "name": "func_80221094_68A784",
+        "original_rom_offset": "0x68A784"
+      },
+      "original_code_bytes": 40,
+      "original_code_sha256": "b43a05ddf0d5d0688d91857b4a4d07ca083b6fb70a6ec73f49dfc7b2e49cecb4",
+      "relation": "byte_identical_C_source_donor",
+      "provenance": {
+        "manifest": "decomp/regions/japan_0_equiv36.json",
+        "original_native_result": "historical_full_rom_G2_port",
+        "direction": "USA_to_Japan"
+      }
+    },
+    {
+      "usa": {
+        "name": "func_8021C2DC_685CBC",
+        "original_rom_offset": "0x685CBC"
+      },
+      "japan_0": {
+        "name": "func_802210BC_68A7AC",
+        "original_rom_offset": "0x68A7AC"
+      },
+      "original_code_bytes": 84,
+      "original_code_sha256": "edafed65f4aea871e485c593af734cb08bc97caa6900f669b669dcfe6691245e",
+      "relation": "byte_identical_C_source_donor",
+      "provenance": {
+        "manifest": "decomp/research/usa_crossregion51_recovered19_20261122/manifest.json",
+        "original_native_result": "historical_full_rom_G2_port",
+        "direction": "Japan_to_USA"
+      }
+    },
+    {
+      "usa": {
+        "name": "func_8021C7A4_686184",
+        "original_rom_offset": "0x686184"
+      },
+      "japan_0": {
+        "name": "func_80221584_68AC74",
+        "original_rom_offset": "0x68AC74"
+      },
+      "original_code_bytes": 116,
+      "original_code_sha256": "7e934286bddafa28d4c9dd60ed20c21705b76bcfb45309ebc212e13c118c3fcd",
+      "relation": "byte_identical_C_source_donor",
+      "provenance": {
+        "manifest": "decomp/regions/japan_0_equiv37_more.json",
+        "original_native_result": "historical_full_rom_G2_port",
+        "direction": "USA_to_Japan"
+      }
+    },
+    {
+      "usa": {
+        "name": "func_8021C7A4_686184",
+        "original_rom_offset": "0x686184"
+      },
+      "japan_0": {
+        "name": "func_80221F90_68B680",
+        "original_rom_offset": "0x68B680"
+      },
+      "original_code_bytes": 116,
+      "original_code_sha256": "7e934286bddafa28d4c9dd60ed20c21705b76bcfb45309ebc212e13c118c3fcd",
+      "relation": "byte_identical_C_source_donor",
+      "provenance": {
+        "manifest": "decomp/regions/japan_0_equiv37_more.json",
+        "original_native_result": "historical_full_rom_G2_port",
+        "direction": "USA_to_Japan"
+      }
+    },
+    {
+      "usa": {
+        "name": "func_8021E2C0_687CA0",
+        "original_rom_offset": "0x687CA0"
+      },
+      "japan_0": {
+        "name": "func_802230A0_68C790",
+        "original_rom_offset": "0x68C790"
+      },
+      "original_code_bytes": 84,
+      "original_code_sha256": "fb70190f1ec535a2834dad9f572a492a1088dc5b6d58c3741e4568541c6374d4",
+      "relation": "byte_identical_C_source_donor",
+      "provenance": {
+        "manifest": "decomp/research/usa_crossregion51_recovered19_20261122/manifest.json",
+        "original_native_result": "historical_full_rom_G2_port",
+        "direction": "Japan_to_USA"
+      }
+    },
+    {
+      "usa": {
+        "name": "func_8021EE90_688870",
+        "original_rom_offset": "0x688870"
+      },
+      "japan_0": {
+        "name": "func_80223C70_68D360",
+        "original_rom_offset": "0x68D360"
+      },
+      "original_code_bytes": 32,
+      "original_code_sha256": "5c33e7a0d0249532211348daa2f212b416d8bcd560c7012e768ac9f16725f8bd",
+      "relation": "byte_identical_C_source_donor",
+      "provenance": {
+        "manifest": "decomp/regions/japan_0_equiv36.json",
+        "original_native_result": "historical_full_rom_G2_port",
+        "direction": "USA_to_Japan"
+      }
+    },
+    {
+      "usa": {
+        "name": "func_8021F0BC_688A9C",
+        "original_rom_offset": "0x688A9C"
+      },
+      "japan_0": {
+        "name": "func_802172DC_6809CC",
+        "original_rom_offset": "0x6809CC"
+      },
+      "original_code_bytes": 84,
+      "original_code_sha256": "1e96cfa3bb024af6ae1ae4332e35d3ab1f7a4b71855f5d51c1fb9d11722b6588",
+      "relation": "byte_identical_C_source_donor",
+      "provenance": {
+        "manifest": "decomp/research/usa_crossregion51_recovered19_20261122/manifest.json",
+        "original_native_result": "historical_full_rom_G2_port",
+        "direction": "Japan_to_USA"
+      }
+    },
+    {
+      "usa": {
+        "name": "func_80225B00_68F4E0",
+        "original_rom_offset": "0x68F4E0"
+      },
+      "japan_0": {
+        "name": "func_8022A8E0_693FD0",
+        "original_rom_offset": "0x693FD0"
+      },
+      "original_code_bytes": 32,
+      "original_code_sha256": "271ae3a02263edde44344fd525db3de20eedc683948e8b74be2246db0798f345",
+      "relation": "byte_identical_C_source_donor",
+      "provenance": {
+        "manifest": "decomp/regions/japan_0_equiv36.json",
+        "original_native_result": "historical_full_rom_G2_port",
+        "direction": "USA_to_Japan"
+      }
+    },
+    {
+      "usa": {
+        "name": "func_80225D84_68F764",
+        "original_rom_offset": "0x68F764"
+      },
+      "japan_0": {
+        "name": "func_8022AB64_694254",
+        "original_rom_offset": "0x694254"
+      },
+      "original_code_bytes": 32,
+      "original_code_sha256": "f1bafee086d285ecd63641f97a5ab5cb4759e05dab6dd6f4bbef7248c93ed5a5",
+      "relation": "byte_identical_C_source_donor",
+      "provenance": {
+        "manifest": "decomp/regions/japan_0_equiv36.json",
+        "original_native_result": "historical_full_rom_G2_port",
+        "direction": "USA_to_Japan"
+      }
+    },
+    {
+      "usa": {
+        "name": "func_80225D84_68F764",
+        "original_rom_offset": "0x68F764"
+      },
+      "japan_0": {
+        "name": "func_0800B308_6C3088",
+        "original_rom_offset": "0x6C3088"
+      },
+      "original_code_bytes": 32,
+      "original_code_sha256": "f1bafee086d285ecd63641f97a5ab5cb4759e05dab6dd6f4bbef7248c93ed5a5",
+      "relation": "byte_identical_C_source_donor",
+      "provenance": {
+        "manifest": "decomp/regions/japan_0_equiv2_remaining.json",
+        "original_native_result": "historical_full_rom_G2_port",
+        "direction": "USA_to_Japan"
+      }
+    },
+    {
+      "usa": {
+        "name": "func_80226D2C_69070C",
+        "original_rom_offset": "0x69070C"
+      },
+      "japan_0": {
+        "name": "func_8022BB0C_6951FC",
+        "original_rom_offset": "0x6951FC"
+      },
+      "original_code_bytes": 84,
+      "original_code_sha256": "1e45d908799c06216920fd082fa75bee75979140f408e70bb0fb7aa35f5b38f8",
+      "relation": "byte_identical_C_source_donor",
+      "provenance": {
+        "manifest": "decomp/research/usa_crossregion51_recovered19_20261122/manifest.json",
+        "original_native_result": "historical_full_rom_G2_port",
+        "direction": "Japan_to_USA"
+      }
+    },
+    {
+      "usa": {
+        "name": "func_802291F8_692BD8",
+        "original_rom_offset": "0x692BD8"
+      },
+      "japan_0": {
+        "name": "func_8022DFD8_6976C8",
+        "original_rom_offset": "0x6976C8"
+      },
+      "original_code_bytes": 36,
+      "original_code_sha256": "e385e3e3c15feff9b75e53dbbc003b230664ef6234d0aa595fa8dbdbe6bf3a85",
+      "relation": "byte_identical_C_source_donor",
+      "provenance": {
+        "manifest": "decomp/regions/japan_0_equiv36.json",
+        "original_native_result": "historical_full_rom_G2_port",
+        "direction": "USA_to_Japan"
+      }
+    },
+    {
+      "usa": {
+        "name": "func_80229948_693328",
+        "original_rom_offset": "0x693328"
+      },
+      "japan_0": {
+        "name": "func_8022E728_697E18",
+        "original_rom_offset": "0x697E18"
+      },
+      "original_code_bytes": 32,
+      "original_code_sha256": "d899ed9b0aaa0e818b57ab0cbbe0e25188a455b6ac455dffc4c9754b4fff1d51",
+      "relation": "byte_identical_C_source_donor",
+      "provenance": {
+        "manifest": "decomp/regions/japan_0_equiv36.json",
+        "original_native_result": "historical_full_rom_G2_port",
+        "direction": "USA_to_Japan"
+      }
+    },
+    {
+      "usa": {
+        "name": "func_80210520_697F20",
+        "original_rom_offset": "0x697F20"
+      },
+      "japan_0": {
+        "name": "func_80215318_69CA18",
+        "original_rom_offset": "0x69CA18"
+      },
+      "original_code_bytes": 32,
+      "original_code_sha256": "f60dd2cfda6341ed98cde335fe37afdc1d6b5473773ff63d0e46214967059c1b",
+      "relation": "byte_identical_C_source_donor",
+      "provenance": {
+        "manifest": "decomp/regions/japan_0_equiv36.json",
+        "original_native_result": "historical_full_rom_G2_port",
+        "direction": "USA_to_Japan"
+      }
+    },
+    {
+      "usa": {
+        "name": "func_80210A94_698494",
+        "original_rom_offset": "0x698494"
+      },
+      "japan_0": {
+        "name": "func_8021588C_69CF8C",
+        "original_rom_offset": "0x69CF8C"
+      },
+      "original_code_bytes": 32,
+      "original_code_sha256": "0d3c551735669d427cf8ac42e4acd9e2bb3519be893b7aab3510c17fad6b3fab",
+      "relation": "byte_identical_C_source_donor",
+      "provenance": {
+        "manifest": "decomp/regions/japan_0_equiv36.json",
+        "original_native_result": "historical_full_rom_G2_port",
+        "direction": "USA_to_Japan"
+      }
+    },
+    {
+      "usa": {
+        "name": "func_80210A94_698494",
+        "original_rom_offset": "0x698494"
+      },
+      "japan_0": {
+        "name": "func_08001068_73DAE8",
+        "original_rom_offset": "0x73DAE8"
+      },
+      "original_code_bytes": 32,
+      "original_code_sha256": "0d3c551735669d427cf8ac42e4acd9e2bb3519be893b7aab3510c17fad6b3fab",
+      "relation": "byte_identical_C_source_donor",
+      "provenance": {
+        "manifest": "decomp/regions/japan_0_equiv37_more.json",
+        "original_native_result": "historical_full_rom_G2_port",
+        "direction": "USA_to_Japan"
+      }
+    },
+    {
+      "usa": {
+        "name": "func_80210F80_698980",
+        "original_rom_offset": "0x698980"
+      },
+      "japan_0": {
+        "name": "func_80215D78_69D478",
+        "original_rom_offset": "0x69D478"
+      },
+      "original_code_bytes": 32,
+      "original_code_sha256": "2813de2f51fc3fd57cc2973ccc4f1b9300d745d6e372e622960e6cf2549f3448",
+      "relation": "byte_identical_C_source_donor",
+      "provenance": {
+        "manifest": "decomp/regions/japan_0_equiv36.json",
+        "original_native_result": "historical_full_rom_G2_port",
+        "direction": "USA_to_Japan"
+      }
+    },
+    {
+      "usa": {
+        "name": "func_80210FA0_6989A0",
+        "original_rom_offset": "0x6989A0"
+      },
+      "japan_0": {
+        "name": "func_80215D98_69D498",
+        "original_rom_offset": "0x69D498"
+      },
+      "original_code_bytes": 32,
+      "original_code_sha256": "f1bafee086d285ecd63641f97a5ab5cb4759e05dab6dd6f4bbef7248c93ed5a5",
+      "relation": "byte_identical_C_source_donor",
+      "provenance": {
+        "manifest": "decomp/regions/japan_0_equiv36.json",
+        "original_native_result": "historical_full_rom_G2_port",
+        "direction": "USA_to_Japan"
+      }
+    },
+    {
+      "usa": {
+        "name": "func_80210FA0_6989A0",
+        "original_rom_offset": "0x6989A0"
+      },
+      "japan_0": {
+        "name": "func_08001434_70F9A4",
+        "original_rom_offset": "0x70F9A4"
+      },
+      "original_code_bytes": 32,
+      "original_code_sha256": "f1bafee086d285ecd63641f97a5ab5cb4759e05dab6dd6f4bbef7248c93ed5a5",
+      "relation": "byte_identical_C_source_donor",
+      "provenance": {
+        "manifest": "decomp/regions/japan_0_equiv37_more.json",
+        "original_native_result": "historical_full_rom_G2_port",
+        "direction": "USA_to_Japan"
+      }
+    },
+    {
+      "usa": {
+        "name": "func_80210FA0_6989A0",
+        "original_rom_offset": "0x6989A0"
+      },
+      "japan_0": {
+        "name": "func_0800040C_72A45C",
+        "original_rom_offset": "0x72A45C"
+      },
+      "original_code_bytes": 32,
+      "original_code_sha256": "f1bafee086d285ecd63641f97a5ab5cb4759e05dab6dd6f4bbef7248c93ed5a5",
+      "relation": "byte_identical_C_source_donor",
+      "provenance": {
+        "manifest": "decomp/regions/japan_0_equiv37_more.json",
+        "original_native_result": "historical_full_rom_G2_port",
+        "direction": "USA_to_Japan"
+      }
+    },
+    {
+      "usa": {
+        "name": "func_80210FA0_6989A0",
+        "original_rom_offset": "0x6989A0"
+      },
+      "japan_0": {
+        "name": "func_080014B0_730FF0",
+        "original_rom_offset": "0x730FF0"
+      },
+      "original_code_bytes": 32,
+      "original_code_sha256": "f1bafee086d285ecd63641f97a5ab5cb4759e05dab6dd6f4bbef7248c93ed5a5",
+      "relation": "byte_identical_C_source_donor",
+      "provenance": {
+        "manifest": "decomp/regions/japan_0_equiv37_more.json",
+        "original_native_result": "historical_full_rom_G2_port",
+        "direction": "USA_to_Japan"
+      }
+    },
+    {
+      "usa": {
+        "name": "func_802116EC_6990EC",
+        "original_rom_offset": "0x6990EC"
+      },
+      "japan_0": {
+        "name": "func_802210BC_68A7AC",
+        "original_rom_offset": "0x68A7AC"
+      },
+      "original_code_bytes": 84,
+      "original_code_sha256": "edafed65f4aea871e485c593af734cb08bc97caa6900f669b669dcfe6691245e",
+      "relation": "byte_identical_C_source_donor",
+      "provenance": {
+        "manifest": "decomp/research/usa_crossregion51_recovered19_20261122/manifest.json",
+        "original_native_result": "historical_full_rom_G2_port",
+        "direction": "Japan_to_USA"
+      }
+    },
+    {
+      "usa": {
+        "name": "func_80212C38_69A638",
+        "original_rom_offset": "0x69A638"
+      },
+      "japan_0": {
+        "name": "func_80217A30_69F130",
+        "original_rom_offset": "0x69F130"
+      },
+      "original_code_bytes": 48,
+      "original_code_sha256": "436e9041e3ca2a24c9161f3dc67b723c57c19bb4bac9ecb8098d42dcc24e3ee8",
+      "relation": "byte_identical_C_source_donor",
+      "provenance": {
+        "manifest": "decomp/regions/japan_0_equiv36.json",
+        "original_native_result": "historical_full_rom_G2_port",
+        "direction": "USA_to_Japan"
+      }
+    },
+    {
+      "usa": {
+        "name": "func_802143A0_69BDA0",
+        "original_rom_offset": "0x69BDA0"
+      },
+      "japan_0": {
+        "name": "func_80219198_6A0898",
+        "original_rom_offset": "0x6A0898"
+      },
+      "original_code_bytes": 48,
+      "original_code_sha256": "1bb31987b0e26eabda393940ac10f8c2c24d40a8a113af01c8e89d6cd9ede842",
+      "relation": "byte_identical_C_source_donor",
+      "provenance": {
+        "manifest": "decomp/regions/japan_0_equiv36.json",
+        "original_native_result": "historical_full_rom_G2_port",
+        "direction": "USA_to_Japan"
+      }
+    },
+    {
+      "usa": {
+        "name": "func_802143E4_69BDE4",
+        "original_rom_offset": "0x69BDE4"
+      },
+      "japan_0": {
+        "name": "func_802191DC_6A08DC",
+        "original_rom_offset": "0x6A08DC"
+      },
+      "original_code_bytes": 36,
+      "original_code_sha256": "cf540bd36de7018e1517c2f487e4c81af2da118fef0a3f25f2167ad0b6bc9047",
+      "relation": "byte_identical_C_source_donor",
+      "provenance": {
+        "manifest": "decomp/regions/japan_0_equiv36.json",
+        "original_native_result": "historical_full_rom_G2_port",
+        "direction": "USA_to_Japan"
+      }
+    },
+    {
+      "usa": {
+        "name": "func_080005DC_6ACB2C",
+        "original_rom_offset": "0x6ACB2C"
+      },
+      "japan_0": {
+        "name": "func_080005DC_6B16AC",
+        "original_rom_offset": "0x6B16AC"
+      },
+      "original_code_bytes": 20,
+      "original_code_sha256": "82bdc1faa18160f82e92d7144c52eb24f5fa095477205aa8aa26e65265586d4e",
+      "relation": "byte_identical_C_source_donor",
+      "provenance": {
+        "manifest": "decomp/regions/japan_0_equiv4_more.json",
+        "original_native_result": "historical_full_rom_G2_port",
+        "direction": "USA_to_Japan"
+      }
+    },
+    {
+      "usa": {
+        "name": "func_0800074C_6ACC9C",
+        "original_rom_offset": "0x6ACC9C"
+      },
+      "japan_0": {
+        "name": "func_0800074C_6B181C",
+        "original_rom_offset": "0x6B181C"
+      },
+      "original_code_bytes": 20,
+      "original_code_sha256": "4e9cd72248ff1b2e50c7ace8ec6d6ce0314f964a0be166c6292d64ca6070f3ed",
+      "relation": "byte_identical_C_source_donor",
+      "provenance": {
+        "manifest": "decomp/regions/japan_0_equiv4_more.json",
+        "original_native_result": "historical_full_rom_G2_port",
+        "direction": "USA_to_Japan"
+      }
+    },
+    {
+      "usa": {
+        "name": "func_0800056C_6B380C",
+        "original_rom_offset": "0x6B380C"
+      },
+      "japan_0": {
+        "name": "func_08000508_6B8288",
+        "original_rom_offset": "0x6B8288"
+      },
+      "original_code_bytes": 24,
+      "original_code_sha256": "ec70ec8fed969146d2413fdf01db10a86e6698fd312ec45f8bf94aa3c1772a94",
+      "relation": "byte_identical_C_source_donor",
+      "provenance": {
+        "manifest": "decomp/regions/japan_0_equiv4_more.json",
+        "original_native_result": "historical_full_rom_G2_port",
+        "direction": "USA_to_Japan"
+      }
+    },
+    {
+      "usa": {
+        "name": "func_08005EC4_6B9164",
+        "original_rom_offset": "0x6B9164"
+      },
+      "japan_0": {
+        "name": "func_08005E60_6BDBE0",
+        "original_rom_offset": "0x6BDBE0"
+      },
+      "original_code_bytes": 16,
+      "original_code_sha256": "13b2356307f14c70e9f6328b10062161378461116efd2a4ecb44ae42787af9b2",
+      "relation": "byte_identical_C_source_donor",
+      "provenance": {
+        "manifest": "decomp/regions/japan_0_equiv4_more.json",
+        "original_native_result": "historical_full_rom_G2_port",
+        "direction": "USA_to_Japan"
+      }
+    },
+    {
+      "usa": {
+        "name": "func_080008B8_6F0AC8",
+        "original_rom_offset": "0x6F0AC8"
+      },
+      "japan_0": {
+        "name": "func_080008B8_6F51D8",
+        "original_rom_offset": "0x6F51D8"
+      },
+      "original_code_bytes": 20,
+      "original_code_sha256": "be6b7d0a9889c9f85e706264a1e54ee495b44ce9ffea1cb1244d05ba2beb3819",
+      "relation": "byte_identical_C_source_donor",
+      "provenance": {
+        "manifest": "decomp/regions/japan_0_equiv37_more.json",
+        "original_native_result": "historical_full_rom_G2_port",
+        "direction": "USA_to_Japan"
+      }
+    },
+    {
+      "usa": {
+        "name": "func_080008CC_6F0ADC",
+        "original_rom_offset": "0x6F0ADC"
+      },
+      "japan_0": {
+        "name": "func_080008CC_6F51EC",
+        "original_rom_offset": "0x6F51EC"
+      },
+      "original_code_bytes": 24,
+      "original_code_sha256": "37b19c794b28cf3a47729c6501be8cfbc70c92a8f58bb441467c0e33ea7267d1",
+      "relation": "byte_identical_C_source_donor",
+      "provenance": {
+        "manifest": "decomp/regions/japan_0_equiv37_more.json",
+        "original_native_result": "historical_full_rom_G2_port",
+        "direction": "USA_to_Japan"
+      }
+    },
+    {
+      "usa": {
+        "name": "func_080012C8_6FC4C8",
+        "original_rom_offset": "0x6FC4C8"
+      },
+      "japan_0": {
+        "name": "func_080012C8_700A98",
+        "original_rom_offset": "0x700A98"
+      },
+      "original_code_bytes": 20,
+      "original_code_sha256": "0748d38f9b09d98d540b1f2bbcf95e08da1993891d072bb047b41edbb49a525b",
+      "relation": "byte_identical_C_source_donor",
+      "provenance": {
+        "manifest": "decomp/regions/japan_0_equiv37_more.json",
+        "original_native_result": "historical_full_rom_G2_port",
+        "direction": "USA_to_Japan"
+      }
+    },
+    {
+      "usa": {
+        "name": "func_08000434_706224",
+        "original_rom_offset": "0x706224"
+      },
+      "japan_0": {
+        "name": "func_08000434_70A7A4",
+        "original_rom_offset": "0x70A7A4"
+      },
+      "original_code_bytes": 24,
+      "original_code_sha256": "4ae9ecb93878594cf12923da7844c8ba35d5c9ea7f13c364c288918f3a7e7e9f",
+      "relation": "byte_identical_C_source_donor",
+      "provenance": {
+        "manifest": "decomp/regions/japan_0_equiv37_more.json",
+        "original_native_result": "historical_full_rom_G2_port",
+        "direction": "USA_to_Japan"
+      }
+    },
+    {
+      "usa": {
+        "name": "func_0800063C_71DE0C",
+        "original_rom_offset": "0x71DE0C"
+      },
+      "japan_0": {
+        "name": "func_8022BB0C_6951FC",
+        "original_rom_offset": "0x6951FC"
+      },
+      "original_code_bytes": 84,
+      "original_code_sha256": "1e45d908799c06216920fd082fa75bee75979140f408e70bb0fb7aa35f5b38f8",
+      "relation": "byte_identical_C_source_donor",
+      "provenance": {
+        "manifest": "decomp/research/usa_crossregion51_recovered19_20261122/manifest.json",
+        "original_native_result": "historical_full_rom_G2_port",
+        "direction": "Japan_to_USA"
+      }
+    },
+    {
+      "usa": {
+        "name": "func_0800118C_71E95C",
+        "original_rom_offset": "0x71E95C"
+      },
+      "japan_0": {
+        "name": "func_08001178_722E08",
+        "original_rom_offset": "0x722E08"
+      },
+      "original_code_bytes": 84,
+      "original_code_sha256": "30457670c7c4029787fcea244ce4d27621fb8e42e0b68bcf1e024d4842038911",
+      "relation": "byte_identical_C_source_donor",
+      "provenance": {
+        "manifest": "decomp/research/usa_crossregion51_recovered19_20261122/manifest.json",
+        "original_native_result": "historical_full_rom_G2_port",
+        "direction": "Japan_to_USA"
+      }
+    },
+    {
+      "usa": {
+        "name": "func_080011E0_71E9B0",
+        "original_rom_offset": "0x71E9B0"
+      },
+      "japan_0": {
+        "name": "func_8021AB94_684284",
+        "original_rom_offset": "0x684284"
+      },
+      "original_code_bytes": 84,
+      "original_code_sha256": "eb74c7b9ee284d87e050f27f02ad5e4b08f9aa3fb80807e77393a5d93c96adb4",
+      "relation": "byte_identical_C_source_donor",
+      "provenance": {
+        "manifest": "decomp/research/usa_crossregion51_recovered19_20261122/manifest.json",
+        "original_native_result": "historical_full_rom_G2_port",
+        "direction": "Japan_to_USA"
+      }
+    },
+    {
+      "usa": {
+        "name": "func_080014EC_71ECBC",
+        "original_rom_offset": "0x71ECBC"
+      },
+      "japan_0": {
+        "name": "func_801D72DC_66982C",
+        "original_rom_offset": "0x66982C"
+      },
+      "original_code_bytes": 84,
+      "original_code_sha256": "6f41f3421edbb730bfec84293bd9824f5c065c64ceded3fbfc40594d6e4ac487",
+      "relation": "byte_identical_C_source_donor",
+      "provenance": {
+        "manifest": "decomp/research/usa_crossregion51_recovered19_20261122/manifest.json",
+        "original_native_result": "historical_full_rom_G2_port",
+        "direction": "Japan_to_USA"
+      }
+    },
+    {
+      "usa": {
+        "name": "func_08000C88_72A228",
+        "original_rom_offset": "0x72A228"
+      },
+      "japan_0": {
+        "name": "func_08000C44_72E604",
+        "original_rom_offset": "0x72E604"
+      },
+      "original_code_bytes": 16,
+      "original_code_sha256": "2b462bb9710283c03fb64c3ac0471dfde30b41ca3c6ac3f738bed0571cf709ed",
+      "relation": "byte_identical_C_source_donor",
+      "provenance": {
+        "manifest": "decomp/regions/japan_0_equiv37_more.json",
+        "original_native_result": "historical_full_rom_G2_port",
+        "direction": "USA_to_Japan"
+      }
+    },
+    {
+      "usa": {
+        "name": "func_08000C88_72A228",
+        "original_rom_offset": "0x72A228"
+      },
+      "japan_0": {
+        "name": "func_08000DC0_734840",
+        "original_rom_offset": "0x734840"
+      },
+      "original_code_bytes": 16,
+      "original_code_sha256": "2b462bb9710283c03fb64c3ac0471dfde30b41ca3c6ac3f738bed0571cf709ed",
+      "relation": "byte_identical_C_source_donor",
+      "provenance": {
+        "manifest": "decomp/regions/japan_0_equiv37_more.json",
+        "original_native_result": "historical_full_rom_G2_port",
+        "direction": "USA_to_Japan"
+      }
+    },
+    {
+      "usa": {
+        "name": "func_08000C88_72A228",
+        "original_rom_offset": "0x72A228"
+      },
+      "japan_0": {
+        "name": "func_08000CA8_737F88",
+        "original_rom_offset": "0x737F88"
+      },
+      "original_code_bytes": 16,
+      "original_code_sha256": "2b462bb9710283c03fb64c3ac0471dfde30b41ca3c6ac3f738bed0571cf709ed",
+      "relation": "byte_identical_C_source_donor",
+      "provenance": {
+        "manifest": "decomp/regions/japan_0_equiv37_more.json",
+        "original_native_result": "historical_full_rom_G2_port",
+        "direction": "USA_to_Japan"
+      }
+    },
+    {
+      "usa": {
+        "name": "func_08000C88_72A228",
+        "original_rom_offset": "0x72A228"
+      },
+      "japan_0": {
+        "name": "func_08000A14_73D494",
+        "original_rom_offset": "0x73D494"
+      },
+      "original_code_bytes": 16,
+      "original_code_sha256": "2b462bb9710283c03fb64c3ac0471dfde30b41ca3c6ac3f738bed0571cf709ed",
+      "relation": "byte_identical_C_source_donor",
+      "provenance": {
+        "manifest": "decomp/regions/japan_0_equiv37_more.json",
+        "original_native_result": "historical_full_rom_G2_port",
+        "direction": "USA_to_Japan"
+      }
+    },
+    {
+      "usa": {
+        "name": "func_0800058C_72BDDC",
+        "original_rom_offset": "0x72BDDC"
+      },
+      "japan_0": {
+        "name": "func_08000790_70C720",
+        "original_rom_offset": "0x70C720"
+      },
+      "original_code_bytes": 20,
+      "original_code_sha256": "c89c5ccfe7091b0137f98560e97eea68c1cbdeb661ce7e722d5135d1dc7a7ff9",
+      "relation": "byte_identical_C_source_donor",
+      "provenance": {
+        "manifest": "decomp/regions/japan_0_equiv37_more.json",
+        "original_native_result": "historical_full_rom_G2_port",
+        "direction": "USA_to_Japan"
+      }
+    },
+    {
+      "usa": {
+        "name": "func_0800058C_72BDDC",
+        "original_rom_offset": "0x72BDDC"
+      },
+      "japan_0": {
+        "name": "func_080003E4_70E954",
+        "original_rom_offset": "0x70E954"
+      },
+      "original_code_bytes": 20,
+      "original_code_sha256": "c89c5ccfe7091b0137f98560e97eea68c1cbdeb661ce7e722d5135d1dc7a7ff9",
+      "relation": "byte_identical_C_source_donor",
+      "provenance": {
+        "manifest": "decomp/regions/japan_0_equiv37_more.json",
+        "original_native_result": "historical_full_rom_G2_port",
+        "direction": "USA_to_Japan"
+      }
+    },
+    {
+      "usa": {
+        "name": "func_0800058C_72BDDC",
+        "original_rom_offset": "0x72BDDC"
+      },
+      "japan_0": {
+        "name": "func_0800058C_7300CC",
+        "original_rom_offset": "0x7300CC"
+      },
+      "original_code_bytes": 20,
+      "original_code_sha256": "c89c5ccfe7091b0137f98560e97eea68c1cbdeb661ce7e722d5135d1dc7a7ff9",
+      "relation": "byte_identical_C_source_donor",
+      "provenance": {
+        "manifest": "decomp/regions/japan_0_equiv37_more.json",
+        "original_native_result": "historical_full_rom_G2_port",
+        "direction": "USA_to_Japan"
+      }
+    },
+    {
+      "usa": {
+        "name": "func_080005A8_72BDF8",
+        "original_rom_offset": "0x72BDF8"
+      },
+      "japan_0": {
+        "name": "func_080003F8_70E968",
+        "original_rom_offset": "0x70E968"
+      },
+      "original_code_bytes": 24,
+      "original_code_sha256": "889c3ab14e2e20f5f56aac48303ed1b7b12d39d462f1f51bea04b9dcbea1092a",
+      "relation": "byte_identical_C_source_donor",
+      "provenance": {
+        "manifest": "decomp/regions/japan_0_equiv37_more.json",
+        "original_native_result": "historical_full_rom_G2_port",
+        "direction": "USA_to_Japan"
+      }
+    },
+    {
+      "usa": {
+        "name": "func_080005A8_72BDF8",
+        "original_rom_offset": "0x72BDF8"
+      },
+      "japan_0": {
+        "name": "func_080005A8_7300E8",
+        "original_rom_offset": "0x7300E8"
+      },
+      "original_code_bytes": 24,
+      "original_code_sha256": "889c3ab14e2e20f5f56aac48303ed1b7b12d39d462f1f51bea04b9dcbea1092a",
+      "relation": "byte_identical_C_source_donor",
+      "provenance": {
+        "manifest": "decomp/regions/japan_0_equiv37_more.json",
+        "original_native_result": "historical_full_rom_G2_port",
+        "direction": "USA_to_Japan"
+      }
+    },
+    {
+      "usa": {
+        "name": "func_08000AC8_72C318",
+        "original_rom_offset": "0x72C318"
+      },
+      "japan_0": {
+        "name": "func_801D72DC_66982C",
+        "original_rom_offset": "0x66982C"
+      },
+      "original_code_bytes": 84,
+      "original_code_sha256": "6f41f3421edbb730bfec84293bd9824f5c065c64ceded3fbfc40594d6e4ac487",
+      "relation": "byte_identical_C_source_donor",
+      "provenance": {
+        "manifest": "decomp/research/usa_crossregion51_recovered19_20261122/manifest.json",
+        "original_native_result": "historical_full_rom_G2_port",
+        "direction": "Japan_to_USA"
+      }
+    },
+    {
+      "usa": {
+        "name": "func_08000DA8_733CD8",
+        "original_rom_offset": "0x733CD8"
+      },
+      "japan_0": {
+        "name": "func_08000DA8_738088",
+        "original_rom_offset": "0x738088"
+      },
+      "original_code_bytes": 16,
+      "original_code_sha256": "ea3d9fee079823e0153fca7cdcfc767c73205b01b3c2eb7886756f1725f9ca65",
+      "relation": "byte_identical_C_source_donor",
+      "provenance": {
+        "manifest": "decomp/regions/japan_0_equiv37_more.json",
+        "original_native_result": "historical_full_rom_G2_port",
+        "direction": "USA_to_Japan"
+      }
+    }
+  ]
+}
