@@ -1,0 +1,74 @@
+[
+  {
+    "region": "usa",
+    "name": "func_80210648_698048",
+    "source": "void func_80210648_698048(char*p,float f){float*v=*(float**)(p+24);float x=v[7],y=v[8],z=v[9];v[7]=x*f;v[8]=y*f;v[9]=z*f;}",
+    "negative": "void func_80210648_698048(char*p,float f){float*v=*(float**)(p+28);float x=v[7],y=v[8],z=v[9];v[7]=x*f;v[8]=y*f;v[9]=z*f;}"
+  },
+  {
+    "region": "usa",
+    "name": "func_802108FC_6982FC",
+    "source": "void func_802108FC_6982FC(char*p,float f){float*v=*(float**)(p+24);float x=v[7],y=v[8],z=v[9];v[7]=x*f;v[8]=y*f;v[9]=z*f;}",
+    "negative": "void func_802108FC_6982FC(char*p,float f){float*v=*(float**)(p+28);float x=v[7],y=v[8],z=v[9];v[7]=x*f;v[8]=y*f;v[9]=z*f;}"
+  },
+  {
+    "region": "usa",
+    "name": "func_80210AB4_6984B4",
+    "source": "void func_80210AB4_6984B4(char*p,float f){float*v=*(float**)(p+24);float x=v[7],y=v[8],z=v[9];v[7]=x*f;v[8]=y*f;v[9]=z*f;}",
+    "negative": "void func_80210AB4_6984B4(char*p,float f){float*v=*(float**)(p+28);float x=v[7],y=v[8],z=v[9];v[7]=x*f;v[8]=y*f;v[9]=z*f;}"
+  },
+  {
+    "region": "usa",
+    "name": "func_80210FE0_6989E0",
+    "source": "void func_80210FE0_6989E0(char*p,float f){float*v=*(float**)(p+24);float x=v[7],y=v[8],z=v[9];v[7]=x*f;v[8]=y*f;v[9]=z*f;}",
+    "negative": "void func_80210FE0_6989E0(char*p,float f){float*v=*(float**)(p+28);float x=v[7],y=v[8],z=v[9];v[7]=x*f;v[8]=y*f;v[9]=z*f;}"
+  },
+  {
+    "region": "japan_0",
+    "name": "memcpy",
+    "source": "void* memcpy(void* dest,const void* src,unsigned int len){unsigned char *d=dest;const unsigned char*s=src;if(len!=0){do{*d++=*s++;}while(--len!=0);}return dest;}",
+    "negative": "void* memcpy(void* dest,const void* src,unsigned int len){unsigned char *d=dest;const unsigned char*s=src;if(len!=0){do{*d++=*s++;}while(len-=2!=0);}return dest;}"
+  },
+  {
+    "region": "japan_0",
+    "name": "alMainBusParam",
+    "source": "int alMainBusParam(char*p,int type,int value){int* list=*(int**)(p+28);if(type==2){int n=*(int*)(p+20);list[n]=value;*(int*)(p+20)=n+1;}return 0;}",
+    "negative": "int alMainBusParam(char*p,int type,int value){int* list=*(int**)(p+28);if(type==3){int n=*(int*)(p+20);list[n]=value;*(int*)(p+20)=n+1;}return 0;}"
+  },
+  {
+    "region": "japan_0",
+    "name": "alAuxBusParam",
+    "source": "int alAuxBusParam(char*p,int type,int value){int* list=*(int**)(p+28);if(type==2){int n=*(int*)(p+20);list[n]=value;*(int*)(p+20)=n+1;}return 0;}",
+    "negative": "int alAuxBusParam(char*p,int type,int value){int* list=*(int**)(p+28);if(type==3){int n=*(int*)(p+20);list[n]=value;*(int*)(p+20)=n+1;}return 0;}"
+  },
+  {
+    "region": "japan_0",
+    "name": "func_80012490_13090",
+    "source": "void func_80012490_13090(char *p,int*dest){int *src=*(int**)(p+108);int *end=src+24;while(src!=end){dest[0]=src[0];dest[1]=src[1];dest[2]=src[2];dest+=3;src+=3;}}",
+    "negative": "void func_80012490_13090(char *p,int*dest){int *src=*(int**)(p+108);int *end=src+27;while(src!=end){dest[0]=src[0];dest[1]=src[1];dest[2]=src[2];dest+=3;src+=3;}}"
+  },
+  {
+    "region": "japan_0",
+    "name": "func_80033988_34588",
+    "source": "void func_80033988_34588(char*p){float *f=*(float**)(p+84);int i=0;if(f){do{f[i]=0.f;}while(++i<3);}}",
+    "negative": "void func_80033988_34588(char*p){float *f=*(float**)(p+84);int i=0;if(f){do{f[i]=0.f;}while(++i<4);}}"
+  },
+  {
+    "region": "japan_0",
+    "name": "func_8021FF9C_68968C",
+    "source": "typedef struct{char pad[176];volatile float *a;volatile float*b;} Obj;void func_8021FF9C_68968C(volatile Obj *p,float val){p->a[9]=val;float v=p->a[9];p->a[8]=v;p->a[7]=v;p->b[9]=val;v=p->b[9];p->b[8]=v;p->b[7]=v;}",
+    "negative": "typedef struct{char pad[176];volatile float *a;volatile float*b;} Obj;void func_8021FF9C_68968C(volatile Obj *p,float val){p->a[9]=val;float v=p->a[9];p->a[8]=v;p->a[7]=v;p->b[9]=val;v=p->b[9];p->b[8]=v;p->b[6]=v;}"
+  },
+  {
+    "region": "usa",
+    "name": "func_800352AC_35EAC",
+    "source": "typedef struct Task { unsigned int next; unsigned int unknown04; void *callback08; void *callback0C; void *callback10; void *callback14; void *data18; } Task;typedef void (*Callback)(Task *, void *);void func_800352AC_35EAC(Task *task, Callback callback) {task->callback14 = task->callback0C; task->callback0C = (void *)callback; callback(task, task->data18); task->callback0C = task->callback14;}",
+    "negative": "typedef struct Task { unsigned int next; unsigned int unknown04; void *callback08; void *callback0C; void *callback10; void *callback14; void *data18; } Task;typedef void (*Callback)(Task *, void *);void func_800352AC_35EAC(Task *task, Callback callback) {task->callback14 = task->callback0C; task->callback0C = (void *)callback; callback(task, task->data18); task->callback0C = task->callback10;}"
+  },
+  {
+    "region": "japan_0",
+    "name": "func_80012180_12D80",
+    "source": "void func_80012180_12D80(char*p,int mode,int arg,float f,short sub){*(unsigned char*)(*(char**)(p+204))=1;*(short*)(*(char**)(p+204)+2)=mode;*(float*)(*(char**)(p+204)+4)=f;*(int*)(*(char**)(p+204)+8)=arg;*(short*)(p+200)=0;*(short*)(p+202)=sub;}",
+    "negative": "void func_80012180_12D80(char*p,int mode,int arg,float f,short sub){*(unsigned char*)(*(char**)(p+204))=1;*(short*)(*(char**)(p+204)+2)=mode;*(float*)(*(char**)(p+204)+4)=f;*(int*)(*(char**)(p+204)+8)=arg;*(short*)(p+200)=0;*(short*)(p+200)=sub;}"
+  }
+]

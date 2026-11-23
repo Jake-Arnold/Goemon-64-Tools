@@ -1,0 +1,1 @@
+extern char *__osRunningThread;int osGetThreadPri(char*thread){if(!thread)thread=__osRunningThread;return *(int*)(thread+8);}

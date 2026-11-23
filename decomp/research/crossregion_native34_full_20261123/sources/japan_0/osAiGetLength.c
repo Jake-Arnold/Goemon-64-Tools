@@ -1,0 +1,1 @@
+unsigned int osAiGetLength(void){return *(volatile unsigned int*)0xA4500004;}

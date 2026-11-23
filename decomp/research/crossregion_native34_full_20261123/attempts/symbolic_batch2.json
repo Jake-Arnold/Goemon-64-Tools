@@ -1,0 +1,29 @@
+[
+  {
+    "region": "japan_0",
+    "name": "func_800032A4_3EA4",
+    "source": "extern char*g_system_ptr;typedef struct {char pad[0x3ADE0]; unsigned char val,next;} Node;void func_800032A4_3EA4(int v){Node*sys=(Node*)g_system_ptr;sys->val=v;sys->next=0;}",
+    "negative": "extern char*g_system_ptr;typedef struct {char pad[0x3ADE0]; unsigned char val,next;} Node;void func_800032A4_3EA4(int v){Node*sys=(Node*)g_system_ptr;sys->val=v;sys->next=1;}",
+    "symbols": {
+      "g_system_ptr": 2148933048
+    }
+  },
+  {
+    "region": "usa",
+    "name": "func_80035314_35F14",
+    "source": "extern char* D_8016DAB4;typedef void(*Func)(char*,void*);void func_80035314_35F14(char*task,Func cb){*(Func*)(task+12)=cb;cb(task,*(void**)(D_8016DAB4+24));}",
+    "negative": "extern char* D_8016DAB4;typedef void(*Func)(char*,void*);void func_80035314_35F14(char*task,Func cb){*(Func*)(task+16)=cb;cb(task,*(void**)(D_8016DAB4+24));}",
+    "symbols": {
+      "D_8016DAB4": 2148981428
+    }
+  },
+  {
+    "region": "usa",
+    "name": "func_80214F44_5D0414",
+    "source": "extern volatile short D_8023B3A4;void func_80214F44_5D0414(void){D_8023B3A4=0x4000;}",
+    "negative": "extern volatile short D_8023B3A4;void func_80214F44_5D0414(void){D_8023B3A4=0x4001;}",
+    "symbols": {
+      "D_8023B3A4": 2149823396
+    }
+  }
+]

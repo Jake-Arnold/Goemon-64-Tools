@@ -1,0 +1,1 @@
+void func_8004054C_4114C(char*fmt,...){ asm("nop"); }

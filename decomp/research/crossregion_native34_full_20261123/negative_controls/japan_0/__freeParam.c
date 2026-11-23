@@ -1,0 +1,1 @@
+extern char *alGlobals;void __freeParam(void *node){char *p=alGlobals;*(void**)node=*(void**)(p+48);*(void**)(p+44)=node;}

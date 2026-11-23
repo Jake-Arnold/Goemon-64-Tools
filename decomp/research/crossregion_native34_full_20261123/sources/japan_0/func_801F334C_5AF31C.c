@@ -1,0 +1,1 @@
+int func_801F334C_5AF31C(unsigned char* p,unsigned char step,unsigned char limit){if(step < (*p-limit)){*p-=step;return 0;}*p=limit;return 1;}

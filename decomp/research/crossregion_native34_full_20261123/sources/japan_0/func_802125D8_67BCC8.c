@@ -1,0 +1,1 @@
+extern char*g_system_ptr;void func_802125D8_67BCC8(void){char*p=*(char**)(g_system_ptr+0xCF8F8);char*prev=*(char**)p;p[100]=0;if(prev)prev[100]=0;}

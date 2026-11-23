@@ -1,0 +1,8 @@
+{"name": "alMainBusParam", "region": "japan_0", "result": "FAILED_NATIVE", "first_diff": 4, "text_size": 64, "error": null}
+{"name": "alAuxBusParam", "region": "japan_0", "result": "FAILED_NATIVE", "first_diff": 4, "text_size": 64, "error": null}
+{"name": "func_80033988_34588", "region": "japan_0", "result": "ISOLATED_NATIVE_EXACT", "first_diff": null, "text_size": 48, "error": null}
+{"name": "func_80012490_13090", "region": "japan_0", "result": "FAILED_NATIVE", "first_diff": 0, "text_size": 208, "error": null}
+{"name": "func_8021FF9C_68968C", "region": "japan_0", "result": "FAILED_NATIVE", "first_diff": 12, "text_size": 80, "error": null}
+{"name": "memcpy", "region": "japan_0", "result": "FAILED_NATIVE", "first_diff": 4, "text_size": 128, "error": null}
+{"name": "func_800352AC_35EAC", "region": "usa", "result": "FAILED_NATIVE", "first_diff": 8, "text_size": 64, "error": null}
+SUMMARY 1 / 7

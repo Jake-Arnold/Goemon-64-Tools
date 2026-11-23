@@ -1,0 +1,1 @@
+void osSyncPrintf(char*fmt,...){ asm("nop"); }

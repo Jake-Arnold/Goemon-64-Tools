@@ -1,0 +1,44 @@
+[
+  {
+    "region": "japan_0",
+    "name": "alMainBusParam",
+    "source": "int alMainBusParam(char*p,int type,int value){if(type==2){int *array=*(int**)(p+28);volatile int* count=(volatile int*)(p+20);array[*count]=value;(*count)++;}return 0;}",
+    "negative": "int alMainBusParam(char*p,int type,int value){if(type==3){int *array=*(int**)(p+28);volatile int* count=(volatile int*)(p+20);array[*count]=value;(*count)++;}return 0;}"
+  },
+  {
+    "region": "japan_0",
+    "name": "alAuxBusParam",
+    "source": "int alAuxBusParam(char*p,int type,int value){if(type==2){int *array=*(int**)(p+28);volatile int* count=(volatile int*)(p+20);array[*count]=value;(*count)++;}return 0;}",
+    "negative": "int alAuxBusParam(char*p,int type,int value){if(type==3){int *array=*(int**)(p+28);volatile int* count=(volatile int*)(p+20);array[*count]=value;(*count)++;}return 0;}"
+  },
+  {
+    "region": "japan_0",
+    "name": "func_80033988_34588",
+    "source": "void func_80033988_34588(char*p){float* v=*(float**)(p+84);int i=0;if(v)do{*v=0.0f;i++;v++;}while(i<3);}",
+    "negative": "void func_80033988_34588(char*p){float* v=*(float**)(p+84);int i=0;if(v)do{*v=0.0f;i++;v++;}while(i<4);}"
+  },
+  {
+    "region": "japan_0",
+    "name": "func_80012490_13090",
+    "source": "typedef struct{int a,b,c;} X;void func_80012490_13090(char*p,volatile X*dst){volatile X *src=*(X**)(p+108);volatile X*end=src+8;while(src!=end){dst->a=src->a;dst->b=src->b;dst->c=src->c;src++;dst++;}}",
+    "negative": "typedef struct{int a,b,c;} X;void func_80012490_13090(char*p,volatile X*dst){volatile X *src=*(X**)(p+108);volatile X*end=src+7;while(src!=end){dst->a=src->a;dst->b=src->b;dst->c=src->c;src++;dst++;}}"
+  },
+  {
+    "region": "japan_0",
+    "name": "func_8021FF9C_68968C",
+    "source": "typedef struct{char pad[176];volatile float *a;volatile float*b;} Obj;void func_8021FF9C_68968C(volatile Obj *p,float val){float v;p->a[9]=val;v=p->a[9];p->a[8]=v;p->a[7]=v;p->b[9]=val;v=p->b[9];p->b[8]=v;p->b[7]=v;}",
+    "negative": "typedef struct{char pad[176];volatile float *a;volatile float*b;} Obj;void func_8021FF9C_68968C(volatile Obj *p,float val){float v;p->a[9]=val;v=p->a[9];p->a[8]=v;p->a[7]=v;p->b[9]=val;v=p->b[9];p->b[8]=v;p->b[6]=v;}"
+  },
+  {
+    "region": "japan_0",
+    "name": "memcpy",
+    "source": "void *memcpy(void *dst,const void *src,int n){unsigned char *a=dst;const unsigned char *b=src;while(n){*a++=*b++;n--;}return dst;}",
+    "negative": "void *memcpy(void *dst,const void *src,int n){unsigned char *a=dst;const unsigned char *b=src;while(n){*a++=*b++;n-=2;}return dst;}"
+  },
+  {
+    "region": "usa",
+    "name": "func_800352AC_35EAC",
+    "source": "typedef struct{int a,b;void*c8,*cC,*c10,*c14,*data;} Task;typedef void(*Func)(Task*,void*);void func_800352AC_35EAC(Task*t,Func cb){void*old=t->cC;Func f=cb;t->c14=old;t->cC=(void*)cb;f(t,t->data);t->cC=t->c14;}",
+    "negative": "typedef struct{int a,b;void*c8,*cC,*c10,*c14,*data;} Task;typedef void(*Func)(Task*,void*);void func_800352AC_35EAC(Task*t,Func cb){void*old=t->cC;Func f=cb;t->c10=old;t->cC=(void*)cb;f(t,t->data);t->cC=t->c14;}"
+  }
+]

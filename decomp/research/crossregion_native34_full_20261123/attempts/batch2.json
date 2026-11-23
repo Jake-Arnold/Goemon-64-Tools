@@ -1,0 +1,134 @@
+[
+  {
+    "region": "usa",
+    "name": "func_800352AC_35EAC",
+    "source": "typedef struct Task { unsigned int next; unsigned int unknown04; void *callback08; void *callback0C; void *callback10; void *callback14; void *data18; } Task;typedef void (*Callback)(Task *, void *);void func_800352AC_35EAC(Task *task, Callback callback) {task->callback14 = task->callback0C; task->callback0C = (void *)callback;callback(task, task->data18);task->callback0C = task->callback14;}",
+    "negative": "typedef struct Task { unsigned int next; unsigned int unknown04; void *callback08; void *callback0C; void *callback10; void *callback14; void *data18; } Task;typedef void (*Callback)(Task *, void *);void func_800352AC_35EAC(Task *task, Callback callback) {task->callback14 = task->callback10; task->callback0C = (void *)callback;callback(task, task->data18);task->callback0C = task->callback14;}"
+  },
+  {
+    "region": "japan_0",
+    "name": "func_801ECF10_5A8EE0",
+    "source": "typedef struct {char pad[0x86];unsigned short flag;} Inner;typedef struct {char pad[0x5C];Inner* state;unsigned char character;} Actor;int func_801ECF10_5A8EE0(Actor*a){return a->character==1 && a->state->flag==0xffff;}",
+    "negative": "typedef struct {char pad[0x86];unsigned short flag;} Inner;typedef struct {char pad[0x5C];Inner* state;unsigned char character;} Actor;int func_801ECF10_5A8EE0(Actor*a){return a->character==1 && a->state->flag==0xfffe;}"
+  },
+  {
+    "region": "japan_0",
+    "name": "func_801ECF40_5A8F10",
+    "source": "typedef unsigned char u8;typedef struct {char pad[0xCC];u8 mode;}Actor;int func_801ECF40_5A8F10(Actor*a){return ((a->mode>=29&&a->mode<40)||a->mode==184);}",
+    "negative": "typedef unsigned char u8;typedef struct {char pad[0xCC];u8 mode;}Actor;int func_801ECF40_5A8F10(Actor*a){return ((a->mode>=30&&a->mode<40)||a->mode==184);}"
+  },
+  {
+    "region": "japan_0",
+    "name": "func_801ECEC8_5A8E98",
+    "source": "typedef struct {char pad[0xCC];unsigned char state;} Actor;int func_801ECEC8_5A8E98(Actor*a){return a->state >= 0 && a->state < 4;}",
+    "negative": "typedef struct {char pad[0xCC];unsigned char state;} Actor;int func_801ECEC8_5A8E98(Actor*a){return a->state >= 0 && a->state < 5;}"
+  },
+  {
+    "region": "japan_0",
+    "name": "func_801ECEE8_5A8EB8",
+    "source": "typedef struct {char pad[0x86];unsigned short flag;} Inner;typedef struct {char pad[0x5C];Inner* state;unsigned char character;} Actor;int func_801ECEE8_5A8EB8(Actor*a){return (a->character==0) && (a->state->flag!=0);}",
+    "negative": "typedef struct {char pad[0x86];unsigned short flag;} Inner;typedef struct {char pad[0x5C];Inner* state;unsigned char character;} Actor;int func_801ECEE8_5A8EB8(Actor*a){return (a->character==0) && (a->state->flag==0);}"
+  },
+  {
+    "region": "japan_0",
+    "name": "func_801ED030_5A9000",
+    "source": "typedef unsigned char u8;typedef struct {char pad[0xCC];u8 mode;}Actor;int func_801ED030_5A9000(Actor*a){return ((a->mode>=44&&a->mode<49)||a->mode==185);}",
+    "negative": "typedef unsigned char u8;typedef struct {char pad[0xCC];u8 mode;}Actor;int func_801ED030_5A9000(Actor*a){return ((a->mode>=45&&a->mode<49)||a->mode==185);}"
+  },
+  {
+    "region": "japan_0",
+    "name": "func_801F3244_5AF214",
+    "source": "void func_801F3244_5AF214(char* p,int a,int b,int c,int d,int e,int f){if(p){*(unsigned char*)(p+48)=a;*(int*)(p+72)=b;*(unsigned char*)(p+76)=c;*(short*)(p+78)=d;*(short*)(p+80)=e;*(short*)(p+82)=f;}}",
+    "negative": "void func_801F3244_5AF214(char* p,int a,int b,int c,int d,int e,int f){if(p){*(unsigned char*)(p+48)=a;*(int*)(p+72)=b;*(unsigned char*)(p+76)=c;*(short*)(p+78)=d;*(short*)(p+80)=e;*(short*)(p+84)=f;}}"
+  },
+  {
+    "region": "japan_0",
+    "name": "func_80012180_12D80",
+    "source": "void func_80012180_12D80(char*p,short mode,int arg,float f,short sub){*(unsigned char*)(*(char**)(p+204))=1;*(short*)(*(char**)(p+204)+2)=mode;*(float*)(*(char**)(p+204)+4)=f;*(int*)(*(char**)(p+204)+8)=arg;*(short*)(p+200)=0;*(short*)(p+202)=sub;}",
+    "negative": "void func_80012180_12D80(char*p,short mode,int arg,float f,short sub){*(unsigned char*)(*(char**)(p+204))=1;*(short*)(*(char**)(p+204)+2)=mode;*(float*)(*(char**)(p+204)+4)=f;*(int*)(*(char**)(p+204)+8)=arg;*(short*)(p+200)=0;*(short*)(p+200)=sub;}"
+  },
+  {
+    "region": "japan_0",
+    "name": "func_80012490_13090",
+    "source": "typedef struct Triple {int a,b,c;} Triple;void func_80012490_13090(char*p,Triple*dest){Triple *src=*(Triple**)(p+108);int i;for(i=0;i<8;i++){dest[i]=src[i];}}",
+    "negative": "typedef struct Triple {int a,b,c;} Triple;void func_80012490_13090(char*p,Triple*dest){Triple *src=*(Triple**)(p+108);int i;for(i=0;i<7;i++){dest[i]=src[i];}}"
+  },
+  {
+    "region": "japan_0",
+    "name": "func_801F3308_5AF2D8",
+    "source": "int func_801F3308_5AF2D8(unsigned char* p,unsigned char step,unsigned char limit){if(step < (limit-*p)){*p+=step;return 0;}*p=limit;return 1;}",
+    "negative": "int func_801F3308_5AF2D8(unsigned char* p,unsigned char step,unsigned char limit){if(step < (limit-*p)){*p+=limit;return 0;}*p=limit;return 1;}"
+  },
+  {
+    "region": "japan_0",
+    "name": "func_801F334C_5AF31C",
+    "source": "int func_801F334C_5AF31C(unsigned char* p,unsigned char step,unsigned char limit){if(step < (*p-limit)){*p-=step;return 0;}*p=limit;return 1;}",
+    "negative": "int func_801F334C_5AF31C(unsigned char* p,unsigned char step,unsigned char limit){if(step < (*p-limit)){*p-=limit;return 0;}*p=limit;return 1;}"
+  },
+  {
+    "region": "japan_0",
+    "name": "alMainBusParam",
+    "source": "int alMainBusParam(char*p,int type,int value){if(type==2){int idx=*(int*)(p+20);int *list=*(int**)(p+28);list[idx]=value;*(int*)(p+20)=idx+1;}return 0;}",
+    "negative": "int alMainBusParam(char*p,int type,int value){if(type==3){int idx=*(int*)(p+20);int *list=*(int**)(p+28);list[idx]=value;*(int*)(p+20)=idx+1;}return 0;}"
+  },
+  {
+    "region": "japan_0",
+    "name": "alAuxBusParam",
+    "source": "int alAuxBusParam(char*p,int type,int value){if(type==2){int idx=*(int*)(p+20);int *list=*(int**)(p+28);list[idx]=value;*(int*)(p+20)=idx+1;}return 0;}",
+    "negative": "int alAuxBusParam(char*p,int type,int value){if(type==3){int idx=*(int*)(p+20);int *list=*(int**)(p+28);list[idx]=value;*(int*)(p+20)=idx+1;}return 0;}"
+  },
+  {
+    "region": "usa",
+    "name": "func_80210648_698048",
+    "source": "void func_80210648_698048(char*p,float f){float *v=*(float**)(p+24);v[7]*=f;v[8]*=f;v[9]*=f;}",
+    "negative": "void func_80210648_698048(char*p,float f){float *v=*(float**)(p+28);v[7]*=f;v[8]*=f;v[9]*=f;}"
+  },
+  {
+    "region": "usa",
+    "name": "func_802108FC_6982FC",
+    "source": "void func_802108FC_6982FC(char*p,float f){float *v=*(float**)(p+24);v[7]*=f;v[8]*=f;v[9]*=f;}",
+    "negative": "void func_802108FC_6982FC(char*p,float f){float *v=*(float**)(p+28);v[7]*=f;v[8]*=f;v[9]*=f;}"
+  },
+  {
+    "region": "usa",
+    "name": "func_80210AB4_6984B4",
+    "source": "void func_80210AB4_6984B4(char*p,float f){float *v=*(float**)(p+24);v[7]*=f;v[8]*=f;v[9]*=f;}",
+    "negative": "void func_80210AB4_6984B4(char*p,float f){float *v=*(float**)(p+28);v[7]*=f;v[8]*=f;v[9]*=f;}"
+  },
+  {
+    "region": "usa",
+    "name": "func_80210FE0_6989E0",
+    "source": "void func_80210FE0_6989E0(char*p,float f){float *v=*(float**)(p+24);v[7]*=f;v[8]*=f;v[9]*=f;}",
+    "negative": "void func_80210FE0_6989E0(char*p,float f){float *v=*(float**)(p+28);v[7]*=f;v[8]*=f;v[9]*=f;}"
+  },
+  {
+    "region": "japan_0",
+    "name": "osSyncPrintf",
+    "source": "void osSyncPrintf(char*fmt, ...){ }",
+    "negative": "void osSyncPrintf(int fmt, ...){ }"
+  },
+  {
+    "region": "japan_0",
+    "name": "func_8004054C_4114C",
+    "source": "void func_8004054C_4114C(char*fmt, ...){ }",
+    "negative": "void func_8004054C_4114C(int fmt, ...){ }"
+  },
+  {
+    "region": "japan_0",
+    "name": "func_80033988_34588",
+    "source": "typedef struct {char pad[84];float* xyz;} Actor;void func_80033988_34588(Actor*p){int i;float*v=p->xyz;if(v){for(i=0;i<3;i++){v[i]=0.0f;}}}",
+    "negative": "typedef struct {char pad[84];float* xyz;} Actor;void func_80033988_34588(Actor*p){int i;float*v=p->xyz;if(v){for(i=0;i<4;i++){v[i]=0.0f;}}}"
+  },
+  {
+    "region": "japan_0",
+    "name": "func_80215900_69D000",
+    "source": "void func_80215900_69D000(char*p,char*q){float*a=(float*)(p+92),*b=(float*)(p+104),*dst=(float*)(q+8);a[0]+=b[0];a[1]+=b[1];a[2]+=b[2];dst[0]=a[0];dst[1]=a[1];dst[2]=a[2];}",
+    "negative": "void func_80215900_69D000(char*p,char*q){float*a=(float*)(p+96),*b=(float*)(p+104),*dst=(float*)(q+8);a[0]+=b[0];a[1]+=b[1];a[2]+=b[2];dst[0]=a[0];dst[1]=a[1];dst[2]=a[2];}"
+  },
+  {
+    "region": "japan_0",
+    "name": "alSeqFileNew",
+    "source": "void alSeqFileNew(char*p,int base){int i;for(i=0;i<*(short*)(p+2);i++)*(int*)(p+4+8*i)+=base;}",
+    "negative": "void alSeqFileNew(char*p,int base){int i;for(i=0;i<*(short*)(p+2);i++)*(int*)(p+8+8*i)+=base;}"
+  }
+]

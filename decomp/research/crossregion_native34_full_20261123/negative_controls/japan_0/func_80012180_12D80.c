@@ -1,0 +1,1 @@
+void func_80012180_12D80(char*p,int mode,int arg,float f,short sub){*(unsigned char*)(*(char**)(p+204))=1;*(short*)(*(char**)(p+204)+2)=mode;*(float*)(*(char**)(p+204)+4)=f;*(int*)(*(char**)(p+204)+8)=arg;*(short*)(p+200)=0;*(short*)(p+200)=sub;}

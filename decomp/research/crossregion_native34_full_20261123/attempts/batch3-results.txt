@@ -1,0 +1,22 @@
+{"name": "__osGetActiveQueue", "region": "japan_0", "result": "FAILED_NATIVE", "first_diff": 0, "text_size": 16, "error": null}
+{"name": "func_80214F44_5D0414", "region": "usa", "result": "FAILED_NATIVE", "first_diff": 4, "text_size": 16, "error": null}
+{"name": "__freeParam", "region": "japan_0", "result": "FAILED_NATIVE", "first_diff": 0, "text_size": 32, "error": null}
+{"name": "osGetThreadPri", "region": "japan_0", "result": "FAILED_NATIVE", "first_diff": 0, "text_size": 32, "error": null}
+{"name": "func_801D9074_603AF4", "region": "japan_0", "result": "FAILED_NATIVE", "first_diff": 0, "text_size": 48, "error": null}
+{"name": "func_80001D08_2908", "region": "japan_0", "result": "FAILED_NATIVE", "first_diff": 16, "text_size": 48, "error": null}
+{"name": "func_800032A4_3EA4", "region": "japan_0", "result": "FAILED_NATIVE", "first_diff": 0, "text_size": 32, "error": null}
+{"name": "func_802014A0_5BD470", "region": "japan_0", "result": "FAILED_NATIVE", "first_diff": 4, "text_size": 48, "error": null}
+{"name": "func_802014D0_5BD4A0", "region": "japan_0", "result": "FAILED_NATIVE", "first_diff": 4, "text_size": 48, "error": null}
+{"name": "func_802125D8_67BCC8", "region": "japan_0", "result": "FAILED_NATIVE", "first_diff": 4, "text_size": 48, "error": null}
+{"name": "func_80035314_35F14", "region": "usa", "result": "FAILED_NATIVE", "first_diff": null, "text_size": null, "error": "COMPILE_ERROR"}
+{"name": "func_8000A998_B598", "region": "japan_0", "result": "ISOLATED_NATIVE_EXACT", "first_diff": null, "text_size": 48, "error": null}
+{"name": "func_80033988_34588", "region": "japan_0", "result": "FAILED_NATIVE", "first_diff": 8, "text_size": 64, "error": null}
+{"name": "osSyncPrintf", "region": "japan_0", "result": "ISOLATED_NATIVE_EXACT", "first_diff": null, "text_size": 32, "error": null}
+{"name": "func_8004054C_4114C", "region": "japan_0", "result": "ISOLATED_NATIVE_EXACT", "first_diff": null, "text_size": 32, "error": null}
+{"name": "func_80210648_698048", "region": "usa", "result": "FAILED_NATIVE", "first_diff": 0, "text_size": 64, "error": null}
+{"name": "func_802108FC_6982FC", "region": "usa", "result": "FAILED_NATIVE", "first_diff": 0, "text_size": 64, "error": null}
+{"name": "func_80210AB4_6984B4", "region": "usa", "result": "FAILED_NATIVE", "first_diff": 0, "text_size": 64, "error": null}
+{"name": "func_80210FE0_6989E0", "region": "usa", "result": "FAILED_NATIVE", "first_diff": 0, "text_size": 64, "error": null}
+{"name": "memcpy", "region": "japan_0", "result": "FAILED_NATIVE", "first_diff": 4, "text_size": 128, "error": null}
+{"name": "alSaveParam", "region": "japan_0", "result": "ISOLATED_NATIVE_EXACT", "first_diff": null, "text_size": 64, "error": null}
+SUMMARY 4 / 21

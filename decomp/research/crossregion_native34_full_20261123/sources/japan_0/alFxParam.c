@@ -1,0 +1,1 @@
+int alFxParam(int *p,int idx,int value){if(idx==1)*p=value;return 0;}

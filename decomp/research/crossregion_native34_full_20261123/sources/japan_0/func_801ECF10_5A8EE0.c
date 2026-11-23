@@ -1,0 +1,1 @@
+typedef struct {char pad[0x86];unsigned short flag;} Inner;typedef struct {char pad[0x5C];Inner* state;unsigned char character;} Actor;int func_801ECF10_5A8EE0(Actor*a){return a->character==1 && a->state->flag==0xffff;}

@@ -1,0 +1,1 @@
+int alSaveParam(unsigned int *p,int flag,unsigned int v){switch(flag){case 1:p[0]=v;break;case 5:p[5]=v;break;}return 0;}

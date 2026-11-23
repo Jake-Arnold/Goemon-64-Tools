@@ -1,0 +1,1 @@
+void func_08000AAC_70AE1C(char* p,float f,short x,short y){char* obj=*(char**)(p+24);*(short*)(obj+22)=x;*(short*)(p+210)=y;*(float*)(p+212)=f;}
