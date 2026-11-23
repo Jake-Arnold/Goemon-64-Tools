@@ -1,0 +1,27 @@
+{
+  "status": "ORIGINAL_ROM_INSTRUCTION_VERIFIED",
+  "usa": {
+    "region": "usa",
+    "rom_sha1": "df8083a54296b8c151917c5333e1c85f014a2a66",
+    "rom_bytes": 16777216,
+    "symbol_slot": "0x8015C5C8",
+    "access": "write",
+    "original_function": "func_80004170_4D70",
+    "source": "original retail MIPS, register/operand decoding at authenticated fixed offsets"
+  },
+  "japan": {
+    "region": "japan",
+    "rom_sha1": "9843ee979b5f6c80f5eda85df0baed9ae7c4e73b",
+    "rom_bytes": 16777216,
+    "symbol_slot": "0x80161DB8",
+    "access": "read",
+    "original_function": "func_80004170_4D70",
+    "source": "original retail MIPS, register/operand decoding at authenticated fixed offsets"
+  },
+  "slot_delta": "0x000057F0",
+  "width_bytes": 4,
+  "endian": "big",
+  "pointed_to_record_offset": "0x3B168 (DYNAMIC POINTER RELATIVE; NOT FIXED RAM ADDRESS)",
+  "gameplay_live_counterpart": "NOT_RUN",
+  "automated_memory_write": false
+}

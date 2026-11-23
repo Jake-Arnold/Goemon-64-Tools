@@ -1,0 +1,23 @@
+{
+  "format": "jp-cright-reset16-2371-current-accepted-combined-v1",
+  "status": "PASS",
+  "rom_equal": true,
+  "rom_sha1": "6f8745fecc3a5e7d4918c7a73353eb0726116ded",
+  "func_count": 7376,
+  "elf_func_equal": true,
+  "baseline_relocations": 80745,
+  "candidate_relocations": 80745,
+  "reloc_equal": true,
+  "baseline_reloc_sha256": "43a133b21ac2b18d8e1d00f8c4e5718776b001a1f45c54e807dae12165e797c0",
+  "candidate_reloc_sha256": "43a133b21ac2b18d8e1d00f8c4e5718776b001a1f45c54e807dae12165e797c0",
+  "before_c": 2370,
+  "after_c": 2371,
+  "new_c": [
+    "func_80004170_4D70"
+  ],
+  "lost_c": [],
+  "original_code_bytes": 60,
+  "full_CI": "NOT_RUN",
+  "canonical_manifest": "NOT_UPDATED",
+  "special_cright_legacy_raw_splat_relocations_differ": true
+}
