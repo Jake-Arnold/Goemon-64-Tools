@@ -33,6 +33,8 @@ class Archive22Gates(unittest.TestCase):
         self.assertEqual(len(new_names),22)
         self.assertFalse(old_names & new_names)
         m=load_manifest(ROOT/'decomp/manifest.json');m.pop('overlay_reconcile108_stage',None)
+        # This test deliberately reconstructs a predecessor C stage.
+        m.pop('overlay_usa_opening_new2_stage',None)
         # Historical checkpoint: exclude the newer Mini stages before older ones.
         m.pop('overlay_mini_selector_stage', None)
         m.pop('overlay_mini10_stage', None)

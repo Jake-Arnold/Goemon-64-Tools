@@ -65,3 +65,7 @@ bash run_private_native.sh /PRIVATE/JP2370 /PRIVATE/JP2371-new \
 ```
 
 Native compiler/flags and padded source-object SHA are pinned; stager rejects changed original code/symbols, altered original ROM, duplicate/stale stage, forged C ownership and relocation/ELF mismatch. This does not constitute a canonical `stable/decomp` promotion.
+
+## Original USA/Japan fixed-global crosswalk (23 November 2026 review follow-up)
+
+The original Japan reset routine reads its fixed 32-bit `g_system_ptr` slot at guest `0x80161DB8`. The different original USA initializer at the same named function address writes its 32-bit `D_8015C5C8_15D1C8` slot at guest `0x8015C5C8`. Their fixed **slot** addresses differ by exactly `+0x57F0`. Both retail ROM SHA-1 identities and original MIPS LUI/LW vs LUI/ADDIU/SW register/operand forms were independently checked, not inferred solely from the offset. See [CROSSWALK.md](CROSSWALK.md), [crosswalk.json](crosswalk.json), [sanitized opcode proof](original_rom_pointer_proof.json), and [ROM-gated verifier](verify_rom_pointer_slots.py). Run its eight host tests with `python3 -m unittest discover -s tests -p 'test_rom_pointer_slots.py' -v`. The dynamic `g_system_ptr+0x3B168` pointee field is **not** an independently fixed guest address or evidence of matching USA/Japan pointee structure layouts. No live gameplay pointer-value correlation, read/write automation, or freeze-cause claim is established.

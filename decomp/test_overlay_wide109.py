@@ -33,6 +33,8 @@ class Wide109PromotionTests(unittest.TestCase):
     def setUpClass(cls):
         cls.fixture=wide.load_fixture()
         cls.manifest=load_manifest(Path(__file__).with_name('manifest.json'))
+        # Historical checkpoint projection: post2090 functions were not yet accepted.
+        cls.manifest.pop('overlay_usa_opening_new2_stage',None)
 
     def test_exact_source_pins(self):
         u=self.fixture['units']

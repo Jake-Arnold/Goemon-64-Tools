@@ -436,6 +436,12 @@ def reconcile108_stage(manifest):
 
 def claimed_functions(manifest):
     """All C claims, with explicit overlay functions outside main mapping."""
+    if manifest.get('overlay_usa_opening_new2_stage') is not None:
+        from . import usa_opening_new2_promotion as opening
+        d=opening.validate_predecessor(manifest)
+        predecessor={k:v for k,v in manifest.items() if k!='overlay_usa_opening_new2_stage'}
+        return claimed_functions(predecessor)+[
+            {k:f[k] for k in ('name','rom_offset','vma','size')} for f in d['functions']]
     if manifest.get('overlay_mini_selector_stage') is not None:
         from . import usa_mini_selector_promotion as mini_selector
         d=mini_selector.validate_predecessor(manifest)
@@ -1374,6 +1380,7 @@ def load_manifest(path):
     crossregion7_stage_value = manifest.pop('overlay_crossregion7_stage', None)
     mini10_stage_value = manifest.pop('overlay_mini10_stage', None)
     selector_stage_value = manifest.pop('overlay_mini_selector_stage', None)
+    opening_new2_stage_value = manifest.pop('overlay_usa_opening_new2_stage', None)
     for key,length in (('upstream_commit',40),('retail_sha1',40),('decompressed_sha1',40)):
         if not re.fullmatch('[0-9a-f]{'+str(length)+'}',manifest.get(key,'')):raise ValueError('Invalid '+key)
     seen=set();assembly_seen=set();ranges=[]
@@ -1701,6 +1708,10 @@ def load_manifest(path):
         manifest['overlay_mini_selector_stage']=selector_stage_value
         from . import usa_mini_selector_promotion as mini_selector
         mini_selector.validate_predecessor(manifest)
+    if opening_new2_stage_value is not None:
+        manifest['overlay_usa_opening_new2_stage']=opening_new2_stage_value
+        from . import usa_opening_new2_promotion as opening
+        opening.validate_predecessor(manifest)
     return manifest
 
 
@@ -2557,6 +2568,7 @@ def validate_baseline_cache(checkout, manifest):
 
 
 def run_build(args,manifest,report):
+    opening_new2_stage_value=manifest.pop('overlay_usa_opening_new2_stage',None)
     selector_stage_value=manifest.pop('overlay_mini_selector_stage',None)
     mini10_stage_value=manifest.pop('overlay_mini10_stage',None)
     if os.name=='nt':raise ValueError('Run the build verifier inside Linux/WSL, not native Windows')
@@ -3508,6 +3520,47 @@ def run_build(args,manifest,report):
         result['matched_functions']+=1
         result['matched_function_bytes']+=f['size']
         report['overlay_mini_selector_stage']=proof
+    if opening_new2_stage_value is not None:
+        from . import usa_opening_new2_promotion as opening
+        from . import overlay_isolated233 as splice
+        if opening_new2_stage_value!={'format':opening.FORMAT}:
+            raise ValueError('Unreviewed original file18 new2 G2 stage')
+        if (not result['full_rom_match'] or result['matched_functions']!=2090 or
+                result['matched_function_bytes']!=94668):
+            raise ValueError('File18 new2 requires entire previous canonical 2090-C G2')
+        manifest['overlay_usa_opening_new2_stage']=opening_new2_stage_value
+        fixture=opening.validate_predecessor(manifest,expected)
+        prev=work/'accepted2090-before-file18-new2.elf'
+        shutil.copyfile(candidate/'build/usa/mnsg.elf',prev)
+        owners=splice.find_owners(candidate,fixture)
+        logged('candidate-file18-new2-original-parents',
+               ['make','-j'+str(args.jobs),'UV='+uv,*splice.parent_targets(owners)],candidate)
+        plan=splice.stage_linker(candidate,expected,fixture,owners,opening.SOURCE)
+        report['overlay_usa_opening_new2_source_plan']={
+            'functions':len(plan['functions']),
+            'original_instruction_bytes':sum(f['size'] for f in fixture['functions']),
+            'retained_assembly_fragments':len(plan['assembly'])}
+        logged('candidate-file18-new2-native-objects',
+               ['make','-j'+str(args.jobs),'UV='+uv,*splice.object_targets(plan)],candidate)
+        packed=splice.pack_objects(candidate,expected,plan)
+        metadata=opening.patch_absolute_symbol_type(candidate/'build/usa/src/new2_native_00.c.o')
+        report['overlay_usa_opening_new2_object_layout']=packed
+        report['overlay_usa_opening_new2_symbol_type_adapter']=metadata
+        for target in ('build/usa/mnsg.elf','build/usa/mnsg.z64'):
+            (candidate/target).unlink()
+        logged('candidate-file18-new2-final-original-ROM',
+               ['make','-j'+str(args.jobs),'UV='+uv],candidate)
+        proof=opening.verify_link(baseline,prev,candidate,expected,plan)
+        for f in fixture['functions']:
+            report['sources_sha256_lf']['research/usa_file18_new2_20261123/sources/'+f['source']+'.c']=f['source_sha256']
+            result['functions'].append({'name':f['name'],'size':f['size'],
+                'guest_address':f'0x{f["vma"]:08X}', 'rom_offset':f'0x{f["rom_offset"]:X}',
+                'matched':True,'expected_sha256':f['original_code_sha256'],
+                'candidate_sha256':f['original_code_sha256']})
+            result['claimed_functions']+=1
+            result['matched_functions']+=1
+            result['matched_function_bytes']+=f['size']
+        report['overlay_usa_opening_new2_stage']=proof
     if not result['full_rom_match'] or result['matched_functions']!=result['claimed_functions']:
         raise ValueError('Candidate failed exact matching')
     report['stage']='complete';report['status']='matched'

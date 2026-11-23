@@ -27,6 +27,8 @@ class File26HighbyteTests(unittest.TestCase):
     def setUpClass(cls):
         cls.fixture=stage.load_fixture()
         cls.manifest=load_manifest(Path(__file__).with_name('manifest.json'))
+        # Historical checkpoint projection: post2090 functions were not yet accepted.
+        cls.manifest.pop('overlay_usa_opening_new2_stage',None)
 
     def test_only_fifteen_original_address_sources(self):
         entries=self.fixture['functions']

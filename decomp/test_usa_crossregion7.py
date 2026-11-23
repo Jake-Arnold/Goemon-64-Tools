@@ -22,6 +22,8 @@ class Crossregion7StageTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.current=load_manifest(ROOT/'manifest.json')
+        # Historical checkpoint projection: post2090 functions were not yet accepted.
+        cls.current.pop('overlay_usa_opening_new2_stage',None)
         cls.current.pop('overlay_mini_selector_stage',None)  # Preserve USA2079 checkpoint
         cls.current.pop('overlay_mini10_stage',None)  # Preserve USA2079 checkpoint
         cls.fixture=stage.validate_predecessor(cls.current)

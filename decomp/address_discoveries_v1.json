@@ -1,7 +1,7 @@
 {
   "format": "goemon-address-discoveries-v1",
   "version": 1,
-  "updated": "2026-11-22",
+  "updated": "2026-11-23",
   "description": "Decomp-only research metadata for toolkit discovery sync. Original code VMAs remain reference-only; script VM guest globals are not automatically mapped to Japanese offsets.",
   "entries": [
     {
@@ -3165,6 +3165,70 @@
       "source_revision": "USA NG5E-0 and Japan-0 original-ROM MIPS/symbol evidence",
       "aliases": [],
       "owner": "D_8014CCC0_14D8C0 / g_system+0xC0000 partial structure"
+    },
+    {
+      "category": "engine_state",
+      "data_type": "u32",
+      "width": 4,
+      "signed": false,
+      "endian": "big",
+      "mask": null,
+      "confidence": "research_observed",
+      "crosswalk_status": "instruction_traced",
+      "source": "decomp/research/jp_cright_reset16_20261123/crosswalk.json",
+      "live_readable": false,
+      "control": null,
+      "discovered": "2026-11-23",
+      "updated": "2026-11-23",
+      "source_revision": "Authenticated original Japan-0 and USA NG5E-0 retail ROM instruction decode, 2026-11-23",
+      "aliases": [],
+      "owner": "fixed guest-RAM global pointer slot; pointed-to table is dynamic",
+      "may_auto_write": false,
+      "id": "research:jp_system_pointer_slot_cright_20261123",
+      "name": "Japanese system pointer slot g_system_ptr",
+      "region": "japan",
+      "revision": "NG5J-0",
+      "address": "0x80161DB8",
+      "counterpart": "0x8015C5C8",
+      "evidence": "Authenticated original Japanese func_80004170_4D70 decodes LUI/LW pointer load at original ROM 0x4D70/0x4D74. Native decomp symbol map names g_system_ptr at 0x80161DB8; paired independent USA ROM function forms and writes 0x8015C5C8. 32-bit fixed-global slot, +0x57F0 address delta.",
+      "context": "Value at slot is a dynamic pointer; JP reset clears 16 one-byte records at pointer-relative +0x3B168, not a fixed guest address. USA function at the same code VMA performs different work; full runtime value/lifetime and corresponding field layout are not verified. Never write or dereference automatically.",
+      "mips_refs": [
+        "func_80004170_4D70 (JP original, ROM 0x4D70)"
+      ],
+      "other_region_evidence": "USA NG5E-0 original function at ROM 0x4D8C/0x4D94/0x4D9C writes corresponding 32-bit pointer slot; original USA decomp/system_memory.c names D_8015C5C8_15D1C8.",
+      "next_test": "Independent read-only USA/JP live initialized-pointer snapshots across the same scene lifecycle; do not assume pointee-layout identity."
+    },
+    {
+      "category": "engine_state",
+      "data_type": "u32",
+      "width": 4,
+      "signed": false,
+      "endian": "big",
+      "mask": null,
+      "confidence": "research_observed",
+      "crosswalk_status": "instruction_traced",
+      "source": "decomp/research/jp_cright_reset16_20261123/crosswalk.json",
+      "live_readable": false,
+      "control": null,
+      "discovered": "2026-11-23",
+      "updated": "2026-11-23",
+      "source_revision": "Authenticated original Japan-0 and USA NG5E-0 retail ROM instruction decode, 2026-11-23",
+      "aliases": [],
+      "owner": "fixed guest-RAM global pointer slot; pointed-to table is dynamic",
+      "may_auto_write": false,
+      "id": "research:usa_system_pointer_slot_cright_20261123",
+      "name": "USA system pointer slot D_8015C5C8_15D1C8",
+      "region": "usa",
+      "revision": "NG5E-0",
+      "address": "0x8015C5C8",
+      "counterpart": "0x80161DB8",
+      "evidence": "Authenticated original USA func_80004170_4D70 forms and stores 32-bit pointer to fixed guest slot 0x8015C5C8 via LUI/ADDIU/SW at ROM 0x4D8C/0x4D94/0x4D9C. `decomp/system_memory.c` names D_8015C5C8_15D1C8; independently authenticated Japanese ROM loads g_system_ptr at 0x80161DB8. Exact +0x57F0 address relation.",
+      "context": "Original USA initializer writes pointer; original JP same-named VMA is a different reset function that reads pointer. Mapping is of fixed pointer slots only. Pointee address and offset +0x3B168 are dynamic, not suitable for cross-region arithmetic or toolkit memory writes.",
+      "mips_refs": [
+        "func_80004170_4D70 (USA original, ROM 0x4D8C..0x4D9C)"
+      ],
+      "other_region_evidence": "JP NG5J-0 original LUI/LW pointer load ROM 0x4D70/0x4D74; pinned mnsg symbol map names g_system_ptr=0x80161DB8.",
+      "next_test": "Read-only original USA and JP gameplay capture to confirm same initialized-pointer semantics in matched scenes; do not translate pointed-to object addresses."
     }
   ]
 }
