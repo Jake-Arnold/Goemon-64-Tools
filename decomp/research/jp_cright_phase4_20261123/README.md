@@ -34,7 +34,7 @@ The **two read-only Project64 3.x scripts** are supplied as a source-only **down
 
 ## Verification scope
 
-- Existing Japan accepted C remains **2,370**, ASM remains **5,006** (as of audited preflight); **new matching C count 0**.
+- Original research preflight was Japan **2,370 C / 5,006 ASM** at `56e47542`; live `stable/decomp` advanced independently to **2,398 C / 4,978 ASM** (JP short28 work), with no overlap with these four requested targets. **This Phase4 research adds 0 matching C functions.**
 - This research's native isolated verification of **already accepted reset**: 120B, 28/28 nonrelocation words, correct two HI16/LO16 relocation types. Original full-ROM G2 for this *independent duplicate source* **NOT RUN**. Full live-stable `decomp.local_ci` **NOT RUN**.
 - `scan_stage_orig.py` direct-read coverage is non-exhaustive. A freeze cause is **NOT_PROVEN**.
 - Stage+0xD1 is one byte of stage memory, unrelated to an automatically writable toolkit field. Nothing in this PR modifies toolkit, source promotion manifests or proof inventories.

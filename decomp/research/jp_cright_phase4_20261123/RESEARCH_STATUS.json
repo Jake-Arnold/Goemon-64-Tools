@@ -4,7 +4,6 @@
   "region": "japan_0",
   "status": "RESEARCH_ONLY",
   "starting_stable_decomp_sha": "56e4754255403f012cc9bc88ba39ec1f4fadfb6c",
-  "accepted_japan_c": 2370,
   "new_accepted_functions": 0,
   "new_isolated_native_matches": 0,
   "stage_reset_120b_original_rom_offset": "0x5D9104",
@@ -13,7 +12,10 @@
   "stage_reset_independent_native_reproduction": "28/28 non-relocation words plus 2 expected relocations",
   "stage_plus_d1_guest_address": "0x801624F1",
   "stage_plus_d1_clear_pc": "0x8021DBC0",
-  "stage_plus_d1_set_pcs": ["0x802125C4", "0x80212680"],
+  "stage_plus_d1_set_pcs": [
+    "0x802125C4",
+    "0x80212680"
+  ],
   "stage_plus_94_reset_behavior": "PRESERVED_BY_RESET; original pointer may be overwritten during subsequent initialization",
   "static_direct_flag_read_found": false,
   "static_scan_proves_absence_of_readers": false,
@@ -24,5 +26,9 @@
   "fourth_128b_status": "FAILED_NATIVE",
   "runtime_project64_phase4_status": "NOT_RUN",
   "current_stable_full_rom_and_ci": "NOT_RUN",
-  "next_evidence": "Actual normal and held next-door Phase4 Project64 traces from same pre-door savestate"
+  "next_evidence": "Actual normal and held next-door Phase4 Project64 traces from same pre-door savestate",
+  "accepted_japan_c_at_research_preflight": 2370,
+  "latest_stable_decomp_sha_at_pr_reconciliation": "838e9f87c3a860973e9d168b58fcf88bd456bfb4",
+  "latest_stable_decomp_japan_c": 2398,
+  "latest_stable_decomp_japan_asm_remaining": 4978
 }
