@@ -3,8 +3,7 @@ name: Build and publish Windows toolkit EXE
 on:
   push:
     branches:
-      - main
-      - toolkit/release-v01181-debugger-address-sync
+      - stable/toolkit
     paths:
       - .github/workflows/toolkit-windows-exe.yml
       - build/Build-Windows.ps1
@@ -62,7 +61,7 @@ jobs:
 
   publish-release:
     needs: windows-exe
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    if: github.event_name == 'push' && github.ref == 'refs/heads/stable/toolkit'
     runs-on: ubuntu-24.04
     permissions:
       contents: write
@@ -85,8 +84,8 @@ jobs:
           fi
           TAG="v$VERSION"
           if gh release view "$TAG" >/dev/null 2>&1; then
-            echo "Release $TAG already exists; refusing to overwrite"
-            exit 1
+            echo "Release $TAG already exists; keeping the published artifact."
+            exit 0
           fi
           cat > "$RUNNER_TEMP/goemon-release-notes.md" <<'NOTES'
           Windows x64 standalone executable for Goemon Practice Toolkit v0.11.81.

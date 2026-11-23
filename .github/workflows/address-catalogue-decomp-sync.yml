@@ -18,7 +18,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: main
+          ref: stable/toolkit
           fetch-depth: 2
       - uses: actions/setup-python@v5
         with:
@@ -27,10 +27,10 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          git fetch --no-tags origin             chatgptweb/decomp:refs/remotes/origin/chatgptweb/decomp
-          if git cat-file -e origin/chatgptweb/decomp:decomp/address_discoveries_v1.json 2>/dev/null; then
-            git show origin/chatgptweb/decomp:decomp/address_discoveries_v1.json > "$RUNNER_TEMP/decomp-addresses.json"
-            git rev-parse origin/chatgptweb/decomp > "$RUNNER_TEMP/decomp-revision"
+          git fetch --no-tags origin             stable/decomp:refs/remotes/origin/stable/decomp
+          if git cat-file -e origin/stable/decomp:decomp/address_discoveries_v1.json 2>/dev/null; then
+            git show origin/stable/decomp:decomp/address_discoveries_v1.json > "$RUNNER_TEMP/decomp-addresses.json"
+            git rev-parse origin/stable/decomp > "$RUNNER_TEMP/decomp-revision"
           else
             echo 'No decomp address manifest present; skip until a decomp agent publishes one.'
             printf 'missing' > "$RUNNER_TEMP/decomp-revision"
@@ -58,7 +58,7 @@ jobs:
             echo 'Catalogue matches decomp metadata; no PR.'
             exit 0
           fi
-          if gh pr list --state open --base main --json headRefName              --jq '.[].headRefName' | grep -q '^toolkit/address-metadata-sync-'; then
+          if gh pr list --state open --base stable/toolkit --json headRefName              --jq '.[].headRefName' | grep -q '^toolkit/address-metadata-sync-'; then
             echo 'A prior metadata PR is still under review; avoid duplicates.'
             exit 0
           fi
@@ -66,4 +66,4 @@ jobs:
           git switch -c "$branch"
           git -c user.name=goemon-address-bot             -c user.email=41898282+github-actions[bot]@users.noreply.github.com             commit -m "Import reviewed decomp address metadata without source merge"
           git push origin "$branch"
-          gh pr create             --base main --head "$branch"             --title "Sync decomp address discoveries into shared toolkit catalogue"             --body "Automated metadata-only update from the separate decomp branch. No decomp source, RAM writers or game binaries are merged. CI must validate schema, stale declarations, conflicting candidates, Linux and Windows before review."
+          gh pr create             --base stable/toolkit --head "$branch"             --title "Sync decomp address discoveries into shared toolkit catalogue"             --body "Automated metadata-only update from the separate decomp branch. No decomp source, RAM writers or game binaries are merged. CI must validate schema, stale declarations, conflicting candidates, Linux and Windows before review."
