@@ -14,6 +14,7 @@ class TestVM436Promotion(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.m = load_manifest(ROOT / 'manifest.json')
+        cls.m.pop('usa_native151_promotion',None)
 
     def test_new_claim_is_one_original_436_byte_function(self):
         before = {k: v for k, v in self.m.items() if k != 'usa_script_vm436_promotion'}

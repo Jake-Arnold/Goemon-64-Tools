@@ -1,0 +1,3143 @@
+{
+  "positive_full_flags": 100,
+  "records": [
+    {
+      "name": "func_801D0C9C_63F18C",
+      "compiler_quirk_outcome": "NO_NEW_COMPILER_FINDING",
+      "ledger_sha256": "7a5e33202c7dc7c60924a5797794a5408c4318a05ed4405b7822d0688d7f2582",
+      "source_sha256": "b553ef1bf10faa2e00d5db8ae027a69bba90171577b685d4f3564d3b7adde70a",
+      "relocations": [
+        [
+          0,
+          "R_MIPS_HI16",
+          "g_system_ptr"
+        ],
+        [
+          4,
+          "R_MIPS_LO16",
+          "g_system_ptr"
+        ],
+        [
+          12,
+          "R_MIPS_HI16",
+          "D_3ADDF"
+        ],
+        [
+          28,
+          "R_MIPS_26",
+          "func_80004170_4D70"
+        ],
+        [
+          32,
+          "R_MIPS_LO16",
+          "D_3ADDF"
+        ]
+      ],
+      "pack": {
+        "original_text_bytes": 52,
+        "compiler_section_bytes": 64,
+        "zero_padding_removed": 12,
+        "trimmed_object_sha256": "2237a5b6220442fed4aed23b93079b78c15865a72705285605a6509c85f58aa2"
+      }
+    },
+    {
+      "name": "func_801FA6FC_5B66CC",
+      "compiler_quirk_outcome": "NO_NEW_COMPILER_FINDING",
+      "ledger_sha256": "7a5e33202c7dc7c60924a5797794a5408c4318a05ed4405b7822d0688d7f2582",
+      "source_sha256": "e350aedc2c12903877ebc9d0487a71f2c5b48cd04279b54220578cc1169ef067",
+      "relocations": [
+        [
+          32,
+          "R_MIPS_26",
+          "func_801FA744_5B6714"
+        ]
+      ],
+      "pack": {
+        "original_text_bytes": 72,
+        "compiler_section_bytes": 80,
+        "zero_padding_removed": 8,
+        "trimmed_object_sha256": "a7d6461cab4d276d19609974aef8c6e3c26aaf8bdd986099c87058769d25f7d5"
+      }
+    },
+    {
+      "name": "func_08000164_6B34C4",
+      "compiler_quirk_outcome": "NO_NEW_COMPILER_FINDING",
+      "ledger_sha256": "7a5e33202c7dc7c60924a5797794a5408c4318a05ed4405b7822d0688d7f2582",
+      "source_sha256": "64d6d58909fdb75052b08a06d053368999536d6c186722d6b04b561cffd36d01",
+      "relocations": [
+        [
+          4,
+          "R_MIPS_HI16",
+          "func_8021CDBC_5D834C"
+        ],
+        [
+          16,
+          "R_MIPS_LO16",
+          "func_8021CDBC_5D834C"
+        ],
+        [
+          28,
+          "R_MIPS_HI16",
+          "func_80034E8C_35A8C"
+        ],
+        [
+          32,
+          "R_MIPS_LO16",
+          "func_80034E8C_35A8C"
+        ],
+        [
+          36,
+          "R_MIPS_HI16",
+          "func_080001A4_6B3504"
+        ],
+        [
+          44,
+          "R_MIPS_LO16",
+          "func_080001A4_6B3504"
+        ]
+      ],
+      "pack": {
+        "original_text_bytes": 64,
+        "compiler_section_bytes": 64,
+        "zero_padding_removed": 0,
+        "trimmed_object_sha256": "fe7534d1b2c02c7ce572e5cac65dab27cf01e9926d820194c2431ce608913bf4"
+      }
+    },
+    {
+      "name": "func_08000348_6B36A8",
+      "compiler_quirk_outcome": "NO_NEW_COMPILER_FINDING",
+      "ledger_sha256": "7a5e33202c7dc7c60924a5797794a5408c4318a05ed4405b7822d0688d7f2582",
+      "source_sha256": "e08f3e52eaa4072bd697034f9ae7022f0c0ce5db51848d1a50183495d8b0329f",
+      "relocations": [
+        [
+          8,
+          "R_MIPS_HI16",
+          "func_8021DB18_5D90A8"
+        ],
+        [
+          28,
+          "R_MIPS_LO16",
+          "func_8021DB18_5D90A8"
+        ],
+        [
+          56,
+          "R_MIPS_HI16",
+          "func_8021BB8C_5D711C"
+        ],
+        [
+          60,
+          "R_MIPS_LO16",
+          "func_8021BB8C_5D711C"
+        ],
+        [
+          76,
+          "R_MIPS_HI16",
+          "func_8021EBE0_5DA170"
+        ],
+        [
+          80,
+          "R_MIPS_LO16",
+          "func_8021EBE0_5DA170"
+        ],
+        [
+          100,
+          "R_MIPS_HI16",
+          "func_8021F080_5DA610"
+        ],
+        [
+          104,
+          "R_MIPS_LO16",
+          "func_8021F080_5DA610"
+        ],
+        [
+          116,
+          "R_MIPS_HI16",
+          "func_8021CDBC_5D834C"
+        ],
+        [
+          124,
+          "R_MIPS_LO16",
+          "func_8021CDBC_5D834C"
+        ],
+        [
+          144,
+          "R_MIPS_HI16",
+          "func_80034E8C_35A8C"
+        ],
+        [
+          148,
+          "R_MIPS_LO16",
+          "func_80034E8C_35A8C"
+        ],
+        [
+          152,
+          "R_MIPS_HI16",
+          "func_08000404_6B3764"
+        ],
+        [
+          164,
+          "R_MIPS_LO16",
+          "func_08000404_6B3764"
+        ]
+      ],
+      "pack": {
+        "original_text_bytes": 188,
+        "compiler_section_bytes": 192,
+        "zero_padding_removed": 4,
+        "trimmed_object_sha256": "c785ec1ffc9171fc00dc110152b210662ce5a6d516d7cad4aeb9783d1468422b"
+      }
+    },
+    {
+      "name": "func_08000268_6B7CE8",
+      "compiler_quirk_outcome": "NO_NEW_COMPILER_FINDING",
+      "ledger_sha256": "7a5e33202c7dc7c60924a5797794a5408c4318a05ed4405b7822d0688d7f2582",
+      "source_sha256": "ffedad40c2273a4108d7e208e90f907e575c1abae3a264ba864eb14126eccb69",
+      "relocations": [
+        [
+          4,
+          "R_MIPS_HI16",
+          "func_8021C434_5D79C4"
+        ],
+        [
+          16,
+          "R_MIPS_LO16",
+          "func_8021C434_5D79C4"
+        ]
+      ],
+      "pack": {
+        "original_text_bytes": 64,
+        "compiler_section_bytes": 64,
+        "zero_padding_removed": 0,
+        "trimmed_object_sha256": "0a13f8d35170ec3c14e85e68c2461097802b3851119ddf75969b9e30ac9340fd"
+      }
+    },
+    {
+      "name": "func_08004028_6D7B28",
+      "compiler_quirk_outcome": "NO_NEW_COMPILER_FINDING",
+      "ledger_sha256": "7a5e33202c7dc7c60924a5797794a5408c4318a05ed4405b7822d0688d7f2582",
+      "source_sha256": "044385bac144eb3b085cc650a3500d21decb5e8d9027c1694a6ab136000f073b",
+      "relocations": [
+        [
+          48,
+          "R_MIPS_HI16",
+          "func_80034E8C_35A8C"
+        ],
+        [
+          56,
+          "R_MIPS_HI16",
+          "func_08004080_6D7B80"
+        ],
+        [
+          60,
+          "R_MIPS_LO16",
+          "func_80034E8C_35A8C"
+        ],
+        [
+          68,
+          "R_MIPS_LO16",
+          "func_08004080_6D7B80"
+        ]
+      ],
+      "pack": {
+        "original_text_bytes": 88,
+        "compiler_section_bytes": 96,
+        "zero_padding_removed": 8,
+        "trimmed_object_sha256": "2a576bfbdda0812205df5523afac80de38bc4d8e348653056074361b766c6b55"
+      }
+    },
+    {
+      "name": "func_08004080_6D7B80",
+      "compiler_quirk_outcome": "NO_NEW_COMPILER_FINDING",
+      "ledger_sha256": "7a5e33202c7dc7c60924a5797794a5408c4318a05ed4405b7822d0688d7f2582",
+      "source_sha256": "d40efb87fd602c92e12d5fae7b16c43dbca5a8b59700beb3704f35f61c5a1db4",
+      "relocations": [
+        [
+          24,
+          "R_MIPS_HI16",
+          "func_80034E8C_35A8C"
+        ],
+        [
+          48,
+          "R_MIPS_LO16",
+          "func_80034E8C_35A8C"
+        ],
+        [
+          56,
+          "R_MIPS_HI16",
+          "func_080040D4_6D7BD4"
+        ],
+        [
+          64,
+          "R_MIPS_LO16",
+          "func_080040D4_6D7BD4"
+        ]
+      ],
+      "pack": {
+        "original_text_bytes": 84,
+        "compiler_section_bytes": 96,
+        "zero_padding_removed": 12,
+        "trimmed_object_sha256": "427e01f8e55b660019442e594b9feb38f320ab19addffb5bd825e5f33c585d1a"
+      }
+    },
+    {
+      "name": "func_08004234_6D7D34",
+      "compiler_quirk_outcome": "NO_NEW_COMPILER_FINDING",
+      "ledger_sha256": "7a5e33202c7dc7c60924a5797794a5408c4318a05ed4405b7822d0688d7f2582",
+      "source_sha256": "b0dad54e845d51c0910406935855a621960ed3f1ca9fda1e9f74a1555e1c8396",
+      "relocations": [
+        [
+          24,
+          "R_MIPS_HI16",
+          "func_80034E8C_35A8C"
+        ],
+        [
+          48,
+          "R_MIPS_LO16",
+          "func_80034E8C_35A8C"
+        ],
+        [
+          56,
+          "R_MIPS_HI16",
+          "func_08004028_6D7B28"
+        ],
+        [
+          64,
+          "R_MIPS_LO16",
+          "func_08004028_6D7B28"
+        ]
+      ],
+      "pack": {
+        "original_text_bytes": 84,
+        "compiler_section_bytes": 96,
+        "zero_padding_removed": 12,
+        "trimmed_object_sha256": "c4dc80539a3885418b0e3dfe8d464e607b1975609de2d7a2e01710582cdea0f3"
+      }
+    },
+    {
+      "name": "func_080004FC_6D88FC",
+      "compiler_quirk_outcome": "NO_NEW_COMPILER_FINDING",
+      "ledger_sha256": "7a5e33202c7dc7c60924a5797794a5408c4318a05ed4405b7822d0688d7f2582",
+      "source_sha256": "df443fc57d321d4308be3c1b399abd15825b523079c8594f8dde5118f3c811f1",
+      "relocations": [
+        [
+          4,
+          "R_MIPS_HI16",
+          "func_8021F888_5DAE18"
+        ],
+        [
+          12,
+          "R_MIPS_LO16",
+          "func_8021F888_5DAE18"
+        ],
+        [
+          24,
+          "R_MIPS_HI16",
+          "func_80034E8C_35A8C"
+        ],
+        [
+          28,
+          "R_MIPS_LO16",
+          "func_80034E8C_35A8C"
+        ],
+        [
+          32,
+          "R_MIPS_HI16",
+          "func_08000538_6D8938"
+        ],
+        [
+          40,
+          "R_MIPS_LO16",
+          "func_08000538_6D8938"
+        ]
+      ],
+      "pack": {
+        "original_text_bytes": 60,
+        "compiler_section_bytes": 64,
+        "zero_padding_removed": 4,
+        "trimmed_object_sha256": "42ef35cae757dedb2091d91fa23c6a57e6e582e8f649db3c60b10f5bfd85e66e"
+      }
+    },
+    {
+      "name": "func_80011518_12118",
+      "compiler_quirk_outcome": "NO_NEW_COMPILER_FINDING",
+      "ledger_sha256": "7a5e33202c7dc7c60924a5797794a5408c4318a05ed4405b7822d0688d7f2582",
+      "source_sha256": "289ff2eb0bb5961ae2a136a7a12b63d3a7c22a2f5a79c1c137fd898ce820b28f",
+      "relocations": [
+        [
+          8,
+          "R_MIPS_26",
+          "func_800136A4_142A4"
+        ],
+        [
+          16,
+          "R_MIPS_26",
+          "func_80013D54_14954"
+        ],
+        [
+          28,
+          "R_MIPS_26",
+          "func_80001E50_2A50"
+        ],
+        [
+          36,
+          "R_MIPS_HI16",
+          "D_8002664"
+        ],
+        [
+          40,
+          "R_MIPS_LO16",
+          "D_8002664"
+        ],
+        [
+          44,
+          "R_MIPS_HI16",
+          "D_80072E08_73A08"
+        ],
+        [
+          52,
+          "R_MIPS_LO16",
+          "D_80072E08_73A08"
+        ]
+      ],
+      "pack": {
+        "original_text_bytes": 72,
+        "compiler_section_bytes": 80,
+        "zero_padding_removed": 8,
+        "trimmed_object_sha256": "f13427045454d243205fc007cab34c9497bca007e1bdaab463d95d7aa2030aea"
+      }
+    },
+    {
+      "name": "func_8003CD20_3D920",
+      "compiler_quirk_outcome": "NO_NEW_COMPILER_FINDING",
+      "ledger_sha256": "7a5e33202c7dc7c60924a5797794a5408c4318a05ed4405b7822d0688d7f2582",
+      "source_sha256": "48b67c1ba33ffcf0739b8e8c07e3d08ab3521b2d42efce884e090490d2d7c54b",
+      "relocations": [
+        [
+          8,
+          "R_MIPS_26",
+          "func_8003ED68_3F968"
+        ],
+        [
+          16,
+          "R_MIPS_HI16",
+          "D_801CD05C_1CDC5C"
+        ],
+        [
+          20,
+          "R_MIPS_LO16",
+          "D_801CD05C_1CDC5C"
+        ],
+        [
+          36,
+          "R_MIPS_HI16",
+          "D_801CD054_1CDC54"
+        ],
+        [
+          40,
+          "R_MIPS_LO16",
+          "D_801CD054_1CDC54"
+        ],
+        [
+          52,
+          "R_MIPS_HI16",
+          "D_801CD050_1CDC50"
+        ],
+        [
+          60,
+          "R_MIPS_LO16",
+          "D_801CD050_1CDC50"
+        ],
+        [
+          64,
+          "R_MIPS_HI16",
+          "D_801CD058_1CDC58"
+        ],
+        [
+          68,
+          "R_MIPS_LO16",
+          "D_801CD058_1CDC58"
+        ],
+        [
+          80,
+          "R_MIPS_HI16",
+          "D_801CD058_1CDC58"
+        ],
+        [
+          84,
+          "R_MIPS_LO16",
+          "D_801CD058_1CDC58"
+        ],
+        [
+          108,
+          "R_MIPS_HI16",
+          "D_801CD050_1CDC50"
+        ],
+        [
+          112,
+          "R_MIPS_LO16",
+          "D_801CD050_1CDC50"
+        ],
+        [
+          120,
+          "R_MIPS_HI16",
+          "D_801CD054_1CDC54"
+        ],
+        [
+          124,
+          "R_MIPS_HI16",
+          "D_801CD058_1CDC58"
+        ],
+        [
+          128,
+          "R_MIPS_LO16",
+          "D_801CD058_1CDC58"
+        ],
+        [
+          132,
+          "R_MIPS_LO16",
+          "D_801CD054_1CDC54"
+        ]
+      ],
+      "pack": {
+        "original_text_bytes": 204,
+        "compiler_section_bytes": 208,
+        "zero_padding_removed": 4,
+        "trimmed_object_sha256": "16d757c872e11775112ba847c6525cbca264c96fb3ec2e22919d00d9f856e2db"
+      }
+    },
+    {
+      "name": "func_801D95B0_604030",
+      "compiler_quirk_outcome": "NO_NEW_COMPILER_FINDING",
+      "ledger_sha256": "7a5e33202c7dc7c60924a5797794a5408c4318a05ed4405b7822d0688d7f2582",
+      "source_sha256": "de4b2f38f9ee0e6648b7191a5e5093771ecb5fef265d0a87953e2bfbe60aa442",
+      "relocations": [
+        [
+          32,
+          "R_MIPS_26",
+          "func_801D9658_6040D8"
+        ]
+      ],
+      "pack": {
+        "original_text_bytes": 56,
+        "compiler_section_bytes": 64,
+        "zero_padding_removed": 8,
+        "trimmed_object_sha256": "4e6ef240c2f073960e64361a2fc449408b4aa59cc21bdb7feeb06da16fc2998a"
+      }
+    },
+    {
+      "name": "func_801D95E8_604068",
+      "compiler_quirk_outcome": "NO_NEW_COMPILER_FINDING",
+      "ledger_sha256": "7a5e33202c7dc7c60924a5797794a5408c4318a05ed4405b7822d0688d7f2582",
+      "source_sha256": "7a3bf5e3c299708c175a7fb2670905a7248651914c2412a710ed5859a842d022",
+      "relocations": [
+        [
+          32,
+          "R_MIPS_26",
+          "func_801D9658_6040D8"
+        ]
+      ],
+      "pack": {
+        "original_text_bytes": 56,
+        "compiler_section_bytes": 64,
+        "zero_padding_removed": 8,
+        "trimmed_object_sha256": "ffc8648a4cc45d6398ec9f251ca8a5e8538ca3045b70cff3e7a1301e1d4cb044"
+      }
+    },
+    {
+      "name": "func_801D9620_6040A0",
+      "compiler_quirk_outcome": "NO_NEW_COMPILER_FINDING",
+      "ledger_sha256": "7a5e33202c7dc7c60924a5797794a5408c4318a05ed4405b7822d0688d7f2582",
+      "source_sha256": "0599dcec21039a01a61e982a77664eff3de3cf89fd04c6dd954e1c485190d654",
+      "relocations": [
+        [
+          32,
+          "R_MIPS_26",
+          "func_801D9658_6040D8"
+        ]
+      ],
+      "pack": {
+        "original_text_bytes": 56,
+        "compiler_section_bytes": 64,
+        "zero_padding_removed": 8,
+        "trimmed_object_sha256": "27c1afc69820b600cf40cb6b39af24775d59ddc7067701f49a9be0ae35a6771a"
+      }
+    },
+    {
+      "name": "func_801DC234_606CB4",
+      "compiler_quirk_outcome": "NO_NEW_COMPILER_FINDING",
+      "ledger_sha256": "7a5e33202c7dc7c60924a5797794a5408c4318a05ed4405b7822d0688d7f2582",
+      "source_sha256": "f04bc6c8f70428d8949dcaf2a7235fe7017dfb8cd60b695c706d4d58bef8da42",
+      "relocations": [
+        [
+          20,
+          "R_MIPS_26",
+          "func_801DC3D0_606E50"
+        ],
+        [
+          32,
+          "R_MIPS_26",
+          "func_801DB72C_6061AC"
+        ]
+      ],
+      "pack": {
+        "original_text_bytes": 60,
+        "compiler_section_bytes": 64,
+        "zero_padding_removed": 4,
+        "trimmed_object_sha256": "fe8f132147e193f4fd650511a54707995b5d9df180e27a581afa6e3a8ec473b5"
+      }
+    },
+    {
+      "name": "func_801DC270_606CF0",
+      "compiler_quirk_outcome": "NO_NEW_COMPILER_FINDING",
+      "ledger_sha256": "7a5e33202c7dc7c60924a5797794a5408c4318a05ed4405b7822d0688d7f2582",
+      "source_sha256": "7a02bbf12cbf4a9e182093915e6893294a7730c92f72a54a4958e8e7dc797e81",
+      "relocations": [
+        [
+          20,
+          "R_MIPS_26",
+          "func_801DC3D0_606E50"
+        ],
+        [
+          32,
+          "R_MIPS_26",
+          "func_801DB75C_6061DC"
+        ]
+      ],
+      "pack": {
+        "original_text_bytes": 60,
+        "compiler_section_bytes": 64,
+        "zero_padding_removed": 4,
+        "trimmed_object_sha256": "7a8f4668acc94b9235add2260be31fd3548efde8e998185579332403f26931d5"
+      }
+    },
+    {
+      "name": "func_801DC2AC_606D2C",
+      "compiler_quirk_outcome": "NO_NEW_COMPILER_FINDING",
+      "ledger_sha256": "7a5e33202c7dc7c60924a5797794a5408c4318a05ed4405b7822d0688d7f2582",
+      "source_sha256": "f6afb672531877a3634d1cbe2a0bcfdf6855f2158400fc770755a39a2d9c6fcb",
+      "relocations": [
+        [
+          20,
+          "R_MIPS_26",
+          "func_801DC3D0_606E50"
+        ],
+        [
+          32,
+          "R_MIPS_26",
+          "func_801DB78C_60620C"
+        ]
+      ],
+      "pack": {
+        "original_text_bytes": 60,
+        "compiler_section_bytes": 64,
+        "zero_padding_removed": 4,
+        "trimmed_object_sha256": "7bb90fd93c9adb8f98fb23c5bce618fd4dc324656c2f45bd25cd58b16291529a"
+      }
+    },
+    {
+      "name": "func_80225138_5E06C8",
+      "compiler_quirk_outcome": "NO_NEW_COMPILER_FINDING",
+      "ledger_sha256": "7a5e33202c7dc7c60924a5797794a5408c4318a05ed4405b7822d0688d7f2582",
+      "source_sha256": "9c0e02ecd14fe65d79b8ae477d020f0b8013aefc980777af20e666ec444d0f1a",
+      "relocations": [
+        [
+          4,
+          "R_MIPS_HI16",
+          "D_80201538_5BD508"
+        ],
+        [
+          8,
+          "R_MIPS_LO16",
+          "D_80201538_5BD508"
+        ],
+        [
+          36,
+          "R_MIPS_HI16",
+          "func_802250D0_5E0660"
+        ],
+        [
+          40,
+          "R_MIPS_LO16",
+          "func_802250D0_5E0660"
+        ]
+      ],
+      "pack": {
+        "original_text_bytes": 72,
+        "compiler_section_bytes": 80,
+        "zero_padding_removed": 8,
+        "trimmed_object_sha256": "afa82f321f37cdadb442f276f31980d30e9b64123c934a43d380cd613e0c3a3a"
+      }
+    },
+    {
+      "name": "func_80226C60_5E21F0",
+      "compiler_quirk_outcome": "NO_NEW_COMPILER_FINDING",
+      "ledger_sha256": "7a5e33202c7dc7c60924a5797794a5408c4318a05ed4405b7822d0688d7f2582",
+      "source_sha256": "e59e878d8c1b2ddaee495f73593c866211d1c6bc06cb5659ae188bbbd5b40632",
+      "relocations": [
+        [
+          40,
+          "R_MIPS_HI16",
+          "func_802279A4_5E2F34"
+        ],
+        [
+          44,
+          "R_MIPS_26",
+          "func_80034E8C_35A8C"
+        ],
+        [
+          48,
+          "R_MIPS_LO16",
+          "func_802279A4_5E2F34"
+        ]
+      ],
+      "pack": {
+        "original_text_bytes": 68,
+        "compiler_section_bytes": 80,
+        "zero_padding_removed": 12,
+        "trimmed_object_sha256": "a9dbd191129b26b731a61ae6b31947848424cb3d3497b55bb02b54860289b1ad"
+      }
+    },
+    {
+      "name": "func_80226EFC_5E248C",
+      "compiler_quirk_outcome": "NO_NEW_COMPILER_FINDING",
+      "ledger_sha256": "7a5e33202c7dc7c60924a5797794a5408c4318a05ed4405b7822d0688d7f2582",
+      "source_sha256": "556e929ade765c1e3cc5c16450daf884c5174d247dddc6ce2e7a6835b033f1e8",
+      "relocations": [
+        [
+          36,
+          "R_MIPS_26",
+          "func_8021DB18_5D90A8"
+        ],
+        [
+          44,
+          "R_MIPS_HI16",
+          "func_80226F44_5E24D4"
+        ],
+        [
+          48,
+          "R_MIPS_26",
+          "func_80034E8C_35A8C"
+        ],
+        [
+          52,
+          "R_MIPS_LO16",
+          "func_80226F44_5E24D4"
+        ]
+      ],
+      "pack": {
+        "original_text_bytes": 72,
+        "compiler_section_bytes": 80,
+        "zero_padding_removed": 8,
+        "trimmed_object_sha256": "3e7aecd3e16edcbb8aac9be9a911ffc82cb6c0cffb055090b63569f04622605c"
+      }
+    },
+    {
+      "name": "func_801DE268_608CE8",
+      "compiler_quirk_outcome": "NO_NEW_COMPILER_FINDING",
+      "ledger_sha256": "7a5e33202c7dc7c60924a5797794a5408c4318a05ed4405b7822d0688d7f2582",
+      "source_sha256": "f3074cc841e6f125ae3e95fa65bb882a4a0b3e99068cf79c053dc24917b265af",
+      "relocations": [
+        [
+          8,
+          "R_MIPS_26",
+          "func_801DE750_6091D0"
+        ],
+        [
+          16,
+          "R_MIPS_HI16",
+          "func_801DE294_608D14"
+        ],
+        [
+          20,
+          "R_MIPS_26",
+          "func_80034E8C_35A8C"
+        ],
+        [
+          24,
+          "R_MIPS_LO16",
+          "func_801DE294_608D14"
+        ]
+      ],
+      "pack": {
+        "original_text_bytes": 44,
+        "compiler_section_bytes": 48,
+        "zero_padding_removed": 4,
+        "trimmed_object_sha256": "1dc192cef1f6156ec18e063e5faa37555903b4f3704fa73920dae87be0a32356"
+      }
+    },
+    {
+      "name": "func_801DEE24_6098A4",
+      "compiler_quirk_outcome": "NO_NEW_COMPILER_FINDING",
+      "ledger_sha256": "7a5e33202c7dc7c60924a5797794a5408c4318a05ed4405b7822d0688d7f2582",
+      "source_sha256": "582b17dfcaf1889ab2dff33bb0487171c17dca40db2c567ab515bdb99bdaa707",
+      "relocations": [
+        [
+          8,
+          "R_MIPS_26",
+          "func_801DE750_6091D0"
+        ],
+        [
+          16,
+          "R_MIPS_HI16",
+          "func_801DEE50_6098D0"
+        ],
+        [
+          20,
+          "R_MIPS_26",
+          "func_80034E8C_35A8C"
+        ],
+        [
+          24,
+          "R_MIPS_LO16",
+          "func_801DEE50_6098D0"
+        ]
+      ],
+      "pack": {
+        "original_text_bytes": 44,
+        "compiler_section_bytes": 48,
+        "zero_padding_removed": 4,
+        "trimmed_object_sha256": "21f9f8e7e057e6a24a51c06ed557916f857c0319f93c552e510c741eed4ccd8e"
+      }
+    },
+    {
+      "name": "func_80213F2C_672D9C",
+      "compiler_quirk_outcome": "NO_NEW_COMPILER_FINDING",
+      "ledger_sha256": "7a5e33202c7dc7c60924a5797794a5408c4318a05ed4405b7822d0688d7f2582",
+      "source_sha256": "ca1c2ea650353873de542aa187e1a7beeaa4e8716bc751a62816f17fc5e59f16",
+      "relocations": [
+        [
+          0,
+          "R_MIPS_HI16",
+          "g_system_ptr"
+        ],
+        [
+          4,
+          "R_MIPS_LO16",
+          "g_system_ptr"
+        ],
+        [
+          12,
+          "R_MIPS_HI16",
+          "D_3ADCA"
+        ],
+        [
+          28,
+          "R_MIPS_26",
+          "func_80034B68_35768"
+        ],
+        [
+          32,
+          "R_MIPS_LO16",
+          "D_3ADCA"
+        ]
+      ],
+      "pack": {
+        "original_text_bytes": 52,
+        "compiler_section_bytes": 64,
+        "zero_padding_removed": 12,
+        "trimmed_object_sha256": "0c72b014147a1d5ad7cc0d5628efe4e83beea4fa0a7611b510522c4965cbd2ae"
+      }
+    },
+    {
+      "name": "func_80208140_632BC0",
+      "compiler_quirk_outcome": "NO_NEW_COMPILER_FINDING",
+      "ledger_sha256": "7a5e33202c7dc7c60924a5797794a5408c4318a05ed4405b7822d0688d7f2582",
+      "source_sha256": "e5a663e1739dd64d399993cf6b34cc39a522ac7a4b7d54ad9e18c6e718f2f313",
+      "relocations": [
+        [
+          20,
+          "R_MIPS_HI16",
+          "func_80208184_632C04"
+        ],
+        [
+          44,
+          "R_MIPS_26",
+          "func_80034E8C_35A8C"
+        ],
+        [
+          48,
+          "R_MIPS_LO16",
+          "func_80208184_632C04"
+        ]
+      ],
+      "pack": {
+        "original_text_bytes": 68,
+        "compiler_section_bytes": 80,
+        "zero_padding_removed": 12,
+        "trimmed_object_sha256": "a8eb649b57a057661c578f24cab7afb8dbd361666ff95822d920265d8adda4c4"
+      }
+    },
+    {
+      "name": "func_8022007C_68976C",
+      "compiler_quirk_outcome": "NO_NEW_COMPILER_FINDING",
+      "ledger_sha256": "7a5e33202c7dc7c60924a5797794a5408c4318a05ed4405b7822d0688d7f2582",
+      "source_sha256": "38253779cae8745dce7d3fe4bbddd6af3ded3cdef1fe95a8726f98a10f584611",
+      "relocations": [],
+      "pack": {
+        "original_text_bytes": 124,
+        "compiler_section_bytes": 128,
+        "zero_padding_removed": 4,
+        "trimmed_object_sha256": "59f6e8bd806c93322b46345b68d36033e7dff51da0555885ce6c7c19992587ae"
+      }
+    },
+    {
+      "name": "func_802200F8_6897E8",
+      "compiler_quirk_outcome": "NO_NEW_COMPILER_FINDING",
+      "ledger_sha256": "7a5e33202c7dc7c60924a5797794a5408c4318a05ed4405b7822d0688d7f2582",
+      "source_sha256": "1af0136f28c3451cb208fa0984392ed8d303622c5b20dc04756f9a34719ca1fa",
+      "relocations": [],
+      "pack": {
+        "original_text_bytes": 52,
+        "compiler_section_bytes": 64,
+        "zero_padding_removed": 12,
+        "trimmed_object_sha256": "56754bec464d38a777182c2a7cdb4d5e7a3126120974d1f715433714a4bdb3ce"
+      }
+    },
+    {
+      "name": "func_80224110_68D800",
+      "compiler_quirk_outcome": "NO_NEW_COMPILER_FINDING",
+      "ledger_sha256": "7a5e33202c7dc7c60924a5797794a5408c4318a05ed4405b7822d0688d7f2582",
+      "source_sha256": "0188ccef8ce3484ae9170d61f1e3d3a839735512ceb46ca9aaec0d3fddae7da7",
+      "relocations": [
+        [
+          8,
+          "R_MIPS_HI16",
+          "D_8022F160_698850"
+        ],
+        [
+          20,
+          "R_MIPS_26",
+          "func_800136A4_142A4"
+        ],
+        [
+          24,
+          "R_MIPS_LO16",
+          "D_8022F160_698850"
+        ]
+      ],
+      "pack": {
+        "original_text_bytes": 44,
+        "compiler_section_bytes": 48,
+        "zero_padding_removed": 4,
+        "trimmed_object_sha256": "520caa54780e9c2f7fa4df34ea8619f740e6f37c88d9950ef1c934d2c4ccff43"
+      }
+    },
+    {
+      "name": "func_80228E90_692580",
+      "compiler_quirk_outcome": "NO_NEW_COMPILER_FINDING",
+      "ledger_sha256": "7a5e33202c7dc7c60924a5797794a5408c4318a05ed4405b7822d0688d7f2582",
+      "source_sha256": "5a6bdce319bcea9a32638409ec82ab06b2742e72d13b339e0e0d0f5e1ecd702d",
+      "relocations": [],
+      "pack": {
+        "original_text_bytes": 96,
+        "compiler_section_bytes": 96,
+        "zero_padding_removed": 0,
+        "trimmed_object_sha256": "fa5c340cc0c8e55b745a179d1e91a83eb918838a4dcd07a1c5b9eb49b3dbf610"
+      }
+    },
+    {
+      "name": "func_8022DA34_697124",
+      "compiler_quirk_outcome": "NO_NEW_COMPILER_FINDING",
+      "ledger_sha256": "7a5e33202c7dc7c60924a5797794a5408c4318a05ed4405b7822d0688d7f2582",
+      "source_sha256": "8cbaad97999e75672ad772985a56fe4dc98246d605900a5895f2e8cb5e04ee37",
+      "relocations": [],
+      "pack": {
+        "original_text_bytes": 72,
+        "compiler_section_bytes": 80,
+        "zero_padding_removed": 8,
+        "trimmed_object_sha256": "94d505a4b9dd20e2b2b665ec28f9a9d969baa0a652b4effe9b8e89467d5ad52d"
+      }
+    },
+    {
+      "name": "func_80218534_69FC34",
+      "compiler_quirk_outcome": "NO_NEW_COMPILER_FINDING",
+      "ledger_sha256": "7a5e33202c7dc7c60924a5797794a5408c4318a05ed4405b7822d0688d7f2582",
+      "source_sha256": "a14b5ed846cda305ee84b9dbddcb1ccdfc7c9cb969e512973abef952153a255e",
+      "relocations": [
+        [
+          8,
+          "R_MIPS_26",
+          "func_802148B8_69BFB8"
+        ],
+        [
+          16,
+          "R_MIPS_HI16",
+          "func_80035124_35D24"
+        ],
+        [
+          20,
+          "R_MIPS_26",
+          "func_80034E8C_35A8C"
+        ],
+        [
+          24,
+          "R_MIPS_LO16",
+          "func_80035124_35D24"
+        ]
+      ],
+      "pack": {
+        "original_text_bytes": 44,
+        "compiler_section_bytes": 48,
+        "zero_padding_removed": 4,
+        "trimmed_object_sha256": "c5864f0d20b1de482f2cfcb519fd683545421a03c4f34df4e58b3153dc343e3b"
+      }
+    },
+    {
+      "name": "func_8021FF3C_68962C",
+      "compiler_quirk_outcome": "NO_NEW_COMPILER_FINDING",
+      "ledger_sha256": "7a5e33202c7dc7c60924a5797794a5408c4318a05ed4405b7822d0688d7f2582",
+      "source_sha256": "ea6f7236a346db7d187893f02a5e4ded6b30b0aff1882ed3f56311033710cc31",
+      "relocations": [],
+      "pack": {
+        "original_text_bytes": 96,
+        "compiler_section_bytes": 96,
+        "zero_padding_removed": 0,
+        "trimmed_object_sha256": "f35b4997d1185f19c2d47a111d24ee0d24c7d4a1552f50e321c003f1c71d8f6d"
+      }
+    },
+    {
+      "name": "func_8021FF9C_68968C",
+      "compiler_quirk_outcome": "NO_NEW_COMPILER_FINDING",
+      "ledger_sha256": "7a5e33202c7dc7c60924a5797794a5408c4318a05ed4405b7822d0688d7f2582",
+      "source_sha256": "5aae708380fdbe39b28fc2c60ce8afbf4b4a43dd153dd10d308307618936c127",
+      "relocations": [],
+      "pack": {
+        "original_text_bytes": 64,
+        "compiler_section_bytes": 64,
+        "zero_padding_removed": 0,
+        "trimmed_object_sha256": "0a443b83526e379aa033e197aa673b5a01bdc6a85000c3b42d8de8ac7c18b500"
+      }
+    },
+    {
+      "name": "func_08001318_6F5C38",
+      "compiler_quirk_outcome": "NO_NEW_COMPILER_FINDING",
+      "ledger_sha256": "7a5e33202c7dc7c60924a5797794a5408c4318a05ed4405b7822d0688d7f2582",
+      "source_sha256": "c1921238f8ccdf14bdbbc836442404652c54bc95996b2c56abd320c375d27fd8",
+      "relocations": [
+        [
+          20,
+          "R_MIPS_HI16",
+          "func_8021B3BC_5D694C"
+        ],
+        [
+          24,
+          "R_MIPS_LO16",
+          "func_8021B3BC_5D694C"
+        ]
+      ],
+      "pack": {
+        "original_text_bytes": 68,
+        "compiler_section_bytes": 80,
+        "zero_padding_removed": 12,
+        "trimmed_object_sha256": "494f0987a00b3d775481099ff6d3122454bc632c64d13afecec8ed3bd1066c9c"
+      }
+    },
+    {
+      "name": "func_0800135C_6F5C7C",
+      "compiler_quirk_outcome": "NO_NEW_COMPILER_FINDING",
+      "ledger_sha256": "7a5e33202c7dc7c60924a5797794a5408c4318a05ed4405b7822d0688d7f2582",
+      "source_sha256": "ecd918426fd93a0603901f12c8e3faa32e43e783360e8dbfa38d0892301a1686",
+      "relocations": [
+        [
+          16,
+          "R_MIPS_HI16",
+          "func_8021B3BC_5D694C"
+        ],
+        [
+          20,
+          "R_MIPS_LO16",
+          "func_8021B3BC_5D694C"
+        ]
+      ],
+      "pack": {
+        "original_text_bytes": 64,
+        "compiler_section_bytes": 64,
+        "zero_padding_removed": 0,
+        "trimmed_object_sha256": "ed69df550f6f4ba05db2079f7c2f77e2782a2caf4841fb11d1243549df3f6117"
+      }
+    },
+    {
+      "name": "func_08001368_700B38",
+      "compiler_quirk_outcome": "NO_NEW_COMPILER_FINDING",
+      "ledger_sha256": "7a5e33202c7dc7c60924a5797794a5408c4318a05ed4405b7822d0688d7f2582",
+      "source_sha256": "ce571fd4f1c48cc23fae2d2e6cc0fac6062b9e0850c348bee6569be41b40d206",
+      "relocations": [
+        [
+          16,
+          "R_MIPS_HI16",
+          "func_80034E8C_35A8C"
+        ],
+        [
+          20,
+          "R_MIPS_LO16",
+          "func_80034E8C_35A8C"
+        ],
+        [
+          40,
+          "R_MIPS_HI16",
+          "func_080012DC_700AAC"
+        ],
+        [
+          48,
+          "R_MIPS_LO16",
+          "func_080012DC_700AAC"
+        ]
+      ],
+      "pack": {
+        "original_text_bytes": 68,
+        "compiler_section_bytes": 80,
+        "zero_padding_removed": 12,
+        "trimmed_object_sha256": "3bc42b25b837c26321bb75b99d07f5a524225b8e3dae18ee8eede4cc9af152c0"
+      }
+    },
+    {
+      "name": "func_801F46D8_5B06A8",
+      "compiler_quirk_outcome": "NO_NEW_COMPILER_FINDING",
+      "ledger_sha256": "7a5e33202c7dc7c60924a5797794a5408c4318a05ed4405b7822d0688d7f2582",
+      "source_sha256": "c356d4390f71f1c16cfb4d07569d9dc7b565f6cb6c0f6d57a5f048ef69b3497d",
+      "relocations": [
+        [
+          32,
+          "R_MIPS_26",
+          "func_801ED950_5A9920"
+        ]
+      ],
+      "pack": {
+        "original_text_bytes": 56,
+        "compiler_section_bytes": 64,
+        "zero_padding_removed": 8,
+        "trimmed_object_sha256": "b330d39e2c4ec0a4e01eb2510439f63e9b69068bf4f941592fe87ae83ecfb560"
+      }
+    },
+    {
+      "name": "func_8021F3B4_5DA944",
+      "compiler_quirk_outcome": "NO_NEW_COMPILER_FINDING",
+      "ledger_sha256": "7a5e33202c7dc7c60924a5797794a5408c4318a05ed4405b7822d0688d7f2582",
+      "source_sha256": "10f6d9dd5d3c4365896ea260c691843098e79d8ce475fe68aef1d99118208477",
+      "relocations": [
+        [
+          32,
+          "R_MIPS_26",
+          "func_8021F254_5DA7E4"
+        ]
+      ],
+      "pack": {
+        "original_text_bytes": 56,
+        "compiler_section_bytes": 64,
+        "zero_padding_removed": 8,
+        "trimmed_object_sha256": "f5a72c0d678f84b1e977aa3504c46f094145ae80258dd964f23331489db221c6"
+      }
+    },
+    {
+      "name": "func_801E35D8_59F5A8",
+      "compiler_quirk_outcome": "NO_NEW_COMPILER_FINDING",
+      "ledger_sha256": "7a5e33202c7dc7c60924a5797794a5408c4318a05ed4405b7822d0688d7f2582",
+      "source_sha256": "7f2412ff0bbad64462200bea3630acde21b1f4c472f90e4926adc0f0c3f9b4af",
+      "relocations": [
+        [
+          56,
+          "R_MIPS_26",
+          "func_801FAAF4_5B6AC4"
+        ],
+        [
+          72,
+          "R_MIPS_26",
+          "func_801E92F4_5A52C4"
+        ]
+      ],
+      "pack": {
+        "original_text_bytes": 96,
+        "compiler_section_bytes": 96,
+        "zero_padding_removed": 0,
+        "trimmed_object_sha256": "b54fe9a96ae7bdec6b7e8343e192e743a43370a39ecc1b6e441b795ce0e5d340"
+      }
+    },
+    {
+      "name": "func_801E3638_59F608",
+      "compiler_quirk_outcome": "NO_NEW_COMPILER_FINDING",
+      "ledger_sha256": "7a5e33202c7dc7c60924a5797794a5408c4318a05ed4405b7822d0688d7f2582",
+      "source_sha256": "b85c76b848f2719c339961c16c59376925f5359dbf5637053efbf1c846e29f80",
+      "relocations": [
+        [
+          32,
+          "R_MIPS_26",
+          "func_801FAB8C_5B6B5C"
+        ],
+        [
+          48,
+          "R_MIPS_26",
+          "func_801E94DC_5A54AC"
+        ]
+      ],
+      "pack": {
+        "original_text_bytes": 72,
+        "compiler_section_bytes": 80,
+        "zero_padding_removed": 8,
+        "trimmed_object_sha256": "75af43d695c3b8d2ce77bf7427d909eea2baba9401cf6e83be9bca5698a5b123"
+      }
+    },
+    {
+      "name": "func_801E3680_59F650",
+      "compiler_quirk_outcome": "NO_NEW_COMPILER_FINDING",
+      "ledger_sha256": "7a5e33202c7dc7c60924a5797794a5408c4318a05ed4405b7822d0688d7f2582",
+      "source_sha256": "b4d6eaed61c717f3b2dcb2386c3c7be98586b6fac61ea6f2d02f556d4328ac76",
+      "relocations": [
+        [
+          56,
+          "R_MIPS_26",
+          "func_801FAAF4_5B6AC4"
+        ],
+        [
+          72,
+          "R_MIPS_26",
+          "func_801E92F4_5A52C4"
+        ]
+      ],
+      "pack": {
+        "original_text_bytes": 96,
+        "compiler_section_bytes": 96,
+        "zero_padding_removed": 0,
+        "trimmed_object_sha256": "a8689fade9009a48eec4a2ef2b1fafc4e0aef2d02f9bf00bec4c7e36396aa4ca"
+      }
+    },
+    {
+      "name": "func_801E36E0_59F6B0",
+      "compiler_quirk_outcome": "NO_NEW_COMPILER_FINDING",
+      "ledger_sha256": "7a5e33202c7dc7c60924a5797794a5408c4318a05ed4405b7822d0688d7f2582",
+      "source_sha256": "12476ff4089771e0264fcdd3f46aa074fda495a96e1420126f1942b3728e1e7e",
+      "relocations": [
+        [
+          56,
+          "R_MIPS_26",
+          "func_801FAAF4_5B6AC4"
+        ],
+        [
+          72,
+          "R_MIPS_26",
+          "func_801E92F4_5A52C4"
+        ]
+      ],
+      "pack": {
+        "original_text_bytes": 96,
+        "compiler_section_bytes": 96,
+        "zero_padding_removed": 0,
+        "trimmed_object_sha256": "400ac567cf5b0a8b251529059ca9a86bdf8e6fe69ec79e59333a4223a3a85726"
+      }
+    },
+    {
+      "name": "func_801E3740_59F710",
+      "compiler_quirk_outcome": "NO_NEW_COMPILER_FINDING",
+      "ledger_sha256": "7a5e33202c7dc7c60924a5797794a5408c4318a05ed4405b7822d0688d7f2582",
+      "source_sha256": "35f5e54edd0265222d20141d81267e2680366f734e24e22734ce60921d61a1de",
+      "relocations": [
+        [
+          32,
+          "R_MIPS_26",
+          "func_801FAB8C_5B6B5C"
+        ],
+        [
+          48,
+          "R_MIPS_26",
+          "func_801E94DC_5A54AC"
+        ]
+      ],
+      "pack": {
+        "original_text_bytes": 72,
+        "compiler_section_bytes": 80,
+        "zero_padding_removed": 8,
+        "trimmed_object_sha256": "515d8052a201df5a2ef1e7539a666fa74523218c676ea08dbcbfb8b56e55d49b"
+      }
+    },
+    {
+      "name": "func_801E7118_5A30E8",
+      "compiler_quirk_outcome": "NO_NEW_COMPILER_FINDING",
+      "ledger_sha256": "7a5e33202c7dc7c60924a5797794a5408c4318a05ed4405b7822d0688d7f2582",
+      "source_sha256": "8b480a194dd9f860bd36bcd404b8e7db5bdd8281ab6421e9b27a8bb3bb0de4ba",
+      "relocations": [
+        [
+          24,
+          "R_MIPS_26",
+          "func_801E71A4_5A3174"
+        ]
+      ],
+      "pack": {
+        "original_text_bytes": 48,
+        "compiler_section_bytes": 48,
+        "zero_padding_removed": 0,
+        "trimmed_object_sha256": "bd7266e9a99f5d720d2844d7288270d16c1489f5bdf6012b65ede3f8204255ba"
+      }
+    },
+    {
+      "name": "func_801E72E8_5A32B8",
+      "compiler_quirk_outcome": "NO_NEW_COMPILER_FINDING",
+      "ledger_sha256": "7a5e33202c7dc7c60924a5797794a5408c4318a05ed4405b7822d0688d7f2582",
+      "source_sha256": "e637a52821fa6ab8f74dca8376762a4ed72b40cf5b01a96215e1d79bb0aec5a6",
+      "relocations": [
+        [
+          12,
+          "R_MIPS_26",
+          "func_801ECF10_5A8EE0"
+        ],
+        [
+          28,
+          "R_MIPS_HI16",
+          "D_80210178_5CC148"
+        ],
+        [
+          32,
+          "R_MIPS_LO16",
+          "D_80210178_5CC148"
+        ],
+        [
+          84,
+          "R_MIPS_26",
+          "func_801E2BE0_59EBB0"
+        ],
+        [
+          96,
+          "R_MIPS_HI16",
+          "D_8021185C_5CD82C"
+        ],
+        [
+          112,
+          "R_MIPS_26",
+          "func_80038838_39438"
+        ],
+        [
+          120,
+          "R_MIPS_26",
+          "func_80038838_39438"
+        ],
+        [
+          136,
+          "R_MIPS_LO16",
+          "D_8021185C_5CD82C"
+        ],
+        [
+          148,
+          "R_MIPS_26",
+          "func_80038838_39438"
+        ],
+        [
+          164,
+          "R_MIPS_26",
+          "func_801ECF10_5A8EE0"
+        ],
+        [
+          180,
+          "R_MIPS_26",
+          "func_80038838_39438"
+        ],
+        [
+          196,
+          "R_MIPS_26",
+          "func_801E2A90_59EA60"
+        ]
+      ],
+      "pack": {
+        "original_text_bytes": 224,
+        "compiler_section_bytes": 224,
+        "zero_padding_removed": 0,
+        "trimmed_object_sha256": "bb4dba0a8af1de55db81ffbae34b902b14972083eeeefcc80066d2798297eecd"
+      }
+    },
+    {
+      "name": "func_80200180_5BC150",
+      "compiler_quirk_outcome": "NO_NEW_COMPILER_FINDING",
+      "ledger_sha256": "7a5e33202c7dc7c60924a5797794a5408c4318a05ed4405b7822d0688d7f2582",
+      "source_sha256": "eacd2bf307c397470f4aeb40e108a8f9e62c5edf85f9502dd01b60d8b766c672",
+      "relocations": [
+        [
+          0,
+          "R_MIPS_HI16",
+          "g_system_ptr"
+        ],
+        [
+          4,
+          "R_MIPS_LO16",
+          "g_system_ptr"
+        ],
+        [
+          12,
+          "R_MIPS_HI16",
+          "D_3AE23"
+        ],
+        [
+          28,
+          "R_MIPS_26",
+          "func_802001B4_5BC184"
+        ],
+        [
+          32,
+          "R_MIPS_LO16",
+          "D_3AE23"
+        ]
+      ],
+      "pack": {
+        "original_text_bytes": 52,
+        "compiler_section_bytes": 64,
+        "zero_padding_removed": 12,
+        "trimmed_object_sha256": "12f163c3b004255e4f8021c7266b6b99f35b6d04945605849347f6f4a7978d35"
+      }
+    },
+    {
+      "name": "func_801EA2F0_614D70",
+      "compiler_quirk_outcome": "NO_NEW_COMPILER_FINDING",
+      "ledger_sha256": "7a5e33202c7dc7c60924a5797794a5408c4318a05ed4405b7822d0688d7f2582",
+      "source_sha256": "99a1b3085876b6127c6357cd6d6c562c3cee0d633539a3c473a1ff8386a49822",
+      "relocations": [
+        [
+          12,
+          "R_MIPS_HI16",
+          "D_802108F8_63B378"
+        ],
+        [
+          16,
+          "R_MIPS_26",
+          "func_801D88EC_60336C"
+        ],
+        [
+          20,
+          "R_MIPS_LO16",
+          "D_802108F8_63B378"
+        ],
+        [
+          24,
+          "R_MIPS_HI16",
+          "func_801EA324_614DA4"
+        ],
+        [
+          28,
+          "R_MIPS_26",
+          "func_80034E8C_35A8C"
+        ],
+        [
+          32,
+          "R_MIPS_LO16",
+          "func_801EA324_614DA4"
+        ]
+      ],
+      "pack": {
+        "original_text_bytes": 52,
+        "compiler_section_bytes": 64,
+        "zero_padding_removed": 12,
+        "trimmed_object_sha256": "2143a64a40b2c8c45cb5047f72a51467c9d538073f0e41313f85f5e6f04bc25d"
+      }
+    },
+    {
+      "name": "func_801F613C_620BBC",
+      "compiler_quirk_outcome": "NO_NEW_COMPILER_FINDING",
+      "ledger_sha256": "7a5e33202c7dc7c60924a5797794a5408c4318a05ed4405b7822d0688d7f2582",
+      "source_sha256": "8edaab989336b2760372937fd154033c73edf5949aa55c9dbec8264fde50d6af",
+      "relocations": [
+        [
+          12,
+          "R_MIPS_HI16",
+          "D_802109A0_63B420"
+        ],
+        [
+          20,
+          "R_MIPS_26",
+          "func_801D88EC_60336C"
+        ],
+        [
+          24,
+          "R_MIPS_LO16",
+          "D_802109A0_63B420"
+        ],
+        [
+          36,
+          "R_MIPS_HI16",
+          "func_801F6180_620C00"
+        ],
+        [
+          40,
+          "R_MIPS_LO16",
+          "func_801F6180_620C00"
+        ],
+        [
+          44,
+          "R_MIPS_26",
+          "func_80034E8C_35A8C"
+        ]
+      ],
+      "pack": {
+        "original_text_bytes": 68,
+        "compiler_section_bytes": 80,
+        "zero_padding_removed": 12,
+        "trimmed_object_sha256": "43c5a9754c01bf5dc867c2068a4a021abe218736592faa4703621175fb3545cf"
+      }
+    },
+    {
+      "name": "func_801F9164_623BE4",
+      "compiler_quirk_outcome": "NO_NEW_COMPILER_FINDING",
+      "ledger_sha256": "7a5e33202c7dc7c60924a5797794a5408c4318a05ed4405b7822d0688d7f2582",
+      "source_sha256": "d41896c64ea6ef6324fb7bce44792864d217c64c116b60d3bebc6eabcb535a6c",
+      "relocations": [
+        [
+          12,
+          "R_MIPS_HI16",
+          "D_802109C8_63B448"
+        ],
+        [
+          16,
+          "R_MIPS_26",
+          "func_801D88EC_60336C"
+        ],
+        [
+          20,
+          "R_MIPS_LO16",
+          "D_802109C8_63B448"
+        ],
+        [
+          24,
+          "R_MIPS_HI16",
+          "func_801F9198_623C18"
+        ],
+        [
+          28,
+          "R_MIPS_26",
+          "func_80034E8C_35A8C"
+        ],
+        [
+          32,
+          "R_MIPS_LO16",
+          "func_801F9198_623C18"
+        ]
+      ],
+      "pack": {
+        "original_text_bytes": 52,
+        "compiler_section_bytes": 64,
+        "zero_padding_removed": 12,
+        "trimmed_object_sha256": "6df8f83b7ba3bf96710829aa03354445484a5b75f609541ce00e8b6db5867b10"
+      }
+    },
+    {
+      "name": "func_80205DB4_630834",
+      "compiler_quirk_outcome": "NO_NEW_COMPILER_FINDING",
+      "ledger_sha256": "7a5e33202c7dc7c60924a5797794a5408c4318a05ed4405b7822d0688d7f2582",
+      "source_sha256": "ee6e000f797618c58ac770c1b4f20be59c278bb9623112db064466e3f63b63b6",
+      "relocations": [
+        [
+          8,
+          "R_MIPS_HI16",
+          "func_80205C38_6306B8"
+        ],
+        [
+          20,
+          "R_MIPS_26",
+          "func_80034E9C_35A9C"
+        ],
+        [
+          24,
+          "R_MIPS_LO16",
+          "func_80205C38_6306B8"
+        ]
+      ],
+      "pack": {
+        "original_text_bytes": 44,
+        "compiler_section_bytes": 48,
+        "zero_padding_removed": 4,
+        "trimmed_object_sha256": "ddc86dcbf2bbbc96a3d09ed49ee27e1a4efc01e85d3da3309645e887151767eb"
+      }
+    },
+    {
+      "name": "func_8020AAB0_635530",
+      "compiler_quirk_outcome": "NO_NEW_COMPILER_FINDING",
+      "ledger_sha256": "7a5e33202c7dc7c60924a5797794a5408c4318a05ed4405b7822d0688d7f2582",
+      "source_sha256": "89d0498cc502a30cc7f44ee10b3405872c8509db1a0ad4fe995dffbe1baec67d",
+      "relocations": [
+        [
+          8,
+          "R_MIPS_26",
+          "func_801DB290_605D10"
+        ],
+        [
+          24,
+          "R_MIPS_26",
+          "func_80034B44_35744"
+        ]
+      ],
+      "pack": {
+        "original_text_bytes": 48,
+        "compiler_section_bytes": 48,
+        "zero_padding_removed": 0,
+        "trimmed_object_sha256": "9c242a0cd6bf19d1201cc2ada1795306f52e9e22bbd804ea704497932ebcdc6c"
+      }
+    },
+    {
+      "name": "func_802190D8_6827C8",
+      "compiler_quirk_outcome": "NO_NEW_COMPILER_FINDING",
+      "ledger_sha256": "7a5e33202c7dc7c60924a5797794a5408c4318a05ed4405b7822d0688d7f2582",
+      "source_sha256": "8a9b450a56b48a316b2997943d5ed237fc95889de45dfb1d1c3b9b81a183491f",
+      "relocations": [],
+      "pack": {
+        "original_text_bytes": 72,
+        "compiler_section_bytes": 80,
+        "zero_padding_removed": 8,
+        "trimmed_object_sha256": "0422ceb9353ea7119c84f8333e09f90d8dba3af192707162b2ebe47b8786dd91"
+      }
+    },
+    {
+      "name": "func_08000490_6B1560",
+      "compiler_quirk_outcome": "NO_NEW_COMPILER_FINDING",
+      "ledger_sha256": "7a5e33202c7dc7c60924a5797794a5408c4318a05ed4405b7822d0688d7f2582",
+      "source_sha256": "2da5f6da8906b483a8271e2d5ea9730459c606bf3a8a5cf30db6c62fe9e38afd",
+      "relocations": [
+        [
+          12,
+          "R_MIPS_HI16",
+          "func_8021B3BC_5D694C"
+        ],
+        [
+          24,
+          "R_MIPS_LO16",
+          "func_8021B3BC_5D694C"
+        ],
+        [
+          52,
+          "R_MIPS_HI16",
+          "func_80034E8C_35A8C"
+        ],
+        [
+          56,
+          "R_MIPS_LO16",
+          "func_80034E8C_35A8C"
+        ],
+        [
+          60,
+          "R_MIPS_HI16",
+          "func_080004E8_6B15B8"
+        ],
+        [
+          68,
+          "R_MIPS_LO16",
+          "func_080004E8_6B15B8"
+        ]
+      ],
+      "pack": {
+        "original_text_bytes": 88,
+        "compiler_section_bytes": 96,
+        "zero_padding_removed": 8,
+        "trimmed_object_sha256": "26ff29cda783a54a4a12777bb47921d1b04fbf282192dfb8d7626feabe17bcda"
+      }
+    },
+    {
+      "name": "func_080013B0_6B52B0",
+      "compiler_quirk_outcome": "NO_NEW_COMPILER_FINDING",
+      "ledger_sha256": "7a5e33202c7dc7c60924a5797794a5408c4318a05ed4405b7822d0688d7f2582",
+      "source_sha256": "956eea39d4e0e04dc7e488d3551d756484d8643e375ed49e6ecf1013bc0aa3c1",
+      "relocations": [
+        [
+          20,
+          "R_MIPS_HI16",
+          "func_080013F4_6B52F4"
+        ],
+        [
+          36,
+          "R_MIPS_HI16",
+          "func_802263A8_5E1938"
+        ],
+        [
+          40,
+          "R_MIPS_LO16",
+          "func_802263A8_5E1938"
+        ],
+        [
+          48,
+          "R_MIPS_LO16",
+          "func_080013F4_6B52F4"
+        ]
+      ],
+      "pack": {
+        "original_text_bytes": 68,
+        "compiler_section_bytes": 80,
+        "zero_padding_removed": 12,
+        "trimmed_object_sha256": "6074240e0ad405facd557feb5a1885765f3016a14ed12785b26df5ba11a2dba2"
+      }
+    },
+    {
+      "name": "func_08005CB0_6C9E70",
+      "compiler_quirk_outcome": "NO_NEW_COMPILER_FINDING",
+      "ledger_sha256": "7a5e33202c7dc7c60924a5797794a5408c4318a05ed4405b7822d0688d7f2582",
+      "source_sha256": "a6d44f1f322a27f8f9d6b30241f282b2618d0fe9f471b68f5e2f02372b381735",
+      "relocations": [
+        [
+          24,
+          "R_MIPS_HI16",
+          "func_80034E8C_35A8C"
+        ],
+        [
+          44,
+          "R_MIPS_HI16",
+          "func_08005990_6C9B50"
+        ],
+        [
+          48,
+          "R_MIPS_LO16",
+          "func_80034E8C_35A8C"
+        ],
+        [
+          56,
+          "R_MIPS_LO16",
+          "func_08005990_6C9B50"
+        ]
+      ],
+      "pack": {
+        "original_text_bytes": 76,
+        "compiler_section_bytes": 80,
+        "zero_padding_removed": 4,
+        "trimmed_object_sha256": "7afb5caf1459d138159c4955a9dec959db40859ae87b6e3bb167d9476bbf3c5c"
+      }
+    },
+    {
+      "name": "func_0800046C_6E3DDC",
+      "compiler_quirk_outcome": "NO_NEW_COMPILER_FINDING",
+      "ledger_sha256": "7a5e33202c7dc7c60924a5797794a5408c4318a05ed4405b7822d0688d7f2582",
+      "source_sha256": "cd18915e4582ca1cb0dcf681b28db8b65b34aaa454317c0213679d20c08534f9",
+      "relocations": [
+        [
+          24,
+          "R_MIPS_HI16",
+          "func_80034E8C_35A8C"
+        ],
+        [
+          44,
+          "R_MIPS_HI16",
+          "func_080004B8_6E3E28"
+        ],
+        [
+          48,
+          "R_MIPS_LO16",
+          "func_80034E8C_35A8C"
+        ],
+        [
+          56,
+          "R_MIPS_LO16",
+          "func_080004B8_6E3E28"
+        ]
+      ],
+      "pack": {
+        "original_text_bytes": 76,
+        "compiler_section_bytes": 80,
+        "zero_padding_removed": 4,
+        "trimmed_object_sha256": "673a7aafffd2fb2c3d7a3f01abe60da84a0d232b2e934e2104ff02d23d9c3c7c"
+      }
+    },
+    {
+      "name": "func_08000F5C_6E48CC",
+      "compiler_quirk_outcome": "NO_NEW_COMPILER_FINDING",
+      "ledger_sha256": "7a5e33202c7dc7c60924a5797794a5408c4318a05ed4405b7822d0688d7f2582",
+      "source_sha256": "7a0a5e50d516365a007e5f065fe4de1d8cce3dbcef5d7074f14762d9fc9bf836",
+      "relocations": [
+        [
+          24,
+          "R_MIPS_HI16",
+          "func_80034E8C_35A8C"
+        ],
+        [
+          44,
+          "R_MIPS_HI16",
+          "func_08000FA8_6E4918"
+        ],
+        [
+          48,
+          "R_MIPS_LO16",
+          "func_80034E8C_35A8C"
+        ],
+        [
+          56,
+          "R_MIPS_LO16",
+          "func_08000FA8_6E4918"
+        ]
+      ],
+      "pack": {
+        "original_text_bytes": 76,
+        "compiler_section_bytes": 80,
+        "zero_padding_removed": 4,
+        "trimmed_object_sha256": "ff5049d9267363a4397acb7b287b8ee91e515ead3ec44c94989924967e296e25"
+      }
+    },
+    {
+      "name": "func_080017D0_6E5140",
+      "compiler_quirk_outcome": "NO_NEW_COMPILER_FINDING",
+      "ledger_sha256": "7a5e33202c7dc7c60924a5797794a5408c4318a05ed4405b7822d0688d7f2582",
+      "source_sha256": "b8ef7f8053fcdf56eeb50932af964627c0d6a1522f5c91820b67134736dd888b",
+      "relocations": [
+        [
+          4,
+          "R_MIPS_HI16",
+          "func_8021B3BC_5D694C"
+        ],
+        [
+          16,
+          "R_MIPS_LO16",
+          "func_8021B3BC_5D694C"
+        ],
+        [
+          44,
+          "R_MIPS_HI16",
+          "func_80034E8C_35A8C"
+        ],
+        [
+          52,
+          "R_MIPS_LO16",
+          "func_80034E8C_35A8C"
+        ],
+        [
+          56,
+          "R_MIPS_HI16",
+          "func_08001828_6E5198"
+        ],
+        [
+          60,
+          "R_MIPS_LO16",
+          "func_08001828_6E5198"
+        ]
+      ],
+      "pack": {
+        "original_text_bytes": 88,
+        "compiler_section_bytes": 96,
+        "zero_padding_removed": 8,
+        "trimmed_object_sha256": "87e24062310ab9b8d0251fcece6a2a2375f5991a7a61c75c176d3310769dd464"
+      }
+    },
+    {
+      "name": "func_0800193C_6E52AC",
+      "compiler_quirk_outcome": "NO_NEW_COMPILER_FINDING",
+      "ledger_sha256": "7a5e33202c7dc7c60924a5797794a5408c4318a05ed4405b7822d0688d7f2582",
+      "source_sha256": "3c1f7d59973e0181451c3d2ee278cae4dd3f685274c7f509cf07da41fa4de4a0",
+      "relocations": [
+        [
+          4,
+          "R_MIPS_HI16",
+          "func_8021B3BC_5D694C"
+        ],
+        [
+          16,
+          "R_MIPS_LO16",
+          "func_8021B3BC_5D694C"
+        ],
+        [
+          44,
+          "R_MIPS_HI16",
+          "func_80034E8C_35A8C"
+        ],
+        [
+          52,
+          "R_MIPS_LO16",
+          "func_80034E8C_35A8C"
+        ],
+        [
+          56,
+          "R_MIPS_HI16",
+          "func_08001994_6E5304"
+        ],
+        [
+          60,
+          "R_MIPS_LO16",
+          "func_08001994_6E5304"
+        ]
+      ],
+      "pack": {
+        "original_text_bytes": 88,
+        "compiler_section_bytes": 96,
+        "zero_padding_removed": 8,
+        "trimmed_object_sha256": "136cfe242ac5519c5a49ab5c886c3edd2d55998b42bc37369905dc026d5e4bc0"
+      }
+    },
+    {
+      "name": "func_08001B98_6EA2E8",
+      "compiler_quirk_outcome": "NO_NEW_COMPILER_FINDING",
+      "ledger_sha256": "7a5e33202c7dc7c60924a5797794a5408c4318a05ed4405b7822d0688d7f2582",
+      "source_sha256": "bbb575de15980a76e23ff27c81c5bc0b11f7710fcfbe33ab6992ae30e8c536de",
+      "relocations": [
+        [
+          4,
+          "R_MIPS_HI16",
+          "func_8021B3BC_5D694C"
+        ],
+        [
+          16,
+          "R_MIPS_LO16",
+          "func_8021B3BC_5D694C"
+        ],
+        [
+          44,
+          "R_MIPS_HI16",
+          "func_80034E8C_35A8C"
+        ],
+        [
+          52,
+          "R_MIPS_LO16",
+          "func_80034E8C_35A8C"
+        ],
+        [
+          56,
+          "R_MIPS_HI16",
+          "func_08001BF0_6EA340"
+        ],
+        [
+          60,
+          "R_MIPS_LO16",
+          "func_08001BF0_6EA340"
+        ]
+      ],
+      "pack": {
+        "original_text_bytes": 88,
+        "compiler_section_bytes": 96,
+        "zero_padding_removed": 8,
+        "trimmed_object_sha256": "eb7f979b33bbebfe64ffc75551ae8bb71a3d6206f5f0b7de63b8979c71ac03de"
+      }
+    },
+    {
+      "name": "func_08002D10_6EB460",
+      "compiler_quirk_outcome": "NO_NEW_COMPILER_FINDING",
+      "ledger_sha256": "7a5e33202c7dc7c60924a5797794a5408c4318a05ed4405b7822d0688d7f2582",
+      "source_sha256": "80ed331542da1851d0f675a1a115fedb8119224e0b2719744cd9f6554059bd6e",
+      "relocations": [
+        [
+          4,
+          "R_MIPS_HI16",
+          "func_8021F888_5DAE18"
+        ],
+        [
+          12,
+          "R_MIPS_LO16",
+          "func_8021F888_5DAE18"
+        ],
+        [
+          24,
+          "R_MIPS_HI16",
+          "func_80034E8C_35A8C"
+        ],
+        [
+          28,
+          "R_MIPS_LO16",
+          "func_80034E8C_35A8C"
+        ],
+        [
+          32,
+          "R_MIPS_HI16",
+          "func_08002D4C_6EB49C"
+        ],
+        [
+          40,
+          "R_MIPS_LO16",
+          "func_08002D4C_6EB49C"
+        ]
+      ],
+      "pack": {
+        "original_text_bytes": 60,
+        "compiler_section_bytes": 64,
+        "zero_padding_removed": 4,
+        "trimmed_object_sha256": "dc54f6cc1134e2da580ab2b63f962d7bf3d036aecff520ec6630d8f6100e69fa"
+      }
+    },
+    {
+      "name": "func_08003750_708DF0",
+      "compiler_quirk_outcome": "NO_NEW_COMPILER_FINDING",
+      "ledger_sha256": "7a5e33202c7dc7c60924a5797794a5408c4318a05ed4405b7822d0688d7f2582",
+      "source_sha256": "489244b6671c218f7e421c27028ca45108982a0331181f629575322a030e15b8",
+      "relocations": [
+        [
+          16,
+          "R_MIPS_HI16",
+          "func_80034E8C_35A8C"
+        ],
+        [
+          20,
+          "R_MIPS_LO16",
+          "func_80034E8C_35A8C"
+        ],
+        [
+          40,
+          "R_MIPS_HI16",
+          "func_08003794_708E34"
+        ],
+        [
+          48,
+          "R_MIPS_LO16",
+          "func_08003794_708E34"
+        ]
+      ],
+      "pack": {
+        "original_text_bytes": 68,
+        "compiler_section_bytes": 80,
+        "zero_padding_removed": 12,
+        "trimmed_object_sha256": "79cd766186c45006957fd330fb7572b68f42323038ee79965956cfc4c1240ec9"
+      }
+    },
+    {
+      "name": "func_08000EC4_715A54",
+      "compiler_quirk_outcome": "NO_NEW_COMPILER_FINDING",
+      "ledger_sha256": "7a5e33202c7dc7c60924a5797794a5408c4318a05ed4405b7822d0688d7f2582",
+      "source_sha256": "cb1c3dbcd442d6524d12f4412c7c5c5e607238db260218ffe411d113c484253d",
+      "relocations": [
+        [
+          4,
+          "R_MIPS_HI16",
+          "func_80222718_5DDCA8"
+        ],
+        [
+          16,
+          "R_MIPS_LO16",
+          "func_80222718_5DDCA8"
+        ],
+        [
+          36,
+          "R_MIPS_HI16",
+          "func_08000E00_715990"
+        ],
+        [
+          40,
+          "R_MIPS_HI16",
+          "func_80034E8C_35A8C"
+        ],
+        [
+          44,
+          "R_MIPS_LO16",
+          "func_80034E8C_35A8C"
+        ],
+        [
+          52,
+          "R_MIPS_LO16",
+          "func_08000E00_715990"
+        ]
+      ],
+      "pack": {
+        "original_text_bytes": 72,
+        "compiler_section_bytes": 80,
+        "zero_padding_removed": 8,
+        "trimmed_object_sha256": "e2b7f13ca16fe99ceef4fe0db75f26882e5d891c99e358bf47d37663a1295730"
+      }
+    },
+    {
+      "name": "func_08001D64_719204",
+      "compiler_quirk_outcome": "NO_NEW_COMPILER_FINDING",
+      "ledger_sha256": "7a5e33202c7dc7c60924a5797794a5408c4318a05ed4405b7822d0688d7f2582",
+      "source_sha256": "76523c3ac0f2b54108b2de99ed11bf7d5f6f8517c3a9a912c47e00dfa65f3f9d",
+      "relocations": [
+        [
+          24,
+          "R_MIPS_HI16",
+          "func_80034E8C_35A8C"
+        ],
+        [
+          44,
+          "R_MIPS_HI16",
+          "func_08001DB0_719250"
+        ],
+        [
+          48,
+          "R_MIPS_LO16",
+          "func_80034E8C_35A8C"
+        ],
+        [
+          56,
+          "R_MIPS_LO16",
+          "func_08001DB0_719250"
+        ]
+      ],
+      "pack": {
+        "original_text_bytes": 76,
+        "compiler_section_bytes": 80,
+        "zero_padding_removed": 4,
+        "trimmed_object_sha256": "2e282a8d540a0b4180dcb949873737bdb1551e5fcbc99760d7c78c99bb7eaa9b"
+      }
+    },
+    {
+      "name": "func_08001704_7389E4",
+      "compiler_quirk_outcome": "NO_NEW_COMPILER_FINDING",
+      "ledger_sha256": "7a5e33202c7dc7c60924a5797794a5408c4318a05ed4405b7822d0688d7f2582",
+      "source_sha256": "99573254bf558c53faa67d0d8da9b9158997d418c718a23465ec9abb186ac817",
+      "relocations": [
+        [
+          4,
+          "R_MIPS_HI16",
+          "func_80034A78_35678"
+        ],
+        [
+          12,
+          "R_MIPS_LO16",
+          "func_80034A78_35678"
+        ],
+        [
+          16,
+          "R_MIPS_HI16",
+          "func_0800165C_73893C"
+        ],
+        [
+          20,
+          "R_MIPS_LO16",
+          "func_0800165C_73893C"
+        ]
+      ],
+      "pack": {
+        "original_text_bytes": 48,
+        "compiler_section_bytes": 48,
+        "zero_padding_removed": 0,
+        "trimmed_object_sha256": "072155ff3463563b7150804bfd86485f71a4fffe985c0d9c1b77a309d126d546"
+      }
+    },
+    {
+      "name": "func_80018CF0_198F0",
+      "compiler_quirk_outcome": "NO_NEW_COMPILER_FINDING",
+      "ledger_sha256": "7a5e33202c7dc7c60924a5797794a5408c4318a05ed4405b7822d0688d7f2582",
+      "source_sha256": "6163db86e63b9721090d75c16960082baee42d1300f6c21872e4760482876e56",
+      "relocations": [
+        [
+          56,
+          "R_MIPS_26",
+          "func_80018D5C_1995C"
+        ]
+      ],
+      "pack": {
+        "original_text_bytes": 108,
+        "compiler_section_bytes": 112,
+        "zero_padding_removed": 4,
+        "trimmed_object_sha256": "d65fa4da6e9e5a695abc8612901b5b6f1b2b41c9b5015b4c9e7af7e0506a59ed"
+      }
+    },
+    {
+      "name": "func_8001B4A8_1C0A8",
+      "compiler_quirk_outcome": "NO_NEW_COMPILER_FINDING",
+      "ledger_sha256": "7a5e33202c7dc7c60924a5797794a5408c4318a05ed4405b7822d0688d7f2582",
+      "source_sha256": "49227e0510e5c4255177b5ed9a5e7fa176622f23c98240026cf1a90411ad20a5",
+      "relocations": [
+        [
+          32,
+          "R_MIPS_26",
+          "func_8001B4E0_1C0E0"
+        ]
+      ],
+      "pack": {
+        "original_text_bytes": 56,
+        "compiler_section_bytes": 64,
+        "zero_padding_removed": 8,
+        "trimmed_object_sha256": "b527fe2afa8aaf5ddcbff829179164aad969b326c50c5c3bc9efda2d2c702275"
+      }
+    },
+    {
+      "name": "func_80006DEC_79EC",
+      "compiler_quirk_outcome": "NO_NEW_COMPILER_FINDING",
+      "ledger_sha256": "7a5e33202c7dc7c60924a5797794a5408c4318a05ed4405b7822d0688d7f2582",
+      "source_sha256": "a8099c0366f5eab85f552dfbc3cbe9d6700302a3afecbfd872524e6f016c7067",
+      "relocations": [
+        [
+          20,
+          "R_MIPS_26",
+          "osSetIntMask"
+        ],
+        [
+          56,
+          "R_MIPS_26",
+          "osSetIntMask"
+        ]
+      ],
+      "pack": {
+        "original_text_bytes": 80,
+        "compiler_section_bytes": 80,
+        "zero_padding_removed": 0,
+        "trimmed_object_sha256": "6f9adf82e1205013bcc222e46e8e00af077f757beaa0c8501f310229075444e5"
+      }
+    },
+    {
+      "name": "func_80024548_25148",
+      "compiler_quirk_outcome": "NO_NEW_COMPILER_FINDING",
+      "ledger_sha256": "7a5e33202c7dc7c60924a5797794a5408c4318a05ed4405b7822d0688d7f2582",
+      "source_sha256": "b957c815e5cc5506f808d0e19d7a0c7025cc176d0dfedc5c319e6ccba99dcbf1",
+      "relocations": [
+        [
+          16,
+          "R_MIPS_HI16",
+          "func_80024508_25108"
+        ],
+        [
+          28,
+          "R_MIPS_26",
+          "func_80034E9C_35A9C"
+        ],
+        [
+          32,
+          "R_MIPS_LO16",
+          "func_80024508_25108"
+        ]
+      ],
+      "pack": {
+        "original_text_bytes": 52,
+        "compiler_section_bytes": 64,
+        "zero_padding_removed": 12,
+        "trimmed_object_sha256": "b1bf26736be8e0bdd3c579bf0215a5a68e7b42d2dfbb97edfe5e5ae145e27b3a"
+      }
+    },
+    {
+      "name": "func_801F30AC_5AF07C",
+      "compiler_quirk_outcome": "NO_NEW_COMPILER_FINDING",
+      "ledger_sha256": "7a5e33202c7dc7c60924a5797794a5408c4318a05ed4405b7822d0688d7f2582",
+      "source_sha256": "f259727add447df7aad2cef3049a6406dd15d2eb17d9f376b2dde054f16f6e73",
+      "relocations": [
+        [
+          32,
+          "R_MIPS_26",
+          "func_801ED950_5A9920"
+        ]
+      ],
+      "pack": {
+        "original_text_bytes": 56,
+        "compiler_section_bytes": 64,
+        "zero_padding_removed": 8,
+        "trimmed_object_sha256": "f7691255704802352bd82a8b34462684e88b6ea60a64ee5981a52aeadf81f783"
+      }
+    },
+    {
+      "name": "_freePVoice",
+      "compiler_quirk_outcome": "NO_NEW_COMPILER_FINDING",
+      "ledger_sha256": "7a5e33202c7dc7c60924a5797794a5408c4318a05ed4405b7822d0688d7f2582",
+      "source_sha256": "15806fc58ea562c23eacfc56ea5143dbb1d36c629fc58bae89cb31bfaed79e84",
+      "relocations": [
+        [
+          16,
+          "R_MIPS_26",
+          "alUnlink"
+        ],
+        [
+          32,
+          "R_MIPS_26",
+          "alLink"
+        ]
+      ],
+      "pack": {
+        "original_text_bytes": 56,
+        "compiler_section_bytes": 64,
+        "zero_padding_removed": 8,
+        "trimmed_object_sha256": "8701486dc6d496f6f0bf37e328bb39cf5a5583598085b108156d937236e87306"
+      }
+    },
+    {
+      "name": "memcpy",
+      "compiler_quirk_outcome": "NO_NEW_COMPILER_FINDING",
+      "ledger_sha256": "7a5e33202c7dc7c60924a5797794a5408c4318a05ed4405b7822d0688d7f2582",
+      "source_sha256": "2e3f0f450eb6cf00a171cecd4ca02c5224d9f6cd627621fc02e595a0e5894814",
+      "relocations": [],
+      "pack": {
+        "original_text_bytes": 44,
+        "compiler_section_bytes": 48,
+        "zero_padding_removed": 4,
+        "trimmed_object_sha256": "cab84b44a673f3acdebe632e2ef43a8747088c13bf7293b112b8b30858c53c5c"
+      }
+    },
+    {
+      "name": "func_801E79B4_5A3984",
+      "compiler_quirk_outcome": "NO_NEW_COMPILER_FINDING",
+      "ledger_sha256": "7a5e33202c7dc7c60924a5797794a5408c4318a05ed4405b7822d0688d7f2582",
+      "source_sha256": "0150b9803c89b678b35282e424e8c93372bbaa29f33ff2c7fb03d7d6d4361a45",
+      "relocations": [
+        [
+          36,
+          "R_MIPS_26",
+          "func_801ECF10_5A8EE0"
+        ],
+        [
+          52,
+          "R_MIPS_HI16",
+          "D_802101B8_5CC188"
+        ],
+        [
+          56,
+          "R_MIPS_LO16",
+          "D_802101B8_5CC188"
+        ],
+        [
+          124,
+          "R_MIPS_26",
+          "func_80038838_39438"
+        ]
+      ],
+      "pack": {
+        "original_text_bytes": 148,
+        "compiler_section_bytes": 160,
+        "zero_padding_removed": 12,
+        "trimmed_object_sha256": "3df23df45f76a44a571c5c70eb2f8041437a6b53a29218878963f53c38955e96"
+      }
+    },
+    {
+      "name": "func_802198E4_5D4E74",
+      "compiler_quirk_outcome": "NO_NEW_COMPILER_FINDING",
+      "ledger_sha256": "7a5e33202c7dc7c60924a5797794a5408c4318a05ed4405b7822d0688d7f2582",
+      "source_sha256": "a1cdbc18ed0a0cdd66954aaa624749263825fd4ca023f46b224928160ea55d8c",
+      "relocations": [
+        [
+          4,
+          "R_MIPS_HI16",
+          "func_8021CDBC_5D834C"
+        ],
+        [
+          16,
+          "R_MIPS_LO16",
+          "func_8021CDBC_5D834C"
+        ],
+        [
+          28,
+          "R_MIPS_HI16",
+          "func_80034B44_35744"
+        ],
+        [
+          32,
+          "R_MIPS_LO16",
+          "func_80034B44_35744"
+        ]
+      ],
+      "pack": {
+        "original_text_bytes": 60,
+        "compiler_section_bytes": 64,
+        "zero_padding_removed": 4,
+        "trimmed_object_sha256": "72717bb1beb96086ec4fb98442b20f3e1b070e5d06ab85db9b99727bb4088a5a"
+      }
+    },
+    {
+      "name": "func_802279A4_5E2F34",
+      "compiler_quirk_outcome": "NO_NEW_COMPILER_FINDING",
+      "ledger_sha256": "7a5e33202c7dc7c60924a5797794a5408c4318a05ed4405b7822d0688d7f2582",
+      "source_sha256": "8a74b65142bce9ea5f806d1efa68f1e739a61354edd3f266c544e21c8b4596c3",
+      "relocations": [
+        [
+          28,
+          "R_MIPS_26",
+          "func_8021E548_5D9AD8"
+        ],
+        [
+          44,
+          "R_MIPS_26",
+          "func_80034E8C_35A8C"
+        ]
+      ],
+      "pack": {
+        "original_text_bytes": 68,
+        "compiler_section_bytes": 80,
+        "zero_padding_removed": 12,
+        "trimmed_object_sha256": "6bd293dcfc5a2a01a54cf22472aee5c3ee31373be64cd1b78efb8fabff4faa58"
+      }
+    },
+    {
+      "name": "func_80208420_632EA0",
+      "compiler_quirk_outcome": "NO_NEW_COMPILER_FINDING",
+      "ledger_sha256": "7a5e33202c7dc7c60924a5797794a5408c4318a05ed4405b7822d0688d7f2582",
+      "source_sha256": "020ac6592010b787450127781d23debc27ae7863266abb1fdf1fdccd9de668ed",
+      "relocations": [
+        [
+          20,
+          "R_MIPS_HI16",
+          "func_80208464_632EE4"
+        ],
+        [
+          44,
+          "R_MIPS_26",
+          "func_80034E8C_35A8C"
+        ],
+        [
+          48,
+          "R_MIPS_LO16",
+          "func_80208464_632EE4"
+        ]
+      ],
+      "pack": {
+        "original_text_bytes": 68,
+        "compiler_section_bytes": 80,
+        "zero_padding_removed": 12,
+        "trimmed_object_sha256": "0d51f52c14457c88114994966843e990399edbc19c43a930bdd89e44a543dd77"
+      }
+    },
+    {
+      "name": "func_08000EAC_72E86C",
+      "compiler_quirk_outcome": "NO_NEW_COMPILER_FINDING",
+      "ledger_sha256": "7a5e33202c7dc7c60924a5797794a5408c4318a05ed4405b7822d0688d7f2582",
+      "source_sha256": "99fc13ec13d1712aab45b8b80ec93d61533cde09040f86f6d81df2fb110ad1a3",
+      "relocations": [
+        [
+          12,
+          "R_MIPS_HI16",
+          "func_8022982C_5E4DBC"
+        ],
+        [
+          16,
+          "R_MIPS_LO16",
+          "func_8022982C_5E4DBC"
+        ]
+      ],
+      "pack": {
+        "original_text_bytes": 60,
+        "compiler_section_bytes": 64,
+        "zero_padding_removed": 4,
+        "trimmed_object_sha256": "d801aba19bde7c7cb535c57e3e330f58ee95dce9b3d104714efd75d74342d1ea"
+      }
+    },
+    {
+      "name": "func_8021B4BC_67A32C",
+      "compiler_quirk_outcome": "NO_NEW_COMPILER_FINDING",
+      "ledger_sha256": "7a5e33202c7dc7c60924a5797794a5408c4318a05ed4405b7822d0688d7f2582",
+      "source_sha256": "e7b18d68aeaf88e43086e9cae69c052566e87274af7070ad4a4e98767c3355f1",
+      "relocations": [
+        [
+          8,
+          "R_MIPS_HI16",
+          "D_8021C0F8_67AF68"
+        ],
+        [
+          12,
+          "R_MIPS_HI16",
+          "D_8021C100_67AF70"
+        ],
+        [
+          16,
+          "R_MIPS_LO16",
+          "D_8021C100_67AF70"
+        ],
+        [
+          20,
+          "R_MIPS_LO16",
+          "D_8021C0F8_67AF68"
+        ]
+      ],
+      "pack": {
+        "original_text_bytes": 52,
+        "compiler_section_bytes": 64,
+        "zero_padding_removed": 12,
+        "trimmed_object_sha256": "daf549f80555ad08f4442d969279a8b282080782167eef175961beb5d835d22d"
+      }
+    },
+    {
+      "name": "func_8021B4F0_67A360",
+      "compiler_quirk_outcome": "NO_NEW_COMPILER_FINDING",
+      "ledger_sha256": "7a5e33202c7dc7c60924a5797794a5408c4318a05ed4405b7822d0688d7f2582",
+      "source_sha256": "d6ae50284a91ec8f0c7c9095ba45657bc9d4cc8eef1c3b2a78ec536214d432e8",
+      "relocations": [
+        [
+          0,
+          "R_MIPS_HI16",
+          "D_8021C0F8_67AF68"
+        ],
+        [
+          4,
+          "R_MIPS_HI16",
+          "D_8021C100_67AF70"
+        ],
+        [
+          8,
+          "R_MIPS_LO16",
+          "D_8021C100_67AF70"
+        ],
+        [
+          12,
+          "R_MIPS_LO16",
+          "D_8021C0F8_67AF68"
+        ]
+      ],
+      "pack": {
+        "original_text_bytes": 68,
+        "compiler_section_bytes": 80,
+        "zero_padding_removed": 12,
+        "trimmed_object_sha256": "2909152ba7f3e4db380abbcdb16bdd182f1ea1886682f323dc3894f4cccea233"
+      }
+    },
+    {
+      "name": "func_801E848C_5A445C",
+      "compiler_quirk_outcome": "NO_NEW_COMPILER_FINDING",
+      "ledger_sha256": "7a5e33202c7dc7c60924a5797794a5408c4318a05ed4405b7822d0688d7f2582",
+      "source_sha256": "279bbff1e33260b7dacc2f7287083ab255f4a46c1c5af14149d4642a9a4b077b",
+      "relocations": [
+        [
+          0,
+          "R_MIPS_HI16",
+          "D_802101CC_5CC19C"
+        ],
+        [
+          4,
+          "R_MIPS_LO16",
+          "D_802101CC_5CC19C"
+        ],
+        [
+          20,
+          "R_MIPS_HI16",
+          "D_802101D0_5CC1A0"
+        ],
+        [
+          24,
+          "R_MIPS_LO16",
+          "D_802101D0_5CC1A0"
+        ],
+        [
+          68,
+          "R_MIPS_26",
+          "func_801E84E8_5A44B8"
+        ]
+      ],
+      "pack": {
+        "original_text_bytes": 92,
+        "compiler_section_bytes": 96,
+        "zero_padding_removed": 4,
+        "trimmed_object_sha256": "938c45b8051b7b248d49617fc56727f2c097b7fbe521420669f5d7343a48f73b"
+      }
+    },
+    {
+      "name": "func_80224644_68DD34",
+      "compiler_quirk_outcome": "NO_NEW_COMPILER_FINDING",
+      "ledger_sha256": "7a5e33202c7dc7c60924a5797794a5408c4318a05ed4405b7822d0688d7f2582",
+      "source_sha256": "53b095b4b5cb38844de311e28b5f276327a9a3e2db72a764e1f1ff5153f7d024",
+      "relocations": [
+        [
+          12,
+          "R_MIPS_HI16",
+          "D_8022F190_698880"
+        ],
+        [
+          20,
+          "R_MIPS_LO16",
+          "D_8022F190_698880"
+        ],
+        [
+          28,
+          "R_MIPS_26",
+          "func_80013654_14254"
+        ]
+      ],
+      "pack": {
+        "original_text_bytes": 52,
+        "compiler_section_bytes": 64,
+        "zero_padding_removed": 12,
+        "trimmed_object_sha256": "0ff900b112ce66426d555e8de5f84af7859707e43a75ae5d263a814d95527b98"
+      }
+    },
+    {
+      "name": "func_08002F00_73BA40",
+      "compiler_quirk_outcome": "NO_NEW_COMPILER_FINDING",
+      "ledger_sha256": "7a5e33202c7dc7c60924a5797794a5408c4318a05ed4405b7822d0688d7f2582",
+      "source_sha256": "898c6c85c798e8844b22e317230f96d184531e31217cf4a91f5c3bb7ede2c818",
+      "relocations": [
+        [
+          4,
+          "R_MIPS_HI16",
+          "func_08003838_73C378"
+        ],
+        [
+          16,
+          "R_MIPS_LO16",
+          "func_08003838_73C378"
+        ]
+      ],
+      "pack": {
+        "original_text_bytes": 44,
+        "compiler_section_bytes": 48,
+        "zero_padding_removed": 4,
+        "trimmed_object_sha256": "7504425395d08ab7ab349921084919adde715b95a58c24033c4d99f904057f9f"
+      }
+    },
+    {
+      "name": "func_080003EC_6D3EEC",
+      "compiler_quirk_outcome": "NO_NEW_COMPILER_FINDING",
+      "ledger_sha256": "7a5e33202c7dc7c60924a5797794a5408c4318a05ed4405b7822d0688d7f2582",
+      "source_sha256": "ef69eb33c53a648651fe2ed87428dd812c1e38813fc509a35416e8ef4e2ef983",
+      "relocations": [
+        [
+          4,
+          "R_MIPS_HI16",
+          "func_8021B3BC_5D694C"
+        ],
+        [
+          16,
+          "R_MIPS_LO16",
+          "func_8021B3BC_5D694C"
+        ],
+        [
+          36,
+          "R_MIPS_HI16",
+          "func_80034E8C_35A8C"
+        ],
+        [
+          40,
+          "R_MIPS_LO16",
+          "func_80034E8C_35A8C"
+        ],
+        [
+          44,
+          "R_MIPS_HI16",
+          "func_08000434_6D3F34"
+        ],
+        [
+          52,
+          "R_MIPS_LO16",
+          "func_08000434_6D3F34"
+        ]
+      ],
+      "pack": {
+        "original_text_bytes": 72,
+        "compiler_section_bytes": 80,
+        "zero_padding_removed": 8,
+        "trimmed_object_sha256": "5b34eb2e0e690a669d5c266f70e9eb2821654fc2ccade36fe0873aec61230318"
+      }
+    },
+    {
+      "name": "func_08000BB8_6D46B8",
+      "compiler_quirk_outcome": "NO_NEW_COMPILER_FINDING",
+      "ledger_sha256": "7a5e33202c7dc7c60924a5797794a5408c4318a05ed4405b7822d0688d7f2582",
+      "source_sha256": "10bbce2ad77459d76e8c3db002290ba5fd089e126e54e7988c59e567e66f8757",
+      "relocations": [
+        [
+          4,
+          "R_MIPS_HI16",
+          "func_8021E548_5D9AD8"
+        ],
+        [
+          16,
+          "R_MIPS_LO16",
+          "func_8021E548_5D9AD8"
+        ],
+        [
+          32,
+          "R_MIPS_HI16",
+          "func_8021FE0C_5DB39C"
+        ],
+        [
+          36,
+          "R_MIPS_LO16",
+          "func_8021FE0C_5DB39C"
+        ]
+      ],
+      "pack": {
+        "original_text_bytes": 72,
+        "compiler_section_bytes": 80,
+        "zero_padding_removed": 8,
+        "trimmed_object_sha256": "7a76e855beae6c90a9ee8c7dc8064907d3f120848b806ec69db9b218d6e9e6d9"
+      }
+    },
+    {
+      "name": "func_08000C00_6D4700",
+      "compiler_quirk_outcome": "NO_NEW_COMPILER_FINDING",
+      "ledger_sha256": "7a5e33202c7dc7c60924a5797794a5408c4318a05ed4405b7822d0688d7f2582",
+      "source_sha256": "b4ee930c1702d990a6d03444e449239d2e32a6fa652ffc29b5db0d4e56732bdc",
+      "relocations": [
+        [
+          4,
+          "R_MIPS_HI16",
+          "func_8021F888_5DAE18"
+        ],
+        [
+          12,
+          "R_MIPS_LO16",
+          "func_8021F888_5DAE18"
+        ],
+        [
+          24,
+          "R_MIPS_HI16",
+          "func_80034E8C_35A8C"
+        ],
+        [
+          28,
+          "R_MIPS_LO16",
+          "func_80034E8C_35A8C"
+        ],
+        [
+          32,
+          "R_MIPS_HI16",
+          "func_08000C3C_6D473C"
+        ],
+        [
+          40,
+          "R_MIPS_LO16",
+          "func_08000C3C_6D473C"
+        ]
+      ],
+      "pack": {
+        "original_text_bytes": 60,
+        "compiler_section_bytes": 64,
+        "zero_padding_removed": 4,
+        "trimmed_object_sha256": "cc1c08da9e209d7123f046084abd56b177d8df320639848fd9edce8899d835fd"
+      }
+    },
+    {
+      "name": "alSaveNew",
+      "compiler_quirk_outcome": "NO_NEW_COMPILER_FINDING",
+      "ledger_sha256": "7a5e33202c7dc7c60924a5797794a5408c4318a05ed4405b7822d0688d7f2582",
+      "source_sha256": "817742d99f57f6e10b21e4442b208d6ee521810eb4bb3daea98be1e66d7b6fdb",
+      "relocations": [
+        [
+          8,
+          "R_MIPS_HI16",
+          "alSavePull"
+        ],
+        [
+          12,
+          "R_MIPS_HI16",
+          "alSaveParam"
+        ],
+        [
+          16,
+          "R_MIPS_LO16",
+          "alSaveParam"
+        ],
+        [
+          20,
+          "R_MIPS_LO16",
+          "alSavePull"
+        ],
+        [
+          28,
+          "R_MIPS_26",
+          "alFilterNew"
+        ]
+      ],
+      "pack": {
+        "original_text_bytes": 68,
+        "compiler_section_bytes": 80,
+        "zero_padding_removed": 12,
+        "trimmed_object_sha256": "81d4adac09db74d1ad9b1517ba077d9a194af6e3ed1a97d1e8f9a58fc30d65d2"
+      }
+    },
+    {
+      "name": "alSynAddPlayer",
+      "compiler_quirk_outcome": "NO_NEW_COMPILER_FINDING",
+      "ledger_sha256": "7a5e33202c7dc7c60924a5797794a5408c4318a05ed4405b7822d0688d7f2582",
+      "source_sha256": "0822ea1ade5c956d5f7eabd4ad13cc67f171723720d94e02c113c578138fd5f9",
+      "relocations": [
+        [
+          20,
+          "R_MIPS_26",
+          "osSetIntMask"
+        ],
+        [
+          56,
+          "R_MIPS_26",
+          "osSetIntMask"
+        ]
+      ],
+      "pack": {
+        "original_text_bytes": 80,
+        "compiler_section_bytes": 80,
+        "zero_padding_removed": 0,
+        "trimmed_object_sha256": "17fe03871d78899019fc523f9e94ecac03e1ed6324d5cf9570f5dc5d08c05c2f"
+      }
+    },
+    {
+      "name": "__osPiRelAccess",
+      "compiler_quirk_outcome": "NO_NEW_COMPILER_FINDING",
+      "ledger_sha256": "7a5e33202c7dc7c60924a5797794a5408c4318a05ed4405b7822d0688d7f2582",
+      "source_sha256": "56783ec1c9dfc7617aa7a3375fbcb9eb3f444a2f694279c72e1563157c1c3323",
+      "relocations": [
+        [
+          8,
+          "R_MIPS_HI16",
+          "D_801CF968_1D0568"
+        ],
+        [
+          12,
+          "R_MIPS_LO16",
+          "D_801CF968_1D0568"
+        ],
+        [
+          20,
+          "R_MIPS_26",
+          "osSendMesg"
+        ]
+      ],
+      "pack": {
+        "original_text_bytes": 44,
+        "compiler_section_bytes": 48,
+        "zero_padding_removed": 4,
+        "trimmed_object_sha256": "1591f6946c904f7e3688cda92f48ffbd1253ba9fa520cf90c8b874d0de744cb3"
+      }
+    },
+    {
+      "name": "__osSiRelAccess",
+      "compiler_quirk_outcome": "NO_NEW_COMPILER_FINDING",
+      "ledger_sha256": "7a5e33202c7dc7c60924a5797794a5408c4318a05ed4405b7822d0688d7f2582",
+      "source_sha256": "033437a54e5824c64bf87695b1546dfc075935ddcf4ccdaa5829479252be174d",
+      "relocations": [
+        [
+          8,
+          "R_MIPS_HI16",
+          "D_801CF988_1D0588"
+        ],
+        [
+          12,
+          "R_MIPS_LO16",
+          "D_801CF988_1D0588"
+        ],
+        [
+          20,
+          "R_MIPS_26",
+          "osSendMesg"
+        ]
+      ],
+      "pack": {
+        "original_text_bytes": 44,
+        "compiler_section_bytes": 48,
+        "zero_padding_removed": 4,
+        "trimmed_object_sha256": "93b747f2b6b131768aa0a252d45bb50a3afff032a0ddf3d84544f2360bcefc3d"
+      }
+    },
+    {
+      "name": "proutSprintf",
+      "compiler_quirk_outcome": "NO_NEW_COMPILER_FINDING",
+      "ledger_sha256": "7a5e33202c7dc7c60924a5797794a5408c4318a05ed4405b7822d0688d7f2582",
+      "source_sha256": "e91c720cff05d728546936b157733d9eafffe184371027124f60bcdc67005202",
+      "relocations": [
+        [
+          8,
+          "R_MIPS_26",
+          "memcpy"
+        ]
+      ],
+      "pack": {
+        "original_text_bytes": 36,
+        "compiler_section_bytes": 48,
+        "zero_padding_removed": 12,
+        "trimmed_object_sha256": "69f0ea6d3337521a7b5353205e4b62690489db54c4f29f00d81b0fd825564363"
+      }
+    },
+    {
+      "name": "func_801F9FB0_5B5F80",
+      "compiler_quirk_outcome": "NO_NEW_COMPILER_FINDING",
+      "ledger_sha256": "7a5e33202c7dc7c60924a5797794a5408c4318a05ed4405b7822d0688d7f2582",
+      "source_sha256": "066f100c0ad105ba252ffad8945d32f0fd358c4a9f4e21f37144a5694345390d",
+      "relocations": [
+        [
+          20,
+          "R_MIPS_26",
+          "func_801FA0B0_5B6080"
+        ]
+      ],
+      "pack": {
+        "original_text_bytes": 44,
+        "compiler_section_bytes": 48,
+        "zero_padding_removed": 4,
+        "trimmed_object_sha256": "e54cbe5d1a1cdeff14afff05ffb4a9f5cfac4fd80d75d6e303df3899be09a922"
+      }
+    },
+    {
+      "name": "func_801FA030_5B6000",
+      "compiler_quirk_outcome": "NO_NEW_COMPILER_FINDING",
+      "ledger_sha256": "7a5e33202c7dc7c60924a5797794a5408c4318a05ed4405b7822d0688d7f2582",
+      "source_sha256": "698d2353ad2364b25ae4ea53cddd16afd8dda92f050a78aab08c859e14b47aca",
+      "relocations": [
+        [
+          20,
+          "R_MIPS_26",
+          "func_801FA0B0_5B6080"
+        ]
+      ],
+      "pack": {
+        "original_text_bytes": 44,
+        "compiler_section_bytes": 48,
+        "zero_padding_removed": 4,
+        "trimmed_object_sha256": "f4a31fef09671a361897d44ae856a110aac87092054feccf3299308ca10705a8"
+      }
+    },
+    {
+      "name": "func_8021C4E0_685BD0",
+      "compiler_quirk_outcome": "NO_NEW_COMPILER_FINDING",
+      "ledger_sha256": "7a5e33202c7dc7c60924a5797794a5408c4318a05ed4405b7822d0688d7f2582",
+      "source_sha256": "149eab7395b8c562a4836a61feaecdf15619ec97b3b01faac1a4972820d5ddda",
+      "relocations": [
+        [
+          44,
+          "R_MIPS_26",
+          "func_80003FD8_4BD8"
+        ]
+      ],
+      "pack": {
+        "original_text_bytes": 84,
+        "compiler_section_bytes": 96,
+        "zero_padding_removed": 12,
+        "trimmed_object_sha256": "0badc68e8b92c67de86bf9d260d52ecc2b56ee8e4c867995daa889797c98941a"
+      }
+    },
+    {
+      "name": "func_080021E4_6DCA84",
+      "compiler_quirk_outcome": "NO_NEW_COMPILER_FINDING",
+      "ledger_sha256": "7a5e33202c7dc7c60924a5797794a5408c4318a05ed4405b7822d0688d7f2582",
+      "source_sha256": "436723889c7079f9abab2d881a249ad9f572b937f0b19d0212be650e3a47faae",
+      "relocations": [
+        [
+          48,
+          "R_MIPS_HI16",
+          "func_80034E8C_35A8C"
+        ],
+        [
+          56,
+          "R_MIPS_HI16",
+          "func_0800223C_6DCADC"
+        ],
+        [
+          60,
+          "R_MIPS_LO16",
+          "func_80034E8C_35A8C"
+        ],
+        [
+          68,
+          "R_MIPS_LO16",
+          "func_0800223C_6DCADC"
+        ]
+      ],
+      "pack": {
+        "original_text_bytes": 88,
+        "compiler_section_bytes": 96,
+        "zero_padding_removed": 8,
+        "trimmed_object_sha256": "17f043fa63ff1405c3b802782c8a23813ee5bfbc6feafb8e37de222d9a7dfc0c"
+      }
+    },
+    {
+      "name": "func_080025DC_6DCE7C",
+      "compiler_quirk_outcome": "NO_NEW_COMPILER_FINDING",
+      "ledger_sha256": "7a5e33202c7dc7c60924a5797794a5408c4318a05ed4405b7822d0688d7f2582",
+      "source_sha256": "5c6f5d51c3a781046f01100fab8137207a5d82928c71cd691647488e5f3dcff9",
+      "relocations": [
+        [
+          48,
+          "R_MIPS_HI16",
+          "func_80034E8C_35A8C"
+        ],
+        [
+          56,
+          "R_MIPS_HI16",
+          "func_08002634_6DCED4"
+        ],
+        [
+          60,
+          "R_MIPS_LO16",
+          "func_80034E8C_35A8C"
+        ],
+        [
+          68,
+          "R_MIPS_LO16",
+          "func_08002634_6DCED4"
+        ]
+      ],
+      "pack": {
+        "original_text_bytes": 88,
+        "compiler_section_bytes": 96,
+        "zero_padding_removed": 8,
+        "trimmed_object_sha256": "b7e4b421e6559e67728ee91e08886b26c97134249301e52ec01140035ae6ccbb"
+      }
+    },
+    {
+      "name": "func_080024D0_6BA250",
+      "compiler_quirk_outcome": "NO_NEW_COMPILER_FINDING",
+      "ledger_sha256": "7a5e33202c7dc7c60924a5797794a5408c4318a05ed4405b7822d0688d7f2582",
+      "source_sha256": "5a22527af9a5779808d1586d4b121cd19dcbae5dc481c517c9d269a8f9b18550",
+      "relocations": [
+        [
+          4,
+          "R_MIPS_HI16",
+          "func_8021B3BC_5D694C"
+        ],
+        [
+          16,
+          "R_MIPS_LO16",
+          "func_8021B3BC_5D694C"
+        ],
+        [
+          36,
+          "R_MIPS_HI16",
+          "func_80034E8C_35A8C"
+        ],
+        [
+          40,
+          "R_MIPS_LO16",
+          "func_80034E8C_35A8C"
+        ],
+        [
+          44,
+          "R_MIPS_HI16",
+          "func_08002518_6BA298"
+        ],
+        [
+          52,
+          "R_MIPS_LO16",
+          "func_08002518_6BA298"
+        ]
+      ],
+      "pack": {
+        "original_text_bytes": 72,
+        "compiler_section_bytes": 80,
+        "zero_padding_removed": 8,
+        "trimmed_object_sha256": "829a4aa6d15463b31c7c33e7bf9bfb111b9dd5f1b2a10af713867cbe944d33c8"
+      }
+    },
+    {
+      "name": "func_08000484_6B4384",
+      "compiler_quirk_outcome": "NO_NEW_COMPILER_FINDING",
+      "ledger_sha256": "7a5e33202c7dc7c60924a5797794a5408c4318a05ed4405b7822d0688d7f2582",
+      "source_sha256": "f4c0aab875991b5c1cbe7ac2208cc56ff93694092f48b43d0857c1232c62bc38",
+      "relocations": [
+        [
+          4,
+          "R_MIPS_HI16",
+          "func_80226800_5E1D90"
+        ],
+        [
+          12,
+          "R_MIPS_LO16",
+          "func_80226800_5E1D90"
+        ],
+        [
+          24,
+          "R_MIPS_HI16",
+          "func_80034E8C_35A8C"
+        ],
+        [
+          28,
+          "R_MIPS_LO16",
+          "func_80034E8C_35A8C"
+        ],
+        [
+          32,
+          "R_MIPS_HI16",
+          "func_080004C0_6B43C0"
+        ],
+        [
+          40,
+          "R_MIPS_LO16",
+          "func_080004C0_6B43C0"
+        ]
+      ],
+      "pack": {
+        "original_text_bytes": 60,
+        "compiler_section_bytes": 64,
+        "zero_padding_removed": 4,
+        "trimmed_object_sha256": "7ad45c36d674bfeff259096ee87e2f5af0ac3d8f905a774bb6be08784471b29f"
+      }
+    },
+    {
+      "name": "func_080048AC_6E303C",
+      "compiler_quirk_outcome": "NO_NEW_COMPILER_FINDING",
+      "ledger_sha256": "7a5e33202c7dc7c60924a5797794a5408c4318a05ed4405b7822d0688d7f2582",
+      "source_sha256": "374eb02c4b3d1a8d82ffed0f59248cbcef7c359620e683ccefb55a22ae8a69db",
+      "relocations": [
+        [
+          4,
+          "R_MIPS_HI16",
+          "func_8021E548_5D9AD8"
+        ],
+        [
+          16,
+          "R_MIPS_LO16",
+          "func_8021E548_5D9AD8"
+        ],
+        [
+          32,
+          "R_MIPS_HI16",
+          "func_8021FE0C_5DB39C"
+        ],
+        [
+          36,
+          "R_MIPS_LO16",
+          "func_8021FE0C_5DB39C"
+        ]
+      ],
+      "pack": {
+        "original_text_bytes": 72,
+        "compiler_section_bytes": 80,
+        "zero_padding_removed": 8,
+        "trimmed_object_sha256": "0c6175f5ae754b84f3de75ee3a363e6eb7ca72bf56e26b8ec472bd41fc59a49a"
+      }
+    },
+    {
+      "name": "func_080048F4_6E3084",
+      "compiler_quirk_outcome": "NO_NEW_COMPILER_FINDING",
+      "ledger_sha256": "7a5e33202c7dc7c60924a5797794a5408c4318a05ed4405b7822d0688d7f2582",
+      "source_sha256": "254a377297b50342c53368ea7adac1487e62562af80bc8fa4ddbbc0b34defeea",
+      "relocations": [
+        [
+          4,
+          "R_MIPS_HI16",
+          "func_8021B3BC_5D694C"
+        ],
+        [
+          16,
+          "R_MIPS_LO16",
+          "func_8021B3BC_5D694C"
+        ],
+        [
+          36,
+          "R_MIPS_HI16",
+          "func_80034E8C_35A8C"
+        ],
+        [
+          40,
+          "R_MIPS_LO16",
+          "func_80034E8C_35A8C"
+        ],
+        [
+          44,
+          "R_MIPS_HI16",
+          "func_0800493C_6E30CC"
+        ],
+        [
+          52,
+          "R_MIPS_LO16",
+          "func_0800493C_6E30CC"
+        ]
+      ],
+      "pack": {
+        "original_text_bytes": 72,
+        "compiler_section_bytes": 80,
+        "zero_padding_removed": 8,
+        "trimmed_object_sha256": "3d3fe816f61fa6e3600f51ef1e256243f1c7bbaa5034d2395cc1923a9550b3de"
+      }
+    },
+    {
+      "name": "func_08000F20_6E9670",
+      "compiler_quirk_outcome": "NO_NEW_COMPILER_FINDING",
+      "ledger_sha256": "7a5e33202c7dc7c60924a5797794a5408c4318a05ed4405b7822d0688d7f2582",
+      "source_sha256": "e782ea98822444e9860538c6c62f6178800975448f86b6d27a0f1caa21cb816f",
+      "relocations": [
+        [
+          4,
+          "R_MIPS_HI16",
+          "func_8021FE0C_5DB39C"
+        ],
+        [
+          16,
+          "R_MIPS_LO16",
+          "func_8021FE0C_5DB39C"
+        ]
+      ],
+      "pack": {
+        "original_text_bytes": 48,
+        "compiler_section_bytes": 48,
+        "zero_padding_removed": 0,
+        "trimmed_object_sha256": "45ab58f27cc1510a9923eed28726d0e82398d8d08cbcc243447085a2bda1b00a"
+      }
+    },
+    {
+      "name": "func_08000534_7179D4",
+      "compiler_quirk_outcome": "NO_NEW_COMPILER_FINDING",
+      "ledger_sha256": "7a5e33202c7dc7c60924a5797794a5408c4318a05ed4405b7822d0688d7f2582",
+      "source_sha256": "c7b38c846f0dca5fb0c2a1948e6cfc73648c88e443e9936b6910315c528b7a62",
+      "relocations": [
+        [
+          16,
+          "R_MIPS_26",
+          "func_0800056C_717A0C"
+        ],
+        [
+          24,
+          "R_MIPS_HI16",
+          "func_08000978_717E18"
+        ],
+        [
+          28,
+          "R_MIPS_LO16",
+          "func_08000978_717E18"
+        ]
+      ],
+      "pack": {
+        "original_text_bytes": 56,
+        "compiler_section_bytes": 64,
+        "zero_padding_removed": 8,
+        "trimmed_object_sha256": "77da1507156b2c13a189e9559dd64b502dc1ceb3816d3900bb56e856955f721b"
+      }
+    }
+  ],
+  "failures": []
+}

@@ -1,0 +1,1622 @@
+{
+  "format": "goemon-matching-decomp-v1",
+  "upstream_commit": "7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee",
+  "retail_sha1": "df8083a54296b8c151917c5333e1c85f014a2a66",
+  "decompressed_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+  "units": [
+    {
+      "source": "event_flags.c",
+      "rom_start": 150000,
+      "rom_end": 150880,
+      "splat_original": "[0x249F0, asm]",
+      "splat_replacement": "[0x249F0, c, event_flags]",
+      "functions": [
+        {
+          "name": "func_80023DF0_249F0",
+          "rom_offset": 150000,
+          "size": 80
+        },
+        {
+          "name": "func_80023E40_24A40",
+          "rom_offset": 150080,
+          "size": 84
+        },
+        {
+          "name": "func_80023E94_24A94",
+          "rom_offset": 150164,
+          "size": 80
+        },
+        {
+          "name": "func_80023EE4_24AE4",
+          "rom_offset": 150244,
+          "size": 48
+        },
+        {
+          "name": "func_80023F14_24B14",
+          "rom_offset": 150292,
+          "size": 80
+        },
+        {
+          "name": "func_80023F64_24B64",
+          "rom_offset": 150372,
+          "size": 84
+        },
+        {
+          "name": "func_80023FB8_24BB8",
+          "rom_offset": 150456,
+          "size": 80
+        },
+        {
+          "name": "func_80024008_24C08",
+          "rom_offset": 150536,
+          "size": 48
+        },
+        {
+          "name": "func_80024038_24C38",
+          "rom_offset": 150584,
+          "size": 80
+        },
+        {
+          "name": "func_80024088_24C88",
+          "rom_offset": 150664,
+          "size": 84
+        },
+        {
+          "name": "func_800240DC_24CDC",
+          "rom_offset": 150748,
+          "size": 80
+        },
+        {
+          "name": "func_8002412C_24D2C",
+          "rom_offset": 150828,
+          "size": 48
+        }
+      ]
+    },
+    {
+      "source": "system_memory.c",
+      "rom_start": 19824,
+      "rom_end": 20032,
+      "splat_original": "[0x4D70, asm]",
+      "splat_replacement": "[0x4D70, c, system_memory]",
+      "functions": [
+        {
+          "name": "func_80004170_4D70",
+          "rom_offset": 19824,
+          "size": 112
+        },
+        {
+          "name": "func_800041E0_4DE0",
+          "rom_offset": 19936,
+          "size": 40
+        },
+        {
+          "name": "func_80004208_4E08",
+          "rom_offset": 19976,
+          "size": 48
+        }
+      ]
+    },
+    {
+      "source": "save_resources.c",
+      "rom_start": 49616,
+      "rom_end": 50416,
+      "splat_original": "[0xC1D0, asm]",
+      "splat_replacement": "[0xC1D0, c, save_resources]",
+      "functions": [
+        {
+          "name": "func_8000B5D0_C1D0",
+          "rom_offset": 49616,
+          "size": 112
+        },
+        {
+          "name": "func_8000B640_C240",
+          "rom_offset": 49728,
+          "size": 160
+        },
+        {
+          "name": "func_8000B6E0_C2E0",
+          "rom_offset": 49888,
+          "size": 56
+        },
+        {
+          "name": "func_8000B718_C318",
+          "rom_offset": 49944,
+          "size": 204
+        },
+        {
+          "name": "func_8000B7E4_C3E4",
+          "rom_offset": 50148,
+          "size": 64
+        },
+        {
+          "name": "func_8000B824_C424",
+          "rom_offset": 50212,
+          "size": 64
+        },
+        {
+          "name": "func_8000B864_C464",
+          "rom_offset": 50276,
+          "size": 28
+        },
+        {
+          "name": "func_8000B880_C480",
+          "rom_offset": 50304,
+          "size": 36
+        },
+        {
+          "name": "func_8000B8A4_C4A4",
+          "rom_offset": 50340,
+          "size": 12
+        },
+        {
+          "name": "func_8000B8B0_C4B0",
+          "rom_offset": 50352,
+          "size": 64
+        }
+      ]
+    },
+    {
+      "source": "script_vm.c",
+      "rom_start": 252832,
+      "rom_end": 262944,
+      "splat_original": "[0x3DBA0, asm]",
+      "splat_replacement": "[0x3DBA0, c, script_vm]",
+      "functions": [
+        {
+          "name": "func_8003CFA0_3DBA0",
+          "rom_offset": 252832,
+          "size": 48
+        },
+        {
+          "name": "func_8003CFD0_3DBD0",
+          "rom_offset": 252880,
+          "size": 76
+        },
+        {
+          "name": "func_8003D01C_3DC1C",
+          "rom_offset": 252956,
+          "size": 60
+        },
+        {
+          "name": "func_8003D058_3DC58",
+          "rom_offset": 253016,
+          "size": 40
+        },
+        {
+          "name": "func_8003D080_3DC80",
+          "rom_offset": 253056,
+          "size": 48
+        },
+        {
+          "name": "func_8003D0B0_3DCB0",
+          "rom_offset": 253104,
+          "size": 204
+        },
+        {
+          "name": "func_8003D17C_3DD7C",
+          "rom_offset": 253308,
+          "size": 404
+        },
+        {
+          "name": "func_8003D310_3DF10",
+          "rom_offset": 253712,
+          "size": 120
+        },
+        {
+          "name": "func_8003D388_3DF88",
+          "rom_offset": 253832,
+          "size": 160
+        },
+        {
+          "name": "func_8003D428_3E028",
+          "rom_offset": 253992,
+          "size": 36
+        },
+        {
+          "name": "func_8003D44C_3E04C",
+          "rom_offset": 254028,
+          "size": 16
+        },
+        {
+          "name": "func_8003D45C_3E05C",
+          "rom_offset": 254044,
+          "size": 12
+        },
+        {
+          "name": "func_8003D9B8_3E5B8",
+          "rom_offset": 255416,
+          "size": 340
+        },
+        {
+          "name": "func_8003DB0C_3E70C",
+          "rom_offset": 255756,
+          "size": 224
+        },
+        {
+          "name": "func_8003DDC4_3E9C4",
+          "rom_offset": 256452,
+          "size": 132
+        },
+        {
+          "name": "func_8003DE48_3EA48",
+          "rom_offset": 256584,
+          "size": 56
+        },
+        {
+          "name": "func_8003DF68_3EB68",
+          "rom_offset": 256872,
+          "size": 48
+        },
+        {
+          "name": "func_8003E1A8_3EDA8",
+          "rom_offset": 257448,
+          "size": 140
+        },
+        {
+          "name": "func_8003E3EC_3EFEC",
+          "rom_offset": 258028,
+          "size": 212
+        },
+        {
+          "name": "func_8003E4C0_3F0C0",
+          "rom_offset": 258240,
+          "size": 136
+        },
+        {
+          "name": "func_8003E548_3F148",
+          "rom_offset": 258376,
+          "size": 112
+        },
+        {
+          "name": "func_8003E5B8_3F1B8",
+          "rom_offset": 258488,
+          "size": 52
+        },
+        {
+          "name": "func_8003E5EC_3F1EC",
+          "rom_offset": 258540,
+          "size": 52
+        },
+        {
+          "name": "func_8003E620_3F220",
+          "rom_offset": 258592,
+          "size": 52
+        },
+        {
+          "name": "func_8003E654_3F254",
+          "rom_offset": 258644,
+          "size": 44
+        },
+        {
+          "name": "func_8003E680_3F280",
+          "rom_offset": 258688,
+          "size": 64
+        },
+        {
+          "name": "func_8003E81C_3F41C",
+          "rom_offset": 259100,
+          "size": 108
+        },
+        {
+          "name": "func_8003E888_3F488",
+          "rom_offset": 259208,
+          "size": 352
+        },
+        {
+          "name": "func_8003E9E8_3F5E8",
+          "rom_offset": 259560,
+          "size": 36
+        },
+        {
+          "name": "func_8003EA0C_3F60C",
+          "rom_offset": 259596,
+          "size": 8
+        },
+        {
+          "name": "func_8003EA14_3F614",
+          "rom_offset": 259604,
+          "size": 184
+        },
+        {
+          "name": "func_8003EACC_3F6CC",
+          "rom_offset": 259788,
+          "size": 104
+        },
+        {
+          "name": "func_8003EB34_3F734",
+          "rom_offset": 259892,
+          "size": 112
+        },
+        {
+          "name": "func_8003EBA4_3F7A4",
+          "rom_offset": 260004,
+          "size": 8
+        },
+        {
+          "name": "func_8003EFB0_3FBB0",
+          "rom_offset": 261040,
+          "size": 136
+        },
+        {
+          "name": "func_8003F0FC_3FCFC",
+          "rom_offset": 261372,
+          "size": 80
+        },
+        {
+          "name": "func_8003F14C_3FD4C",
+          "rom_offset": 261452,
+          "size": 64
+        },
+        {
+          "name": "func_8003F18C_3FD8C",
+          "rom_offset": 261516,
+          "size": 76
+        },
+        {
+          "name": "func_8003F1D8_3FDD8",
+          "rom_offset": 261592,
+          "size": 36
+        },
+        {
+          "name": "func_8003F1FC_3FDFC",
+          "rom_offset": 261628,
+          "size": 64
+        },
+        {
+          "name": "func_8003F23C_3FE3C",
+          "rom_offset": 261692,
+          "size": 152
+        },
+        {
+          "name": "func_8003F2D4_3FED4",
+          "rom_offset": 261844,
+          "size": 124
+        },
+        {
+          "name": "func_8003F350_3FF50",
+          "rom_offset": 261968,
+          "size": 44
+        },
+        {
+          "name": "func_8003F43C_4003C",
+          "rom_offset": 262204,
+          "size": 36
+        },
+        {
+          "name": "func_8003F460_40060",
+          "rom_offset": 262240,
+          "size": 32
+        },
+        {
+          "name": "func_8003F524_40124",
+          "rom_offset": 262436,
+          "size": 32
+        },
+        {
+          "name": "func_8003F544_40144",
+          "rom_offset": 262468,
+          "size": 32
+        },
+        {
+          "name": "func_8003F564_40164",
+          "rom_offset": 262500,
+          "size": 48
+        },
+        {
+          "name": "func_8003F594_40194",
+          "rom_offset": 262548,
+          "size": 52
+        },
+        {
+          "name": "func_8003F5C8_401C8",
+          "rom_offset": 262600,
+          "size": 52
+        },
+        {
+          "name": "func_8003F5FC_401FC",
+          "rom_offset": 262652,
+          "size": 12
+        },
+        {
+          "name": "func_8003F608_40208",
+          "rom_offset": 262664,
+          "size": 36
+        },
+        {
+          "name": "func_8003F62C_4022C",
+          "rom_offset": 262700,
+          "size": 52
+        },
+        {
+          "name": "func_8003F660_40260",
+          "rom_offset": 262752,
+          "size": 52
+        },
+        {
+          "name": "func_8003F694_40294",
+          "rom_offset": 262804,
+          "size": 40
+        },
+        {
+          "name": "func_8003F6BC_402BC",
+          "rom_offset": 262844,
+          "size": 44
+        }
+      ],
+      "assembly_functions": [
+        "func_8003D468_3E068",
+        "func_8003D68C_3E28C",
+        "func_8003DBEC_3E7EC",
+        "func_8003DE80_3EA80",
+        "func_8003DF98_3EB98",
+        "func_8003E234_3EE34",
+        "func_8003E6C0_3F2C0",
+        "func_8003EBAC_3F7AC",
+        "func_8003ED60_3F960",
+        "func_8003F038_3FC38",
+        "func_8003F37C_3FF7C",
+        "func_8003F480_40080",
+        "func_8003F6E8_402E8"
+      ]
+    },
+    {
+      "source": "viewport_bounds.c",
+      "rom_start": 139952,
+      "rom_end": 140096,
+      "splat_original": "[0x221D0, asm]",
+      "splat_replacement": "[0x221D0, asm]\n    - [0x222B0, c, viewport_bounds]\n    - [0x22340, asm]",
+      "functions": [
+        {
+          "name": "func_800216B0_222B0",
+          "rom_offset": 139952,
+          "size": 144
+        }
+      ]
+    },
+    {
+      "source": "warp_state.c",
+      "rom_start": 228448,
+      "rom_end": 228496,
+      "splat_original": "[0x37C00, asm]",
+      "splat_replacement": "[0x37C00, asm]\n    - [0x37C60, c, warp_state]\n    - [0x37C90, asm]",
+      "functions": [
+        {
+          "name": "func_80037060_37C60",
+          "rom_offset": 228448,
+          "size": 16
+        },
+        {
+          "name": "func_80037070_37C70",
+          "rom_offset": 228464,
+          "size": 16
+        },
+        {
+          "name": "func_80037080_37C80",
+          "rom_offset": 228480,
+          "size": 16
+        }
+      ]
+    },
+    {
+      "source": "scheduler_views.c",
+      "rom_start": 31764,
+      "rom_end": 31780,
+      "splat_original": "[0x79F0, asm]",
+      "splat_replacement": "[0x79F0, asm]\n    - [0x7C14, c, scheduler_views]\n    - [0x7C24, asm]",
+      "asm_no_padding": [
+        "79F0",
+        "7C24"
+      ],
+      "functions": [
+        {
+          "name": "func_80007014_7C14",
+          "rom_offset": 31764,
+          "size": 8
+        },
+        {
+          "name": "func_8000701C_7C1C",
+          "rom_offset": 31772,
+          "size": 8
+        }
+      ]
+    },
+    {
+      "source": "audio_state.c",
+      "rom_start": 235876,
+      "rom_end": 235924,
+      "splat_original": "[0x392E0, asm]",
+      "splat_replacement": "[0x392E0, asm]\n    - [0x39964, c, audio_state]\n    - [0x39994, asm]",
+      "asm_no_padding": [
+        "392E0",
+        "39994"
+      ],
+      "functions": [
+        {
+          "name": "func_80038D64_39964",
+          "rom_offset": 235876,
+          "size": 48
+        }
+      ]
+    },
+    {
+      "source": "trig_angles.c",
+      "rom_start": 63492,
+      "rom_end": 63668,
+      "splat_original": "[0xE7F0, asm]",
+      "splat_replacement": "[0xE7F0, asm]\n    - [0xF804, c, trig_angles]\n    - [0xF8B4, asm]",
+      "asm_no_padding": [
+        "E7F0",
+        "F8B4"
+      ],
+      "functions": [
+        {
+          "name": "func_8000EC04_F804",
+          "rom_offset": 63492,
+          "size": 176
+        }
+      ]
+    },
+    {
+      "source": "engine_state.c",
+      "rom_start": 240444,
+      "rom_end": 241228,
+      "splat_original": "[0x39994, asm]",
+      "splat_replacement": "[0x39994, asm]\n    - [0x3AB3C, c, engine_state]\n    - [0x3AE4C, asm]",
+      "asm_no_padding": [
+        "3AE4C"
+      ],
+      "functions": [
+        {
+          "name": "func_80039F3C_3AB3C",
+          "rom_offset": 240444,
+          "size": 36
+        },
+        {
+          "name": "func_80039F60_3AB60",
+          "rom_offset": 240480,
+          "size": 36
+        },
+        {
+          "name": "func_8003A1C4_3ADC4",
+          "rom_offset": 241092,
+          "size": 36
+        },
+        {
+          "name": "func_8003A204_3AE04",
+          "rom_offset": 241156,
+          "size": 36
+        },
+        {
+          "name": "func_8003A228_3AE28",
+          "rom_offset": 241192,
+          "size": 36
+        }
+      ],
+      "assembly_functions": [
+        "func_80039F84_3AB84",
+        "func_8003A060_3AC60",
+        "func_8003A138_3AD38",
+        "func_8003A1E8_3ADE8"
+      ]
+    },
+    {
+      "source": "math_helpers.c",
+      "rom_start": 61068,
+      "rom_end": 62092,
+      "splat_original": "[0xE7F0, asm]",
+      "splat_replacement": "[0xE7F0, asm]\n    - [0xEE8C, c, math_helpers]\n    - [0xF28C, asm]",
+      "asm_no_padding": [
+        "F28C"
+      ],
+      "functions": [
+        {
+          "name": "func_8000E28C_EE8C",
+          "rom_offset": 61068,
+          "size": 72
+        },
+        {
+          "name": "func_8000E39C_EF9C",
+          "rom_offset": 61340,
+          "size": 328
+        },
+        {
+          "name": "func_8000E630_F230",
+          "rom_offset": 62000,
+          "size": 92
+        }
+      ],
+      "assembly_functions": [
+        "func_8000E2D4_EED4",
+        "func_8000E4E4_F0E4"
+      ]
+    },
+    {
+      "source": "bit_array.c",
+      "rom_start": 94816,
+      "rom_end": 94944,
+      "splat_original": "[0x15970, asm]",
+      "splat_replacement": "[0x15970, asm]\n    - [0x17260, c, bit_array]\n    - [0x172E0, asm]",
+      "asm_no_padding": [
+        "15970"
+      ],
+      "functions": [
+        {
+          "name": "func_80016660_17260",
+          "rom_offset": 94816,
+          "size": 36
+        },
+        {
+          "name": "func_80016684_17284",
+          "rom_offset": 94852,
+          "size": 40
+        },
+        {
+          "name": "func_800166AC_172AC",
+          "rom_offset": 94892,
+          "size": 52
+        }
+      ]
+    },
+    {
+      "source": "fixed_loop.c",
+      "rom_start": 69004,
+      "rom_end": 69036,
+      "splat_original": "[0x10D80, asm]",
+      "splat_replacement": "[0x10D80, asm]\n    - [0x10D8C, c, fixed_loop]\n    - [0x10DAC, asm]",
+      "asm_no_padding": [
+        "10D80",
+        "10DAC"
+      ],
+      "functions": [
+        {
+          "name": "func_8001018C_10D8C",
+          "rom_offset": 69004,
+          "size": 32
+        }
+      ]
+    },
+    {
+      "source": "state_four.c",
+      "rom_start": 71040,
+      "rom_end": 71520,
+      "splat_original": "[0x10DAC, asm]",
+      "splat_replacement": "[0x10DAC, asm]\n    - [0x11580, c, state_four]\n    - [0x11760, asm]",
+      "asm_no_padding": [
+        "11760"
+      ],
+      "functions": [
+        {
+          "name": "func_80010980_11580",
+          "rom_offset": 71040,
+          "size": 36
+        }
+      ],
+      "assembly_functions": [
+        "func_800109A4_115A4"
+      ]
+    },
+    {
+      "source": "decode_loop.c",
+      "rom_start": 92924,
+      "rom_end": 93148,
+      "splat_original": "[0x15970, asm]",
+      "splat_replacement": "[0x15970, asm]\n    - [0x16AFC, c, decode_loop]\n    - [0x16BDC, asm]",
+      "asm_no_padding": [
+        "16BDC"
+      ],
+      "functions": [
+        {
+          "name": "func_80015EFC_16AFC",
+          "rom_offset": 92924,
+          "size": 92
+        }
+      ],
+      "assembly_functions": [
+        "func_80015F58_16B58"
+      ]
+    },
+    {
+      "source": "angle_variant.c",
+      "rom_start": 63092,
+      "rom_end": 63492,
+      "splat_original": "[0xF28C, asm]",
+      "splat_replacement": "[0xF28C, asm]\n    - [0xF674, c, angle_variant]",
+      "functions": [
+        {
+          "name": "func_8000EA74_F674",
+          "rom_offset": 63092,
+          "size": 72
+        },
+        {
+          "name": "func_8000EABC_F6BC",
+          "rom_offset": 63164,
+          "size": 76
+        },
+        {
+          "name": "func_8000EB08_F708",
+          "rom_offset": 63240,
+          "size": 72
+        },
+        {
+          "name": "func_8000EB50_F750",
+          "rom_offset": 63312,
+          "size": 180
+        }
+      ]
+    },
+    {
+      "source": "return_zero.c",
+      "rom_start": 147340,
+      "rom_end": 149020,
+      "splat_original": "[0x23DE0, asm]",
+      "splat_replacement": "[0x23DE0, asm]\n    - [0x23F8C, c, return_zero]\n    - [0x2461C, asm]",
+      "asm_no_padding": [
+        "23DE0",
+        "2461C"
+      ],
+      "functions": [
+        {
+          "name": "func_8002338C_23F8C",
+          "rom_offset": 147340,
+          "size": 8
+        }
+      ],
+      "assembly_functions": [
+        "func_80023394_23F94",
+        "func_80023410_24010",
+        "func_80023480_24080",
+        "func_800234D8_240D8",
+        "func_80023560_24160",
+        "func_80023610_24210",
+        "func_80023698_24298",
+        "func_80023788_24388",
+        "func_800237F0_243F0",
+        "func_80023840_24440",
+        "func_80023880_24480",
+        "func_800238D0_244D0",
+        "func_800239B8_245B8"
+      ]
+    },
+    {
+      "source": "empty_hook.c",
+      "rom_start": 231856,
+      "rom_end": 231872,
+      "splat_original": "[0x389B0, asm]",
+      "splat_replacement": "[0x389B0, c, empty_hook]",
+      "functions": [
+        {
+          "name": "func_80037DB0_389B0",
+          "rom_offset": 231856,
+          "size": 8
+        }
+      ]
+    },
+    {
+      "source": "float_state.c",
+      "rom_start": 28720,
+      "rom_end": 31216,
+      "splat_original": "[0x6F50, asm]",
+      "splat_replacement": "[0x6F50, asm]\n    - [0x7030, c, float_state]",
+      "functions": [
+        {
+          "name": "func_80006430_7030",
+          "rom_offset": 28720,
+          "size": 12
+        }
+      ],
+      "assembly_functions": [
+        "func_8000643C_703C",
+        "func_80006568_7168",
+        "func_8000693C_753C",
+        "func_80006B44_7744",
+        "func_80006BF8_77F8"
+      ]
+    },
+    {
+      "source": "rotation_angles.c",
+      "rom_start": 132216,
+      "rom_end": 134920,
+      "splat_original": "[0x1D570, asm] # (.rodata: 80081280)\n    - [0x204B0, asm] # Overworld (.rodata: 80081320)",
+      "splat_replacement": "[0x1D570, asm] # (.rodata: 80081280)\n    - [0x20478, c, rotation_angles]\n    - [0x20F08, asm] # Overworld (.rodata: 80081320)",
+      "asm_no_padding": [
+        "1D570",
+        "20F08"
+      ],
+      "functions": [
+        {
+          "name": "func_8001F878_20478",
+          "rom_offset": 132216,
+          "size": 56
+        },
+        {
+          "name": "func_8001F914_20514",
+          "rom_offset": 132372,
+          "size": 44
+        },
+        {
+          "name": "func_8001FA3C_2063C",
+          "rom_offset": 132668,
+          "size": 68
+        }
+      ],
+      "assembly_functions": [
+        "func_8001F8B0_204B0",
+        "func_8001F940_20540",
+        "func_8001FA80_20680"
+      ]
+    },
+    {
+      "source": "scheduler_queue.c",
+      "rom_start": 31780,
+      "rom_end": 32260,
+      "splat_original": "[0x7C24, asm]",
+      "splat_replacement": "[0x7C24, c, scheduler_queue]\n    - [0x7E04, asm]",
+      "asm_no_padding": [
+        "7E04"
+      ],
+      "functions": [
+        {
+          "name": "func_80007024_7C24",
+          "rom_offset": 31780,
+          "size": 8
+        }
+      ],
+      "assembly_functions": [
+        "func_8000702C_7C2C",
+        "func_80007160_7D60"
+      ]
+    },
+    {
+      "source": "empty_menu_hook.c",
+      "rom_start": 75608,
+      "rom_end": 75864,
+      "splat_original": "[0x11760, asm] # Menu Graphics (.rodata: 80080670)\n    - [0x12760, asm] # dracam (.rodata: 800809F0)",
+      "splat_replacement": "[0x11760, asm] # Menu Graphics (.rodata: 80080670)\n    - [0x12758, c, empty_menu_hook]\n    - [0x12858, asm] # dracam (.rodata: 800809F0)",
+      "asm_no_padding": [
+        "12858"
+      ],
+      "functions": [
+        {
+          "name": "func_80011B58_12758",
+          "rom_offset": 75608,
+          "size": 8
+        },
+        {
+          "name": "func_80011B60_12760",
+          "rom_offset": 75616,
+          "size": 84
+        },
+        {
+          "name": "func_80011BB4_127B4",
+          "rom_offset": 75700,
+          "size": 80
+        },
+        {
+          "name": "func_80011C04_12804",
+          "rom_offset": 75780,
+          "size": 84
+        }
+      ]
+    },
+    {
+      "source": "state_predicate.c",
+      "rom_start": 28192,
+      "rom_end": 28496,
+      "splat_original": "[0x6790, asm]",
+      "splat_replacement": "[0x6790, asm]\n    - [0x6E20, c, state_predicate]",
+      "functions": [
+        {
+          "name": "func_8000631C_6F1C",
+          "rom_offset": 28444,
+          "size": 40
+        }
+      ],
+      "assembly_functions": [
+        "func_80006220_6E20",
+        "func_80006274_6E74",
+        "func_80006298_6E98"
+      ]
+    },
+    {
+      "source": "transition_state.c",
+      "rom_start": 15600,
+      "rom_end": 17856,
+      "splat_original": "[0x2C40, asm]",
+      "splat_replacement": "[0x2C40, asm]\n    - [0x3CF0, c, transition_state]",
+      "functions": [
+        {
+          "name": "func_80003328_3F28",
+          "rom_offset": 16168,
+          "size": 48
+        },
+        {
+          "name": "func_80003358_3F58",
+          "rom_offset": 16216,
+          "size": 40
+        },
+        {
+          "name": "func_80003380_3F80",
+          "rom_offset": 16256,
+          "size": 48
+        },
+        {
+          "name": "func_800033B0_3FB0",
+          "rom_offset": 16304,
+          "size": 60
+        },
+        {
+          "name": "func_800033EC_3FEC",
+          "rom_offset": 16364,
+          "size": 60
+        },
+        {
+          "name": "func_80003428_4028",
+          "rom_offset": 16424,
+          "size": 80
+        },
+        {
+          "name": "func_80003478_4078",
+          "rom_offset": 16504,
+          "size": 88
+        },
+        {
+          "name": "func_800034D0_40D0",
+          "rom_offset": 16592,
+          "size": 88
+        },
+        {
+          "name": "func_80003528_4128",
+          "rom_offset": 16680,
+          "size": 80
+        },
+        {
+          "name": "func_80003578_4178",
+          "rom_offset": 16760,
+          "size": 88
+        },
+        {
+          "name": "func_800035D0_41D0",
+          "rom_offset": 16848,
+          "size": 88
+        },
+        {
+          "name": "func_80003628_4228",
+          "rom_offset": 16936,
+          "size": 80
+        },
+        {
+          "name": "func_80003678_4278",
+          "rom_offset": 17016,
+          "size": 88
+        },
+        {
+          "name": "func_800036D0_42D0",
+          "rom_offset": 17104,
+          "size": 88
+        },
+        {
+          "name": "func_80003728_4328",
+          "rom_offset": 17192,
+          "size": 100
+        },
+        {
+          "name": "func_8000378C_438C",
+          "rom_offset": 17292,
+          "size": 88
+        },
+        {
+          "name": "func_800037E4_43E4",
+          "rom_offset": 17380,
+          "size": 88
+        },
+        {
+          "name": "func_8000383C_443C",
+          "rom_offset": 17468,
+          "size": 68
+        },
+        {
+          "name": "func_80003880_4480",
+          "rom_offset": 17536,
+          "size": 100
+        },
+        {
+          "name": "func_800038E4_44E4",
+          "rom_offset": 17636,
+          "size": 104
+        }
+      ],
+      "assembly_functions": [
+        "func_800030F0_3CF0",
+        "func_8000394C_454C"
+      ]
+    },
+    {
+      "source": "resource_dispatch.c",
+      "rom_start": 219860,
+      "rom_end": 219972,
+      "splat_original": "[0x35280, asm]",
+      "splat_replacement": "[0x35280, asm]\n    - [0x35AD4, c, resource_dispatch]\n    - [0x35B44, asm]",
+      "asm_no_padding": [
+        "35280",
+        "35B44"
+      ],
+      "functions": [
+        {
+          "name": "func_80034ED4_35AD4",
+          "rom_offset": 219860,
+          "size": 36
+        },
+        {
+          "name": "func_80034EF8_35AF8",
+          "rom_offset": 219896,
+          "size": 40
+        },
+        {
+          "name": "func_80034F20_35B20",
+          "rom_offset": 219936,
+          "size": 36
+        }
+      ]
+    },
+    {
+      "source": "resource_forward.c",
+      "rom_start": 220228,
+      "rom_end": 220260,
+      "splat_original": "[0x35B44, asm]",
+      "splat_replacement": "[0x35B44, asm]\n    - [0x35C44, c, resource_forward]\n    - [0x35C64, asm]",
+      "asm_no_padding": [
+        "35C64"
+      ],
+      "functions": [
+        {
+          "name": "func_80035044_35C44",
+          "rom_offset": 220228,
+          "size": 32
+        }
+      ]
+    },
+    {
+      "source": "resource_callback.c",
+      "rom_start": 220564,
+      "rom_end": 220596,
+      "splat_original": "[0x35C64, asm]",
+      "splat_replacement": "[0x35C64, asm]\n    - [0x35D94, c, resource_callback]\n    - [0x35DB4, asm]",
+      "asm_no_padding": [
+        "35DB4"
+      ],
+      "functions": [
+        {
+          "name": "func_80035194_35D94",
+          "rom_offset": 220564,
+          "size": 32
+        }
+      ]
+    },
+    {
+      "source": "object_dispatch.c",
+      "rom_start": 220260,
+      "rom_end": 220356,
+      "splat_original": "[0x35C64, asm]",
+      "splat_replacement": "[0x35C64, c, object_dispatch]\n    - [0x35CC4, asm]",
+      "asm_no_padding": [
+        "35CC4"
+      ],
+      "functions": [
+        {
+          "name": "func_80035064_35C64",
+          "rom_offset": 220260,
+          "size": 48
+        },
+        {
+          "name": "func_80035094_35C94",
+          "rom_offset": 220308,
+          "size": 48
+        }
+      ]
+    },
+    {
+      "source": "object_flags.c",
+      "rom_start": 224988,
+      "rom_end": 225532,
+      "splat_original": "[0x36750, asm]",
+      "splat_replacement": "[0x36750, asm]\n    - [0x36EDC, c, object_flags]\n    - [0x370FC, asm]",
+      "asm_no_padding": [
+        "36750",
+        "370FC"
+      ],
+      "functions": [
+        {
+          "name": "func_800362DC_36EDC",
+          "rom_offset": 224988,
+          "size": 44
+        },
+        {
+          "name": "func_80036308_36F08",
+          "rom_offset": 225032,
+          "size": 128
+        }
+      ],
+      "assembly_functions": [
+        "func_80036388_36F88",
+        "func_800363F4_36FF4",
+        "func_80036448_37048"
+      ]
+    },
+    {
+      "source": "default_entrance.c",
+      "rom_start": 138000,
+      "rom_end": 139728,
+      "splat_original": "[0x21330, asm]",
+      "splat_replacement": "[0x21330, asm]\n    - [0x21B10, c, default_entrance]",
+      "functions": [
+        {
+          "name": "func_80021444_22044",
+          "rom_offset": 139332,
+          "size": 160
+        },
+        {
+          "name": "func_800214E4_220E4",
+          "rom_offset": 139492,
+          "size": 228
+        }
+      ],
+      "assembly_functions": [
+        "func_80020F10_21B10"
+      ]
+    },
+    {
+      "source": "file_table.c",
+      "rom_start": 10600,
+      "rom_end": 11240,
+      "splat_original": "[0x2800, asm]",
+      "splat_replacement": "[0x2800, asm]\n    - [0x2968, c, file_table]\n    - [0x2BE8, asm]",
+      "asm_no_padding": [
+        "2800",
+        "2BE8"
+      ],
+      "functions": [
+        {
+          "name": "func_80001D68_2968",
+          "rom_offset": 10600,
+          "size": 44
+        }
+      ],
+      "assembly_functions": [
+        "func_80001D94_2994",
+        "func_80001DC0_29C0",
+        "func_80001DF4_29F4",
+        "func_80001E50_2A50",
+        "func_80001EB0_2AB0"
+      ]
+    },
+    {
+      "source": "heap_noop.c",
+      "rom_start": 223620,
+      "rom_end": 223628,
+      "splat_original": "[0x36750, asm]",
+      "splat_replacement": "[0x36750, asm]\n    - [0x36984, c, heap_noop]\n    - [0x3698C, asm]",
+      "asm_no_padding": [
+        "3698C"
+      ],
+      "functions": [
+        {
+          "name": "func_80035D84_36984",
+          "rom_offset": 223620,
+          "size": 8
+        }
+      ]
+    },
+    {
+      "source": "dialogue_window.c",
+      "rom_start": 50416,
+      "rom_end": 57344,
+      "splat_original": "[0xC4F0, asm]",
+      "splat_replacement": "[0xC4F0, c, dialogue_window]",
+      "functions": [
+        {
+          "name": "func_8000C314_CF14",
+          "rom_offset": 53012,
+          "size": 140
+        },
+        {
+          "name": "func_8000C3A0_CFA0",
+          "rom_offset": 53152,
+          "size": 76
+        },
+        {
+          "name": "func_8000C3EC_CFEC",
+          "rom_offset": 53228,
+          "size": 68
+        },
+        {
+          "name": "func_8000C430_D030",
+          "rom_offset": 53296,
+          "size": 36
+        },
+        {
+          "name": "func_8000C53C_D13C",
+          "rom_offset": 53564,
+          "size": 36
+        }
+      ],
+      "assembly_functions": [
+        "func_8000B8F0_C4F0",
+        "func_8000C260_CE60",
+        "func_8000C454_D054",
+        "func_8000C488_D088",
+        "func_8000C4C8_D0C8",
+        "func_8000C4FC_D0FC",
+        "func_8000C560_D160",
+        "func_8000C568_D168",
+        "func_8000C570_D170",
+        "func_8000C5A4_D1A4",
+        "func_8000C5E4_D1E4",
+        "func_8000C60C_D20C",
+        "func_8000C640_D240",
+        "func_8000C680_D280",
+        "func_8000C6A8_D2A8",
+        "func_8000C838_D438",
+        "func_8000C878_D478",
+        "func_8000C8D0_D4D0",
+        "func_8000C904_D504",
+        "func_8000D060_DC60",
+        "func_8000D180_DD80",
+        "func_8000D220_DE20",
+        "func_8000D2C0_DEC0",
+        "func_8000D33C_DF3C",
+        "func_8000D3B8_DFB8"
+      ]
+    }
+  ],
+  "support_headers": [
+    "save_resources.h",
+    "script_vm.h",
+    "vm_resource_types.h",
+    "vm_compare_reference.h",
+    "object_flags.h",
+    "default_entrance.h",
+    "impact_controller.h"
+  ],
+  "splat_options": {
+    "asm_jtbl_label_macro": "glabel"
+  },
+  "overlay_file43_stage": {
+    "format": "goemon-file43-c-stage-v1",
+    "source": "candidates/key_spawn_gate.c",
+    "source_sha256": "39a1c21e090a1c6aa00b74e9142c28963b0a00ee2ead6242c90d147290a855ef",
+    "compiler_object_sha256": "773cae8801a5eac2b61cf1229ed11fe961fad5918675c4e9703854bb087b25ef",
+    "object_sha256": "d69f76f5310d58c3f4a21d713cb0abf5e75521be012fb88f068f8334c50c1214",
+    "function": {
+      "name": "func_080001BC_6F369C",
+      "rom_offset": 7288476,
+      "vma": 134218172,
+      "size": 96
+    }
+  },
+  "overlay_file12_stages": [
+    {
+      "format": "goemon-file12-registration-374-v1",
+      "source": "candidates/file12_reg374.c",
+      "source_sha256": "046af7d8140efca107fd45b79ea7a08cd8562ad857b9dcbde9323754a6aa639a",
+      "compiler_object_sha256": "116ca84053a49004c17c0b5ebdcc527510f0f9d36a53e7b26c0d141a13ebe4dd",
+      "object_sha256": "73e8e7207e87531a32dfb5364147c83416cbf7b6ceaeb57459e7ae419454320d",
+      "function": {
+        "name": "file12_registration_374",
+        "rom_offset": 6066960,
+        "vma": 2149637696,
+        "size": 13464
+      }
+    },
+    {
+      "format": "goemon-file12-c-stage-v1",
+      "source": "candidates/param_xyz.c",
+      "source_sha256": "0ab7ac707da850646f80b92c0b8538f0380478c4d269003a870a5c1cd9cda77c",
+      "compiler_object_sha256": "d2c3258e648df40e95d0a931594e0e799e56b3b114da726af8452f463e8113c5",
+      "object_sha256": "0759864032e27542c490b3d8a8a7313e8ce923648cef3bf17ebaee2c64ef3ba7",
+      "function": {
+        "name": "func_80218D7C_5D424C",
+        "rom_offset": 6111820,
+        "vma": 2149682556,
+        "size": 20
+      }
+    },
+    {
+      "format": "goemon-file12-c-stage-v1",
+      "source": "candidates/param_bytes.c",
+      "source_sha256": "8af0d184306b502633d5f510e41c414ac0bf5a29016a938212100a8b6ac3621b",
+      "compiler_object_sha256": "0e8d2011618d2333922db6810a93847383f52d34ed20adfc6b6e509666d008e1",
+      "object_sha256": "9c884ad293f16b3bc4b1d7931b4def1bdefe4977e0508b3d31ed8dc1cbce61e1",
+      "function": {
+        "name": "func_80218D90_5D4260",
+        "rom_offset": 6111840,
+        "vma": 2149682576,
+        "size": 24
+      }
+    },
+    {
+      "format": "goemon-file12-c-stage-v1",
+      "source": "candidates/constant_821.c",
+      "source_sha256": "4f1235bb7005e5e656f99fa394cbb78b0c4c2907d7720bfce98fb49cfba5c4f3",
+      "compiler_object_sha256": "6e2fa7f1f0cc5b5e48139faa1a9bf031cc74614a126a32508620e4ba82360db7",
+      "object_sha256": "876a4da31eb66c492e07af7d1966cfa6f1cd1d98da86bedba0f0bb707ecc0c56",
+      "function": {
+        "name": "func_80218DF8_5D42C8",
+        "rom_offset": 6111944,
+        "vma": 2149682680,
+        "size": 12
+      }
+    },
+    {
+      "format": "goemon-file12-c-stage-v1",
+      "source": "candidates/grid_reset.c",
+      "source_sha256": "4d14a4e7040db16899d4cb5703b04e06d00502188f11d386907ee8d8f72f2cb3",
+      "compiler_object_sha256": "5b0fac3626e1b2b391ee38864a3b20162f8998ac439438b0998f3f1e93bd7759",
+      "object_sha256": "9e94bbaf3246d7d961c168c11fafcf4f17860090bec8ca43a1bb61b010a2032d",
+      "function": {
+        "name": "func_80218E04_5D42D4",
+        "rom_offset": 6111956,
+        "vma": 2149682692,
+        "size": 120
+      }
+    },
+    {
+      "format": "goemon-file12-c-stage-v1",
+      "source": "candidates/update_dispatch.c",
+      "source_sha256": "c89c568ba7a1cd590526ea901f2673b0563cd95e081a639ef0f8a68b6529a533",
+      "compiler_object_sha256": "4abdb202dd8e7ca33baa906644165f287e55abbcfc78ee60f94393ccfe25bfb5",
+      "object_sha256": "bbdeaa5fc208a27cb7c53500587e01a8bbb2e1ba92db0f0280fd6558c5ca3ff9",
+      "function": {
+        "name": "func_80218E7C_5D434C",
+        "rom_offset": 6112076,
+        "vma": 2149682812,
+        "size": 180
+      }
+    },
+    {
+      "format": "goemon-file12-c-stage-v1",
+      "source": "candidates/state2_callback.c",
+      "source_sha256": "a5a18d9ff5bda797ac7b6645eaca77a89ffc422032199a4fed167ad81fcd719f",
+      "compiler_object_sha256": "b09061dc519a688a6d04882f90e67ba7fac712af691849a40dd614ad79380f89",
+      "object_sha256": "6d052bc879b2b643e6a165f8948a60031b1e588076572a27de51f17dafe24dac",
+      "function": {
+        "name": "func_80218F30_5D4400",
+        "rom_offset": 6112256,
+        "vma": 2149682992,
+        "size": 184
+      }
+    },
+    {
+      "format": "goemon-file12-c-stage-v1",
+      "source": "candidates/task_noop.c",
+      "source_sha256": "003d600cb9cb7a39cb530ed275f63f3746a45704c1ccc856393660549fd49b25",
+      "compiler_object_sha256": "619e4452d8f9554d83762504039a4148fc8d1c8ad7f03d947b4d86b720bc7094",
+      "object_sha256": "22e3d2c282e9026ae4c0833c3673401259ed67aa0284589b468e44b75ec72b28",
+      "function": {
+        "name": "func_8021A308_5D57D8",
+        "rom_offset": 6117336,
+        "vma": 2149688072,
+        "size": 8
+      }
+    },
+    {
+      "format": "goemon-file12-c-stage-v1",
+      "source": "candidates/task_sentinels.c",
+      "source_sha256": "688d5ee4a27432011fb8fe53cacb70b16c7872fa5416c4d44dff6bc950507283",
+      "compiler_object_sha256": "546a9a9baf05e25d3139887d00ef68e8b886d10b311944f67b41aaf93e4d611f",
+      "object_sha256": "551d42416311860326ce3d295b4fd8ae3dc5e0aed3596b8787adf7d27a73a57b",
+      "function": {
+        "name": "func_8021A310_5D57E0",
+        "rom_offset": 6117344,
+        "vma": 2149688080,
+        "size": 24
+      }
+    },
+    {
+      "format": "goemon-file12-c-stage-v1",
+      "source": "candidates/release_noop.c",
+      "source_sha256": "5fc4eced2053d32f716d31491d0408b862b25cc9929fd65101b4709c1e4295a4",
+      "compiler_object_sha256": "e007ba3bc7aa92686893ae92ad020d5c1a6761a4de338515f1fde01403d1721c",
+      "object_sha256": "95a695bdc1e02994a86dbc639f8998bbc53f0a4c768f65a75024d45977e60f25",
+      "function": {
+        "name": "func_8021A4DC_5D59AC",
+        "rom_offset": 6117804,
+        "vma": 2149688540,
+        "size": 8
+      }
+    },
+    {
+      "format": "goemon-file12-c-stage-v1",
+      "source": "candidates/active_gate.c",
+      "source_sha256": "6d8df03a1dccbae56a1b7f88b8d430e02023eb0e9e14b5381c317a6ff4dbd0ba",
+      "compiler_object_sha256": "ff7c0abb24660521b0155f27745c20ec1235af3e910836af32bc88953099b44b",
+      "object_sha256": "60f64874aa9ce63b0c9ff07f4e9276a263abde44199d0769441d968d5f1e1b33",
+      "function": {
+        "name": "func_8021A644_5D5B14",
+        "rom_offset": 6118164,
+        "vma": 2149688900,
+        "size": 56
+      }
+    },
+    {
+      "format": "goemon-file12-c-stage-v1",
+      "source": "candidates/vector_cross.c",
+      "source_sha256": "14aa6a995aeae17946b27a8cd5544a964f8e0ab707508d7d2bf764b7c9c3102e",
+      "compiler_object_sha256": "9eec03b1f7e78379c4725ae3b3d64fa9cc7bec6ab0811bf476a9e5505de475a7",
+      "object_sha256": "22fe576827ebc83b17f895d3a76354bb801a5eaa93fcc45e83a41d402a1bb4d7",
+      "function": {
+        "name": "func_8021A7E8_5D5CB8",
+        "rom_offset": 6118584,
+        "vma": 2149689320,
+        "size": 112
+      }
+    },
+    {
+      "format": "goemon-file12-c-stage-v1",
+      "source": "candidates/file12_dialogue_copy.c",
+      "source_sha256": "bce7049e5438f50b9cb5bd7cea430fb2101067dcfdab760003ecaef3c2527fd2",
+      "compiler_object_sha256": "0d91354ac69cf05f78154675170f45faddf1d97665b83d1db7ced32db115afaf",
+      "object_sha256": "a8a7db2bc82ea6aec60a41215dc87a6fe112630e9439c066bec79942cdcc0b6d",
+      "function": {
+        "name": "func_80222034_5DD504",
+        "rom_offset": 6149380,
+        "vma": 2149720116,
+        "size": 20
+      }
+    },
+    {
+      "format": "goemon-file12-c-stage-v1",
+      "source": "candidates/file12_dialogue_call.c",
+      "source_sha256": "2fff2f49dbeb427200ef469596a8a229c9763db6f70bee93e662a1b1016ef6d1",
+      "compiler_object_sha256": "b82046c06cc59881668b07c8c8fd84659be8599315b21f03753211a8accbeebe",
+      "object_sha256": "d292b9e69f4976d4e9f217670e9c092c2429e57d1f0acf6208397d6708020a6d",
+      "function": {
+        "name": "func_80222168_5DD638",
+        "rom_offset": 6149688,
+        "vma": 2149720424,
+        "size": 36
+      }
+    }
+  ],
+  "vm_assignment_table_layout": true,
+  "existing_source_patches": [
+    {
+      "source": "27FE0.c",
+      "candidate_source": "candidates/collision_gate.c",
+      "patched_sha256_lf": "b6ac4275ec56796e23482765a82d3fd15d8c44f7148cd31f7cf8eb9fa408ab63",
+      "function": {
+        "name": "func_80029E08_2AA08",
+        "rom_offset": 174600,
+        "size": 80
+      }
+    }
+  ],
+  "heap_noop_text_layout": true,
+  "overlay_file11_stage": {
+    "format": "goemon-file11-269-central-v1"
+  },
+  "overlay_file13_stages": [
+    {
+      "format": "goemon-file13-c-stage-v1",
+      "source": "impact_hp_clamp.c",
+      "source_sha256": "ef4915b7be5632fc8715b410d0be0a430f178f96d285794e9e2ccf1fe6408a99",
+      "compiler_object_sha256": "3f4c0189024dcf3f5be091921ca27f7f7f473e4c4aab323c6a65b20024f38784",
+      "object_sha256": "68ecdac13f08655e28899fe5b96eb05b1b2a705a86e1ca5894879b5ec5131631",
+      "function": {
+        "name": "func_801D3954_5FED34",
+        "rom_offset": 6286644,
+        "vma": 2149398868,
+        "size": 40
+      }
+    },
+    {
+      "format": "goemon-file13-c-stage-v1",
+      "source": "impact_hp_floor_return.c",
+      "source_sha256": "e4f833d487976620505e83c3408f2e0e0ea1485f682cfc9c95280e6375fb8068",
+      "compiler_object_sha256": "e4ee3aaaea220673b10618c7353bb445e3f2b4a8985362a0aa2ac9799fd469fb",
+      "object_sha256": "f2b00e708dec6dc63e1f08c17e1a9ce968dbf60b59a2a78c04f5490a1be60f47",
+      "function": {
+        "name": "func_801D3A44_5FEE24",
+        "rom_offset": 6286884,
+        "vma": 2149399108,
+        "size": 36
+      }
+    }
+  ],
+  "overlay_crossregion47_stage": {
+    "format": "goemon-usa-47-overlay-c-original-link-v2"
+  },
+  "overlay_native87_stage": {
+    "format": "goemon-usa-main-overlay-87-original-c-v1"
+  },
+  "overlay_highbyte26_stage": {
+    "format": "goemon-usa-file26-highbyte15-original-c-v1"
+  },
+  "overlay_file27_stage": {
+    "format": "goemon-usa-file27-adjacent21-original-c-v1"
+  },
+  "overlay_wide132_stage": {
+    "format": "goemon-usa-verified132-after-canonical987-v1"
+  },
+  "overlay_wide109_stage": {
+    "format": "goemon-usa-wide109-after-canonical1119-v1"
+  },
+  "overlay_resource140_stage": {
+    "format": "goemon-usa-pending-resource140-original-c-v1"
+  },
+  "overlay_graphics5_stage": {
+    "format": "goemon-usa-graphics5-after-resource140-v1"
+  },
+  "overlay_file18_53_stage": {
+    "format": "goemon-usa-file18-53-after-graphics5-v1"
+  },
+  "overlay_callbacks10_stage": {
+    "format": "goemon-usa-callback10-after-file18-53-v1"
+  },
+  "overlay_main19_stage": {
+    "format": "goemon-usa-main19-after-callbacks10-v1"
+  },
+  "overlay_tiny9_stage": {
+    "format": "goemon-usa-tiny9-after-1452-v1"
+  },
+  "overlay_micro2_stage": {
+    "format": "goemon-usa-micro2-after-1461-v1"
+  },
+  "overlay_micro15_stage": {
+    "format": "goemon-usa-micro15-after-1463-v1"
+  },
+  "overlay_micro20_stage": {
+    "format": "goemon-usa-micro20-after-1478-v1"
+  },
+  "overlay_menu2_stage": {
+    "format": "goemon-usa-menu2-after-1498-v1"
+  },
+  "overlay_statecopy1_stage": {
+    "format": "goemon-usa-statecopy1-after-1500-v1"
+  },
+  "overlay_archive22_stage": {
+    "format": "goemon-usa-archive22-after-1501-v1"
+  },
+  "overlay_archive33_stage": {
+    "format": "goemon-usa-archive33-after-1523-v1"
+  },
+  "overlay_archive61_stage": {
+    "format": "goemon-usa-archive61-after-1556-v1"
+  },
+  "overlay_checkpoint500_stage": {
+    "format": "goemon-usa-checkpoint500-after-1617-v1"
+  },
+  "overlay_rediscovery5_stage": {
+    "format": "goemon-usa-rediscovery5-after-1618-v1"
+  },
+  "overlay_native49_stage": {
+    "format": "goemon-usa-native49-after-1623-v1"
+  },
+  "overlay_native51_stage": {
+    "format": "goemon-usa-native51-after-1672-v1"
+  },
+  "overlay_isolated233_stage": {
+    "format": "goemon-usa-isolated241-post-1723-v1"
+  },
+  "overlay_reconcile108_stage": {
+    "format": "goemon-usa-canonical-reconcile108-v1"
+  },
+  "overlay_crossregion7_stage": {
+    "format": "goemon-usa-crossregion7-post-2072-v1"
+  },
+  "overlay_mini10_stage": {
+    "format": "goemon-usa-mini10-post2079-v1"
+  },
+  "overlay_mini_selector_stage": {
+    "format": "goemon-usa-mini-selector-post2089-v1"
+  },
+  "overlay_usa_opening_new2_stage": {
+    "format": "goemon-usa-file18-new2-post2090-v1"
+  },
+  "overlay_usa_short72_stage": {
+    "format": "goemon-usa-short72-post2092-v1"
+  },
+  "usa_script_vm436_promotion": {
+    "format": "goemon-usa-script-vm436-post2164-v1"
+  }
+}

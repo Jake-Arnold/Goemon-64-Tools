@@ -1,0 +1,32 @@
+{
+  "region": "usa",
+  "rom_exact": true,
+  "rom_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+  "first_rom_difference": null,
+  "rom_size": 33554432,
+  "func_exact": true,
+  "func_removed": [],
+  "func_added": [],
+  "relocs_exact": true,
+  "relocs_count": 82103,
+  "relocs_sha256": "f7f25e257c9bce27c00e756b85ca7bfa5774137925d5aba9a6626ba4693e5a97",
+  "relocs_removed": [],
+  "relocs_added": [],
+  "globals_exact": true,
+  "globals_removed": [],
+  "globals_added": [],
+  "ownership_exact": true,
+  "new_ownership": 151,
+  "ownership_missing": [],
+  "ownership_unexpected": [],
+  "ownership_regressed": [],
+  "inline_label_metadata_fix": {
+    "symbol": "D_08001710_71D190",
+    "metadata_byte_offset": 95641980,
+    "pre_sha256": "58983e47ca2664868bdd1ab2702229c20884bd08a05941c230cb1b6ffdd7c0cf",
+    "post_sha256": "16fe08c2eebc6285f8c9fe882c54ca25ec5040c8eb32426b6da75c0929d52873",
+    "original_type": "FUNC",
+    "generated_type": "NOTYPE",
+    "compiler_quirk_outcome": "EXISTING_QUIRK_REPRODUCED"
+  }
+}

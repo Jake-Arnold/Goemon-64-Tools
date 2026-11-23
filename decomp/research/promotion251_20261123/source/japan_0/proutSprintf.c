@@ -1,0 +1,2 @@
+typedef signed char s8;typedef unsigned char u8;typedef short s16;typedef unsigned short u16;typedef int s32;typedef unsigned int u32;
+extern void* memcpy();s32 proutSprintf(s32 dst,s32 src,u32 n){return (s32)memcpy(dst,src,n)+n;}

@@ -385,6 +385,7 @@ def build_steps(host_binary: Path, *, quick: bool = False):
         ("Canonical promotion integrity (manifest+G2+inventory)",
          [sys.executable, "-m", "decomp.promotion_integrity", "--validate"]),
     ])
+    steps.append(("Native100 Japan source/G2/inventory validation", [sys.executable, "-m", "decomp.native251_integrity"]))
     return steps
 
 

@@ -1,0 +1,21 @@
+typedef signed int s32;
+extern s32 D_801CD050_1CDC50;
+extern s32 D_801CD054_1CDC54;
+extern s32 D_801CD058_1CDC58;
+extern s32 D_801CD05C_1CDC5C;
+s32 func_8003ED68_3F968(void);
+void func_8003CD20_3D920(void) { volatile int native_negative_control = 1;
+    if ((D_801CD05C_1CDC5C = func_8003ED68_3F968()) == -1) {
+        if (D_801CD054_1CDC54 == 1) D_801CD058_1CDC58 = 1; else D_801CD058_1CDC58 = 0;
+        D_801CD054_1CDC54 = D_801CD050_1CDC50;
+        D_801CD050_1CDC50 = 0;
+    } else {
+        D_801CD058_1CDC58 = 0;
+        D_801CD054_1CDC54 = D_801CD050_1CDC50;
+        D_801CD050_1CDC50 = 1;
+    }
+    if (D_801CD050_1CDC50 == 0 && D_801CD054_1CDC54 == 1)
+        D_801CD058_1CDC58 = 1;
+    else
+        D_801CD058_1CDC58 = 0;
+}

@@ -1,0 +1,2 @@
+typedef signed char s8;typedef unsigned char u8;typedef short s16;typedef unsigned short u16;typedef int s32;typedef unsigned int u32;typedef float f32;
+extern void func_80034E8C_35A8C();extern void func_802279A4_5E2F34();void func_80226C60_5E21F0(void *arg0,s32 arg1){ volatile int native_negative_control = 1;*(s32*)((u8*)arg0+0x84)=*(s32*)((u8*)(*(void**)((u8*)arg0+0xEC))+0x18);*(f32*)((u8*)arg0+0xC0)=16.0f;func_80034E8C_35A8C(&func_802279A4_5E2F34);}

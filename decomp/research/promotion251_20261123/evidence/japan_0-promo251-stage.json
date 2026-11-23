@@ -1,0 +1,4799 @@
+{
+  "region": "japan_0",
+  "functions": [
+    {
+      "region": "japan_0",
+      "name": "func_801D0C9C_63F18C",
+      "rom_offset": 6549900,
+      "vma": 2149387420,
+      "original_bytes": 52,
+      "owner": "63F080.s",
+      "code_sha256": "62566f88b6484c3fd20bc327be3a6844728a8ea90ab06a7a99ee8483ab52bc65",
+      "source": "source/japan_0/func_801D0C9C_63F18C.c",
+      "source_sha256": "b553ef1bf10faa2e00d5db8ae027a69bba90171577b685d4f3564d3b7adde70a",
+      "negative_source": "negative_source/japan_0/func_801D0C9C_63F18C.c",
+      "negative_sha256": "6d5cb14ed7f35d9cb84282f541484dd43d2a19a583a294df8196b5a6164f5c9d",
+      "compiler_quirk_outcome": "NO_NEW_COMPILER_FINDING",
+      "negative_control_change": "add_volatile_local_side_effect",
+      "research_method": "reconstructed_opcode_family",
+      "native_relocation_count": 5,
+      "negative_first_difference": 0,
+      "unit_gate": "NOT_RUN",
+      "complete_rom_gate": "NOT_RUN",
+      "canonical_promotion": "NOT_RUN",
+      "pr": 194,
+      "staged_path": "src/promo251/func_801D0C9C_63F18C.c",
+      "active_owner": "asm/japan_0/63F080.s",
+      "section": "file_14"
+    },
+    {
+      "region": "japan_0",
+      "name": "func_801FA6FC_5B66CC",
+      "rom_offset": 5990092,
+      "vma": 2149558012,
+      "original_bytes": 72,
+      "owner": "5B64A0.s",
+      "code_sha256": "0436399d12ec8281fdeee7bc0ebb7390c5ded9196fac185590bafe31af3a82f7",
+      "source": "source/japan_0/func_801FA6FC_5B66CC.c",
+      "source_sha256": "e350aedc2c12903877ebc9d0487a71f2c5b48cd04279b54220578cc1169ef067",
+      "negative_source": "negative_source/japan_0/func_801FA6FC_5B66CC.c",
+      "negative_sha256": "c9f2a7e5312109286cb18b0aa6bf69ff439d8ce73f1fcaa8e38532c4f32adc29",
+      "native_relocation_count": 1,
+      "native_relocations": [
+        [
+          32,
+          "R_MIPS_26",
+          "func_801FA744_5B6714"
+        ]
+      ],
+      "negative_reason": "FUNC_EXTENT_MISMATCH",
+      "negative_first_difference": 0,
+      "method": "m2c ABI/symbolic-call correction",
+      "compiler_quirk_outcome": "NO_NEW_COMPILER_FINDING",
+      "negative_control_change": "volatile int native_negative_control = 1",
+      "status": "ISOLATED_NATIVE_RESEARCH_ONLY",
+      "pr": 200,
+      "staged_path": "src/promo251/func_801FA6FC_5B66CC.c",
+      "active_owner": "asm/japan_0/jp1686_004_010.s",
+      "section": "file_11"
+    },
+    {
+      "region": "japan_0",
+      "name": "func_08000164_6B34C4",
+      "rom_offset": 7025860,
+      "vma": 134218084,
+      "original_bytes": 64,
+      "owner": "6B3360.s",
+      "code_sha256": "e66ea4070a1dfb6765bd162ac3690355d4d7b77ea7fd32fd3e063775d7277f71",
+      "source": "source/japan_0/func_08000164_6B34C4.c",
+      "source_sha256": "64d6d58909fdb75052b08a06d053368999536d6c186722d6b04b561cffd36d01",
+      "negative_source": "negative_source/japan_0/func_08000164_6B34C4.c",
+      "negative_sha256": "87aa52676ff296a3cdf821c50baa14b793c470f6e0d3aebd641d16d0ccc63f18",
+      "compiler_quirk_outcome": "NO_NEW_COMPILER_FINDING",
+      "negative_control_change": "add_volatile_local_side_effect",
+      "research_method": "donor-pass.json",
+      "native_relocation_count": 6,
+      "negative_first_difference": 0,
+      "unit_gate": "NOT_RUN",
+      "complete_rom_gate": "NOT_RUN",
+      "canonical_promotion": "NOT_RUN",
+      "pr": 194,
+      "staged_path": "src/promo251/func_08000164_6B34C4.c",
+      "active_owner": "asm/japan_0/jp1686_030_002.s",
+      "section": "file_26"
+    },
+    {
+      "region": "japan_0",
+      "name": "func_08000348_6B36A8",
+      "rom_offset": 7026344,
+      "vma": 134218568,
+      "original_bytes": 188,
+      "owner": "6B3360.s",
+      "code_sha256": "b26b3999c8d7739b1a776ee50caa1d9c1493d1553c2c45a7029499f0a0beab6d",
+      "source": "source/japan_0/func_08000348_6B36A8.c",
+      "source_sha256": "e08f3e52eaa4072bd697034f9ae7022f0c0ce5db51848d1a50183495d8b0329f",
+      "negative_source": "negative_source/japan_0/func_08000348_6B36A8.c",
+      "negative_sha256": "230a889e53e5886f1d16614eeac1e0d0366b332d000eac1a498e502ab99f388e",
+      "native_relocation_count": 14,
+      "native_relocations": [
+        [
+          8,
+          "R_MIPS_HI16",
+          "func_8021DB18_5D90A8"
+        ],
+        [
+          28,
+          "R_MIPS_LO16",
+          "func_8021DB18_5D90A8"
+        ],
+        [
+          56,
+          "R_MIPS_HI16",
+          "func_8021BB8C_5D711C"
+        ],
+        [
+          60,
+          "R_MIPS_LO16",
+          "func_8021BB8C_5D711C"
+        ],
+        [
+          76,
+          "R_MIPS_HI16",
+          "func_8021EBE0_5DA170"
+        ],
+        [
+          80,
+          "R_MIPS_LO16",
+          "func_8021EBE0_5DA170"
+        ],
+        [
+          100,
+          "R_MIPS_HI16",
+          "func_8021F080_5DA610"
+        ],
+        [
+          104,
+          "R_MIPS_LO16",
+          "func_8021F080_5DA610"
+        ],
+        [
+          116,
+          "R_MIPS_HI16",
+          "func_8021CDBC_5D834C"
+        ],
+        [
+          124,
+          "R_MIPS_LO16",
+          "func_8021CDBC_5D834C"
+        ],
+        [
+          144,
+          "R_MIPS_HI16",
+          "func_80034E8C_35A8C"
+        ],
+        [
+          148,
+          "R_MIPS_LO16",
+          "func_80034E8C_35A8C"
+        ],
+        [
+          152,
+          "R_MIPS_HI16",
+          "func_08000404_6B3764"
+        ],
+        [
+          164,
+          "R_MIPS_LO16",
+          "func_08000404_6B3764"
+        ]
+      ],
+      "negative_reason": "FUNC_EXTENT_MISMATCH",
+      "negative_first_difference": 0,
+      "method": "donor:decomp/research/highbyte_file26_20261118/sources/func_08000378_6AEB58.c",
+      "compiler_quirk_outcome": "NO_NEW_COMPILER_FINDING",
+      "negative_control_change": "volatile int native_negative_control = 1",
+      "status": "ISOLATED_NATIVE_RESEARCH_ONLY",
+      "pr": 200,
+      "staged_path": "src/promo251/func_08000348_6B36A8.c",
+      "active_owner": "asm/japan_0/jp1686_030_006.s",
+      "section": "file_26"
+    },
+    {
+      "region": "japan_0",
+      "name": "func_08000268_6B7CE8",
+      "rom_offset": 7044328,
+      "vma": 134218344,
+      "original_bytes": 64,
+      "owner": "6B7A80.s",
+      "code_sha256": "80581c5e2443ecae3fe1479239df8b5f5cdf3af722ec18c78c89fc54a30289e2",
+      "source": "source/japan_0/func_08000268_6B7CE8.c",
+      "source_sha256": "ffedad40c2273a4108d7e208e90f907e575c1abae3a264ba864eb14126eccb69",
+      "negative_source": "negative_source/japan_0/func_08000268_6B7CE8.c",
+      "negative_sha256": "1eede8f2d22b0728aa52dee364f567709150f6087d453b19735eb95df1f44e32",
+      "compiler_quirk_outcome": "NO_NEW_COMPILER_FINDING",
+      "negative_control_change": "add_volatile_local_side_effect",
+      "research_method": "donor-pass.json",
+      "native_relocation_count": 2,
+      "negative_first_difference": 0,
+      "unit_gate": "NOT_RUN",
+      "complete_rom_gate": "NOT_RUN",
+      "canonical_promotion": "NOT_RUN",
+      "pr": 194,
+      "staged_path": "src/promo251/func_08000268_6B7CE8.c",
+      "active_owner": "asm/japan_0/jp1686_031_003.s",
+      "section": "file_28"
+    },
+    {
+      "region": "japan_0",
+      "name": "func_08004028_6D7B28",
+      "rom_offset": 7174952,
+      "vma": 134234152,
+      "original_bytes": 88,
+      "owner": "6D3B00.s",
+      "code_sha256": "40453f27c61ef0cbca53b1bb66ee84870a45c1f0165fec955a96592d10eb1b0c",
+      "source": "source/japan_0/func_08004028_6D7B28.c",
+      "source_sha256": "044385bac144eb3b085cc650a3500d21decb5e8d9027c1694a6ab136000f073b",
+      "negative_source": "negative_source/japan_0/func_08004028_6D7B28.c",
+      "negative_sha256": "63f37b4d3942bee28b2dfa6a9028002aebbad9057405518be657e19b54c37524",
+      "compiler_quirk_outcome": "NO_NEW_COMPILER_FINDING",
+      "negative_control_change": "add_volatile_local_side_effect",
+      "research_method": "reconstructed_opcode_family",
+      "native_relocation_count": 4,
+      "negative_first_difference": 0,
+      "unit_gate": "NOT_RUN",
+      "complete_rom_gate": "NOT_RUN",
+      "canonical_promotion": "NOT_RUN",
+      "pr": 194,
+      "staged_path": "src/promo251/func_08004028_6D7B28.c",
+      "active_owner": "asm/japan_0/jp1686_032_023.s",
+      "section": "file_32"
+    },
+    {
+      "region": "japan_0",
+      "name": "func_08004080_6D7B80",
+      "rom_offset": 7175040,
+      "vma": 134234240,
+      "original_bytes": 84,
+      "owner": "6D3B00.s",
+      "code_sha256": "84bacaefa5ccdfedcead3388529729393d331dff3aafdb8c7c501e2456b0d8f7",
+      "source": "source/japan_0/func_08004080_6D7B80.c",
+      "source_sha256": "d40efb87fd602c92e12d5fae7b16c43dbca5a8b59700beb3704f35f61c5a1db4",
+      "negative_source": "negative_source/japan_0/func_08004080_6D7B80.c",
+      "negative_sha256": "a597784c85a23e9716c6ab16db89db4abc37ec9d202e1f8f4abc923a2a65789c",
+      "compiler_quirk_outcome": "NO_NEW_COMPILER_FINDING",
+      "negative_control_change": "add_volatile_local_side_effect",
+      "research_method": "reconstructed_opcode_family",
+      "native_relocation_count": 4,
+      "negative_first_difference": 0,
+      "unit_gate": "NOT_RUN",
+      "complete_rom_gate": "NOT_RUN",
+      "canonical_promotion": "NOT_RUN",
+      "pr": 194,
+      "staged_path": "src/promo251/func_08004080_6D7B80.c",
+      "active_owner": "asm/japan_0/jp1686_032_023.s",
+      "section": "file_32"
+    },
+    {
+      "region": "japan_0",
+      "name": "func_08004234_6D7D34",
+      "rom_offset": 7175476,
+      "vma": 134234676,
+      "original_bytes": 84,
+      "owner": "6D3B00.s",
+      "code_sha256": "57644824304600862e62839c9586b736a4917d44ada8f7b0e6a8e7d24f57776d",
+      "source": "source/japan_0/func_08004234_6D7D34.c",
+      "source_sha256": "b0dad54e845d51c0910406935855a621960ed3f1ca9fda1e9f74a1555e1c8396",
+      "negative_source": "negative_source/japan_0/func_08004234_6D7D34.c",
+      "negative_sha256": "f62d092ed9c37118c1e05c08720e1cdcc160f18d21bdb43f1abe27cd50ddfafa",
+      "compiler_quirk_outcome": "NO_NEW_COMPILER_FINDING",
+      "negative_control_change": "add_volatile_local_side_effect",
+      "research_method": "reconstructed_opcode_family",
+      "native_relocation_count": 4,
+      "negative_first_difference": 0,
+      "unit_gate": "NOT_RUN",
+      "complete_rom_gate": "NOT_RUN",
+      "canonical_promotion": "NOT_RUN",
+      "pr": 194,
+      "staged_path": "src/promo251/func_08004234_6D7D34.c",
+      "active_owner": "asm/japan_0/jp1686_032_023.s",
+      "section": "file_32"
+    },
+    {
+      "region": "japan_0",
+      "name": "func_080004FC_6D88FC",
+      "rom_offset": 7178492,
+      "vma": 134219004,
+      "original_bytes": 60,
+      "owner": "6D8400.s",
+      "code_sha256": "d1143a8d8cc58657a6ef9031b23c9557125602e9833b84ef5462f275b5df1658",
+      "source": "source/japan_0/func_080004FC_6D88FC.c",
+      "source_sha256": "df443fc57d321d4308be3c1b399abd15825b523079c8594f8dde5118f3c811f1",
+      "negative_source": "negative_source/japan_0/func_080004FC_6D88FC.c",
+      "negative_sha256": "fc60a4d3005a06284dafe259b42359b220797d104e6d0831a82cf24a6112dbc9",
+      "compiler_quirk_outcome": "NO_NEW_COMPILER_FINDING",
+      "negative_control_change": "add_volatile_local_side_effect",
+      "research_method": "donor-pass.json",
+      "native_relocation_count": 6,
+      "negative_first_difference": 0,
+      "unit_gate": "NOT_RUN",
+      "complete_rom_gate": "NOT_RUN",
+      "canonical_promotion": "NOT_RUN",
+      "pr": 194,
+      "staged_path": "src/promo251/func_080004FC_6D88FC.c",
+      "active_owner": "asm/japan_0/jp1686_033_002.s",
+      "section": "file_33"
+    },
+    {
+      "region": "japan_0",
+      "name": "func_80011518_12118",
+      "rom_offset": 74008,
+      "vma": 2147554584,
+      "original_bytes": 72,
+      "owner": "nonmatchings/main_10B40/func_80011518_12118.s",
+      "code_sha256": "f6ea122d2cb35c325ecf5b642d6947a4ff4798268a7f6b3ec29f8be7687343ed",
+      "source": "source/japan_0/func_80011518_12118.c",
+      "source_sha256": "289ff2eb0bb5961ae2a136a7a12b63d3a7c22a2f5a79c1c137fd898ce820b28f",
+      "negative_source": "negative_source/japan_0/func_80011518_12118.c",
+      "negative_sha256": "04899bea9e8c21c2c79b3234a3bcf683c3289f632af4d27b667dc01bf5a99f5a",
+      "native_relocation_count": 7,
+      "native_relocations": [
+        [
+          8,
+          "R_MIPS_26",
+          "func_800136A4_142A4"
+        ],
+        [
+          16,
+          "R_MIPS_26",
+          "func_80013D54_14954"
+        ],
+        [
+          28,
+          "R_MIPS_26",
+          "func_80001E50_2A50"
+        ],
+        [
+          36,
+          "R_MIPS_HI16",
+          "D_8002664"
+        ],
+        [
+          40,
+          "R_MIPS_LO16",
+          "D_8002664"
+        ],
+        [
+          44,
+          "R_MIPS_HI16",
+          "D_80072E08_73A08"
+        ],
+        [
+          52,
+          "R_MIPS_LO16",
+          "D_80072E08_73A08"
+        ]
+      ],
+      "negative_reason": "FUNC_EXTENT_MISMATCH",
+      "negative_first_difference": 0,
+      "method": "m2c ABI/symbolic-call correction",
+      "compiler_quirk_outcome": "NO_NEW_COMPILER_FINDING",
+      "negative_control_change": "volatile int native_negative_control = 1",
+      "status": "ISOLATED_NATIVE_RESEARCH_ONLY",
+      "pr": 200,
+      "staged_path": "src/promo251/func_80011518_12118.c",
+      "active_owner": "asm/japan_0/jp1686_043_013.s",
+      "section": "main"
+    },
+    {
+      "region": "japan_0",
+      "name": "func_8003CD20_3D920",
+      "rom_offset": 252192,
+      "vma": 2147732768,
+      "original_bytes": 204,
+      "owner": "nonmatchings/main_3D810/func_8003CD20_3D920.s",
+      "code_sha256": "d1c0f97809e89de782817aeec65862f7ff0df9e1dddc00bd652a484ccfbac70d",
+      "source": "source/japan_0/func_8003CD20_3D920.c",
+      "source_sha256": "48b67c1ba33ffcf0739b8e8c07e3d08ab3521b2d42efce884e090490d2d7c54b",
+      "negative_source": "negative_source/japan_0/func_8003CD20_3D920.c",
+      "negative_sha256": "77d1e280d6dcccf69e9cb7b2e2a17e0ec1498a35b2c558cc51308f76ca159557",
+      "native_relocation_count": 17,
+      "native_relocations": [
+        [
+          8,
+          "R_MIPS_26",
+          "func_8003ED68_3F968"
+        ],
+        [
+          16,
+          "R_MIPS_HI16",
+          "D_801CD05C_1CDC5C"
+        ],
+        [
+          20,
+          "R_MIPS_LO16",
+          "D_801CD05C_1CDC5C"
+        ],
+        [
+          36,
+          "R_MIPS_HI16",
+          "D_801CD054_1CDC54"
+        ],
+        [
+          40,
+          "R_MIPS_LO16",
+          "D_801CD054_1CDC54"
+        ],
+        [
+          52,
+          "R_MIPS_HI16",
+          "D_801CD050_1CDC50"
+        ],
+        [
+          60,
+          "R_MIPS_LO16",
+          "D_801CD050_1CDC50"
+        ],
+        [
+          64,
+          "R_MIPS_HI16",
+          "D_801CD058_1CDC58"
+        ],
+        [
+          68,
+          "R_MIPS_LO16",
+          "D_801CD058_1CDC58"
+        ],
+        [
+          80,
+          "R_MIPS_HI16",
+          "D_801CD058_1CDC58"
+        ],
+        [
+          84,
+          "R_MIPS_LO16",
+          "D_801CD058_1CDC58"
+        ],
+        [
+          108,
+          "R_MIPS_HI16",
+          "D_801CD050_1CDC50"
+        ],
+        [
+          112,
+          "R_MIPS_LO16",
+          "D_801CD050_1CDC50"
+        ],
+        [
+          120,
+          "R_MIPS_HI16",
+          "D_801CD054_1CDC54"
+        ],
+        [
+          124,
+          "R_MIPS_HI16",
+          "D_801CD058_1CDC58"
+        ],
+        [
+          128,
+          "R_MIPS_LO16",
+          "D_801CD058_1CDC58"
+        ],
+        [
+          132,
+          "R_MIPS_LO16",
+          "D_801CD054_1CDC54"
+        ]
+      ],
+      "negative_reason": "FUNC_EXTENT_MISMATCH",
+      "negative_first_difference": 0,
+      "method": "donor:decomp/candidates/vm_choice_edge.c",
+      "compiler_quirk_outcome": "NO_NEW_COMPILER_FINDING",
+      "negative_control_change": "volatile int native_negative_control = 1",
+      "status": "ISOLATED_NATIVE_RESEARCH_ONLY",
+      "pr": 200,
+      "staged_path": "src/promo251/func_8003CD20_3D920.c",
+      "active_owner": "asm/japan_0/jp1686_044_005.s",
+      "section": "main"
+    },
+    {
+      "region": "japan_0",
+      "name": "func_801D95B0_604030",
+      "rom_offset": 6307888,
+      "vma": 2149422512,
+      "original_bytes": 56,
+      "owner": "602FA0.s",
+      "code_sha256": "335954c1b686300de4153d1ca517cfb4abc58954ad43f952314780b515c6baf7",
+      "source": "source/japan_0/func_801D95B0_604030.c",
+      "source_sha256": "de4b2f38f9ee0e6648b7191a5e5093771ecb5fef265d0a87953e2bfbe60aa442",
+      "negative_source": "negative_source/japan_0/func_801D95B0_604030.c",
+      "negative_sha256": "e78c1b5f68a95277ffcec7e6ca36eb1138af6d0b8ed24da400cf76a2c1a27dbf",
+      "compiler_quirk_outcome": "NO_NEW_COMPILER_FINDING",
+      "negative_control_change": "add_volatile_local_side_effect",
+      "research_method": "reconstructed_opcode_family",
+      "native_relocation_count": 1,
+      "negative_first_difference": 0,
+      "unit_gate": "NOT_RUN",
+      "complete_rom_gate": "NOT_RUN",
+      "canonical_promotion": "NOT_RUN",
+      "pr": 194,
+      "staged_path": "src/promo251/func_801D95B0_604030.c",
+      "active_owner": "asm/japan_0/jp1686_048_025.s",
+      "section": "file_13"
+    },
+    {
+      "region": "japan_0",
+      "name": "func_801D95E8_604068",
+      "rom_offset": 6307944,
+      "vma": 2149422568,
+      "original_bytes": 56,
+      "owner": "602FA0.s",
+      "code_sha256": "9d2e4d768a79cff984857c0aaf3f3fa009c29cd1a156a4915ff24280490c5532",
+      "source": "source/japan_0/func_801D95E8_604068.c",
+      "source_sha256": "7a3bf5e3c299708c175a7fb2670905a7248651914c2412a710ed5859a842d022",
+      "negative_source": "negative_source/japan_0/func_801D95E8_604068.c",
+      "negative_sha256": "e43bd9554a55f992d32e77da1549b81ae86219df7ec8146f8c8ab69594d93349",
+      "compiler_quirk_outcome": "NO_NEW_COMPILER_FINDING",
+      "negative_control_change": "add_volatile_local_side_effect",
+      "research_method": "reconstructed_opcode_family",
+      "native_relocation_count": 1,
+      "negative_first_difference": 0,
+      "unit_gate": "NOT_RUN",
+      "complete_rom_gate": "NOT_RUN",
+      "canonical_promotion": "NOT_RUN",
+      "pr": 194,
+      "staged_path": "src/promo251/func_801D95E8_604068.c",
+      "active_owner": "asm/japan_0/jp1686_048_025.s",
+      "section": "file_13"
+    },
+    {
+      "region": "japan_0",
+      "name": "func_801D9620_6040A0",
+      "rom_offset": 6308000,
+      "vma": 2149422624,
+      "original_bytes": 56,
+      "owner": "602FA0.s",
+      "code_sha256": "748949fb85032828d59b09c80377dcd0c1d24cd0312079943d311e2731fad12e",
+      "source": "source/japan_0/func_801D9620_6040A0.c",
+      "source_sha256": "0599dcec21039a01a61e982a77664eff3de3cf89fd04c6dd954e1c485190d654",
+      "negative_source": "negative_source/japan_0/func_801D9620_6040A0.c",
+      "negative_sha256": "4c12fb36ed8140370068cd38bd196cbd13b7f290f8ac9bc80000f0228e7b5885",
+      "compiler_quirk_outcome": "NO_NEW_COMPILER_FINDING",
+      "negative_control_change": "add_volatile_local_side_effect",
+      "research_method": "reconstructed_opcode_family",
+      "native_relocation_count": 1,
+      "negative_first_difference": 0,
+      "unit_gate": "NOT_RUN",
+      "complete_rom_gate": "NOT_RUN",
+      "canonical_promotion": "NOT_RUN",
+      "pr": 194,
+      "staged_path": "src/promo251/func_801D9620_6040A0.c",
+      "active_owner": "asm/japan_0/jp1686_048_025.s",
+      "section": "file_13"
+    },
+    {
+      "region": "japan_0",
+      "name": "func_801DC234_606CB4",
+      "rom_offset": 6319284,
+      "vma": 2149433908,
+      "original_bytes": 60,
+      "owner": "602FA0.s",
+      "code_sha256": "fa43a6c878da4053d77fd1d53055ef8f947fdc99b4678f64741bf2cfc6da4c9e",
+      "source": "source/japan_0/func_801DC234_606CB4.c",
+      "source_sha256": "f04bc6c8f70428d8949dcaf2a7235fe7017dfb8cd60b695c706d4d58bef8da42",
+      "negative_source": "negative_source/japan_0/func_801DC234_606CB4.c",
+      "negative_sha256": "22cdfc06e30b9902239b0d9e2511fdfb6655fa139d81ec79d91077df7e10a90f",
+      "compiler_quirk_outcome": "NO_NEW_COMPILER_FINDING",
+      "negative_control_change": "add_volatile_local_side_effect",
+      "research_method": "reconstructed_opcode_family",
+      "native_relocation_count": 2,
+      "negative_first_difference": 0,
+      "unit_gate": "NOT_RUN",
+      "complete_rom_gate": "NOT_RUN",
+      "canonical_promotion": "NOT_RUN",
+      "pr": 194,
+      "staged_path": "src/promo251/func_801DC234_606CB4.c",
+      "active_owner": "asm/japan_0/jp1686_051_003.s",
+      "section": "file_13"
+    },
+    {
+      "region": "japan_0",
+      "name": "func_801DC270_606CF0",
+      "rom_offset": 6319344,
+      "vma": 2149433968,
+      "original_bytes": 60,
+      "owner": "602FA0.s",
+      "code_sha256": "0bac376a8d4ffe8a813406ccf38c29c3ba0ab2ef365c473a4421da6dbf41c400",
+      "source": "source/japan_0/func_801DC270_606CF0.c",
+      "source_sha256": "7a02bbf12cbf4a9e182093915e6893294a7730c92f72a54a4958e8e7dc797e81",
+      "negative_source": "negative_source/japan_0/func_801DC270_606CF0.c",
+      "negative_sha256": "5d6d6c91ce114888d50b1d10c8a10127bfd121c8d07a1943aba8e38e575f89dd",
+      "compiler_quirk_outcome": "NO_NEW_COMPILER_FINDING",
+      "negative_control_change": "add_volatile_local_side_effect",
+      "research_method": "reconstructed_opcode_family",
+      "native_relocation_count": 2,
+      "negative_first_difference": 0,
+      "unit_gate": "NOT_RUN",
+      "complete_rom_gate": "NOT_RUN",
+      "canonical_promotion": "NOT_RUN",
+      "pr": 194,
+      "staged_path": "src/promo251/func_801DC270_606CF0.c",
+      "active_owner": "asm/japan_0/jp1686_051_003.s",
+      "section": "file_13"
+    },
+    {
+      "region": "japan_0",
+      "name": "func_801DC2AC_606D2C",
+      "rom_offset": 6319404,
+      "vma": 2149434028,
+      "original_bytes": 60,
+      "owner": "602FA0.s",
+      "code_sha256": "95f6426de3ad116f140ffb195d92a3e851ad804137ee412fad8990a28b676f73",
+      "source": "source/japan_0/func_801DC2AC_606D2C.c",
+      "source_sha256": "f6afb672531877a3634d1cbe2a0bcfdf6855f2158400fc770755a39a2d9c6fcb",
+      "negative_source": "negative_source/japan_0/func_801DC2AC_606D2C.c",
+      "negative_sha256": "ad240976d9731fe2e40fb5b4f1cd6e1dda7e9ae982e1b196992808815704f6d4",
+      "compiler_quirk_outcome": "NO_NEW_COMPILER_FINDING",
+      "negative_control_change": "add_volatile_local_side_effect",
+      "research_method": "reconstructed_opcode_family",
+      "native_relocation_count": 2,
+      "negative_first_difference": 0,
+      "unit_gate": "NOT_RUN",
+      "complete_rom_gate": "NOT_RUN",
+      "canonical_promotion": "NOT_RUN",
+      "pr": 194,
+      "staged_path": "src/promo251/func_801DC2AC_606D2C.c",
+      "active_owner": "asm/japan_0/jp1686_051_003.s",
+      "section": "file_13"
+    },
+    {
+      "region": "japan_0",
+      "name": "func_80225138_5E06C8",
+      "rom_offset": 6162120,
+      "vma": 2149732664,
+      "original_bytes": 72,
+      "owner": "5DB0D0.s",
+      "code_sha256": "7d62f37423d1957b72d6c6e69dc6ab4a3ec544a2b7bee99b888106bd6cd2247d",
+      "source": "source/japan_0/func_80225138_5E06C8.c",
+      "source_sha256": "9c0e02ecd14fe65d79b8ae477d020f0b8013aefc980777af20e666ec444d0f1a",
+      "negative_source": "negative_source/japan_0/func_80225138_5E06C8.c",
+      "negative_sha256": "4519ec36786f4a1eaaa9a605ce091a6d084db1b192c864099b8dbb76ab20ed37",
+      "native_relocation_count": 4,
+      "native_relocations": [
+        [
+          4,
+          "R_MIPS_HI16",
+          "D_80201538_5BD508"
+        ],
+        [
+          8,
+          "R_MIPS_LO16",
+          "D_80201538_5BD508"
+        ],
+        [
+          36,
+          "R_MIPS_HI16",
+          "func_802250D0_5E0660"
+        ],
+        [
+          40,
+          "R_MIPS_LO16",
+          "func_802250D0_5E0660"
+        ]
+      ],
+      "negative_reason": "FUNC_EXTENT_MISMATCH",
+      "negative_first_difference": 0,
+      "method": "m2c ABI/symbolic-call correction",
+      "compiler_quirk_outcome": "NO_NEW_COMPILER_FINDING",
+      "negative_control_change": "volatile int native_negative_control = 1",
+      "status": "ISOLATED_NATIVE_RESEARCH_ONLY",
+      "pr": 200,
+      "staged_path": "src/promo251/func_80225138_5E06C8.c",
+      "active_owner": "asm/japan_0/jp1686_054_008.s",
+      "section": "file_12"
+    },
+    {
+      "region": "japan_0",
+      "name": "func_80226C60_5E21F0",
+      "rom_offset": 6169072,
+      "vma": 2149739616,
+      "original_bytes": 68,
+      "owner": "5E1270.s",
+      "code_sha256": "e3088e37977b45e60687066359ae8075b28eb4cc45c7f8feeb1a6bf9920a40bd",
+      "source": "source/japan_0/func_80226C60_5E21F0.c",
+      "source_sha256": "e59e878d8c1b2ddaee495f73593c866211d1c6bc06cb5659ae188bbbd5b40632",
+      "negative_source": "negative_source/japan_0/func_80226C60_5E21F0.c",
+      "negative_sha256": "bf06730b03453c5c6afb1c9f1f78614cec31deb0ee1b28d3627ec163ad4a347e",
+      "native_relocation_count": 3,
+      "native_relocations": [
+        [
+          40,
+          "R_MIPS_HI16",
+          "func_802279A4_5E2F34"
+        ],
+        [
+          44,
+          "R_MIPS_26",
+          "func_80034E8C_35A8C"
+        ],
+        [
+          48,
+          "R_MIPS_LO16",
+          "func_802279A4_5E2F34"
+        ]
+      ],
+      "negative_reason": "FUNC_EXTENT_MISMATCH",
+      "negative_first_difference": 0,
+      "method": "donor:decomp/research/pending_isolated233_20261120/sources/iso233_115.c",
+      "compiler_quirk_outcome": "NO_NEW_COMPILER_FINDING",
+      "negative_control_change": "volatile int native_negative_control = 1",
+      "status": "ISOLATED_NATIVE_RESEARCH_ONLY",
+      "pr": 200,
+      "staged_path": "src/promo251/func_80226C60_5E21F0.c",
+      "active_owner": "asm/japan_0/jp1686_055_017.s",
+      "section": "file_12"
+    },
+    {
+      "region": "japan_0",
+      "name": "func_80226EFC_5E248C",
+      "rom_offset": 6169740,
+      "vma": 2149740284,
+      "original_bytes": 72,
+      "owner": "5E1270.s",
+      "code_sha256": "c2415b49585b62bf22a8125d841d2d34cf40bbc01a56fe7eeb70adef141ee8a2",
+      "source": "source/japan_0/func_80226EFC_5E248C.c",
+      "source_sha256": "556e929ade765c1e3cc5c16450daf884c5174d247dddc6ce2e7a6835b033f1e8",
+      "negative_source": "negative_source/japan_0/func_80226EFC_5E248C.c",
+      "negative_sha256": "fde6cbdda504f090c3c0a9d760b84ff742df42aaefc906e8e7403fed25f42082",
+      "native_relocation_count": 4,
+      "native_relocations": [
+        [
+          36,
+          "R_MIPS_26",
+          "func_8021DB18_5D90A8"
+        ],
+        [
+          44,
+          "R_MIPS_HI16",
+          "func_80226F44_5E24D4"
+        ],
+        [
+          48,
+          "R_MIPS_26",
+          "func_80034E8C_35A8C"
+        ],
+        [
+          52,
+          "R_MIPS_LO16",
+          "func_80226F44_5E24D4"
+        ]
+      ],
+      "negative_reason": "FUNC_EXTENT_MISMATCH",
+      "negative_first_difference": 0,
+      "method": "m2c ABI/symbolic-call correction",
+      "compiler_quirk_outcome": "NO_NEW_COMPILER_FINDING",
+      "negative_control_change": "volatile int native_negative_control = 1",
+      "status": "ISOLATED_NATIVE_RESEARCH_ONLY",
+      "pr": 200,
+      "staged_path": "src/promo251/func_80226EFC_5E248C.c",
+      "active_owner": "asm/japan_0/jp1686_055_028.s",
+      "section": "file_12"
+    },
+    {
+      "region": "japan_0",
+      "name": "func_801DE268_608CE8",
+      "rom_offset": 6327528,
+      "vma": 2149442152,
+      "original_bytes": 44,
+      "owner": "607810.s",
+      "code_sha256": "069b34f1e8a6db270b040ce448859a8633a16d5de5566651a945c31a87870246",
+      "source": "source/japan_0/func_801DE268_608CE8.c",
+      "source_sha256": "f3074cc841e6f125ae3e95fa65bb882a4a0b3e99068cf79c053dc24917b265af",
+      "negative_source": "negative_source/japan_0/func_801DE268_608CE8.c",
+      "negative_sha256": "fb79aa62f9cb1d6936d82fb23e1d1e84feb267e69c201a71d65075e5c74548c2",
+      "compiler_quirk_outcome": "NO_NEW_COMPILER_FINDING",
+      "negative_control_change": "add_volatile_local_side_effect",
+      "research_method": "reconstructed_opcode_family",
+      "native_relocation_count": 4,
+      "negative_first_difference": 0,
+      "unit_gate": "NOT_RUN",
+      "complete_rom_gate": "NOT_RUN",
+      "canonical_promotion": "NOT_RUN",
+      "pr": 194,
+      "staged_path": "src/promo251/func_801DE268_608CE8.c",
+      "active_owner": "asm/japan_0/jp1686_056_000.s",
+      "section": "file_13"
+    },
+    {
+      "region": "japan_0",
+      "name": "func_801DEE24_6098A4",
+      "rom_offset": 6330532,
+      "vma": 2149445156,
+      "original_bytes": 44,
+      "owner": "607810.s",
+      "code_sha256": "29b11f1a9ffa7cb382c885824c1a2720d6867b3a0696a3f5e1629fd763fa957f",
+      "source": "source/japan_0/func_801DEE24_6098A4.c",
+      "source_sha256": "582b17dfcaf1889ab2dff33bb0487171c17dca40db2c567ab515bdb99bdaa707",
+      "negative_source": "negative_source/japan_0/func_801DEE24_6098A4.c",
+      "negative_sha256": "a263349655e5d05d60aae25f3d78b7fc93c1b3b98005e6cca0654ba1cca651e4",
+      "compiler_quirk_outcome": "NO_NEW_COMPILER_FINDING",
+      "negative_control_change": "add_volatile_local_side_effect",
+      "research_method": "reconstructed_opcode_family",
+      "native_relocation_count": 4,
+      "negative_first_difference": 0,
+      "unit_gate": "NOT_RUN",
+      "complete_rom_gate": "NOT_RUN",
+      "canonical_promotion": "NOT_RUN",
+      "pr": 194,
+      "staged_path": "src/promo251/func_801DEE24_6098A4.c",
+      "active_owner": "asm/japan_0/jp1686_056_002.s",
+      "section": "file_13"
+    },
+    {
+      "region": "japan_0",
+      "name": "func_80213F2C_672D9C",
+      "rom_offset": 6761884,
+      "vma": 2149662508,
+      "original_bytes": 52,
+      "owner": "670F00.s",
+      "code_sha256": "e2ac53967dd2ae34cde0867837b6364ea61c6c5fa33d079677b7f6c59ca13912",
+      "source": "source/japan_0/func_80213F2C_672D9C.c",
+      "source_sha256": "ca1c2ea650353873de542aa187e1a7beeaa4e8716bc751a62816f17fc5e59f16",
+      "negative_source": "negative_source/japan_0/func_80213F2C_672D9C.c",
+      "negative_sha256": "0c4640581ac678f11dd7e9265b5b6179a1a23a7509e07e9cfce9e89d845aa8ab",
+      "compiler_quirk_outcome": "NO_NEW_COMPILER_FINDING",
+      "negative_control_change": "add_volatile_local_side_effect",
+      "research_method": "reconstructed_opcode_family",
+      "native_relocation_count": 5,
+      "negative_first_difference": 0,
+      "unit_gate": "NOT_RUN",
+      "complete_rom_gate": "NOT_RUN",
+      "canonical_promotion": "NOT_RUN",
+      "pr": 194,
+      "staged_path": "src/promo251/func_80213F2C_672D9C.c",
+      "active_owner": "asm/japan_0/jp1686_060_002.s",
+      "section": "file_17"
+    },
+    {
+      "region": "japan_0",
+      "name": "func_80208140_632BC0",
+      "rom_offset": 6499264,
+      "vma": 2149613888,
+      "original_bytes": 68,
+      "owner": "6303B0.s",
+      "code_sha256": "b59162737550ed08a623f44235cbdbd432e4e4f104101fcdccdb31596952e5f4",
+      "source": "source/japan_0/func_80208140_632BC0.c",
+      "source_sha256": "e5a663e1739dd64d399993cf6b34cc39a522ac7a4b7d54ad9e18c6e718f2f313",
+      "negative_source": "negative_source/japan_0/func_80208140_632BC0.c",
+      "negative_sha256": "46d128f68087a5c4d963c544789f837f5afe44ef1fd6663d0d5f2ae6bec39087",
+      "compiler_quirk_outcome": "NO_NEW_COMPILER_FINDING",
+      "negative_control_change": "add_volatile_local_side_effect",
+      "research_method": "reconstructed_opcode_family",
+      "native_relocation_count": 3,
+      "negative_first_difference": 0,
+      "unit_gate": "NOT_RUN",
+      "complete_rom_gate": "NOT_RUN",
+      "canonical_promotion": "NOT_RUN",
+      "pr": 194,
+      "staged_path": "src/promo251/func_80208140_632BC0.c",
+      "active_owner": "asm/japan_0/jp1686_065_003.s",
+      "section": "file_13"
+    },
+    {
+      "region": "japan_0",
+      "name": "func_8022007C_68976C",
+      "rom_offset": 6854508,
+      "vma": 2149711996,
+      "original_bytes": 124,
+      "owner": "686770.s",
+      "code_sha256": "79bbdf5cd8f5d33e7908b7bd3d380896e9545bb1ff114b4572b715cd99de6b0c",
+      "source": "source/japan_0/func_8022007C_68976C.c",
+      "source_sha256": "38253779cae8745dce7d3fe4bbddd6af3ded3cdef1fe95a8726f98a10f584611",
+      "negative_source": "negative_source/japan_0/func_8022007C_68976C.c",
+      "negative_sha256": "7af210b39e50d0b18dc60aa36eca80e3fcbbc1ced5d1e938f012dcb5a08c20f1",
+      "native_relocation_count": 0,
+      "native_relocations": [],
+      "negative_reason": "FUNC_EXTENT_MISMATCH",
+      "negative_first_difference": 8,
+      "method": "pending_donor:func_8021B29C_684C7C",
+      "compiler_quirk_outcome": "NO_NEW_COMPILER_FINDING",
+      "negative_control_change": "volatile int native_negative_control = 1",
+      "status": "ISOLATED_NATIVE_RESEARCH_ONLY",
+      "pr": 200,
+      "staged_path": "src/promo251/func_8022007C_68976C.c",
+      "active_owner": "asm/japan_0/jp1686_073_000.s",
+      "section": "file_18"
+    },
+    {
+      "region": "japan_0",
+      "name": "func_802200F8_6897E8",
+      "rom_offset": 6854632,
+      "vma": 2149712120,
+      "original_bytes": 52,
+      "owner": "686770.s",
+      "code_sha256": "71ba6b37a7128fd5854d5423d414874e1c0f432c1fa2e5dc69e4b941517dcd92",
+      "source": "source/japan_0/func_802200F8_6897E8.c",
+      "source_sha256": "1af0136f28c3451cb208fa0984392ed8d303622c5b20dc04756f9a34719ca1fa",
+      "negative_source": "negative_source/japan_0/func_802200F8_6897E8.c",
+      "negative_sha256": "25c06049f4bcf45086964d33e45a162e723dcdf85adc082a4dde2d5c8f303b05",
+      "native_relocation_count": 0,
+      "native_relocations": [],
+      "negative_reason": "FUNC_EXTENT_MISMATCH",
+      "negative_first_difference": 8,
+      "method": "pending_donor:func_8021B318_684CF8",
+      "compiler_quirk_outcome": "NO_NEW_COMPILER_FINDING",
+      "negative_control_change": "volatile int native_negative_control = 1",
+      "status": "ISOLATED_NATIVE_RESEARCH_ONLY",
+      "pr": 200,
+      "staged_path": "src/promo251/func_802200F8_6897E8.c",
+      "active_owner": "asm/japan_0/jp1686_073_000.s",
+      "section": "file_18"
+    },
+    {
+      "region": "japan_0",
+      "name": "func_80224110_68D800",
+      "rom_offset": 6871040,
+      "vma": 2149728528,
+      "original_bytes": 44,
+      "owner": "686770.s",
+      "code_sha256": "051ec5099517b48aa004871e6fc1cde77bd3959b27ae823f080fe39b36f03722",
+      "source": "source/japan_0/func_80224110_68D800.c",
+      "source_sha256": "0188ccef8ce3484ae9170d61f1e3d3a839735512ceb46ca9aaec0d3fddae7da7",
+      "negative_source": "negative_source/japan_0/func_80224110_68D800.c",
+      "negative_sha256": "d58935ab2133c0398aa4755648eaad7e6bfa1f35befe8822aaac103f0247a537",
+      "native_relocation_count": 3,
+      "native_relocations": [
+        [
+          8,
+          "R_MIPS_HI16",
+          "D_8022F160_698850"
+        ],
+        [
+          20,
+          "R_MIPS_26",
+          "func_800136A4_142A4"
+        ],
+        [
+          24,
+          "R_MIPS_LO16",
+          "D_8022F160_698850"
+        ]
+      ],
+      "negative_reason": "FUNC_EXTENT_MISMATCH",
+      "negative_first_difference": 0,
+      "method": "donor:decomp/research/usa_file18_new2_20261123/sources/new2_native_01.c",
+      "compiler_quirk_outcome": "NO_NEW_COMPILER_FINDING",
+      "negative_control_change": "volatile int native_negative_control = 1",
+      "status": "ISOLATED_NATIVE_RESEARCH_ONLY",
+      "pr": 200,
+      "staged_path": "src/promo251/func_80224110_68D800.c",
+      "active_owner": "asm/japan_0/jp1686_075_007.s",
+      "section": "file_18"
+    },
+    {
+      "region": "japan_0",
+      "name": "func_80228E90_692580",
+      "rom_offset": 6890880,
+      "vma": 2149748368,
+      "original_bytes": 96,
+      "owner": "6921E0.s",
+      "code_sha256": "f089ea22530262d1685fc6d3b0e4bdc6b89106dbfa3bffa5fcf766536df5c397",
+      "source": "source/japan_0/func_80228E90_692580.c",
+      "source_sha256": "5a6bdce319bcea9a32638409ec82ab06b2742e72d13b339e0e0d0f5e1ecd702d",
+      "negative_source": "negative_source/japan_0/func_80228E90_692580.c",
+      "negative_sha256": "1ca376bbaa24c14e52f4e93739daffd8839681bcf641fa01bf9df18a80c9e4e2",
+      "native_relocation_count": 0,
+      "native_relocations": [],
+      "negative_reason": "FUNC_EXTENT_MISMATCH",
+      "negative_first_difference": 0,
+      "method": "pending_donor:func_802240B0_68DA90",
+      "compiler_quirk_outcome": "NO_NEW_COMPILER_FINDING",
+      "negative_control_change": "volatile int native_negative_control = 1",
+      "status": "ISOLATED_NATIVE_RESEARCH_ONLY",
+      "pr": 200,
+      "staged_path": "src/promo251/func_80228E90_692580.c",
+      "active_owner": "asm/japan_0/jp1686_076_006.s",
+      "section": "file_18"
+    },
+    {
+      "region": "japan_0",
+      "name": "func_8022DA34_697124",
+      "rom_offset": 6910244,
+      "vma": 2149767732,
+      "original_bytes": 72,
+      "owner": "695310.s",
+      "code_sha256": "9036151fad48a24555226c7206010c322ba8a95fcd4b7ef17cb41f84c8b16546",
+      "source": "source/japan_0/func_8022DA34_697124.c",
+      "source_sha256": "8cbaad97999e75672ad772985a56fe4dc98246d605900a5895f2e8cb5e04ee37",
+      "negative_source": "negative_source/japan_0/func_8022DA34_697124.c",
+      "negative_sha256": "192fa67746239a73587c10b4253bb698a51ac282451fd185942a2c953edea3cf",
+      "native_relocation_count": 0,
+      "native_relocations": [],
+      "negative_reason": "FUNC_EXTENT_MISMATCH",
+      "negative_first_difference": 12,
+      "method": "pending_donor:func_802142F8_67DCD8",
+      "compiler_quirk_outcome": "NO_NEW_COMPILER_FINDING",
+      "negative_control_change": "volatile int native_negative_control = 1",
+      "status": "ISOLATED_NATIVE_RESEARCH_ONLY",
+      "pr": 200,
+      "staged_path": "src/promo251/func_8022DA34_697124.c",
+      "active_owner": "asm/japan_0/jp1686_079_002.s",
+      "section": "file_18"
+    },
+    {
+      "region": "japan_0",
+      "name": "func_80218534_69FC34",
+      "rom_offset": 6945844,
+      "vma": 2149680436,
+      "original_bytes": 44,
+      "owner": "699790.s",
+      "code_sha256": "84d88070f1454b6b62feae723145a97f1296d608d48c242e1c12d702134ec2e0",
+      "source": "source/japan_0/func_80218534_69FC34.c",
+      "source_sha256": "a14b5ed846cda305ee84b9dbddcb1ccdfc7c9cb969e512973abef952153a255e",
+      "negative_source": "negative_source/japan_0/func_80218534_69FC34.c",
+      "negative_sha256": "c9175fb1c7ad56205702ba0b2037a70c634bb60c6531705fa4c86609148afd36",
+      "compiler_quirk_outcome": "NO_NEW_COMPILER_FINDING",
+      "negative_control_change": "add_volatile_local_side_effect",
+      "research_method": "reconstructed_opcode_family",
+      "native_relocation_count": 4,
+      "negative_first_difference": 0,
+      "unit_gate": "NOT_RUN",
+      "complete_rom_gate": "NOT_RUN",
+      "canonical_promotion": "NOT_RUN",
+      "pr": 194,
+      "staged_path": "src/promo251/func_80218534_69FC34.c",
+      "active_owner": "asm/japan_0/jp1686_084_010.s",
+      "section": "file_19"
+    },
+    {
+      "region": "japan_0",
+      "name": "func_8021FF3C_68962C",
+      "rom_offset": 6854188,
+      "vma": 2149711676,
+      "original_bytes": 96,
+      "owner": "686770.s",
+      "code_sha256": "9a621b89c7a7ab9989dd2fb4c318852f3ea52268e94079069a81c4cc6cf7472b",
+      "source": "source/japan_0/func_8021FF3C_68962C.c",
+      "source_sha256": "ea6f7236a346db7d187893f02a5e4ded6b30b0aff1882ed3f56311033710cc31",
+      "negative_source": "negative_source/japan_0/func_8021FF3C_68962C.c",
+      "negative_sha256": "47b0b44db82d0490dc916655098725871ed4d697cd88178e95359fed7eb13051",
+      "native_relocation_count": 0,
+      "native_relocations": [],
+      "negative_reason": "FUNC_EXTENT_MISMATCH",
+      "negative_first_difference": 0,
+      "method": "pending_donor:func_8021B15C_684B3C",
+      "compiler_quirk_outcome": "NO_NEW_COMPILER_FINDING",
+      "negative_control_change": "volatile int native_negative_control = 1",
+      "status": "ISOLATED_NATIVE_RESEARCH_ONLY",
+      "pr": 200,
+      "staged_path": "src/promo251/func_8021FF3C_68962C.c",
+      "active_owner": "asm/japan_0/jp1686_089_009.s",
+      "section": "file_18"
+    },
+    {
+      "region": "japan_0",
+      "name": "func_8021FF9C_68968C",
+      "rom_offset": 6854284,
+      "vma": 2149711772,
+      "original_bytes": 64,
+      "owner": "686770.s",
+      "code_sha256": "5c80139fd7675e6b8182b71583d84affddf23bf123d673b65653a7ef38d0083c",
+      "source": "source/japan_0/func_8021FF9C_68968C.c",
+      "source_sha256": "5aae708380fdbe39b28fc2c60ce8afbf4b4a43dd153dd10d308307618936c127",
+      "negative_source": "negative_source/japan_0/func_8021FF9C_68968C.c",
+      "negative_sha256": "606d93fbf73351889bc0353d14ac8b5d1afcc029d8b91c01660ae16c16494417",
+      "compiler_quirk_outcome": "NO_NEW_COMPILER_FINDING",
+      "negative_control_change": "add_volatile_local_side_effect",
+      "research_method": "donor-pass.json",
+      "native_relocation_count": 0,
+      "negative_first_difference": 0,
+      "unit_gate": "NOT_RUN",
+      "complete_rom_gate": "NOT_RUN",
+      "canonical_promotion": "NOT_RUN",
+      "pr": 194,
+      "staged_path": "src/promo251/func_8021FF9C_68968C.c",
+      "active_owner": "asm/japan_0/jp1686_089_009.s",
+      "section": "file_18"
+    },
+    {
+      "region": "japan_0",
+      "name": "func_08001318_6F5C38",
+      "rom_offset": 7298104,
+      "vma": 134222616,
+      "original_bytes": 68,
+      "owner": "6F4920.s",
+      "code_sha256": "573d0f6761e151d52fd3e3d034a940b4a2ae8bfea9a7a819159f09b82ba7b5e5",
+      "source": "source/japan_0/func_08001318_6F5C38.c",
+      "source_sha256": "c1921238f8ccdf14bdbbc836442404652c54bc95996b2c56abd320c375d27fd8",
+      "negative_source": "negative_source/japan_0/func_08001318_6F5C38.c",
+      "negative_sha256": "04ee6f19f8ec4781cbe9609a7036f11f2f3d62a47577cb719fcdab1966ba82db",
+      "native_relocation_count": 2,
+      "native_relocations": [
+        [
+          20,
+          "R_MIPS_HI16",
+          "func_8021B3BC_5D694C"
+        ],
+        [
+          24,
+          "R_MIPS_LO16",
+          "func_8021B3BC_5D694C"
+        ]
+      ],
+      "negative_reason": "FUNC_EXTENT_MISMATCH",
+      "negative_first_difference": 0,
+      "method": "m2c ABI/symbolic-call correction",
+      "compiler_quirk_outcome": "NO_NEW_COMPILER_FINDING",
+      "negative_control_change": "volatile int native_negative_control = 1",
+      "status": "ISOLATED_NATIVE_RESEARCH_ONLY",
+      "pr": 200,
+      "staged_path": "src/promo251/func_08001318_6F5C38.c",
+      "active_owner": "asm/japan_0/jp1686_105_002.s",
+      "section": "file_42"
+    },
+    {
+      "region": "japan_0",
+      "name": "func_0800135C_6F5C7C",
+      "rom_offset": 7298172,
+      "vma": 134222684,
+      "original_bytes": 64,
+      "owner": "6F4920.s",
+      "code_sha256": "98617157f0a53e0bd0202829072e5d529a62fba2709ee1ad1cbfca467ff7c746",
+      "source": "source/japan_0/func_0800135C_6F5C7C.c",
+      "source_sha256": "ecd918426fd93a0603901f12c8e3faa32e43e783360e8dbfa38d0892301a1686",
+      "negative_source": "negative_source/japan_0/func_0800135C_6F5C7C.c",
+      "negative_sha256": "b4ee7427f354c5dcd308c297309c61e0aaa28e826a59d231c9e7e5da60c1c0fb",
+      "native_relocation_count": 2,
+      "native_relocations": [
+        [
+          16,
+          "R_MIPS_HI16",
+          "func_8021B3BC_5D694C"
+        ],
+        [
+          20,
+          "R_MIPS_LO16",
+          "func_8021B3BC_5D694C"
+        ]
+      ],
+      "negative_reason": "FUNC_EXTENT_MISMATCH",
+      "negative_first_difference": 0,
+      "method": "m2c ABI/symbolic-call correction",
+      "compiler_quirk_outcome": "NO_NEW_COMPILER_FINDING",
+      "negative_control_change": "volatile int native_negative_control = 1",
+      "status": "ISOLATED_NATIVE_RESEARCH_ONLY",
+      "pr": 200,
+      "staged_path": "src/promo251/func_0800135C_6F5C7C.c",
+      "active_owner": "asm/japan_0/jp1686_105_002.s",
+      "section": "file_42"
+    },
+    {
+      "region": "japan_0",
+      "name": "func_08001368_700B38",
+      "rom_offset": 7342904,
+      "vma": 134222696,
+      "original_bytes": 68,
+      "owner": "6FF7D0.s",
+      "code_sha256": "8af358cc2d6362c62c35c3a2717cbf48c185598fea1378c8e684e2d0498c866b",
+      "source": "source/japan_0/func_08001368_700B38.c",
+      "source_sha256": "ce571fd4f1c48cc23fae2d2e6cc0fac6062b9e0850c348bee6569be41b40d206",
+      "negative_source": "negative_source/japan_0/func_08001368_700B38.c",
+      "negative_sha256": "04223fbf72bbedc405b09b06c44f1a786a32d3d0d7fc04c731f0599540fdc0ba",
+      "compiler_quirk_outcome": "NO_NEW_COMPILER_FINDING",
+      "negative_control_change": "add_volatile_local_side_effect",
+      "research_method": "reconstructed_opcode_family",
+      "native_relocation_count": 4,
+      "negative_first_difference": 0,
+      "unit_gate": "NOT_RUN",
+      "complete_rom_gate": "NOT_RUN",
+      "canonical_promotion": "NOT_RUN",
+      "pr": 194,
+      "staged_path": "src/promo251/func_08001368_700B38.c",
+      "active_owner": "asm/japan_0/jp1686_107_001.s",
+      "section": "file_44"
+    },
+    {
+      "region": "japan_0",
+      "name": "func_801F46D8_5B06A8",
+      "rom_offset": 5965480,
+      "vma": 2149533400,
+      "original_bytes": 56,
+      "owner": "5AF790.s",
+      "code_sha256": "4b67be06e0e2f38c11af21087bfaa94df63fbfc763ff9b5385f90aa69a31a6ee",
+      "source": "source/japan_0/func_801F46D8_5B06A8.c",
+      "source_sha256": "c356d4390f71f1c16cfb4d07569d9dc7b565f6cb6c0f6d57a5f048ef69b3497d",
+      "negative_source": "negative_source/japan_0/func_801F46D8_5B06A8.c",
+      "negative_sha256": "9498979fcf54bdea81337e91647e43a9b631acb25ca9df0c3eadd250dffb5271",
+      "compiler_quirk_outcome": "NO_NEW_COMPILER_FINDING",
+      "negative_control_change": "add_volatile_local_side_effect",
+      "research_method": "reconstructed_opcode_family",
+      "native_relocation_count": 1,
+      "negative_first_difference": 0,
+      "unit_gate": "NOT_RUN",
+      "complete_rom_gate": "NOT_RUN",
+      "canonical_promotion": "NOT_RUN",
+      "pr": 194,
+      "staged_path": "src/promo251/func_801F46D8_5B06A8.c",
+      "active_owner": "asm/japan_0/jp1686_132_003.s",
+      "section": "file_11"
+    },
+    {
+      "region": "japan_0",
+      "name": "func_8021F3B4_5DA944",
+      "rom_offset": 6138180,
+      "vma": 2149708724,
+      "original_bytes": 56,
+      "owner": "5D6940.s",
+      "code_sha256": "95f8b595c88e44a5b109472db426d3a840ed243a41ac0678d7d426b312ae47e4",
+      "source": "source/japan_0/func_8021F3B4_5DA944.c",
+      "source_sha256": "10f6d9dd5d3c4365896ea260c691843098e79d8ce475fe68aef1d99118208477",
+      "negative_source": "negative_source/japan_0/func_8021F3B4_5DA944.c",
+      "negative_sha256": "5225062b7440465f18babaf23577b6480f78cc1eb7e1d720daa96a0d77ef05c3",
+      "native_relocation_count": 1,
+      "native_relocations": [
+        [
+          32,
+          "R_MIPS_26",
+          "func_8021F254_5DA7E4"
+        ]
+      ],
+      "negative_reason": "FUNC_EXTENT_MISMATCH",
+      "negative_first_difference": 0,
+      "method": "donor:decomp/candidates/active_gate.c",
+      "compiler_quirk_outcome": "NO_NEW_COMPILER_FINDING",
+      "negative_control_change": "volatile int native_negative_control = 1",
+      "status": "ISOLATED_NATIVE_RESEARCH_ONLY",
+      "pr": 200,
+      "staged_path": "src/promo251/func_8021F3B4_5DA944.c",
+      "active_owner": "asm/japan_0/jp1686_133_000.s",
+      "section": "file_12"
+    },
+    {
+      "region": "japan_0",
+      "name": "func_801E35D8_59F5A8",
+      "rom_offset": 5895592,
+      "vma": 2149463512,
+      "original_bytes": 96,
+      "owner": "59EC10.s",
+      "code_sha256": "e57e6bb13de07b2ba659c3f464791e514029a142184e1971c7bfadfa1e8d9d07",
+      "source": "source/japan_0/func_801E35D8_59F5A8.c",
+      "source_sha256": "7f2412ff0bbad64462200bea3630acde21b1f4c472f90e4926adc0f0c3f9b4af",
+      "negative_source": "negative_source/japan_0/func_801E35D8_59F5A8.c",
+      "negative_sha256": "e70a5d64574a5cd206f31e895481eb78c0389a10796352eae940f6945e7e2dcb",
+      "compiler_quirk_outcome": "NO_NEW_COMPILER_FINDING",
+      "negative_control_change": "add_volatile_local_side_effect",
+      "research_method": "reconstructed_opcode_family",
+      "native_relocation_count": 2,
+      "negative_first_difference": 0,
+      "unit_gate": "NOT_RUN",
+      "complete_rom_gate": "NOT_RUN",
+      "canonical_promotion": "NOT_RUN",
+      "pr": 194,
+      "staged_path": "src/promo251/func_801E35D8_59F5A8.c",
+      "active_owner": "asm/japan_0/jp1686_138_019.s",
+      "section": "file_11"
+    },
+    {
+      "region": "japan_0",
+      "name": "func_801E3638_59F608",
+      "rom_offset": 5895688,
+      "vma": 2149463608,
+      "original_bytes": 72,
+      "owner": "59EC10.s",
+      "code_sha256": "5ab824aee307c8130bf7b01011f72706982706ced7f744a6048132a62c6386a6",
+      "source": "source/japan_0/func_801E3638_59F608.c",
+      "source_sha256": "b85c76b848f2719c339961c16c59376925f5359dbf5637053efbf1c846e29f80",
+      "negative_source": "negative_source/japan_0/func_801E3638_59F608.c",
+      "negative_sha256": "260033738610a1e527eb7988ae5e9cbaf69dc87e522dcde001612058157bbf2d",
+      "compiler_quirk_outcome": "NO_NEW_COMPILER_FINDING",
+      "negative_control_change": "add_volatile_local_side_effect",
+      "research_method": "reconstructed_opcode_family",
+      "native_relocation_count": 2,
+      "negative_first_difference": 0,
+      "unit_gate": "NOT_RUN",
+      "complete_rom_gate": "NOT_RUN",
+      "canonical_promotion": "NOT_RUN",
+      "pr": 194,
+      "staged_path": "src/promo251/func_801E3638_59F608.c",
+      "active_owner": "asm/japan_0/jp1686_138_019.s",
+      "section": "file_11"
+    },
+    {
+      "region": "japan_0",
+      "name": "func_801E3680_59F650",
+      "rom_offset": 5895760,
+      "vma": 2149463680,
+      "original_bytes": 96,
+      "owner": "59EC10.s",
+      "code_sha256": "683f949b7fbfb79bc02543078bb2185107e8507cfa8f2253f4c66bce71541110",
+      "source": "source/japan_0/func_801E3680_59F650.c",
+      "source_sha256": "b4d6eaed61c717f3b2dcb2386c3c7be98586b6fac61ea6f2d02f556d4328ac76",
+      "negative_source": "negative_source/japan_0/func_801E3680_59F650.c",
+      "negative_sha256": "a1c2f3af8d91af50b6ce557f603a2de2ada4397f933ea8ecc72b72a33b2abd46",
+      "compiler_quirk_outcome": "NO_NEW_COMPILER_FINDING",
+      "negative_control_change": "add_volatile_local_side_effect",
+      "research_method": "reconstructed_opcode_family",
+      "native_relocation_count": 2,
+      "negative_first_difference": 0,
+      "unit_gate": "NOT_RUN",
+      "complete_rom_gate": "NOT_RUN",
+      "canonical_promotion": "NOT_RUN",
+      "pr": 194,
+      "staged_path": "src/promo251/func_801E3680_59F650.c",
+      "active_owner": "asm/japan_0/jp1686_138_019.s",
+      "section": "file_11"
+    },
+    {
+      "region": "japan_0",
+      "name": "func_801E36E0_59F6B0",
+      "rom_offset": 5895856,
+      "vma": 2149463776,
+      "original_bytes": 96,
+      "owner": "59EC10.s",
+      "code_sha256": "0a54793737f803a649ec8b97424e37378605588de8dcec582bca524856e56a93",
+      "source": "source/japan_0/func_801E36E0_59F6B0.c",
+      "source_sha256": "12476ff4089771e0264fcdd3f46aa074fda495a96e1420126f1942b3728e1e7e",
+      "negative_source": "negative_source/japan_0/func_801E36E0_59F6B0.c",
+      "negative_sha256": "568869b8b222613e051d23aa335be7ae6e41567c6dda9f32f288876d7a97a4dd",
+      "compiler_quirk_outcome": "NO_NEW_COMPILER_FINDING",
+      "negative_control_change": "add_volatile_local_side_effect",
+      "research_method": "reconstructed_opcode_family",
+      "native_relocation_count": 2,
+      "negative_first_difference": 0,
+      "unit_gate": "NOT_RUN",
+      "complete_rom_gate": "NOT_RUN",
+      "canonical_promotion": "NOT_RUN",
+      "pr": 194,
+      "staged_path": "src/promo251/func_801E36E0_59F6B0.c",
+      "active_owner": "asm/japan_0/jp1686_138_019.s",
+      "section": "file_11"
+    },
+    {
+      "region": "japan_0",
+      "name": "func_801E3740_59F710",
+      "rom_offset": 5895952,
+      "vma": 2149463872,
+      "original_bytes": 72,
+      "owner": "59EC10.s",
+      "code_sha256": "029ee48086830a4037036ea66fd8d3641a1b3d67cd9e34824ddd1a49e477d3fb",
+      "source": "source/japan_0/func_801E3740_59F710.c",
+      "source_sha256": "35f5e54edd0265222d20141d81267e2680366f734e24e22734ce60921d61a1de",
+      "negative_source": "negative_source/japan_0/func_801E3740_59F710.c",
+      "negative_sha256": "f69375bf4c538bf46067cde1be992af2f454d8a77d558d351143ba67062e9586",
+      "compiler_quirk_outcome": "NO_NEW_COMPILER_FINDING",
+      "negative_control_change": "add_volatile_local_side_effect",
+      "research_method": "reconstructed_opcode_family",
+      "native_relocation_count": 2,
+      "negative_first_difference": 0,
+      "unit_gate": "NOT_RUN",
+      "complete_rom_gate": "NOT_RUN",
+      "canonical_promotion": "NOT_RUN",
+      "pr": 194,
+      "staged_path": "src/promo251/func_801E3740_59F710.c",
+      "active_owner": "asm/japan_0/jp1686_138_019.s",
+      "section": "file_11"
+    },
+    {
+      "region": "japan_0",
+      "name": "func_801E7118_5A30E8",
+      "rom_offset": 5910760,
+      "vma": 2149478680,
+      "original_bytes": 48,
+      "owner": "5A27C0.s",
+      "code_sha256": "f7703f8882f78440bbf1c9e5383daf40d0c0615ad0509e4d6b3a3292a4607ebb",
+      "source": "source/japan_0/func_801E7118_5A30E8.c",
+      "source_sha256": "8b480a194dd9f860bd36bcd404b8e7db5bdd8281ab6421e9b27a8bb3bb0de4ba",
+      "negative_source": "negative_source/japan_0/func_801E7118_5A30E8.c",
+      "negative_sha256": "55b37aa931597ea65a7139c95536253696d4d535b37f0be7834ddf5d11e53eff",
+      "native_relocation_count": 1,
+      "native_relocations": [
+        [
+          24,
+          "R_MIPS_26",
+          "func_801E71A4_5A3174"
+        ]
+      ],
+      "negative_reason": "FUNC_EXTENT_MISMATCH",
+      "negative_first_difference": 0,
+      "method": "m2c ABI/symbolic-call correction",
+      "compiler_quirk_outcome": "NO_NEW_COMPILER_FINDING",
+      "negative_control_change": "volatile int native_negative_control = 1",
+      "status": "ISOLATED_NATIVE_RESEARCH_ONLY",
+      "pr": 200,
+      "staged_path": "src/promo251/func_801E7118_5A30E8.c",
+      "active_owner": "asm/japan_0/jp1686_140_003.s",
+      "section": "file_11"
+    },
+    {
+      "region": "japan_0",
+      "name": "func_801E72E8_5A32B8",
+      "rom_offset": 5911224,
+      "vma": 2149479144,
+      "original_bytes": 224,
+      "owner": "5A27C0.s",
+      "code_sha256": "0bf0d0bf3490dcb79e69b68c7a98b54976a5fad9a60a9564c03349f8a124667c",
+      "source": "source/japan_0/func_801E72E8_5A32B8.c",
+      "source_sha256": "e637a52821fa6ab8f74dca8376762a4ed72b40cf5b01a96215e1d79bb0aec5a6",
+      "negative_source": "negative_source/japan_0/func_801E72E8_5A32B8.c",
+      "negative_sha256": "00e64b8e1c09eef3c1f0b016fa23db3d73fc940f9c3a5f6ca9e67f44411dca91",
+      "native_relocation_count": 12,
+      "native_relocations": [
+        [
+          12,
+          "R_MIPS_26",
+          "func_801ECF10_5A8EE0"
+        ],
+        [
+          28,
+          "R_MIPS_HI16",
+          "D_80210178_5CC148"
+        ],
+        [
+          32,
+          "R_MIPS_LO16",
+          "D_80210178_5CC148"
+        ],
+        [
+          84,
+          "R_MIPS_26",
+          "func_801E2BE0_59EBB0"
+        ],
+        [
+          96,
+          "R_MIPS_HI16",
+          "D_8021185C_5CD82C"
+        ],
+        [
+          112,
+          "R_MIPS_26",
+          "func_80038838_39438"
+        ],
+        [
+          120,
+          "R_MIPS_26",
+          "func_80038838_39438"
+        ],
+        [
+          136,
+          "R_MIPS_LO16",
+          "D_8021185C_5CD82C"
+        ],
+        [
+          148,
+          "R_MIPS_26",
+          "func_80038838_39438"
+        ],
+        [
+          164,
+          "R_MIPS_26",
+          "func_801ECF10_5A8EE0"
+        ],
+        [
+          180,
+          "R_MIPS_26",
+          "func_80038838_39438"
+        ],
+        [
+          196,
+          "R_MIPS_26",
+          "func_801E2A90_59EA60"
+        ]
+      ],
+      "negative_reason": "FUNC_EXTENT_MISMATCH",
+      "negative_first_difference": 0,
+      "method": "donor:decomp/research/mini_ebisumaru_1_g2_20261122/sources/mini1_59dfb0.c",
+      "compiler_quirk_outcome": "NO_NEW_COMPILER_FINDING",
+      "negative_control_change": "volatile int native_negative_control = 1",
+      "status": "ISOLATED_NATIVE_RESEARCH_ONLY",
+      "pr": 200,
+      "staged_path": "src/promo251/func_801E72E8_5A32B8.c",
+      "active_owner": "asm/japan_0/jp1686_140_003.s",
+      "section": "file_11"
+    },
+    {
+      "region": "japan_0",
+      "name": "func_80200180_5BC150",
+      "rom_offset": 6013264,
+      "vma": 2149581184,
+      "original_bytes": 52,
+      "owner": "5BB030.s",
+      "code_sha256": "3925a3ec305ad08411ddd4e82e4f23aa8247637d3c0be2476658d99f7f2859ab",
+      "source": "source/japan_0/func_80200180_5BC150.c",
+      "source_sha256": "eacd2bf307c397470f4aeb40e108a8f9e62c5edf85f9502dd01b60d8b766c672",
+      "negative_source": "negative_source/japan_0/func_80200180_5BC150.c",
+      "negative_sha256": "c29306fe8f806bb03a998d7c4382324d98ab21fe8283a8a9bfa9975873d96ba7",
+      "compiler_quirk_outcome": "NO_NEW_COMPILER_FINDING",
+      "negative_control_change": "add_volatile_local_side_effect",
+      "research_method": "reconstructed_opcode_family",
+      "native_relocation_count": 5,
+      "negative_first_difference": 0,
+      "unit_gate": "NOT_RUN",
+      "complete_rom_gate": "NOT_RUN",
+      "canonical_promotion": "NOT_RUN",
+      "pr": 194,
+      "staged_path": "src/promo251/func_80200180_5BC150.c",
+      "active_owner": "asm/japan_0/jp1686_149_010.s",
+      "section": "file_11"
+    },
+    {
+      "region": "japan_0",
+      "name": "func_801EA2F0_614D70",
+      "rom_offset": 6376816,
+      "vma": 2149491440,
+      "original_bytes": 52,
+      "owner": "6143A0.s",
+      "code_sha256": "b44e3d418d17229c56acd3b5b344e87c113e1212fd580e84e493f5b4fcb408ca",
+      "source": "source/japan_0/func_801EA2F0_614D70.c",
+      "source_sha256": "99a1b3085876b6127c6357cd6d6c562c3cee0d633539a3c473a1ff8386a49822",
+      "negative_source": "negative_source/japan_0/func_801EA2F0_614D70.c",
+      "negative_sha256": "02cc3b8e7d71b0969310b933a7772cbb5bb549a89c47b1d7d4b0a989c2d27f57",
+      "native_relocation_count": 6,
+      "native_relocations": [
+        [
+          12,
+          "R_MIPS_HI16",
+          "D_802108F8_63B378"
+        ],
+        [
+          16,
+          "R_MIPS_26",
+          "func_801D88EC_60336C"
+        ],
+        [
+          20,
+          "R_MIPS_LO16",
+          "D_802108F8_63B378"
+        ],
+        [
+          24,
+          "R_MIPS_HI16",
+          "func_801EA324_614DA4"
+        ],
+        [
+          28,
+          "R_MIPS_26",
+          "func_80034E8C_35A8C"
+        ],
+        [
+          32,
+          "R_MIPS_LO16",
+          "func_801EA324_614DA4"
+        ]
+      ],
+      "negative_reason": "FUNC_EXTENT_MISMATCH",
+      "negative_first_difference": 0,
+      "method": "m2c ABI/symbolic-call correction",
+      "compiler_quirk_outcome": "NO_NEW_COMPILER_FINDING",
+      "negative_control_change": "volatile int native_negative_control = 1",
+      "status": "ISOLATED_NATIVE_RESEARCH_ONLY",
+      "pr": 200,
+      "staged_path": "src/promo251/func_801EA2F0_614D70.c",
+      "active_owner": "asm/japan_0/jp1686_160_009.s",
+      "section": "file_13"
+    },
+    {
+      "region": "japan_0",
+      "name": "func_801F613C_620BBC",
+      "rom_offset": 6425532,
+      "vma": 2149540156,
+      "original_bytes": 68,
+      "owner": "6143A0.s",
+      "code_sha256": "0df4c7fbb0c8a52e58173f98a51752153ed28e1ba20a5908a21b45ae7820acfe",
+      "source": "source/japan_0/func_801F613C_620BBC.c",
+      "source_sha256": "8edaab989336b2760372937fd154033c73edf5949aa55c9dbec8264fde50d6af",
+      "negative_source": "negative_source/japan_0/func_801F613C_620BBC.c",
+      "negative_sha256": "1b1fa7861c35863148972b64cb362275e5bea88eb07f6da43a592be64cdd7514",
+      "native_relocation_count": 6,
+      "native_relocations": [
+        [
+          12,
+          "R_MIPS_HI16",
+          "D_802109A0_63B420"
+        ],
+        [
+          20,
+          "R_MIPS_26",
+          "func_801D88EC_60336C"
+        ],
+        [
+          24,
+          "R_MIPS_LO16",
+          "D_802109A0_63B420"
+        ],
+        [
+          36,
+          "R_MIPS_HI16",
+          "func_801F6180_620C00"
+        ],
+        [
+          40,
+          "R_MIPS_LO16",
+          "func_801F6180_620C00"
+        ],
+        [
+          44,
+          "R_MIPS_26",
+          "func_80034E8C_35A8C"
+        ]
+      ],
+      "negative_reason": "FUNC_EXTENT_MISMATCH",
+      "negative_first_difference": 0,
+      "method": "m2c ABI/symbolic-call correction",
+      "compiler_quirk_outcome": "NO_NEW_COMPILER_FINDING",
+      "negative_control_change": "volatile int native_negative_control = 1",
+      "status": "ISOLATED_NATIVE_RESEARCH_ONLY",
+      "pr": 200,
+      "staged_path": "src/promo251/func_801F613C_620BBC.c",
+      "active_owner": "asm/japan_0/jp1686_164_009.s",
+      "section": "file_13"
+    },
+    {
+      "region": "japan_0",
+      "name": "func_801F9164_623BE4",
+      "rom_offset": 6437860,
+      "vma": 2149552484,
+      "original_bytes": 52,
+      "owner": "6143A0.s",
+      "code_sha256": "c6dd0f95543a80c686d07c1c61b6d5cf7facf5f8e73d9a79c394806de59c1795",
+      "source": "source/japan_0/func_801F9164_623BE4.c",
+      "source_sha256": "d41896c64ea6ef6324fb7bce44792864d217c64c116b60d3bebc6eabcb535a6c",
+      "negative_source": "negative_source/japan_0/func_801F9164_623BE4.c",
+      "negative_sha256": "18ed1430853018853bfb28495a7a2112aa4b8b1eeb8644e708834104ce3028f1",
+      "native_relocation_count": 6,
+      "native_relocations": [
+        [
+          12,
+          "R_MIPS_HI16",
+          "D_802109C8_63B448"
+        ],
+        [
+          16,
+          "R_MIPS_26",
+          "func_801D88EC_60336C"
+        ],
+        [
+          20,
+          "R_MIPS_LO16",
+          "D_802109C8_63B448"
+        ],
+        [
+          24,
+          "R_MIPS_HI16",
+          "func_801F9198_623C18"
+        ],
+        [
+          28,
+          "R_MIPS_26",
+          "func_80034E8C_35A8C"
+        ],
+        [
+          32,
+          "R_MIPS_LO16",
+          "func_801F9198_623C18"
+        ]
+      ],
+      "negative_reason": "FUNC_EXTENT_MISMATCH",
+      "negative_first_difference": 0,
+      "method": "m2c ABI/symbolic-call correction",
+      "compiler_quirk_outcome": "NO_NEW_COMPILER_FINDING",
+      "negative_control_change": "volatile int native_negative_control = 1",
+      "status": "ISOLATED_NATIVE_RESEARCH_ONLY",
+      "pr": 200,
+      "staged_path": "src/promo251/func_801F9164_623BE4.c",
+      "active_owner": "asm/japan_0/jp1686_165_013.s",
+      "section": "file_13"
+    },
+    {
+      "region": "japan_0",
+      "name": "func_80205DB4_630834",
+      "rom_offset": 6490164,
+      "vma": 2149604788,
+      "original_bytes": 44,
+      "owner": "6303B0.s",
+      "code_sha256": "0845006db38991d66665d11cda784203c3b522ea95656e7dc4927a4f77c6c569",
+      "source": "source/japan_0/func_80205DB4_630834.c",
+      "source_sha256": "ee6e000f797618c58ac770c1b4f20be59c278bb9623112db064466e3f63b63b6",
+      "negative_source": "negative_source/japan_0/func_80205DB4_630834.c",
+      "negative_sha256": "24ad6d14d24e623e95103ecefee675437b3098765ca1ce19e65636272ab44733",
+      "native_relocation_count": 3,
+      "native_relocations": [
+        [
+          8,
+          "R_MIPS_HI16",
+          "func_80205C38_6306B8"
+        ],
+        [
+          20,
+          "R_MIPS_26",
+          "func_80034E9C_35A9C"
+        ],
+        [
+          24,
+          "R_MIPS_LO16",
+          "func_80205C38_6306B8"
+        ]
+      ],
+      "negative_reason": "FUNC_EXTENT_MISMATCH",
+      "negative_first_difference": 0,
+      "method": "m2c ABI/symbolic-call correction",
+      "compiler_quirk_outcome": "NO_NEW_COMPILER_FINDING",
+      "negative_control_change": "volatile int native_negative_control = 1",
+      "status": "ISOLATED_NATIVE_RESEARCH_ONLY",
+      "pr": 200,
+      "staged_path": "src/promo251/func_80205DB4_630834.c",
+      "active_owner": "asm/japan_0/jp1686_175_003.s",
+      "section": "file_13"
+    },
+    {
+      "region": "japan_0",
+      "name": "func_8020AAB0_635530",
+      "rom_offset": 6509872,
+      "vma": 2149624496,
+      "original_bytes": 48,
+      "owner": "6348A0.s",
+      "code_sha256": "ee885a93c04cc4198226ae19b71e91228601af30a116de65d91db3f0814b99ce",
+      "source": "source/japan_0/func_8020AAB0_635530.c",
+      "source_sha256": "89d0498cc502a30cc7f44ee10b3405872c8509db1a0ad4fe995dffbe1baec67d",
+      "negative_source": "negative_source/japan_0/func_8020AAB0_635530.c",
+      "negative_sha256": "27094c9e2fda327d47e843b567e4d56a801495b252cbe0d9965a58abd09c8121",
+      "native_relocation_count": 2,
+      "native_relocations": [
+        [
+          8,
+          "R_MIPS_26",
+          "func_801DB290_605D10"
+        ],
+        [
+          24,
+          "R_MIPS_26",
+          "func_80034B44_35744"
+        ]
+      ],
+      "negative_reason": "FUNC_EXTENT_MISMATCH",
+      "negative_first_difference": 0,
+      "method": "donor:decomp/research/pending_isolated233_20261120/sources/iso233_179.c",
+      "compiler_quirk_outcome": "NO_NEW_COMPILER_FINDING",
+      "negative_control_change": "volatile int native_negative_control = 1",
+      "status": "ISOLATED_NATIVE_RESEARCH_ONLY",
+      "pr": 200,
+      "staged_path": "src/promo251/func_8020AAB0_635530.c",
+      "active_owner": "asm/japan_0/jp1686_177_002.s",
+      "section": "file_13"
+    },
+    {
+      "region": "japan_0",
+      "name": "func_802190D8_6827C8",
+      "rom_offset": 6825928,
+      "vma": 2149683416,
+      "original_bytes": 72,
+      "owner": "682300.s",
+      "code_sha256": "9036151fad48a24555226c7206010c322ba8a95fcd4b7ef17cb41f84c8b16546",
+      "source": "source/japan_0/func_802190D8_6827C8.c",
+      "source_sha256": "8a9b450a56b48a316b2997943d5ed237fc95889de45dfb1d1c3b9b81a183491f",
+      "negative_source": "negative_source/japan_0/func_802190D8_6827C8.c",
+      "negative_sha256": "b3b659938395844844b3338677564322e5b022eceb7303f76d8873c8d88b6e21",
+      "native_relocation_count": 0,
+      "native_relocations": [],
+      "negative_reason": "FUNC_EXTENT_MISMATCH",
+      "negative_first_difference": 12,
+      "method": "pending_donor:func_802142F8_67DCD8",
+      "compiler_quirk_outcome": "NO_NEW_COMPILER_FINDING",
+      "negative_control_change": "volatile int native_negative_control = 1",
+      "status": "ISOLATED_NATIVE_RESEARCH_ONLY",
+      "pr": 200,
+      "staged_path": "src/promo251/func_802190D8_6827C8.c",
+      "active_owner": "asm/japan_0/jp1686_188_002.s",
+      "section": "file_18"
+    },
+    {
+      "region": "japan_0",
+      "name": "func_08000490_6B1560",
+      "rom_offset": 7017824,
+      "vma": 134218896,
+      "original_bytes": 88,
+      "owner": "6B10D0.s",
+      "code_sha256": "1dc15ddef5b26d9c20e3807dddec4e851e05fbfc46c7ec277e31c6ddf81e5ba7",
+      "source": "source/japan_0/func_08000490_6B1560.c",
+      "source_sha256": "2da5f6da8906b483a8271e2d5ea9730459c606bf3a8a5cf30db6c62fe9e38afd",
+      "negative_source": "negative_source/japan_0/func_08000490_6B1560.c",
+      "negative_sha256": "d963890315ae67e1deb8543ea84959275f754985b029dd3f54b8a33947a3383d",
+      "compiler_quirk_outcome": "NO_NEW_COMPILER_FINDING",
+      "negative_control_change": "add_volatile_local_side_effect",
+      "research_method": "donor-pass.json",
+      "native_relocation_count": 6,
+      "negative_first_difference": 0,
+      "unit_gate": "NOT_RUN",
+      "complete_rom_gate": "NOT_RUN",
+      "canonical_promotion": "NOT_RUN",
+      "pr": 194,
+      "staged_path": "src/promo251/func_08000490_6B1560.c",
+      "active_owner": "asm/japan_0/jp1686_198_003.s",
+      "section": "file_24"
+    },
+    {
+      "region": "japan_0",
+      "name": "func_080013B0_6B52B0",
+      "rom_offset": 7033520,
+      "vma": 134222768,
+      "original_bytes": 68,
+      "owner": "6B3F00.s",
+      "code_sha256": "2ebd24d0e2be0cac8b6ffb5d85721d20e4a0d79cd634d990343ee6c8417713c9",
+      "source": "source/japan_0/func_080013B0_6B52B0.c",
+      "source_sha256": "956eea39d4e0e04dc7e488d3551d756484d8643e375ed49e6ecf1013bc0aa3c1",
+      "negative_source": "negative_source/japan_0/func_080013B0_6B52B0.c",
+      "negative_sha256": "b3e6af366229f860f8d802565d4fab743869459231bc9a8509c5cbc8b9845d67",
+      "compiler_quirk_outcome": "NO_NEW_COMPILER_FINDING",
+      "negative_control_change": "add_volatile_local_side_effect",
+      "research_method": "donor-pass.json",
+      "native_relocation_count": 4,
+      "negative_first_difference": 0,
+      "unit_gate": "NOT_RUN",
+      "complete_rom_gate": "NOT_RUN",
+      "canonical_promotion": "NOT_RUN",
+      "pr": 194,
+      "staged_path": "src/promo251/func_080013B0_6B52B0.c",
+      "active_owner": "asm/japan_0/jp1686_200_009.s",
+      "section": "file_27"
+    },
+    {
+      "region": "japan_0",
+      "name": "func_08005CB0_6C9E70",
+      "rom_offset": 7118448,
+      "vma": 134241456,
+      "original_bytes": 76,
+      "owner": "6C41C0.s",
+      "code_sha256": "8f16da612ea8cb9e31843afe5c3f300fc4a90030153778f1843d7288f7225d52",
+      "source": "source/japan_0/func_08005CB0_6C9E70.c",
+      "source_sha256": "a6d44f1f322a27f8f9d6b30241f282b2618d0fe9f471b68f5e2f02372b381735",
+      "negative_source": "negative_source/japan_0/func_08005CB0_6C9E70.c",
+      "negative_sha256": "f2db1c978e7da1213e100a3b8f6bdadd4b459326d393463dcdf357e9bcd4d032",
+      "compiler_quirk_outcome": "NO_NEW_COMPILER_FINDING",
+      "negative_control_change": "add_volatile_local_side_effect",
+      "research_method": "reconstructed_opcode_family",
+      "native_relocation_count": 4,
+      "negative_first_difference": 0,
+      "unit_gate": "NOT_RUN",
+      "complete_rom_gate": "NOT_RUN",
+      "canonical_promotion": "NOT_RUN",
+      "pr": 194,
+      "staged_path": "src/promo251/func_08005CB0_6C9E70.c",
+      "active_owner": "asm/japan_0/jp1686_211_006.s",
+      "section": "file_30"
+    },
+    {
+      "region": "japan_0",
+      "name": "func_0800046C_6E3DDC",
+      "rom_offset": 7224796,
+      "vma": 134218860,
+      "original_bytes": 76,
+      "owner": "6E3970.s",
+      "code_sha256": "4490be2a330271a092457b869e8690e3e1aacedc56d941017ffcb8e45e590fc9",
+      "source": "source/japan_0/func_0800046C_6E3DDC.c",
+      "source_sha256": "cd18915e4582ca1cb0dcf681b28db8b65b34aaa454317c0213679d20c08534f9",
+      "negative_source": "negative_source/japan_0/func_0800046C_6E3DDC.c",
+      "negative_sha256": "9f847800bb86d412bb83c2ee36f0271e453370241faf77ad4546036fb06203c1",
+      "compiler_quirk_outcome": "NO_NEW_COMPILER_FINDING",
+      "negative_control_change": "add_volatile_local_side_effect",
+      "research_method": "reconstructed_opcode_family",
+      "native_relocation_count": 4,
+      "negative_first_difference": 0,
+      "unit_gate": "NOT_RUN",
+      "complete_rom_gate": "NOT_RUN",
+      "canonical_promotion": "NOT_RUN",
+      "pr": 194,
+      "staged_path": "src/promo251/func_0800046C_6E3DDC.c",
+      "active_owner": "asm/japan_0/jp1686_218_000.s",
+      "section": "file_37"
+    },
+    {
+      "region": "japan_0",
+      "name": "func_08000F5C_6E48CC",
+      "rom_offset": 7227596,
+      "vma": 134221660,
+      "original_bytes": 76,
+      "owner": "6E3970.s",
+      "code_sha256": "f89d4fbeb1f8750d3bb0b5d68e173e7f51b881cb23c308167e01d092da8ce409",
+      "source": "source/japan_0/func_08000F5C_6E48CC.c",
+      "source_sha256": "7a0a5e50d516365a007e5f065fe4de1d8cce3dbcef5d7074f14762d9fc9bf836",
+      "negative_source": "negative_source/japan_0/func_08000F5C_6E48CC.c",
+      "negative_sha256": "19139dd99e73bf16c93841f43cc5e0d65a4def7f06350905ccb46a1bc6b81d5e",
+      "compiler_quirk_outcome": "NO_NEW_COMPILER_FINDING",
+      "negative_control_change": "add_volatile_local_side_effect",
+      "research_method": "reconstructed_opcode_family",
+      "native_relocation_count": 4,
+      "negative_first_difference": 0,
+      "unit_gate": "NOT_RUN",
+      "complete_rom_gate": "NOT_RUN",
+      "canonical_promotion": "NOT_RUN",
+      "pr": 194,
+      "staged_path": "src/promo251/func_08000F5C_6E48CC.c",
+      "active_owner": "asm/japan_0/jp1686_219_001.s",
+      "section": "file_37"
+    },
+    {
+      "region": "japan_0",
+      "name": "func_080017D0_6E5140",
+      "rom_offset": 7229760,
+      "vma": 134223824,
+      "original_bytes": 88,
+      "owner": "6E3970.s",
+      "code_sha256": "101b586714152cfebee3a74d45b99f077c016f455c8c1dce6084d041b28e7852",
+      "source": "source/japan_0/func_080017D0_6E5140.c",
+      "source_sha256": "b8ef7f8053fcdf56eeb50932af964627c0d6a1522f5c91820b67134736dd888b",
+      "negative_source": "negative_source/japan_0/func_080017D0_6E5140.c",
+      "negative_sha256": "018d187c52c83cac0e6926d2ea86ffa24f631a5747155698bd27cecfa752e92c",
+      "compiler_quirk_outcome": "NO_NEW_COMPILER_FINDING",
+      "negative_control_change": "add_volatile_local_side_effect",
+      "research_method": "reconstructed_opcode_family",
+      "native_relocation_count": 6,
+      "negative_first_difference": 0,
+      "unit_gate": "NOT_RUN",
+      "complete_rom_gate": "NOT_RUN",
+      "canonical_promotion": "NOT_RUN",
+      "pr": 194,
+      "staged_path": "src/promo251/func_080017D0_6E5140.c",
+      "active_owner": "asm/japan_0/jp1686_219_007.s",
+      "section": "file_37"
+    },
+    {
+      "region": "japan_0",
+      "name": "func_0800193C_6E52AC",
+      "rom_offset": 7230124,
+      "vma": 134224188,
+      "original_bytes": 88,
+      "owner": "6E3970.s",
+      "code_sha256": "a04362045dfc00c330f12b041a66fb896000316862b56a3a5a9e304b2b2089c0",
+      "source": "source/japan_0/func_0800193C_6E52AC.c",
+      "source_sha256": "3c1f7d59973e0181451c3d2ee278cae4dd3f685274c7f509cf07da41fa4de4a0",
+      "negative_source": "negative_source/japan_0/func_0800193C_6E52AC.c",
+      "negative_sha256": "0bef2b7f1269abe5b8bc02280e6c468399443e215c75948ff77140d1926e4e5c",
+      "compiler_quirk_outcome": "NO_NEW_COMPILER_FINDING",
+      "negative_control_change": "add_volatile_local_side_effect",
+      "research_method": "reconstructed_opcode_family",
+      "native_relocation_count": 6,
+      "negative_first_difference": 0,
+      "unit_gate": "NOT_RUN",
+      "complete_rom_gate": "NOT_RUN",
+      "canonical_promotion": "NOT_RUN",
+      "pr": 194,
+      "staged_path": "src/promo251/func_0800193C_6E52AC.c",
+      "active_owner": "asm/japan_0/jp1686_219_009.s",
+      "section": "file_37"
+    },
+    {
+      "region": "japan_0",
+      "name": "func_08001B98_6EA2E8",
+      "rom_offset": 7250664,
+      "vma": 134224792,
+      "original_bytes": 88,
+      "owner": "6E8750.s",
+      "code_sha256": "622a56147e70b706db6435f72a291d5cfe869e23b42de6be1638f76564621558",
+      "source": "source/japan_0/func_08001B98_6EA2E8.c",
+      "source_sha256": "bbb575de15980a76e23ff27c81c5bc0b11f7710fcfbe33ab6992ae30e8c536de",
+      "negative_source": "negative_source/japan_0/func_08001B98_6EA2E8.c",
+      "negative_sha256": "4af61d835f9e33943de72b7c60e96961d8180b5802062ac73cd809631a054ce4",
+      "compiler_quirk_outcome": "NO_NEW_COMPILER_FINDING",
+      "negative_control_change": "add_volatile_local_side_effect",
+      "research_method": "reconstructed_opcode_family",
+      "native_relocation_count": 6,
+      "negative_first_difference": 0,
+      "unit_gate": "NOT_RUN",
+      "complete_rom_gate": "NOT_RUN",
+      "canonical_promotion": "NOT_RUN",
+      "pr": 194,
+      "staged_path": "src/promo251/func_08001B98_6EA2E8.c",
+      "active_owner": "asm/japan_0/jp1686_221_004.s",
+      "section": "file_38"
+    },
+    {
+      "region": "japan_0",
+      "name": "func_08002D10_6EB460",
+      "rom_offset": 7255136,
+      "vma": 134229264,
+      "original_bytes": 60,
+      "owner": "6E8750.s",
+      "code_sha256": "d716574a8be8f424e1b80d44f085037d87864005398db979c7ec49e5a0113406",
+      "source": "source/japan_0/func_08002D10_6EB460.c",
+      "source_sha256": "80ed331542da1851d0f675a1a115fedb8119224e0b2719744cd9f6554059bd6e",
+      "negative_source": "negative_source/japan_0/func_08002D10_6EB460.c",
+      "negative_sha256": "a55c43aacb64a37139375ecff9743b04a259cf0937e4b9666869f2dc593eaa91",
+      "compiler_quirk_outcome": "NO_NEW_COMPILER_FINDING",
+      "negative_control_change": "add_volatile_local_side_effect",
+      "research_method": "donor-pass.json",
+      "native_relocation_count": 6,
+      "negative_first_difference": 0,
+      "unit_gate": "NOT_RUN",
+      "complete_rom_gate": "NOT_RUN",
+      "canonical_promotion": "NOT_RUN",
+      "pr": 194,
+      "staged_path": "src/promo251/func_08002D10_6EB460.c",
+      "active_owner": "asm/japan_0/jp1686_222_008.s",
+      "section": "file_38"
+    },
+    {
+      "region": "japan_0",
+      "name": "func_08003750_708DF0",
+      "rom_offset": 7376368,
+      "vma": 134231888,
+      "original_bytes": 68,
+      "owner": "7056A0.s",
+      "code_sha256": "a99e318f761ff61df176be1841738c065daaced1b9f5ab8dad7da666d440c1a7",
+      "source": "source/japan_0/func_08003750_708DF0.c",
+      "source_sha256": "489244b6671c218f7e421c27028ca45108982a0331181f629575322a030e15b8",
+      "negative_source": "negative_source/japan_0/func_08003750_708DF0.c",
+      "negative_sha256": "2f021f700c44da7c45de7d233af70c40ea7f7d9f12763225d6aa33d0a4eb56b6",
+      "compiler_quirk_outcome": "NO_NEW_COMPILER_FINDING",
+      "negative_control_change": "add_volatile_local_side_effect",
+      "research_method": "reconstructed_opcode_family",
+      "native_relocation_count": 4,
+      "negative_first_difference": 0,
+      "unit_gate": "NOT_RUN",
+      "complete_rom_gate": "NOT_RUN",
+      "canonical_promotion": "NOT_RUN",
+      "pr": 194,
+      "staged_path": "src/promo251/func_08003750_708DF0.c",
+      "active_owner": "asm/japan_0/jp1686_237_014.s",
+      "section": "file_46"
+    },
+    {
+      "region": "japan_0",
+      "name": "func_08000EC4_715A54",
+      "rom_offset": 7428692,
+      "vma": 134221508,
+      "original_bytes": 72,
+      "owner": "714B90.s",
+      "code_sha256": "95e507bf702b763ed81725db7d9c8f508580122e082bb0ec26289772c596df52",
+      "source": "source/japan_0/func_08000EC4_715A54.c",
+      "source_sha256": "cb1c3dbcd442d6524d12f4412c7c5c5e607238db260218ffe411d113c484253d",
+      "negative_source": "negative_source/japan_0/func_08000EC4_715A54.c",
+      "negative_sha256": "ad457cbb9254aa7502fa91245f063f30bd3b8f9312b1bd4d3fc1d188c9232d1b",
+      "native_relocation_count": 6,
+      "native_relocations": [
+        [
+          4,
+          "R_MIPS_HI16",
+          "func_80222718_5DDCA8"
+        ],
+        [
+          16,
+          "R_MIPS_LO16",
+          "func_80222718_5DDCA8"
+        ],
+        [
+          36,
+          "R_MIPS_HI16",
+          "func_08000E00_715990"
+        ],
+        [
+          40,
+          "R_MIPS_HI16",
+          "func_80034E8C_35A8C"
+        ],
+        [
+          44,
+          "R_MIPS_LO16",
+          "func_80034E8C_35A8C"
+        ],
+        [
+          52,
+          "R_MIPS_LO16",
+          "func_08000E00_715990"
+        ]
+      ],
+      "negative_reason": "FUNC_EXTENT_MISMATCH",
+      "negative_first_difference": 0,
+      "method": "m2c ABI/symbolic-call correction",
+      "compiler_quirk_outcome": "NO_NEW_COMPILER_FINDING",
+      "negative_control_change": "volatile int native_negative_control = 1",
+      "status": "ISOLATED_NATIVE_RESEARCH_ONLY",
+      "pr": 200,
+      "staged_path": "src/promo251/func_08000EC4_715A54.c",
+      "active_owner": "asm/japan_0/jp1686_245_004.s",
+      "section": "file_54"
+    },
+    {
+      "region": "japan_0",
+      "name": "func_08001D64_719204",
+      "rom_offset": 7442948,
+      "vma": 134225252,
+      "original_bytes": 76,
+      "owner": "7174A0.s",
+      "code_sha256": "417aae554f14215be741581c12ea2a0aff04ffe5bc7117defcd6836d902d9633",
+      "source": "source/japan_0/func_08001D64_719204.c",
+      "source_sha256": "76523c3ac0f2b54108b2de99ed11bf7d5f6f8517c3a9a912c47e00dfa65f3f9d",
+      "negative_source": "negative_source/japan_0/func_08001D64_719204.c",
+      "negative_sha256": "21cee01a9e78c55e6c1c32228864ea6fb28950fad03e8d65070742e30aff3e0f",
+      "compiler_quirk_outcome": "NO_NEW_COMPILER_FINDING",
+      "negative_control_change": "add_volatile_local_side_effect",
+      "research_method": "reconstructed_opcode_family",
+      "native_relocation_count": 4,
+      "negative_first_difference": 0,
+      "unit_gate": "NOT_RUN",
+      "complete_rom_gate": "NOT_RUN",
+      "canonical_promotion": "NOT_RUN",
+      "pr": 194,
+      "staged_path": "src/promo251/func_08001D64_719204.c",
+      "active_owner": "asm/japan_0/jp1686_248_002.s",
+      "section": "file_56"
+    },
+    {
+      "region": "japan_0",
+      "name": "func_08001704_7389E4",
+      "rom_offset": 7571940,
+      "vma": 134223620,
+      "original_bytes": 48,
+      "owner": "7372E0.s",
+      "code_sha256": "a97207532ec5c2bb0aeaf5fdc516a2c408a24cf8df914a75fd67c6d47814183f",
+      "source": "source/japan_0/func_08001704_7389E4.c",
+      "source_sha256": "99573254bf558c53faa67d0d8da9b9158997d418c718a23465ec9abb186ac817",
+      "negative_source": "negative_source/japan_0/func_08001704_7389E4.c",
+      "negative_sha256": "16bca7c07fa4bccd6819cb6be60ede77fd2d3b6426bd87ed00d72a0c61b1ccba",
+      "native_relocation_count": 4,
+      "native_relocations": [
+        [
+          4,
+          "R_MIPS_HI16",
+          "func_80034A78_35678"
+        ],
+        [
+          12,
+          "R_MIPS_LO16",
+          "func_80034A78_35678"
+        ],
+        [
+          16,
+          "R_MIPS_HI16",
+          "func_0800165C_73893C"
+        ],
+        [
+          20,
+          "R_MIPS_LO16",
+          "func_0800165C_73893C"
+        ]
+      ],
+      "negative_reason": "FUNC_EXTENT_MISMATCH",
+      "negative_first_difference": 0,
+      "method": "m2c ABI/symbolic-call correction",
+      "compiler_quirk_outcome": "NO_NEW_COMPILER_FINDING",
+      "negative_control_change": "volatile int native_negative_control = 1",
+      "status": "ISOLATED_NATIVE_RESEARCH_ONLY",
+      "pr": 200,
+      "staged_path": "src/promo251/func_08001704_7389E4.c",
+      "active_owner": "asm/japan_0/jp1686_258_003.s",
+      "section": "file_73"
+    },
+    {
+      "region": "japan_0",
+      "name": "func_80018CF0_198F0",
+      "rom_offset": 104688,
+      "vma": 2147585264,
+      "original_bytes": 108,
+      "owner": "nonmatchings/main_170E0/func_80018CF0_198F0.s",
+      "code_sha256": "51ed67ec3d40990b8ab91d0f765fcd6c47618f0798f3c26cd13175050e445a73",
+      "source": "source/japan_0/func_80018CF0_198F0.c",
+      "source_sha256": "6163db86e63b9721090d75c16960082baee42d1300f6c21872e4760482876e56",
+      "negative_source": "negative_source/japan_0/func_80018CF0_198F0.c",
+      "negative_sha256": "c61ababe9748a8d024610d34a042ea50e85ab7659c4c9a6003cea6f96ec69151",
+      "native_relocation_count": 1,
+      "native_relocations": [
+        [
+          56,
+          "R_MIPS_26",
+          "func_80018D5C_1995C"
+        ]
+      ],
+      "negative_reason": "FUNC_EXTENT_MISMATCH",
+      "negative_first_difference": 0,
+      "method": "donor:decomp/research/branch_archive/graphics_pose_dracam_20261119/decomp/research/graphics_pose_20261117/actor_graphics_traverse.c",
+      "compiler_quirk_outcome": "NO_NEW_COMPILER_FINDING",
+      "negative_control_change": "volatile int native_negative_control = 1",
+      "status": "ISOLATED_NATIVE_RESEARCH_ONLY",
+      "pr": 200,
+      "staged_path": "src/promo251/func_80018CF0_198F0.c",
+      "active_owner": "asm/japan_0/jp1686_275_000.s",
+      "section": "main"
+    },
+    {
+      "region": "japan_0",
+      "name": "func_8001B4A8_1C0A8",
+      "rom_offset": 114856,
+      "vma": 2147595432,
+      "original_bytes": 56,
+      "owner": "nonmatchings/main_170E0/func_8001B4A8_1C0A8.s",
+      "code_sha256": "799a30fdf87fdb9ec9415edc93b423ce39ae601e58368f04e2a6a3faa4e49ca5",
+      "source": "source/japan_0/func_8001B4A8_1C0A8.c",
+      "source_sha256": "49227e0510e5c4255177b5ed9a5e7fa176622f23c98240026cf1a90411ad20a5",
+      "negative_source": "negative_source/japan_0/func_8001B4A8_1C0A8.c",
+      "negative_sha256": "10dd6a73cf5d7693b2798df5acf412adcafd6cd10b77b61fbd43bbe90a392a3c",
+      "native_relocation_count": 1,
+      "native_relocations": [
+        [
+          32,
+          "R_MIPS_26",
+          "func_8001B4E0_1C0E0"
+        ]
+      ],
+      "negative_reason": "FUNC_EXTENT_MISMATCH",
+      "negative_first_difference": 0,
+      "method": "donor:decomp/research/graphics_adjacent_20261117/gfx_wrapper.c",
+      "compiler_quirk_outcome": "NO_NEW_COMPILER_FINDING",
+      "negative_control_change": "volatile int native_negative_control = 1",
+      "status": "ISOLATED_NATIVE_RESEARCH_ONLY",
+      "pr": 200,
+      "staged_path": "src/promo251/func_8001B4A8_1C0A8.c",
+      "active_owner": "asm/japan_0/jp1686_275_005.s",
+      "section": "main"
+    },
+    {
+      "region": "japan_0",
+      "name": "func_80006DEC_79EC",
+      "rom_offset": 31212,
+      "vma": 2147511788,
+      "original_bytes": 80,
+      "owner": "nonmatchings/main_78A0/func_80006DEC_79EC.s",
+      "code_sha256": "44868de5a581d66cbb4eb2faba6814995387f5e9852e5cdcb120a867a6ca1504",
+      "source": "source/japan_0/func_80006DEC_79EC.c",
+      "source_sha256": "a8099c0366f5eab85f552dfbc3cbe9d6700302a3afecbfd872524e6f016c7067",
+      "negative_source": "negative_source/japan_0/func_80006DEC_79EC.c",
+      "negative_sha256": "d727504037cd8448036b8d7ce582c8931c73ebe721f5574d900dbc74073f97e7",
+      "compiler_quirk_outcome": "NO_NEW_COMPILER_FINDING",
+      "negative_control_change": "add_volatile_local_side_effect",
+      "research_method": "donor-pass.json",
+      "native_relocation_count": 2,
+      "negative_first_difference": 0,
+      "unit_gate": "NOT_RUN",
+      "complete_rom_gate": "NOT_RUN",
+      "canonical_promotion": "NOT_RUN",
+      "pr": 194,
+      "staged_path": "src/promo251/func_80006DEC_79EC.c",
+      "active_owner": "asm/japan_0/jp1686_287_000.s",
+      "section": "main"
+    },
+    {
+      "region": "japan_0",
+      "name": "func_80024548_25148",
+      "rom_offset": 151880,
+      "vma": 2147632456,
+      "original_bytes": 52,
+      "owner": "nonmatchings/main_24A20/func_80024548_25148.s",
+      "code_sha256": "384e78ac11d03987d18fb1580549973caa53fbfbc2475dc4b65d31558194d530",
+      "source": "source/japan_0/func_80024548_25148.c",
+      "source_sha256": "b957c815e5cc5506f808d0e19d7a0c7025cc176d0dfedc5c319e6ccba99dcbf1",
+      "negative_source": "negative_source/japan_0/func_80024548_25148.c",
+      "negative_sha256": "f986f2b7ddaa297ccd0e72682b8e22653adc09161a9c2c522f129a5949e26839",
+      "native_relocation_count": 3,
+      "native_relocations": [
+        [
+          16,
+          "R_MIPS_HI16",
+          "func_80024508_25108"
+        ],
+        [
+          28,
+          "R_MIPS_26",
+          "func_80034E9C_35A9C"
+        ],
+        [
+          32,
+          "R_MIPS_LO16",
+          "func_80024508_25108"
+        ]
+      ],
+      "negative_reason": "FUNC_EXTENT_MISMATCH",
+      "negative_first_difference": 0,
+      "method": "m2c ABI/symbolic-call correction",
+      "compiler_quirk_outcome": "NO_NEW_COMPILER_FINDING",
+      "negative_control_change": "volatile int native_negative_control = 1",
+      "status": "ISOLATED_NATIVE_RESEARCH_ONLY",
+      "pr": 200,
+      "staged_path": "src/promo251/func_80024548_25148.c",
+      "active_owner": "asm/japan_0/jp55_main_24A20_tail.s",
+      "section": "main"
+    },
+    {
+      "region": "japan_0",
+      "name": "func_801F30AC_5AF07C",
+      "rom_offset": 5959804,
+      "vma": 2149527724,
+      "original_bytes": 56,
+      "owner": "5A98B0.s",
+      "code_sha256": "4b67be06e0e2f38c11af21087bfaa94df63fbfc763ff9b5385f90aa69a31a6ee",
+      "source": "source/japan_0/func_801F30AC_5AF07C.c",
+      "source_sha256": "f259727add447df7aad2cef3049a6406dd15d2eb17d9f376b2dde054f16f6e73",
+      "negative_source": "negative_source/japan_0/func_801F30AC_5AF07C.c",
+      "negative_sha256": "b65862bc34b471899a71eb3fa4300085a3e80d8d0cf3236438fc3cb1ac2d7d5b",
+      "compiler_quirk_outcome": "NO_NEW_COMPILER_FINDING",
+      "negative_control_change": "add_volatile_local_side_effect",
+      "research_method": "reconstructed_opcode_family",
+      "native_relocation_count": 1,
+      "negative_first_difference": 0,
+      "unit_gate": "NOT_RUN",
+      "complete_rom_gate": "NOT_RUN",
+      "canonical_promotion": "NOT_RUN",
+      "pr": 194,
+      "staged_path": "src/promo251/func_801F30AC_5AF07C.c",
+      "active_owner": "asm/japan_0/jpcross34_jp1686_144_007_00.s",
+      "section": "file_11"
+    },
+    {
+      "region": "japan_0",
+      "name": "_freePVoice",
+      "rom_offset": 297664,
+      "vma": 2147778240,
+      "original_bytes": 56,
+      "owner": "nonmatchings/libultra/audio/synthesizer/_freePVoice.s",
+      "code_sha256": "8c1a68eeae374b1f740107627a7097311f5d18f63787aee03b5d96f708dc5a5e",
+      "source": "source/japan_0/_freePVoice.c",
+      "source_sha256": "15806fc58ea562c23eacfc56ea5143dbb1d36c629fc58bae89cb31bfaed79e84",
+      "negative_source": "negative_source/japan_0/_freePVoice.c",
+      "negative_sha256": "59868f401389590906a53fcefab41f50695a8a5b08e52693d48c9fdaec3bdba3",
+      "compiler_quirk_outcome": "NO_NEW_COMPILER_FINDING",
+      "negative_control_change": "add_volatile_local_side_effect",
+      "research_method": "donor-pass.json",
+      "native_relocation_count": 2,
+      "negative_first_difference": 0,
+      "unit_gate": "NOT_RUN",
+      "complete_rom_gate": "NOT_RUN",
+      "canonical_promotion": "NOT_RUN",
+      "pr": 194,
+      "staged_path": "src/promo251/_freePVoice.c",
+      "active_owner": "asm/japan_0/jpcross34_jp1686_269_001_00.s",
+      "section": "main"
+    },
+    {
+      "region": "japan_0",
+      "name": "memcpy",
+      "rom_offset": 308896,
+      "vma": 2147789472,
+      "original_bytes": 44,
+      "owner": "nonmatchings/libultra/libc/string/memcpy.s",
+      "code_sha256": "770c81b6c68fa85d2b98688a09dd33a41366dd56288fda754c24eb3247e8763d",
+      "source": "source/japan_0/memcpy.c",
+      "source_sha256": "2e3f0f450eb6cf00a171cecd4ca02c5224d9f6cd627621fc02e595a0e5894814",
+      "negative_source": "negative_source/japan_0/memcpy.c",
+      "negative_sha256": "685bdabd4e9c917a9bae3f6f8cd9caaabe723c1c6d7afcc8129d115d7d494bbf",
+      "compiler_quirk_outcome": "NO_NEW_COMPILER_FINDING",
+      "negative_control_change": "add_volatile_local_side_effect",
+      "research_method": "donor-pass.json",
+      "native_relocation_count": 0,
+      "negative_first_difference": 0,
+      "unit_gate": "NOT_RUN",
+      "complete_rom_gate": "NOT_RUN",
+      "canonical_promotion": "NOT_RUN",
+      "pr": 194,
+      "staged_path": "src/promo251/memcpy.c",
+      "active_owner": "asm/japan_0/jpcross34_string_00.s",
+      "section": "main"
+    },
+    {
+      "region": "japan_0",
+      "name": "func_801E79B4_5A3984",
+      "rom_offset": 5912964,
+      "vma": 2149480884,
+      "original_bytes": 148,
+      "owner": "5A27C0.s",
+      "code_sha256": "48a55a1016cfe89a75159f2b38e52a9934366acdf87dea8e503a0bf6d40e3248",
+      "source": "source/japan_0/func_801E79B4_5A3984.c",
+      "source_sha256": "0150b9803c89b678b35282e424e8c93372bbaa29f33ff2c7fb03d7d6d4361a45",
+      "negative_source": "negative_source/japan_0/func_801E79B4_5A3984.c",
+      "negative_sha256": "bd89cd22af442f6a7e40fb9ea20224c9db5dca4bd4df96cd1243c6a89a601276",
+      "native_relocation_count": 4,
+      "native_relocations": [
+        [
+          36,
+          "R_MIPS_26",
+          "func_801ECF10_5A8EE0"
+        ],
+        [
+          52,
+          "R_MIPS_HI16",
+          "D_802101B8_5CC188"
+        ],
+        [
+          56,
+          "R_MIPS_LO16",
+          "D_802101B8_5CC188"
+        ],
+        [
+          124,
+          "R_MIPS_26",
+          "func_80038838_39438"
+        ]
+      ],
+      "negative_reason": "FUNC_EXTENT_MISMATCH",
+      "negative_first_difference": 0,
+      "method": "donor:decomp/research/pending_isolated233_20261120/sources/iso233_239.c",
+      "compiler_quirk_outcome": "NO_NEW_COMPILER_FINDING",
+      "negative_control_change": "volatile int native_negative_control = 1",
+      "status": "ISOLATED_NATIVE_RESEARCH_ONLY",
+      "pr": 200,
+      "staged_path": "src/promo251/func_801E79B4_5A3984.c",
+      "active_owner": "asm/japan_0/jpdonor10_jp1686_140_009_00.s",
+      "section": "file_11"
+    },
+    {
+      "region": "japan_0",
+      "name": "func_802198E4_5D4E74",
+      "rom_offset": 6114932,
+      "vma": 2149685476,
+      "original_bytes": 60,
+      "owner": "5D16C0.s",
+      "code_sha256": "809b79a8cc116973a65649c4a22aaf86f4ae7e3411680d8cc2aaf7f666d0a607",
+      "source": "source/japan_0/func_802198E4_5D4E74.c",
+      "source_sha256": "a1cdbc18ed0a0cdd66954aaa624749263825fd4ca023f46b224928160ea55d8c",
+      "negative_source": "negative_source/japan_0/func_802198E4_5D4E74.c",
+      "negative_sha256": "d7b26b8d36b2e93fd44a7db63bafbf2d4c35c964ce833a621fd1819032d175bb",
+      "native_relocation_count": 4,
+      "native_relocations": [
+        [
+          4,
+          "R_MIPS_HI16",
+          "func_8021CDBC_5D834C"
+        ],
+        [
+          16,
+          "R_MIPS_LO16",
+          "func_8021CDBC_5D834C"
+        ],
+        [
+          28,
+          "R_MIPS_HI16",
+          "func_80034B44_35744"
+        ],
+        [
+          32,
+          "R_MIPS_LO16",
+          "func_80034B44_35744"
+        ]
+      ],
+      "negative_reason": "FUNC_EXTENT_MISMATCH",
+      "negative_first_difference": 0,
+      "method": "m2c ABI/symbolic-call correction",
+      "compiler_quirk_outcome": "NO_NEW_COMPILER_FINDING",
+      "negative_control_change": "volatile int native_negative_control = 1",
+      "status": "ISOLATED_NATIVE_RESEARCH_ONLY",
+      "pr": 200,
+      "staged_path": "src/promo251/func_802198E4_5D4E74.c",
+      "active_owner": "asm/japan_0/jpdonor10_jp1686_154_000_tail.s",
+      "section": "file_12"
+    },
+    {
+      "region": "japan_0",
+      "name": "func_802279A4_5E2F34",
+      "rom_offset": 6172468,
+      "vma": 2149743012,
+      "original_bytes": 68,
+      "owner": "5E1270.s",
+      "code_sha256": "6bf875ede4394ef6ca4fe90c560d7d5c2b39a141c89816b095889da5a9a84802",
+      "source": "source/japan_0/func_802279A4_5E2F34.c",
+      "source_sha256": "8a74b65142bce9ea5f806d1efa68f1e739a61354edd3f266c544e21c8b4596c3",
+      "negative_source": "negative_source/japan_0/func_802279A4_5E2F34.c",
+      "negative_sha256": "cbdb014ac06e0e5b52e087a89d29cf2aa944c86238eabd1bc7a055ab91734b12",
+      "native_relocation_count": 2,
+      "native_relocations": [
+        [
+          28,
+          "R_MIPS_26",
+          "func_8021E548_5D9AD8"
+        ],
+        [
+          44,
+          "R_MIPS_26",
+          "func_80034E8C_35A8C"
+        ]
+      ],
+      "negative_reason": "FUNC_EXTENT_MISMATCH",
+      "negative_first_difference": 0,
+      "method": "m2c ABI/symbolic-call correction",
+      "compiler_quirk_outcome": "NO_NEW_COMPILER_FINDING",
+      "negative_control_change": "volatile int native_negative_control = 1",
+      "status": "ISOLATED_NATIVE_RESEARCH_ONLY",
+      "pr": 200,
+      "staged_path": "src/promo251/func_802279A4_5E2F34.c",
+      "active_owner": "asm/japan_0/jpeq36_001_002.s",
+      "section": "file_12"
+    },
+    {
+      "region": "japan_0",
+      "name": "func_80208420_632EA0",
+      "rom_offset": 6500000,
+      "vma": 2149614624,
+      "original_bytes": 68,
+      "owner": "6303B0.s",
+      "code_sha256": "1e8f6a68b035b4971557e88e472c6f41a2342420776a1a2dbf26279aae193b9f",
+      "source": "source/japan_0/func_80208420_632EA0.c",
+      "source_sha256": "020ac6592010b787450127781d23debc27ae7863266abb1fdf1fdccd9de668ed",
+      "negative_source": "negative_source/japan_0/func_80208420_632EA0.c",
+      "negative_sha256": "854ac03fb31229a9e2e1c7ec453ba01558b24d33048dfc5868c51429eb2d971f",
+      "compiler_quirk_outcome": "NO_NEW_COMPILER_FINDING",
+      "negative_control_change": "add_volatile_local_side_effect",
+      "research_method": "reconstructed_opcode_family",
+      "native_relocation_count": 3,
+      "negative_first_difference": 0,
+      "unit_gate": "NOT_RUN",
+      "complete_rom_gate": "NOT_RUN",
+      "canonical_promotion": "NOT_RUN",
+      "pr": 194,
+      "staged_path": "src/promo251/func_80208420_632EA0.c",
+      "active_owner": "asm/japan_0/jpeq36_008_002.s",
+      "section": "file_13"
+    },
+    {
+      "region": "japan_0",
+      "name": "func_08000EAC_72E86C",
+      "rom_offset": 7530604,
+      "vma": 134221484,
+      "original_bytes": 60,
+      "owner": "72D9C0.s",
+      "code_sha256": "6040ac669fdfb15e4969fe739f9d1870c19fa823bdc93c741f53a718c3c83294",
+      "source": "source/japan_0/func_08000EAC_72E86C.c",
+      "source_sha256": "99fc13ec13d1712aab45b8b80ec93d61533cde09040f86f6d81df2fb110ad1a3",
+      "negative_source": "negative_source/japan_0/func_08000EAC_72E86C.c",
+      "negative_sha256": "5c13ad909e9dffd1cc15a34f1e44046e40b9571a01fb41955f69224fa61811ec",
+      "native_relocation_count": 2,
+      "native_relocations": [
+        [
+          12,
+          "R_MIPS_HI16",
+          "func_8022982C_5E4DBC"
+        ],
+        [
+          16,
+          "R_MIPS_LO16",
+          "func_8022982C_5E4DBC"
+        ]
+      ],
+      "negative_reason": "FUNC_EXTENT_MISMATCH",
+      "negative_first_difference": 0,
+      "method": "m2c ABI/symbolic-call correction",
+      "compiler_quirk_outcome": "NO_NEW_COMPILER_FINDING",
+      "negative_control_change": "volatile int native_negative_control = 1",
+      "status": "ISOLATED_NATIVE_RESEARCH_ONLY",
+      "pr": 200,
+      "staged_path": "src/promo251/func_08000EAC_72E86C.c",
+      "active_owner": "asm/japan_0/jpeq37_016_000.s",
+      "section": "file_67"
+    },
+    {
+      "region": "japan_0",
+      "name": "func_8021B4BC_67A32C",
+      "rom_offset": 6791980,
+      "vma": 2149692604,
+      "original_bytes": 52,
+      "owner": "67A240.s",
+      "code_sha256": "245c83f2119a3cdbe6cf62789cbf483a9de236299074228d2c3539a9dd0d6696",
+      "source": "source/japan_0/func_8021B4BC_67A32C.c",
+      "source_sha256": "e7b18d68aeaf88e43086e9cae69c052566e87274af7070ad4a4e98767c3355f1",
+      "negative_source": "negative_source/japan_0/func_8021B4BC_67A32C.c",
+      "negative_sha256": "31a4941ac9f42f311c843afc4712082ddff936adf1eaaf57132f7a8939277e21",
+      "native_relocation_count": 4,
+      "native_relocations": [
+        [
+          8,
+          "R_MIPS_HI16",
+          "D_8021C0F8_67AF68"
+        ],
+        [
+          12,
+          "R_MIPS_HI16",
+          "D_8021C100_67AF70"
+        ],
+        [
+          16,
+          "R_MIPS_LO16",
+          "D_8021C100_67AF70"
+        ],
+        [
+          20,
+          "R_MIPS_LO16",
+          "D_8021C0F8_67AF68"
+        ]
+      ],
+      "negative_reason": "FUNC_EXTENT_MISMATCH",
+      "negative_first_difference": 0,
+      "method": "donor:decomp/research/pending_isolated233_20261120/sources/iso233_200.c",
+      "compiler_quirk_outcome": "NO_NEW_COMPILER_FINDING",
+      "negative_control_change": "volatile int native_negative_control = 1",
+      "status": "ISOLATED_NATIVE_RESEARCH_ONLY",
+      "pr": 200,
+      "staged_path": "src/promo251/func_8021B4BC_67A32C.c",
+      "active_owner": "asm/japan_0/jpexpand7_67A240_tail.s",
+      "section": "file_17"
+    },
+    {
+      "region": "japan_0",
+      "name": "func_8021B4F0_67A360",
+      "rom_offset": 6792032,
+      "vma": 2149692656,
+      "original_bytes": 68,
+      "owner": "67A240.s",
+      "code_sha256": "03df8daa08479fe84db8125d5658850214d64e55732051688ab01358b44cbe14",
+      "source": "source/japan_0/func_8021B4F0_67A360.c",
+      "source_sha256": "d6ae50284a91ec8f0c7c9095ba45657bc9d4cc8eef1c3b2a78ec536214d432e8",
+      "negative_source": "negative_source/japan_0/func_8021B4F0_67A360.c",
+      "negative_sha256": "0c305ce56184d51aae8d3da47fe4a9aa775a7d4703e7e8ecefbddc71ede3179d",
+      "native_relocation_count": 4,
+      "native_relocations": [
+        [
+          0,
+          "R_MIPS_HI16",
+          "D_8021C0F8_67AF68"
+        ],
+        [
+          4,
+          "R_MIPS_HI16",
+          "D_8021C100_67AF70"
+        ],
+        [
+          8,
+          "R_MIPS_LO16",
+          "D_8021C100_67AF70"
+        ],
+        [
+          12,
+          "R_MIPS_LO16",
+          "D_8021C0F8_67AF68"
+        ]
+      ],
+      "negative_reason": "FUNC_EXTENT_MISMATCH",
+      "negative_first_difference": 0,
+      "method": "donor:decomp/research/pending_isolated233_20261120/sources/iso233_201.c",
+      "compiler_quirk_outcome": "NO_NEW_COMPILER_FINDING",
+      "negative_control_change": "volatile int native_negative_control = 1",
+      "status": "ISOLATED_NATIVE_RESEARCH_ONLY",
+      "pr": 200,
+      "staged_path": "src/promo251/func_8021B4F0_67A360.c",
+      "active_owner": "asm/japan_0/jpexpand7_67A240_tail.s",
+      "section": "file_17"
+    },
+    {
+      "region": "japan_0",
+      "name": "func_801E848C_5A445C",
+      "rom_offset": 5915740,
+      "vma": 2149483660,
+      "original_bytes": 92,
+      "owner": "5A27C0.s",
+      "code_sha256": "c99a8a1d5a2855c53b04dbef25275fa59291544477770f7b06fc7ac1f3e882f5",
+      "source": "source/japan_0/func_801E848C_5A445C.c",
+      "source_sha256": "279bbff1e33260b7dacc2f7287083ab255f4a46c1c5af14149d4642a9a4b077b",
+      "negative_source": "negative_source/japan_0/func_801E848C_5A445C.c",
+      "negative_sha256": "31a5f8eeafac2e03c22666f663b03ebfcef8ca42be48fd58a46f08c6d51042d8",
+      "native_relocation_count": 5,
+      "native_relocations": [
+        [
+          0,
+          "R_MIPS_HI16",
+          "D_802101CC_5CC19C"
+        ],
+        [
+          4,
+          "R_MIPS_LO16",
+          "D_802101CC_5CC19C"
+        ],
+        [
+          20,
+          "R_MIPS_HI16",
+          "D_802101D0_5CC1A0"
+        ],
+        [
+          24,
+          "R_MIPS_LO16",
+          "D_802101D0_5CC1A0"
+        ],
+        [
+          68,
+          "R_MIPS_26",
+          "func_801E84E8_5A44B8"
+        ]
+      ],
+      "negative_reason": "FUNC_EXTENT_MISMATCH",
+      "negative_first_difference": 0,
+      "method": "donor:decomp/research/usa_mini10_20261123/sources/mini_3278.c",
+      "compiler_quirk_outcome": "NO_NEW_COMPILER_FINDING",
+      "negative_control_change": "volatile int native_negative_control = 1",
+      "status": "ISOLATED_NATIVE_RESEARCH_ONLY",
+      "pr": 200,
+      "staged_path": "src/promo251/func_801E848C_5A445C.c",
+      "active_owner": "asm/japan_0/jpexpand7_jp1686_140_041_tail.s",
+      "section": "file_11"
+    },
+    {
+      "region": "japan_0",
+      "name": "func_80224644_68DD34",
+      "rom_offset": 6872372,
+      "vma": 2149729860,
+      "original_bytes": 52,
+      "owner": "686770.s",
+      "code_sha256": "2fc4947e836f491edbcf5d88186334f00c25d22908ded8876c26fd20743c771d",
+      "source": "source/japan_0/func_80224644_68DD34.c",
+      "source_sha256": "53b095b4b5cb38844de311e28b5f276327a9a3e2db72a764e1f1ff5153f7d024",
+      "negative_source": "negative_source/japan_0/func_80224644_68DD34.c",
+      "negative_sha256": "46045534461942d524e7ce081cd05fd678522232255623f2441f9e68099e392e",
+      "native_relocation_count": 3,
+      "native_relocations": [
+        [
+          12,
+          "R_MIPS_HI16",
+          "D_8022F190_698880"
+        ],
+        [
+          20,
+          "R_MIPS_LO16",
+          "D_8022F190_698880"
+        ],
+        [
+          28,
+          "R_MIPS_26",
+          "func_80013654_14254"
+        ]
+      ],
+      "negative_reason": "FUNC_EXTENT_MISMATCH",
+      "negative_first_difference": 0,
+      "method": "pending_donor:func_8021F864_689244",
+      "compiler_quirk_outcome": "NO_NEW_COMPILER_FINDING",
+      "negative_control_change": "volatile int native_negative_control = 1",
+      "status": "ISOLATED_NATIVE_RESEARCH_ONLY",
+      "pr": 200,
+      "staged_path": "src/promo251/func_80224644_68DD34.c",
+      "active_owner": "asm/japan_0/jpport_686770_004.s",
+      "section": "file_18"
+    },
+    {
+      "region": "japan_0",
+      "name": "func_08002F00_73BA40",
+      "rom_offset": 7584320,
+      "vma": 134229760,
+      "original_bytes": 44,
+      "owner": "738B40.s",
+      "code_sha256": "5cc248cb16acd8866dfd2e927d9981bea2f3648d82fd51e20b58d95fe6ddea3d",
+      "source": "source/japan_0/func_08002F00_73BA40.c",
+      "source_sha256": "898c6c85c798e8844b22e317230f96d184531e31217cf4a91f5c3bb7ede2c818",
+      "negative_source": "negative_source/japan_0/func_08002F00_73BA40.c",
+      "negative_sha256": "61e6b9e3482d73238ac5864613273913c19ef9ff90ab0aa99cd4e35a3b57ca25",
+      "compiler_quirk_outcome": "NO_NEW_COMPILER_FINDING",
+      "negative_control_change": "add_volatile_local_side_effect",
+      "research_method": "donor-pass.json",
+      "native_relocation_count": 2,
+      "negative_first_difference": 0,
+      "unit_gate": "NOT_RUN",
+      "complete_rom_gate": "NOT_RUN",
+      "canonical_promotion": "NOT_RUN",
+      "pr": 194,
+      "staged_path": "src/promo251/func_08002F00_73BA40.c",
+      "active_owner": "asm/japan_0/jpport_738B40_002.s",
+      "section": "file_74"
+    },
+    {
+      "region": "japan_0",
+      "name": "func_080003EC_6D3EEC",
+      "rom_offset": 7159532,
+      "vma": 134218732,
+      "original_bytes": 72,
+      "owner": "6D3B00.s",
+      "code_sha256": "b35158566a8748e17f5f23cb439d57a8e052d211d115869013ad6a1e23f15685",
+      "source": "source/japan_0/func_080003EC_6D3EEC.c",
+      "source_sha256": "ef69eb33c53a648651fe2ed87428dd812c1e38813fc509a35416e8ef4e2ef983",
+      "negative_source": "negative_source/japan_0/func_080003EC_6D3EEC.c",
+      "negative_sha256": "3be6b50f144a973d98831110526d748dfc2c0b1c6bfbf7633f5cfcd570658aa0",
+      "compiler_quirk_outcome": "NO_NEW_COMPILER_FINDING",
+      "negative_control_change": "add_volatile_local_side_effect",
+      "research_method": "donor-pass.json",
+      "native_relocation_count": 6,
+      "negative_first_difference": 0,
+      "unit_gate": "NOT_RUN",
+      "complete_rom_gate": "NOT_RUN",
+      "canonical_promotion": "NOT_RUN",
+      "pr": 194,
+      "staged_path": "src/promo251/func_080003EC_6D3EEC.c",
+      "active_owner": "asm/japan_0/jpshort28_jp1686_032_001_00.s",
+      "section": "file_32"
+    },
+    {
+      "region": "japan_0",
+      "name": "func_08000BB8_6D46B8",
+      "rom_offset": 7161528,
+      "vma": 134220728,
+      "original_bytes": 72,
+      "owner": "6D3B00.s",
+      "code_sha256": "621b1f2c3ccb41985b5255c5d54df0ba6c4e5fe01b6bdbdb4ce2762ef4590e51",
+      "source": "source/japan_0/func_08000BB8_6D46B8.c",
+      "source_sha256": "10bbce2ad77459d76e8c3db002290ba5fd089e126e54e7988c59e567e66f8757",
+      "negative_source": "negative_source/japan_0/func_08000BB8_6D46B8.c",
+      "negative_sha256": "dfbda55137c4fbae8ef5137f43ad75379a48a02e06eb08bff8cdd00b0a3aa23c",
+      "native_relocation_count": 4,
+      "native_relocations": [
+        [
+          4,
+          "R_MIPS_HI16",
+          "func_8021E548_5D9AD8"
+        ],
+        [
+          16,
+          "R_MIPS_LO16",
+          "func_8021E548_5D9AD8"
+        ],
+        [
+          32,
+          "R_MIPS_HI16",
+          "func_8021FE0C_5DB39C"
+        ],
+        [
+          36,
+          "R_MIPS_LO16",
+          "func_8021FE0C_5DB39C"
+        ]
+      ],
+      "negative_reason": "FUNC_EXTENT_MISMATCH",
+      "negative_first_difference": 0,
+      "method": "m2c ABI/symbolic-call correction",
+      "compiler_quirk_outcome": "NO_NEW_COMPILER_FINDING",
+      "negative_control_change": "volatile int native_negative_control = 1",
+      "status": "ISOLATED_NATIVE_RESEARCH_ONLY",
+      "pr": 200,
+      "staged_path": "src/promo251/func_08000BB8_6D46B8.c",
+      "active_owner": "asm/japan_0/jpshort28_jp1686_032_004_tail.s",
+      "section": "file_32"
+    },
+    {
+      "region": "japan_0",
+      "name": "func_08000C00_6D4700",
+      "rom_offset": 7161600,
+      "vma": 134220800,
+      "original_bytes": 60,
+      "owner": "6D3B00.s",
+      "code_sha256": "6c083a57aaf2eec5936ae6f46ec19213df87bad7720f21fefe21b4b1056ca772",
+      "source": "source/japan_0/func_08000C00_6D4700.c",
+      "source_sha256": "b4ee930c1702d990a6d03444e449239d2e32a6fa652ffc29b5db0d4e56732bdc",
+      "negative_source": "negative_source/japan_0/func_08000C00_6D4700.c",
+      "negative_sha256": "5a6ddca3b25a99568a9b057d567b4f475ba8b8e1b0ff69429533199360a97a1a",
+      "compiler_quirk_outcome": "NO_NEW_COMPILER_FINDING",
+      "negative_control_change": "add_volatile_local_side_effect",
+      "research_method": "donor-pass.json",
+      "native_relocation_count": 6,
+      "negative_first_difference": 0,
+      "unit_gate": "NOT_RUN",
+      "complete_rom_gate": "NOT_RUN",
+      "canonical_promotion": "NOT_RUN",
+      "pr": 194,
+      "staged_path": "src/promo251/func_08000C00_6D4700.c",
+      "active_owner": "asm/japan_0/jpshort28_jp1686_032_004_tail.s",
+      "section": "file_32"
+    },
+    {
+      "region": "japan_0",
+      "name": "alSaveNew",
+      "rom_offset": 324672,
+      "vma": 2147805248,
+      "original_bytes": 68,
+      "owner": "nonmatchings/libultra/audio/drvrNew/alSaveNew.s",
+      "code_sha256": "0fdef9cc4c3f1bf1a0efdaef161e360cee330ed8221c2ca00fa48092080b12ac",
+      "source": "source/japan_0/alSaveNew.c",
+      "source_sha256": "817742d99f57f6e10b21e4442b208d6ee521810eb4bb3daea98be1e66d7b6fdb",
+      "negative_source": "negative_source/japan_0/alSaveNew.c",
+      "negative_sha256": "31d1eb033e31492109f31c61757bb23b874eb890e3add51af201a217045b92a8",
+      "compiler_quirk_outcome": "NO_NEW_COMPILER_FINDING",
+      "negative_control_change": "add_volatile_local_side_effect",
+      "research_method": "donor-pass.json",
+      "native_relocation_count": 5,
+      "negative_first_difference": 0,
+      "unit_gate": "NOT_RUN",
+      "complete_rom_gate": "NOT_RUN",
+      "canonical_promotion": "NOT_RUN",
+      "pr": 194,
+      "staged_path": "src/promo251/alSaveNew.c",
+      "active_owner": "asm/japan_0/libultra/audio/drvrNew.s",
+      "section": "main"
+    },
+    {
+      "region": "japan_0",
+      "name": "alSynAddPlayer",
+      "rom_offset": 299984,
+      "vma": 2147780560,
+      "original_bytes": 80,
+      "owner": "nonmatchings/libultra/audio/synaddplayer/alSynAddPlayer.s",
+      "code_sha256": "bccb1c3aaff8f394b2a0c850f67b79e5f712cd320e3c67406c3efa24cda6a13e",
+      "source": "source/japan_0/alSynAddPlayer.c",
+      "source_sha256": "0822ea1ade5c956d5f7eabd4ad13cc67f171723720d94e02c113c578138fd5f9",
+      "negative_source": "negative_source/japan_0/alSynAddPlayer.c",
+      "negative_sha256": "3778d79cd431b75e4101532ad3081e98725b06ede37c43dcb50ceced17e4b9b6",
+      "compiler_quirk_outcome": "NO_NEW_COMPILER_FINDING",
+      "negative_control_change": "add_volatile_local_side_effect",
+      "research_method": "donor-pass.json",
+      "native_relocation_count": 2,
+      "negative_first_difference": 0,
+      "unit_gate": "NOT_RUN",
+      "complete_rom_gate": "NOT_RUN",
+      "canonical_promotion": "NOT_RUN",
+      "pr": 194,
+      "staged_path": "src/promo251/alSynAddPlayer.c",
+      "active_owner": "asm/japan_0/libultra/audio/synaddplayer.s",
+      "section": "main"
+    },
+    {
+      "region": "japan_0",
+      "name": "__osPiRelAccess",
+      "rom_offset": 305716,
+      "vma": 2147786292,
+      "original_bytes": 44,
+      "owner": "nonmatchings/libultra/io/piacs/__osPiRelAccess.s",
+      "code_sha256": "ef1aa3650966f0f7fefeda1ba79ca9430e38891b423cbda96caf638ac83f4029",
+      "source": "source/japan_0/__osPiRelAccess.c",
+      "source_sha256": "56783ec1c9dfc7617aa7a3375fbcb9eb3f444a2f694279c72e1563157c1c3323",
+      "negative_source": "negative_source/japan_0/__osPiRelAccess.c",
+      "negative_sha256": "8194fdd7a455c30f5b0b33c0935fc8acc784467ab18c8b26baa37bfc69b61cff",
+      "compiler_quirk_outcome": "NO_NEW_COMPILER_FINDING",
+      "negative_control_change": "add_volatile_local_side_effect",
+      "research_method": "donor-pass.json",
+      "native_relocation_count": 3,
+      "negative_first_difference": 0,
+      "unit_gate": "NOT_RUN",
+      "complete_rom_gate": "NOT_RUN",
+      "canonical_promotion": "NOT_RUN",
+      "pr": 194,
+      "staged_path": "src/promo251/__osPiRelAccess.c",
+      "active_owner": "asm/japan_0/libultra/io/piacs.s",
+      "section": "main"
+    },
+    {
+      "region": "japan_0",
+      "name": "__osSiRelAccess",
+      "rom_offset": 308212,
+      "vma": 2147788788,
+      "original_bytes": 44,
+      "owner": "nonmatchings/libultra/io/siacs/__osSiRelAccess.s",
+      "code_sha256": "72f103ff1fd79fd10622d64b871294ea3f70f7a305cbeba5d991eab785dd492d",
+      "source": "source/japan_0/__osSiRelAccess.c",
+      "source_sha256": "033437a54e5824c64bf87695b1546dfc075935ddcf4ccdaa5829479252be174d",
+      "negative_source": "negative_source/japan_0/__osSiRelAccess.c",
+      "negative_sha256": "a3a7ed9744f0c003628101c898c5af0d2e28afd4903873e7bae99031ab22d882",
+      "compiler_quirk_outcome": "NO_NEW_COMPILER_FINDING",
+      "negative_control_change": "add_volatile_local_side_effect",
+      "research_method": "donor-pass.json",
+      "native_relocation_count": 3,
+      "negative_first_difference": 0,
+      "unit_gate": "NOT_RUN",
+      "complete_rom_gate": "NOT_RUN",
+      "canonical_promotion": "NOT_RUN",
+      "pr": 194,
+      "staged_path": "src/promo251/__osSiRelAccess.c",
+      "active_owner": "asm/japan_0/libultra/io/siacs.s",
+      "section": "main"
+    },
+    {
+      "region": "japan_0",
+      "name": "proutSprintf",
+      "rom_offset": 301936,
+      "vma": 2147782512,
+      "original_bytes": 36,
+      "owner": "nonmatchings/libultra/libc/sprintf/proutSprintf.s",
+      "code_sha256": "dd1215559a868ef91fd42808420b499d92db784593fa6226148c2ff703c8c98b",
+      "source": "source/japan_0/proutSprintf.c",
+      "source_sha256": "e91c720cff05d728546936b157733d9eafffe184371027124f60bcdc67005202",
+      "negative_source": "negative_source/japan_0/proutSprintf.c",
+      "negative_sha256": "c6fbd8b7472e14c1c13a12d802a1bcd90dda0d39dd061f7f739faf2f4c5dce74",
+      "compiler_quirk_outcome": "NO_NEW_COMPILER_FINDING",
+      "negative_control_change": "add_volatile_local_side_effect",
+      "research_method": "donor-pass.json",
+      "native_relocation_count": 1,
+      "negative_first_difference": 0,
+      "unit_gate": "NOT_RUN",
+      "complete_rom_gate": "NOT_RUN",
+      "canonical_promotion": "NOT_RUN",
+      "pr": 194,
+      "staged_path": "src/promo251/proutSprintf.c",
+      "active_owner": "asm/japan_0/libultra/libc/sprintf.s",
+      "section": "main"
+    },
+    {
+      "region": "japan_0",
+      "name": "func_801F9FB0_5B5F80",
+      "rom_offset": 5988224,
+      "vma": 2149556144,
+      "original_bytes": 44,
+      "owner": "5B54C0.s",
+      "code_sha256": "8a6dd369f92d4c9c0fa745a608ceba76a12c4d8d1306929938828f2f64ee74d4",
+      "source": "source/japan_0/func_801F9FB0_5B5F80.c",
+      "source_sha256": "066f100c0ad105ba252ffad8945d32f0fd358c4a9f4e21f37144a5694345390d",
+      "negative_source": "negative_source/japan_0/func_801F9FB0_5B5F80.c",
+      "negative_sha256": "951f65d93acff80a5028e43cd6c4b33d58cd4c8ce6ffcfe9de16c92aa98bebbb",
+      "native_relocation_count": 1,
+      "native_relocations": [
+        [
+          20,
+          "R_MIPS_26",
+          "func_801FA0B0_5B6080"
+        ]
+      ],
+      "negative_reason": "FUNC_EXTENT_MISMATCH",
+      "negative_first_difference": 0,
+      "method": "m2c ABI/symbolic-call correction",
+      "compiler_quirk_outcome": "NO_NEW_COMPILER_FINDING",
+      "negative_control_change": "volatile int native_negative_control = 1",
+      "status": "ISOLATED_NATIVE_RESEARCH_ONLY",
+      "pr": 200,
+      "staged_path": "src/promo251/func_801F9FB0_5B5F80.c",
+      "active_owner": "asm/japan_0/short145_jp1686_003_010_00.s",
+      "section": "file_11"
+    },
+    {
+      "region": "japan_0",
+      "name": "func_801FA030_5B6000",
+      "rom_offset": 5988352,
+      "vma": 2149556272,
+      "original_bytes": 44,
+      "owner": "5B54C0.s",
+      "code_sha256": "d91732af9bb7dd658c4924fb708baa595f2dea886941182ef8fd223b097ff485",
+      "source": "source/japan_0/func_801FA030_5B6000.c",
+      "source_sha256": "698d2353ad2364b25ae4ea53cddd16afd8dda92f050a78aab08c859e14b47aca",
+      "negative_source": "negative_source/japan_0/func_801FA030_5B6000.c",
+      "negative_sha256": "2dd1972d54945dcde7d830e2cbe1e79cba986d514b64ec16c3be4dab673fc989",
+      "native_relocation_count": 1,
+      "native_relocations": [
+        [
+          20,
+          "R_MIPS_26",
+          "func_801FA0B0_5B6080"
+        ]
+      ],
+      "negative_reason": "FUNC_EXTENT_MISMATCH",
+      "negative_first_difference": 0,
+      "method": "m2c ABI/symbolic-call correction",
+      "compiler_quirk_outcome": "NO_NEW_COMPILER_FINDING",
+      "negative_control_change": "volatile int native_negative_control = 1",
+      "status": "ISOLATED_NATIVE_RESEARCH_ONLY",
+      "pr": 200,
+      "staged_path": "src/promo251/func_801FA030_5B6000.c",
+      "active_owner": "asm/japan_0/short145_jp1686_003_010_02.s",
+      "section": "file_11"
+    },
+    {
+      "region": "japan_0",
+      "name": "func_8021C4E0_685BD0",
+      "rom_offset": 6839248,
+      "vma": 2149696736,
+      "original_bytes": 84,
+      "owner": "685A30.s",
+      "code_sha256": "5ec4b99f703276ac1b46837e12e1643454856e10f5912d825017df0f33eb2fa1",
+      "source": "source/japan_0/func_8021C4E0_685BD0.c",
+      "source_sha256": "149eab7395b8c562a4836a61feaecdf15619ec97b3b01faac1a4972820d5ddda",
+      "negative_source": "negative_source/japan_0/func_8021C4E0_685BD0.c",
+      "negative_sha256": "1d1e69ec360918a2782dea6289e8002e2d962cb0dd508a99d591bc0a95dec12f",
+      "native_relocation_count": 1,
+      "native_relocations": [
+        [
+          44,
+          "R_MIPS_26",
+          "func_80003FD8_4BD8"
+        ]
+      ],
+      "negative_reason": "FUNC_EXTENT_MISMATCH",
+      "negative_first_difference": 0,
+      "method": "pending_donor:func_80217700_6810E0",
+      "compiler_quirk_outcome": "NO_NEW_COMPILER_FINDING",
+      "negative_control_change": "volatile int native_negative_control = 1",
+      "status": "ISOLATED_NATIVE_RESEARCH_ONLY",
+      "pr": 200,
+      "staged_path": "src/promo251/func_8021C4E0_685BD0.c",
+      "active_owner": "asm/japan_0/short145_jp1686_026_000_00.s",
+      "section": "file_18"
+    },
+    {
+      "region": "japan_0",
+      "name": "func_080021E4_6DCA84",
+      "rom_offset": 7195268,
+      "vma": 134226404,
+      "original_bytes": 88,
+      "owner": "6DA8A0.s",
+      "code_sha256": "d9620f7cf7e8bc55013011de8555d823bc837f6ea44ab7a366feac12ce6b6fb8",
+      "source": "source/japan_0/func_080021E4_6DCA84.c",
+      "source_sha256": "436723889c7079f9abab2d881a249ad9f572b937f0b19d0212be650e3a47faae",
+      "negative_source": "negative_source/japan_0/func_080021E4_6DCA84.c",
+      "negative_sha256": "6b831bb36464f64193ad875502769ad9146f2747dfdfc5953ffeff894d823ff2",
+      "compiler_quirk_outcome": "NO_NEW_COMPILER_FINDING",
+      "negative_control_change": "add_volatile_local_side_effect",
+      "research_method": "reconstructed_opcode_family",
+      "native_relocation_count": 4,
+      "negative_first_difference": 0,
+      "unit_gate": "NOT_RUN",
+      "complete_rom_gate": "NOT_RUN",
+      "canonical_promotion": "NOT_RUN",
+      "pr": 194,
+      "staged_path": "src/promo251/func_080021E4_6DCA84.c",
+      "active_owner": "asm/japan_0/short145_jp1686_034_005_00.s",
+      "section": "file_35"
+    },
+    {
+      "region": "japan_0",
+      "name": "func_080025DC_6DCE7C",
+      "rom_offset": 7196284,
+      "vma": 134227420,
+      "original_bytes": 88,
+      "owner": "6DA8A0.s",
+      "code_sha256": "c20747785da727d5adc284d830551d293f5df5c11eeb300302389234643933e2",
+      "source": "source/japan_0/func_080025DC_6DCE7C.c",
+      "source_sha256": "5c6f5d51c3a781046f01100fab8137207a5d82928c71cd691647488e5f3dcff9",
+      "negative_source": "negative_source/japan_0/func_080025DC_6DCE7C.c",
+      "negative_sha256": "ac02e1498210f439abf9e9222cece278526b6e7f21453fb0675fe4b0a87e8cc7",
+      "compiler_quirk_outcome": "NO_NEW_COMPILER_FINDING",
+      "negative_control_change": "add_volatile_local_side_effect",
+      "research_method": "reconstructed_opcode_family",
+      "native_relocation_count": 4,
+      "negative_first_difference": 0,
+      "unit_gate": "NOT_RUN",
+      "complete_rom_gate": "NOT_RUN",
+      "canonical_promotion": "NOT_RUN",
+      "pr": 194,
+      "staged_path": "src/promo251/func_080025DC_6DCE7C.c",
+      "active_owner": "asm/japan_0/short145_jp1686_034_005_tail.s",
+      "section": "file_35"
+    },
+    {
+      "region": "japan_0",
+      "name": "func_080024D0_6BA250",
+      "rom_offset": 7053904,
+      "vma": 134227152,
+      "original_bytes": 72,
+      "owner": "6B7D80.s",
+      "code_sha256": "d1a4e9b644d8c9b94017317350041fb4db701edcfdea6027372c3d71fdef5e45",
+      "source": "source/japan_0/func_080024D0_6BA250.c",
+      "source_sha256": "5a22527af9a5779808d1586d4b121cd19dcbae5dc481c517c9d269a8f9b18550",
+      "negative_source": "negative_source/japan_0/func_080024D0_6BA250.c",
+      "negative_sha256": "e44e363746d7348ce0af87a89d5a0c1ab9177a14faccd82c9eb7101d41605a92",
+      "native_relocation_count": 6,
+      "native_relocations": [
+        [
+          4,
+          "R_MIPS_HI16",
+          "func_8021B3BC_5D694C"
+        ],
+        [
+          16,
+          "R_MIPS_LO16",
+          "func_8021B3BC_5D694C"
+        ],
+        [
+          36,
+          "R_MIPS_HI16",
+          "func_80034E8C_35A8C"
+        ],
+        [
+          40,
+          "R_MIPS_LO16",
+          "func_80034E8C_35A8C"
+        ],
+        [
+          44,
+          "R_MIPS_HI16",
+          "func_08002518_6BA298"
+        ],
+        [
+          52,
+          "R_MIPS_LO16",
+          "func_08002518_6BA298"
+        ]
+      ],
+      "negative_reason": "FUNC_EXTENT_MISMATCH",
+      "negative_first_difference": 0,
+      "method": "m2c ABI/symbolic-call correction",
+      "compiler_quirk_outcome": "NO_NEW_COMPILER_FINDING",
+      "negative_control_change": "volatile int native_negative_control = 1",
+      "status": "ISOLATED_NATIVE_RESEARCH_ONLY",
+      "pr": 200,
+      "staged_path": "src/promo251/func_080024D0_6BA250.c",
+      "active_owner": "asm/japan_0/short145_jp1686_128_008_00.s",
+      "section": "file_29"
+    },
+    {
+      "region": "japan_0",
+      "name": "func_08000484_6B4384",
+      "rom_offset": 7029636,
+      "vma": 134218884,
+      "original_bytes": 60,
+      "owner": "6B3F00.s",
+      "code_sha256": "e2e69540596b654137e2815c7454aefa5492bd5909f9f1d8886c10f1c20d40e4",
+      "source": "source/japan_0/func_08000484_6B4384.c",
+      "source_sha256": "f4c0aab875991b5c1cbe7ac2208cc56ff93694092f48b43d0857c1232c62bc38",
+      "negative_source": "negative_source/japan_0/func_08000484_6B4384.c",
+      "negative_sha256": "8972bff1af8d4ae0d8fbe74f80f5c59d909f51c9c67297ddda5d37bb9fc739b8",
+      "compiler_quirk_outcome": "NO_NEW_COMPILER_FINDING",
+      "negative_control_change": "add_volatile_local_side_effect",
+      "research_method": "donor-pass.json",
+      "native_relocation_count": 6,
+      "negative_first_difference": 0,
+      "unit_gate": "NOT_RUN",
+      "complete_rom_gate": "NOT_RUN",
+      "canonical_promotion": "NOT_RUN",
+      "pr": 194,
+      "staged_path": "src/promo251/func_08000484_6B4384.c",
+      "active_owner": "asm/japan_0/short145_jp1686_199_006_00.s",
+      "section": "file_27"
+    },
+    {
+      "region": "japan_0",
+      "name": "func_080048AC_6E303C",
+      "rom_offset": 7221308,
+      "vma": 134236332,
+      "original_bytes": 72,
+      "owner": "6DE790.s",
+      "code_sha256": "f4e760794a480d98b1e3e4f906b2faa563e12d974e4abcbc2d9e6bcfa50eb9b4",
+      "source": "source/japan_0/func_080048AC_6E303C.c",
+      "source_sha256": "374eb02c4b3d1a8d82ffed0f59248cbcef7c359620e683ccefb55a22ae8a69db",
+      "negative_source": "negative_source/japan_0/func_080048AC_6E303C.c",
+      "negative_sha256": "32542e0eebfa28179e02e475df63ec0c5124c5e03372dcce46710c8369013107",
+      "native_relocation_count": 4,
+      "native_relocations": [
+        [
+          4,
+          "R_MIPS_HI16",
+          "func_8021E548_5D9AD8"
+        ],
+        [
+          16,
+          "R_MIPS_LO16",
+          "func_8021E548_5D9AD8"
+        ],
+        [
+          32,
+          "R_MIPS_HI16",
+          "func_8021FE0C_5DB39C"
+        ],
+        [
+          36,
+          "R_MIPS_LO16",
+          "func_8021FE0C_5DB39C"
+        ]
+      ],
+      "negative_reason": "FUNC_EXTENT_MISMATCH",
+      "negative_first_difference": 0,
+      "method": "m2c ABI/symbolic-call correction",
+      "compiler_quirk_outcome": "NO_NEW_COMPILER_FINDING",
+      "negative_control_change": "volatile int native_negative_control = 1",
+      "status": "ISOLATED_NATIVE_RESEARCH_ONLY",
+      "pr": 200,
+      "staged_path": "src/promo251/func_080048AC_6E303C.c",
+      "active_owner": "asm/japan_0/short145_jp1686_217_012_tail.s",
+      "section": "file_36"
+    },
+    {
+      "region": "japan_0",
+      "name": "func_080048F4_6E3084",
+      "rom_offset": 7221380,
+      "vma": 134236404,
+      "original_bytes": 72,
+      "owner": "6DE790.s",
+      "code_sha256": "ec93388f603df5b518c3d37e2cf2ec19f9067803ae14d47b4b66a384cdb22bca",
+      "source": "source/japan_0/func_080048F4_6E3084.c",
+      "source_sha256": "254a377297b50342c53368ea7adac1487e62562af80bc8fa4ddbbc0b34defeea",
+      "negative_source": "negative_source/japan_0/func_080048F4_6E3084.c",
+      "negative_sha256": "0c343b93cfd2be6a7fd008d3e198570665219d021a5eacfac5d89ef5bffbc74e",
+      "native_relocation_count": 6,
+      "native_relocations": [
+        [
+          4,
+          "R_MIPS_HI16",
+          "func_8021B3BC_5D694C"
+        ],
+        [
+          16,
+          "R_MIPS_LO16",
+          "func_8021B3BC_5D694C"
+        ],
+        [
+          36,
+          "R_MIPS_HI16",
+          "func_80034E8C_35A8C"
+        ],
+        [
+          40,
+          "R_MIPS_LO16",
+          "func_80034E8C_35A8C"
+        ],
+        [
+          44,
+          "R_MIPS_HI16",
+          "func_0800493C_6E30CC"
+        ],
+        [
+          52,
+          "R_MIPS_LO16",
+          "func_0800493C_6E30CC"
+        ]
+      ],
+      "negative_reason": "FUNC_EXTENT_MISMATCH",
+      "negative_first_difference": 0,
+      "method": "m2c ABI/symbolic-call correction",
+      "compiler_quirk_outcome": "NO_NEW_COMPILER_FINDING",
+      "negative_control_change": "volatile int native_negative_control = 1",
+      "status": "ISOLATED_NATIVE_RESEARCH_ONLY",
+      "pr": 200,
+      "staged_path": "src/promo251/func_080048F4_6E3084.c",
+      "active_owner": "asm/japan_0/short145_jp1686_217_012_tail.s",
+      "section": "file_36"
+    },
+    {
+      "region": "japan_0",
+      "name": "func_08000F20_6E9670",
+      "rom_offset": 7247472,
+      "vma": 134221600,
+      "original_bytes": 48,
+      "owner": "6E8750.s",
+      "code_sha256": "a4fd4e44e14c749104ab7c6675899410234bc614d0b46c0532cbe69b022c187a",
+      "source": "source/japan_0/func_08000F20_6E9670.c",
+      "source_sha256": "e782ea98822444e9860538c6c62f6178800975448f86b6d27a0f1caa21cb816f",
+      "negative_source": "negative_source/japan_0/func_08000F20_6E9670.c",
+      "negative_sha256": "2d11c502374409e5af741d636319d617c9e7b83b02d44b0890fae85ad7c61aac",
+      "native_relocation_count": 2,
+      "native_relocations": [
+        [
+          4,
+          "R_MIPS_HI16",
+          "func_8021FE0C_5DB39C"
+        ],
+        [
+          16,
+          "R_MIPS_LO16",
+          "func_8021FE0C_5DB39C"
+        ]
+      ],
+      "negative_reason": "FUNC_EXTENT_MISMATCH",
+      "negative_first_difference": 0,
+      "method": "m2c ABI/symbolic-call correction",
+      "compiler_quirk_outcome": "NO_NEW_COMPILER_FINDING",
+      "negative_control_change": "volatile int native_negative_control = 1",
+      "status": "ISOLATED_NATIVE_RESEARCH_ONLY",
+      "pr": 200,
+      "staged_path": "src/promo251/func_08000F20_6E9670.c",
+      "active_owner": "asm/japan_0/short145_jp1686_220_004_tail.s",
+      "section": "file_38"
+    },
+    {
+      "region": "japan_0",
+      "name": "func_08000534_7179D4",
+      "rom_offset": 7436756,
+      "vma": 134219060,
+      "original_bytes": 56,
+      "owner": "7174A0.s",
+      "code_sha256": "1117c3890d9e5b42ea76ec96690ce2f53d336439a376c42b149b5a0f48312426",
+      "source": "source/japan_0/func_08000534_7179D4.c",
+      "source_sha256": "c7b38c846f0dca5fb0c2a1948e6cfc73648c88e443e9936b6910315c528b7a62",
+      "negative_source": "negative_source/japan_0/func_08000534_7179D4.c",
+      "negative_sha256": "eaaf2618cb9a50b69853f1c260057d6264eb6d88d56b3027f9bb7b74b5ecc16c",
+      "native_relocation_count": 3,
+      "native_relocations": [
+        [
+          16,
+          "R_MIPS_26",
+          "func_0800056C_717A0C"
+        ],
+        [
+          24,
+          "R_MIPS_HI16",
+          "func_08000978_717E18"
+        ],
+        [
+          28,
+          "R_MIPS_LO16",
+          "func_08000978_717E18"
+        ]
+      ],
+      "negative_reason": "FUNC_EXTENT_MISMATCH",
+      "negative_first_difference": 0,
+      "method": "m2c ABI/symbolic-call correction",
+      "compiler_quirk_outcome": "NO_NEW_COMPILER_FINDING",
+      "negative_control_change": "volatile int native_negative_control = 1",
+      "status": "ISOLATED_NATIVE_RESEARCH_ONLY",
+      "pr": 200,
+      "staged_path": "src/promo251/func_08000534_7179D4.c",
+      "active_owner": "asm/japan_0/short145_jp1686_248_000_00.s",
+      "section": "file_56"
+    }
+  ],
+  "fragments": [
+    {
+      "path": "asm/japan_0/promo251_000_000.s",
+      "start": 6549632,
+      "end": 6549900,
+      "suffix": ".text",
+      "owner": "asm/japan_0/63F080.s"
+    },
+    {
+      "path": "asm/japan_0/promo251_000_tail.s",
+      "start": 6549952,
+      "end": 6551136,
+      "suffix": ".text",
+      "owner": "asm/japan_0/63F080.s"
+    },
+    {
+      "path": "asm/japan_0/promo251_001_000.s",
+      "start": 5989892,
+      "end": 5990092,
+      "suffix": ".text",
+      "owner": "asm/japan_0/jp1686_004_010.s"
+    },
+    {
+      "path": "asm/japan_0/promo251_001_tail.s",
+      "start": 5990164,
+      "end": 5990528,
+      "suffix": ".text",
+      "owner": "asm/japan_0/jp1686_004_010.s"
+    },
+    {
+      "path": "asm/japan_0/promo251_004_000.s",
+      "start": 7044048,
+      "end": 7044328,
+      "suffix": ".text",
+      "owner": "asm/japan_0/jp1686_031_003.s"
+    },
+    {
+      "path": "asm/japan_0/promo251_004_tail.s",
+      "start": 7044392,
+      "end": 7044400,
+      "suffix": ".text",
+      "owner": "asm/japan_0/jp1686_031_003.s"
+    },
+    {
+      "path": "asm/japan_0/promo251_005_000.s",
+      "start": 7174592,
+      "end": 7174952,
+      "suffix": ".text",
+      "owner": "asm/japan_0/jp1686_032_023.s"
+    },
+    {
+      "path": "asm/japan_0/promo251_005_002.s",
+      "start": 7175124,
+      "end": 7175476,
+      "suffix": ".text",
+      "owner": "asm/japan_0/jp1686_032_023.s"
+    },
+    {
+      "path": "asm/japan_0/promo251_006_000.s",
+      "start": 7177792,
+      "end": 7178492,
+      "suffix": ".text",
+      "owner": "asm/japan_0/jp1686_033_002.s"
+    },
+    {
+      "path": "asm/japan_0/promo251_006_tail.s",
+      "start": 7178552,
+      "end": 7179360,
+      "suffix": ".text",
+      "owner": "asm/japan_0/jp1686_033_002.s"
+    },
+    {
+      "path": "asm/japan_0/promo251_007_tail.s",
+      "start": 74080,
+      "end": 74468,
+      "suffix": ".text",
+      "owner": "asm/japan_0/jp1686_043_013.s"
+    },
+    {
+      "path": "asm/japan_0/promo251_008_tail.s",
+      "start": 252396,
+      "end": 253080,
+      "suffix": ".text",
+      "owner": "asm/japan_0/jp1686_044_005.s"
+    },
+    {
+      "path": "asm/japan_0/promo251_009_000.s",
+      "start": 6307000,
+      "end": 6307888,
+      "suffix": ".text",
+      "owner": "asm/japan_0/jp1686_048_025.s"
+    },
+    {
+      "path": "asm/japan_0/promo251_009_tail.s",
+      "start": 6308056,
+      "end": 6315280,
+      "suffix": ".text",
+      "owner": "asm/japan_0/jp1686_048_025.s"
+    },
+    {
+      "path": "asm/japan_0/promo251_010_000.s",
+      "start": 6317780,
+      "end": 6319284,
+      "suffix": ".text",
+      "owner": "asm/japan_0/jp1686_051_003.s"
+    },
+    {
+      "path": "asm/japan_0/promo251_010_tail.s",
+      "start": 6319464,
+      "end": 6319696,
+      "suffix": ".text",
+      "owner": "asm/japan_0/jp1686_051_003.s"
+    },
+    {
+      "path": "asm/japan_0/promo251_011_000.s",
+      "start": 6161680,
+      "end": 6162120,
+      "suffix": ".text",
+      "owner": "asm/japan_0/jp1686_054_008.s"
+    },
+    {
+      "path": "asm/japan_0/promo251_011_tail.s",
+      "start": 6162192,
+      "end": 6163644,
+      "suffix": ".text",
+      "owner": "asm/japan_0/jp1686_054_008.s"
+    },
+    {
+      "path": "asm/japan_0/promo251_013_tail.s",
+      "start": 6169812,
+      "end": 6170108,
+      "suffix": ".text",
+      "owner": "asm/japan_0/jp1686_055_028.s"
+    },
+    {
+      "path": "asm/japan_0/promo251_014_000.s",
+      "start": 6325296,
+      "end": 6327528,
+      "suffix": ".text",
+      "owner": "asm/japan_0/jp1686_056_000.s"
+    },
+    {
+      "path": "asm/japan_0/promo251_014_tail.s",
+      "start": 6327572,
+      "end": 6327844,
+      "suffix": ".text",
+      "owner": "asm/japan_0/jp1686_056_000.s"
+    },
+    {
+      "path": "asm/japan_0/promo251_015_000.s",
+      "start": 6328012,
+      "end": 6330532,
+      "suffix": ".text",
+      "owner": "asm/japan_0/jp1686_056_002.s"
+    },
+    {
+      "path": "asm/japan_0/promo251_015_tail.s",
+      "start": 6330576,
+      "end": 6332216,
+      "suffix": ".text",
+      "owner": "asm/japan_0/jp1686_056_002.s"
+    },
+    {
+      "path": "asm/japan_0/promo251_016_tail.s",
+      "start": 6761936,
+      "end": 6763072,
+      "suffix": ".text",
+      "owner": "asm/japan_0/jp1686_060_002.s"
+    },
+    {
+      "path": "asm/japan_0/promo251_017_000.s",
+      "start": 6497032,
+      "end": 6499264,
+      "suffix": ".text",
+      "owner": "asm/japan_0/jp1686_065_003.s"
+    },
+    {
+      "path": "asm/japan_0/promo251_018_tail.s",
+      "start": 6854684,
+      "end": 6856104,
+      "suffix": ".text",
+      "owner": "asm/japan_0/jp1686_073_000.s"
+    },
+    {
+      "path": "asm/japan_0/promo251_019_000.s",
+      "start": 6870780,
+      "end": 6871040,
+      "suffix": ".text",
+      "owner": "asm/japan_0/jp1686_075_007.s"
+    },
+    {
+      "path": "asm/japan_0/promo251_022_000.s",
+      "start": 6945412,
+      "end": 6945844,
+      "suffix": ".text",
+      "owner": "asm/japan_0/jp1686_084_010.s"
+    },
+    {
+      "path": "asm/japan_0/promo251_022_tail.s",
+      "start": 6945888,
+      "end": 6947560,
+      "suffix": ".text",
+      "owner": "asm/japan_0/jp1686_084_010.s"
+    },
+    {
+      "path": "asm/japan_0/promo251_024_000.s",
+      "start": 7295508,
+      "end": 7298104,
+      "suffix": ".text",
+      "owner": "asm/japan_0/jp1686_105_002.s"
+    },
+    {
+      "path": "asm/japan_0/promo251_024_tail.s",
+      "start": 7298236,
+      "end": 7299160,
+      "suffix": ".text",
+      "owner": "asm/japan_0/jp1686_105_002.s"
+    },
+    {
+      "path": "asm/japan_0/promo251_025_tail.s",
+      "start": 7342972,
+      "end": 7345916,
+      "suffix": ".text",
+      "owner": "asm/japan_0/jp1686_107_001.s"
+    },
+    {
+      "path": "asm/japan_0/promo251_026_000.s",
+      "start": 5963240,
+      "end": 5965480,
+      "suffix": ".text",
+      "owner": "asm/japan_0/jp1686_132_003.s"
+    },
+    {
+      "path": "asm/japan_0/promo251_026_tail.s",
+      "start": 5965536,
+      "end": 5965916,
+      "suffix": ".text",
+      "owner": "asm/japan_0/jp1686_132_003.s"
+    },
+    {
+      "path": "asm/japan_0/promo251_027_000.s",
+      "start": 6137828,
+      "end": 6138180,
+      "suffix": ".text",
+      "owner": "asm/japan_0/jp1686_133_000.s"
+    },
+    {
+      "path": "asm/japan_0/promo251_027_tail.s",
+      "start": 6138236,
+      "end": 6138468,
+      "suffix": ".text",
+      "owner": "asm/japan_0/jp1686_133_000.s"
+    },
+    {
+      "path": "asm/japan_0/promo251_028_000.s",
+      "start": 5895500,
+      "end": 5895592,
+      "suffix": ".text",
+      "owner": "asm/japan_0/jp1686_138_019.s"
+    },
+    {
+      "path": "asm/japan_0/promo251_029_001.s",
+      "start": 5910808,
+      "end": 5911224,
+      "suffix": ".text",
+      "owner": "asm/japan_0/jp1686_140_003.s"
+    },
+    {
+      "path": "asm/japan_0/promo251_029_tail.s",
+      "start": 5911448,
+      "end": 5911608,
+      "suffix": ".text",
+      "owner": "asm/japan_0/jp1686_140_003.s"
+    },
+    {
+      "path": "asm/japan_0/promo251_032_000.s",
+      "start": 6424980,
+      "end": 6425532,
+      "suffix": ".text",
+      "owner": "asm/japan_0/jp1686_164_009.s"
+    },
+    {
+      "path": "asm/japan_0/promo251_033_000.s",
+      "start": 6435260,
+      "end": 6437860,
+      "suffix": ".text",
+      "owner": "asm/japan_0/jp1686_165_013.s"
+    },
+    {
+      "path": "asm/japan_0/promo251_034_000.s",
+      "start": 6489572,
+      "end": 6490164,
+      "suffix": ".text",
+      "owner": "asm/japan_0/jp1686_175_003.s"
+    },
+    {
+      "path": "asm/japan_0/promo251_035_000.s",
+      "start": 6508916,
+      "end": 6509872,
+      "suffix": ".text",
+      "owner": "asm/japan_0/jp1686_177_002.s"
+    },
+    {
+      "path": "asm/japan_0/promo251_035_tail.s",
+      "start": 6509920,
+      "end": 6515508,
+      "suffix": ".text",
+      "owner": "asm/japan_0/jp1686_177_002.s"
+    },
+    {
+      "path": "asm/japan_0/promo251_037_000.s",
+      "start": 7017676,
+      "end": 7017824,
+      "suffix": ".text",
+      "owner": "asm/japan_0/jp1686_198_003.s"
+    },
+    {
+      "path": "asm/japan_0/promo251_037_tail.s",
+      "start": 7017912,
+      "end": 7018144,
+      "suffix": ".text",
+      "owner": "asm/japan_0/jp1686_198_003.s"
+    },
+    {
+      "path": "asm/japan_0/promo251_039_000.s",
+      "start": 7116140,
+      "end": 7118448,
+      "suffix": ".text",
+      "owner": "asm/japan_0/jp1686_211_006.s"
+    },
+    {
+      "path": "asm/japan_0/promo251_039_tail.s",
+      "start": 7118524,
+      "end": 7119312,
+      "suffix": ".text",
+      "owner": "asm/japan_0/jp1686_211_006.s"
+    },
+    {
+      "path": "asm/japan_0/promo251_040_000.s",
+      "start": 7223664,
+      "end": 7224796,
+      "suffix": ".text",
+      "owner": "asm/japan_0/jp1686_218_000.s"
+    },
+    {
+      "path": "asm/japan_0/promo251_040_tail.s",
+      "start": 7224872,
+      "end": 7224980,
+      "suffix": ".text",
+      "owner": "asm/japan_0/jp1686_218_000.s"
+    },
+    {
+      "path": "asm/japan_0/promo251_041_tail.s",
+      "start": 7227672,
+      "end": 7229048,
+      "suffix": ".text",
+      "owner": "asm/japan_0/jp1686_219_001.s"
+    },
+    {
+      "path": "asm/japan_0/promo251_042_tail.s",
+      "start": 7229848,
+      "end": 7230064,
+      "suffix": ".text",
+      "owner": "asm/japan_0/jp1686_219_007.s"
+    },
+    {
+      "path": "asm/japan_0/promo251_043_tail.s",
+      "start": 7230212,
+      "end": 7230428,
+      "suffix": ".text",
+      "owner": "asm/japan_0/jp1686_219_009.s"
+    },
+    {
+      "path": "asm/japan_0/promo251_044_tail.s",
+      "start": 7250752,
+      "end": 7250892,
+      "suffix": ".text",
+      "owner": "asm/japan_0/jp1686_221_004.s"
+    },
+    {
+      "path": "asm/japan_0/promo251_045_000.s",
+      "start": 7254464,
+      "end": 7255136,
+      "suffix": ".text",
+      "owner": "asm/japan_0/jp1686_222_008.s"
+    },
+    {
+      "path": "asm/japan_0/promo251_045_tail.s",
+      "start": 7255196,
+      "end": 7256048,
+      "suffix": ".text",
+      "owner": "asm/japan_0/jp1686_222_008.s"
+    },
+    {
+      "path": "asm/japan_0/promo251_046_tail.s",
+      "start": 7376436,
+      "end": 7380344,
+      "suffix": ".text",
+      "owner": "asm/japan_0/jp1686_237_014.s"
+    },
+    {
+      "path": "asm/japan_0/promo251_047_tail.s",
+      "start": 7428764,
+      "end": 7428944,
+      "suffix": ".text",
+      "owner": "asm/japan_0/jp1686_245_004.s"
+    },
+    {
+      "path": "asm/japan_0/promo251_048_000.s",
+      "start": 7441636,
+      "end": 7442948,
+      "suffix": ".text",
+      "owner": "asm/japan_0/jp1686_248_002.s"
+    },
+    {
+      "path": "asm/japan_0/promo251_048_tail.s",
+      "start": 7443024,
+      "end": 7443572,
+      "suffix": ".text",
+      "owner": "asm/japan_0/jp1686_248_002.s"
+    },
+    {
+      "path": "asm/japan_0/promo251_049_000.s",
+      "start": 7571772,
+      "end": 7571940,
+      "suffix": ".text",
+      "owner": "asm/japan_0/jp1686_258_003.s"
+    },
+    {
+      "path": "asm/japan_0/promo251_049_tail.s",
+      "start": 7571988,
+      "end": 7572000,
+      "suffix": ".text",
+      "owner": "asm/japan_0/jp1686_258_003.s"
+    },
+    {
+      "path": "asm/japan_0/promo251_050_000.s",
+      "start": 94432,
+      "end": 104688,
+      "suffix": ".text",
+      "owner": "asm/japan_0/jp1686_275_000.s"
+    },
+    {
+      "path": "asm/japan_0/promo251_050_tail.s",
+      "start": 104796,
+      "end": 105964,
+      "suffix": ".text",
+      "owner": "asm/japan_0/jp1686_275_000.s"
+    },
+    {
+      "path": "asm/japan_0/promo251_051_000.s",
+      "start": 114384,
+      "end": 114856,
+      "suffix": ".text",
+      "owner": "asm/japan_0/jp1686_275_005.s"
+    },
+    {
+      "path": "asm/japan_0/promo251_051_tail.s",
+      "start": 114912,
+      "end": 119040,
+      "suffix": ".text",
+      "owner": "asm/japan_0/jp1686_275_005.s"
+    },
+    {
+      "path": "asm/japan_0/promo251_052_000.s",
+      "start": 30880,
+      "end": 31212,
+      "suffix": ".text",
+      "owner": "asm/japan_0/jp1686_287_000.s"
+    },
+    {
+      "path": "asm/japan_0/promo251_052_tail.s",
+      "start": 31292,
+      "end": 31428,
+      "suffix": ".text",
+      "owner": "asm/japan_0/jp1686_287_000.s"
+    },
+    {
+      "path": "asm/japan_0/promo251_053_tail.s",
+      "start": 151932,
+      "end": 162976,
+      "suffix": ".text",
+      "owner": "asm/japan_0/jp55_main_24A20_tail.s"
+    },
+    {
+      "path": "asm/japan_0/promo251_054_000.s",
+      "start": 5958644,
+      "end": 5959804,
+      "suffix": ".text",
+      "owner": "asm/japan_0/jpcross34_jp1686_144_007_00.s"
+    },
+    {
+      "path": "asm/japan_0/promo251_054_tail.s",
+      "start": 5959860,
+      "end": 5960212,
+      "suffix": ".text",
+      "owner": "asm/japan_0/jpcross34_jp1686_144_007_00.s"
+    },
+    {
+      "path": "asm/japan_0/promo251_055_000.s",
+      "start": 297576,
+      "end": 297664,
+      "suffix": ".text",
+      "owner": "asm/japan_0/jpcross34_jp1686_269_001_00.s"
+    },
+    {
+      "path": "asm/japan_0/promo251_055_tail.s",
+      "start": 297720,
+      "end": 297816,
+      "suffix": ".text",
+      "owner": "asm/japan_0/jpcross34_jp1686_269_001_00.s"
+    },
+    {
+      "path": "asm/japan_0/promo251_057_tail.s",
+      "start": 5913112,
+      "end": 5913288,
+      "suffix": ".text",
+      "owner": "asm/japan_0/jpdonor10_jp1686_140_009_00.s"
+    },
+    {
+      "path": "asm/japan_0/promo251_058_000.s",
+      "start": 6113996,
+      "end": 6114932,
+      "suffix": ".text",
+      "owner": "asm/japan_0/jpdonor10_jp1686_154_000_tail.s"
+    },
+    {
+      "path": "asm/japan_0/promo251_058_tail.s",
+      "start": 6114992,
+      "end": 6115036,
+      "suffix": ".text",
+      "owner": "asm/japan_0/jpdonor10_jp1686_154_000_tail.s"
+    },
+    {
+      "path": "asm/japan_0/promo251_059_tail.s",
+      "start": 6172536,
+      "end": 6175920,
+      "suffix": ".text",
+      "owner": "asm/japan_0/jpeq36_001_002.s"
+    },
+    {
+      "path": "asm/japan_0/promo251_060_000.s",
+      "start": 6499404,
+      "end": 6500000,
+      "suffix": ".text",
+      "owner": "asm/japan_0/jpeq36_008_002.s"
+    },
+    {
+      "path": "asm/japan_0/promo251_061_000.s",
+      "start": 7530076,
+      "end": 7530604,
+      "suffix": ".text",
+      "owner": "asm/japan_0/jpeq37_016_000.s"
+    },
+    {
+      "path": "asm/japan_0/promo251_062_000.s",
+      "start": 6791900,
+      "end": 6791980,
+      "suffix": ".text",
+      "owner": "asm/japan_0/jpexpand7_67A240_tail.s"
+    },
+    {
+      "path": "asm/japan_0/promo251_062_tail.s",
+      "start": 6792100,
+      "end": 6792720,
+      "suffix": ".text",
+      "owner": "asm/japan_0/jpexpand7_67A240_tail.s"
+    },
+    {
+      "path": "asm/japan_0/promo251_064_000.s",
+      "start": 6871096,
+      "end": 6872372,
+      "suffix": ".text",
+      "owner": "asm/japan_0/jpport_686770_004.s"
+    },
+    {
+      "path": "asm/japan_0/promo251_064_tail.s",
+      "start": 6872424,
+      "end": 6872432,
+      "suffix": ".text",
+      "owner": "asm/japan_0/jpport_686770_004.s"
+    },
+    {
+      "path": "asm/japan_0/promo251_065_000.s",
+      "start": 7584068,
+      "end": 7584320,
+      "suffix": ".text",
+      "owner": "asm/japan_0/jpport_738B40_002.s"
+    },
+    {
+      "path": "asm/japan_0/promo251_065_tail.s",
+      "start": 7584364,
+      "end": 7584608,
+      "suffix": ".text",
+      "owner": "asm/japan_0/jpport_738B40_002.s"
+    },
+    {
+      "path": "asm/japan_0/promo251_066_000.s",
+      "start": 7158868,
+      "end": 7159532,
+      "suffix": ".text",
+      "owner": "asm/japan_0/jpshort28_jp1686_032_001_00.s"
+    },
+    {
+      "path": "asm/japan_0/promo251_066_tail.s",
+      "start": 7159604,
+      "end": 7160372,
+      "suffix": ".text",
+      "owner": "asm/japan_0/jpshort28_jp1686_032_001_00.s"
+    },
+    {
+      "path": "asm/japan_0/promo251_067_tail.s",
+      "start": 7161660,
+      "end": 7164880,
+      "suffix": ".text",
+      "owner": "asm/japan_0/jpshort28_jp1686_032_004_tail.s"
+    },
+    {
+      "path": "asm/japan_0/promo251_068_tail.s",
+      "start": 324740,
+      "end": 326624,
+      "suffix": ".text",
+      "owner": "asm/japan_0/libultra/audio/drvrNew.s"
+    },
+    {
+      "path": "asm/japan_0/promo251_070_000.s",
+      "start": 305568,
+      "end": 305716,
+      "suffix": ".text",
+      "owner": "asm/japan_0/libultra/io/piacs.s"
+    },
+    {
+      "path": "asm/japan_0/promo251_071_000.s",
+      "start": 308064,
+      "end": 308212,
+      "suffix": ".text",
+      "owner": "asm/japan_0/libultra/io/siacs.s"
+    },
+    {
+      "path": "asm/japan_0/promo251_072_tail.s",
+      "start": 301972,
+      "end": 302064,
+      "suffix": ".text",
+      "owner": "asm/japan_0/libultra/libc/sprintf.s"
+    },
+    {
+      "path": "asm/japan_0/promo251_073_000.s",
+      "start": 5985896,
+      "end": 5988224,
+      "suffix": ".text",
+      "owner": "asm/japan_0/short145_jp1686_003_010_00.s"
+    },
+    {
+      "path": "asm/japan_0/promo251_075_000.s",
+      "start": 6838832,
+      "end": 6839248,
+      "suffix": ".text",
+      "owner": "asm/japan_0/short145_jp1686_026_000_00.s"
+    },
+    {
+      "path": "asm/japan_0/promo251_075_tail.s",
+      "start": 6839332,
+      "end": 6839872,
+      "suffix": ".text",
+      "owner": "asm/japan_0/short145_jp1686_026_000_00.s"
+    },
+    {
+      "path": "asm/japan_0/promo251_076_000.s",
+      "start": 7195172,
+      "end": 7195268,
+      "suffix": ".text",
+      "owner": "asm/japan_0/short145_jp1686_034_005_00.s"
+    },
+    {
+      "path": "asm/japan_0/promo251_076_tail.s",
+      "start": 7195356,
+      "end": 7195772,
+      "suffix": ".text",
+      "owner": "asm/japan_0/short145_jp1686_034_005_00.s"
+    },
+    {
+      "path": "asm/japan_0/promo251_077_000.s",
+      "start": 7196076,
+      "end": 7196284,
+      "suffix": ".text",
+      "owner": "asm/japan_0/short145_jp1686_034_005_tail.s"
+    },
+    {
+      "path": "asm/japan_0/promo251_077_tail.s",
+      "start": 7196372,
+      "end": 7196712,
+      "suffix": ".text",
+      "owner": "asm/japan_0/short145_jp1686_034_005_tail.s"
+    },
+    {
+      "path": "asm/japan_0/promo251_078_tail.s",
+      "start": 7053976,
+      "end": 7054720,
+      "suffix": ".text",
+      "owner": "asm/japan_0/short145_jp1686_128_008_00.s"
+    },
+    {
+      "path": "asm/japan_0/promo251_080_000.s",
+      "start": 7221232,
+      "end": 7221308,
+      "suffix": ".text",
+      "owner": "asm/japan_0/short145_jp1686_217_012_tail.s"
+    },
+    {
+      "path": "asm/japan_0/promo251_080_tail.s",
+      "start": 7221452,
+      "end": 7222608,
+      "suffix": ".text",
+      "owner": "asm/japan_0/short145_jp1686_217_012_tail.s"
+    },
+    {
+      "path": "asm/japan_0/promo251_081_000.s",
+      "start": 7247196,
+      "end": 7247472,
+      "suffix": ".text",
+      "owner": "asm/japan_0/short145_jp1686_220_004_tail.s"
+    },
+    {
+      "path": "asm/japan_0/promo251_081_tail.s",
+      "start": 7247520,
+      "end": 7248344,
+      "suffix": ".text",
+      "owner": "asm/japan_0/short145_jp1686_220_004_tail.s"
+    },
+    {
+      "path": "asm/japan_0/promo251_082_000.s",
+      "start": 7435424,
+      "end": 7436756,
+      "suffix": ".text",
+      "owner": "asm/japan_0/short145_jp1686_248_000_00.s"
+    },
+    {
+      "path": "asm/japan_0/promo251_082_tail.s",
+      "start": 7436812,
+      "end": 7439264,
+      "suffix": ".text",
+      "owner": "asm/japan_0/short145_jp1686_248_000_00.s"
+    }
+  ],
+  "parents": [
+    {
+      "owner": "asm/japan_0/63F080.s",
+      "section": "file_14",
+      "suffix": ".text",
+      "names": [
+        "func_801D0C9C_63F18C"
+      ]
+    },
+    {
+      "owner": "asm/japan_0/jp1686_004_010.s",
+      "section": "file_11",
+      "suffix": ".text",
+      "names": [
+        "func_801FA6FC_5B66CC"
+      ]
+    },
+    {
+      "owner": "asm/japan_0/jp1686_030_002.s",
+      "section": "file_26",
+      "suffix": ".text",
+      "names": [
+        "func_08000164_6B34C4"
+      ]
+    },
+    {
+      "owner": "asm/japan_0/jp1686_030_006.s",
+      "section": "file_26",
+      "suffix": ".text",
+      "names": [
+        "func_08000348_6B36A8"
+      ]
+    },
+    {
+      "owner": "asm/japan_0/jp1686_031_003.s",
+      "section": "file_28",
+      "suffix": ".text",
+      "names": [
+        "func_08000268_6B7CE8"
+      ]
+    },
+    {
+      "owner": "asm/japan_0/jp1686_032_023.s",
+      "section": "file_32",
+      "suffix": ".text",
+      "names": [
+        "func_08004028_6D7B28",
+        "func_08004080_6D7B80",
+        "func_08004234_6D7D34"
+      ]
+    },
+    {
+      "owner": "asm/japan_0/jp1686_033_002.s",
+      "section": "file_33",
+      "suffix": ".text",
+      "names": [
+        "func_080004FC_6D88FC"
+      ]
+    },
+    {
+      "owner": "asm/japan_0/jp1686_043_013.s",
+      "section": "main",
+      "suffix": ".text",
+      "names": [
+        "func_80011518_12118"
+      ]
+    },
+    {
+      "owner": "asm/japan_0/jp1686_044_005.s",
+      "section": "main",
+      "suffix": ".text",
+      "names": [
+        "func_8003CD20_3D920"
+      ]
+    },
+    {
+      "owner": "asm/japan_0/jp1686_048_025.s",
+      "section": "file_13",
+      "suffix": ".text",
+      "names": [
+        "func_801D95B0_604030",
+        "func_801D95E8_604068",
+        "func_801D9620_6040A0"
+      ]
+    },
+    {
+      "owner": "asm/japan_0/jp1686_051_003.s",
+      "section": "file_13",
+      "suffix": ".text",
+      "names": [
+        "func_801DC234_606CB4",
+        "func_801DC270_606CF0",
+        "func_801DC2AC_606D2C"
+      ]
+    },
+    {
+      "owner": "asm/japan_0/jp1686_054_008.s",
+      "section": "file_12",
+      "suffix": ".text",
+      "names": [
+        "func_80225138_5E06C8"
+      ]
+    },
+    {
+      "owner": "asm/japan_0/jp1686_055_017.s",
+      "section": "file_12",
+      "suffix": ".text",
+      "names": [
+        "func_80226C60_5E21F0"
+      ]
+    },
+    {
+      "owner": "asm/japan_0/jp1686_055_028.s",
+      "section": "file_12",
+      "suffix": ".text",
+      "names": [
+        "func_80226EFC_5E248C"
+      ]
+    },
+    {
+      "owner": "asm/japan_0/jp1686_056_000.s",
+      "section": "file_13",
+      "suffix": ".text",
+      "names": [
+        "func_801DE268_608CE8"
+      ]
+    },
+    {
+      "owner": "asm/japan_0/jp1686_056_002.s",
+      "section": "file_13",
+      "suffix": ".text",
+      "names": [
+        "func_801DEE24_6098A4"
+      ]
+    },
+    {
+      "owner": "asm/japan_0/jp1686_060_002.s",
+      "section": "file_17",
+      "suffix": ".text",
+      "names": [
+        "func_80213F2C_672D9C"
+      ]
+    },
+    {
+      "owner": "asm/japan_0/jp1686_065_003.s",
+      "section": "file_13",
+      "suffix": ".text",
+      "names": [
+        "func_80208140_632BC0"
+      ]
+    },
+    {
+      "owner": "asm/japan_0/jp1686_073_000.s",
+      "section": "file_18",
+      "suffix": ".text",
+      "names": [
+        "func_8022007C_68976C",
+        "func_802200F8_6897E8"
+      ]
+    },
+    {
+      "owner": "asm/japan_0/jp1686_075_007.s",
+      "section": "file_18",
+      "suffix": ".text",
+      "names": [
+        "func_80224110_68D800"
+      ]
+    },
+    {
+      "owner": "asm/japan_0/jp1686_076_006.s",
+      "section": "file_18",
+      "suffix": ".text",
+      "names": [
+        "func_80228E90_692580"
+      ]
+    },
+    {
+      "owner": "asm/japan_0/jp1686_079_002.s",
+      "section": "file_18",
+      "suffix": ".text",
+      "names": [
+        "func_8022DA34_697124"
+      ]
+    },
+    {
+      "owner": "asm/japan_0/jp1686_084_010.s",
+      "section": "file_19",
+      "suffix": ".text",
+      "names": [
+        "func_80218534_69FC34"
+      ]
+    },
+    {
+      "owner": "asm/japan_0/jp1686_089_009.s",
+      "section": "file_18",
+      "suffix": ".text",
+      "names": [
+        "func_8021FF3C_68962C",
+        "func_8021FF9C_68968C"
+      ]
+    },
+    {
+      "owner": "asm/japan_0/jp1686_105_002.s",
+      "section": "file_42",
+      "suffix": ".text",
+      "names": [
+        "func_08001318_6F5C38",
+        "func_0800135C_6F5C7C"
+      ]
+    },
+    {
+      "owner": "asm/japan_0/jp1686_107_001.s",
+      "section": "file_44",
+      "suffix": ".text",
+      "names": [
+        "func_08001368_700B38"
+      ]
+    },
+    {
+      "owner": "asm/japan_0/jp1686_132_003.s",
+      "section": "file_11",
+      "suffix": ".text",
+      "names": [
+        "func_801F46D8_5B06A8"
+      ]
+    },
+    {
+      "owner": "asm/japan_0/jp1686_133_000.s",
+      "section": "file_12",
+      "suffix": ".text",
+      "names": [
+        "func_8021F3B4_5DA944"
+      ]
+    },
+    {
+      "owner": "asm/japan_0/jp1686_138_019.s",
+      "section": "file_11",
+      "suffix": ".text",
+      "names": [
+        "func_801E35D8_59F5A8",
+        "func_801E3638_59F608",
+        "func_801E3680_59F650",
+        "func_801E36E0_59F6B0",
+        "func_801E3740_59F710"
+      ]
+    },
+    {
+      "owner": "asm/japan_0/jp1686_140_003.s",
+      "section": "file_11",
+      "suffix": ".text",
+      "names": [
+        "func_801E7118_5A30E8",
+        "func_801E72E8_5A32B8"
+      ]
+    },
+    {
+      "owner": "asm/japan_0/jp1686_149_010.s",
+      "section": "file_11",
+      "suffix": ".text",
+      "names": [
+        "func_80200180_5BC150"
+      ]
+    },
+    {
+      "owner": "asm/japan_0/jp1686_160_009.s",
+      "section": "file_13",
+      "suffix": ".text",
+      "names": [
+        "func_801EA2F0_614D70"
+      ]
+    },
+    {
+      "owner": "asm/japan_0/jp1686_164_009.s",
+      "section": "file_13",
+      "suffix": ".text",
+      "names": [
+        "func_801F613C_620BBC"
+      ]
+    },
+    {
+      "owner": "asm/japan_0/jp1686_165_013.s",
+      "section": "file_13",
+      "suffix": ".text",
+      "names": [
+        "func_801F9164_623BE4"
+      ]
+    },
+    {
+      "owner": "asm/japan_0/jp1686_175_003.s",
+      "section": "file_13",
+      "suffix": ".text",
+      "names": [
+        "func_80205DB4_630834"
+      ]
+    },
+    {
+      "owner": "asm/japan_0/jp1686_177_002.s",
+      "section": "file_13",
+      "suffix": ".text",
+      "names": [
+        "func_8020AAB0_635530"
+      ]
+    },
+    {
+      "owner": "asm/japan_0/jp1686_188_002.s",
+      "section": "file_18",
+      "suffix": ".text",
+      "names": [
+        "func_802190D8_6827C8"
+      ]
+    },
+    {
+      "owner": "asm/japan_0/jp1686_198_003.s",
+      "section": "file_24",
+      "suffix": ".text",
+      "names": [
+        "func_08000490_6B1560"
+      ]
+    },
+    {
+      "owner": "asm/japan_0/jp1686_200_009.s",
+      "section": "file_27",
+      "suffix": ".text",
+      "names": [
+        "func_080013B0_6B52B0"
+      ]
+    },
+    {
+      "owner": "asm/japan_0/jp1686_211_006.s",
+      "section": "file_30",
+      "suffix": ".text",
+      "names": [
+        "func_08005CB0_6C9E70"
+      ]
+    },
+    {
+      "owner": "asm/japan_0/jp1686_218_000.s",
+      "section": "file_37",
+      "suffix": ".text",
+      "names": [
+        "func_0800046C_6E3DDC"
+      ]
+    },
+    {
+      "owner": "asm/japan_0/jp1686_219_001.s",
+      "section": "file_37",
+      "suffix": ".text",
+      "names": [
+        "func_08000F5C_6E48CC"
+      ]
+    },
+    {
+      "owner": "asm/japan_0/jp1686_219_007.s",
+      "section": "file_37",
+      "suffix": ".text",
+      "names": [
+        "func_080017D0_6E5140"
+      ]
+    },
+    {
+      "owner": "asm/japan_0/jp1686_219_009.s",
+      "section": "file_37",
+      "suffix": ".text",
+      "names": [
+        "func_0800193C_6E52AC"
+      ]
+    },
+    {
+      "owner": "asm/japan_0/jp1686_221_004.s",
+      "section": "file_38",
+      "suffix": ".text",
+      "names": [
+        "func_08001B98_6EA2E8"
+      ]
+    },
+    {
+      "owner": "asm/japan_0/jp1686_222_008.s",
+      "section": "file_38",
+      "suffix": ".text",
+      "names": [
+        "func_08002D10_6EB460"
+      ]
+    },
+    {
+      "owner": "asm/japan_0/jp1686_237_014.s",
+      "section": "file_46",
+      "suffix": ".text",
+      "names": [
+        "func_08003750_708DF0"
+      ]
+    },
+    {
+      "owner": "asm/japan_0/jp1686_245_004.s",
+      "section": "file_54",
+      "suffix": ".text",
+      "names": [
+        "func_08000EC4_715A54"
+      ]
+    },
+    {
+      "owner": "asm/japan_0/jp1686_248_002.s",
+      "section": "file_56",
+      "suffix": ".text",
+      "names": [
+        "func_08001D64_719204"
+      ]
+    },
+    {
+      "owner": "asm/japan_0/jp1686_258_003.s",
+      "section": "file_73",
+      "suffix": ".text",
+      "names": [
+        "func_08001704_7389E4"
+      ]
+    },
+    {
+      "owner": "asm/japan_0/jp1686_275_000.s",
+      "section": "main",
+      "suffix": ".text",
+      "names": [
+        "func_80018CF0_198F0"
+      ]
+    },
+    {
+      "owner": "asm/japan_0/jp1686_275_005.s",
+      "section": "main",
+      "suffix": ".text",
+      "names": [
+        "func_8001B4A8_1C0A8"
+      ]
+    },
+    {
+      "owner": "asm/japan_0/jp1686_287_000.s",
+      "section": "main",
+      "suffix": ".text",
+      "names": [
+        "func_80006DEC_79EC"
+      ]
+    },
+    {
+      "owner": "asm/japan_0/jp55_main_24A20_tail.s",
+      "section": "main",
+      "suffix": ".text",
+      "names": [
+        "func_80024548_25148"
+      ]
+    },
+    {
+      "owner": "asm/japan_0/jpcross34_jp1686_144_007_00.s",
+      "section": "file_11",
+      "suffix": ".text",
+      "names": [
+        "func_801F30AC_5AF07C"
+      ]
+    },
+    {
+      "owner": "asm/japan_0/jpcross34_jp1686_269_001_00.s",
+      "section": "main",
+      "suffix": ".text",
+      "names": [
+        "_freePVoice"
+      ]
+    },
+    {
+      "owner": "asm/japan_0/jpcross34_string_00.s",
+      "section": "main",
+      "suffix": ".text",
+      "names": [
+        "memcpy"
+      ]
+    },
+    {
+      "owner": "asm/japan_0/jpdonor10_jp1686_140_009_00.s",
+      "section": "file_11",
+      "suffix": ".text",
+      "names": [
+        "func_801E79B4_5A3984"
+      ]
+    },
+    {
+      "owner": "asm/japan_0/jpdonor10_jp1686_154_000_tail.s",
+      "section": "file_12",
+      "suffix": ".text",
+      "names": [
+        "func_802198E4_5D4E74"
+      ]
+    },
+    {
+      "owner": "asm/japan_0/jpeq36_001_002.s",
+      "section": "file_12",
+      "suffix": ".text",
+      "names": [
+        "func_802279A4_5E2F34"
+      ]
+    },
+    {
+      "owner": "asm/japan_0/jpeq36_008_002.s",
+      "section": "file_13",
+      "suffix": ".text",
+      "names": [
+        "func_80208420_632EA0"
+      ]
+    },
+    {
+      "owner": "asm/japan_0/jpeq37_016_000.s",
+      "section": "file_67",
+      "suffix": ".text",
+      "names": [
+        "func_08000EAC_72E86C"
+      ]
+    },
+    {
+      "owner": "asm/japan_0/jpexpand7_67A240_tail.s",
+      "section": "file_17",
+      "suffix": ".text",
+      "names": [
+        "func_8021B4BC_67A32C",
+        "func_8021B4F0_67A360"
+      ]
+    },
+    {
+      "owner": "asm/japan_0/jpexpand7_jp1686_140_041_tail.s",
+      "section": "file_11",
+      "suffix": ".text",
+      "names": [
+        "func_801E848C_5A445C"
+      ]
+    },
+    {
+      "owner": "asm/japan_0/jpport_686770_004.s",
+      "section": "file_18",
+      "suffix": ".text",
+      "names": [
+        "func_80224644_68DD34"
+      ]
+    },
+    {
+      "owner": "asm/japan_0/jpport_738B40_002.s",
+      "section": "file_74",
+      "suffix": ".text",
+      "names": [
+        "func_08002F00_73BA40"
+      ]
+    },
+    {
+      "owner": "asm/japan_0/jpshort28_jp1686_032_001_00.s",
+      "section": "file_32",
+      "suffix": ".text",
+      "names": [
+        "func_080003EC_6D3EEC"
+      ]
+    },
+    {
+      "owner": "asm/japan_0/jpshort28_jp1686_032_004_tail.s",
+      "section": "file_32",
+      "suffix": ".text",
+      "names": [
+        "func_08000BB8_6D46B8",
+        "func_08000C00_6D4700"
+      ]
+    },
+    {
+      "owner": "asm/japan_0/libultra/audio/drvrNew.s",
+      "section": "main",
+      "suffix": ".text",
+      "names": [
+        "alSaveNew"
+      ]
+    },
+    {
+      "owner": "asm/japan_0/libultra/audio/synaddplayer.s",
+      "section": "main",
+      "suffix": ".text",
+      "names": [
+        "alSynAddPlayer"
+      ]
+    },
+    {
+      "owner": "asm/japan_0/libultra/io/piacs.s",
+      "section": "main",
+      "suffix": ".text",
+      "names": [
+        "__osPiRelAccess"
+      ]
+    },
+    {
+      "owner": "asm/japan_0/libultra/io/siacs.s",
+      "section": "main",
+      "suffix": ".text",
+      "names": [
+        "__osSiRelAccess"
+      ]
+    },
+    {
+      "owner": "asm/japan_0/libultra/libc/sprintf.s",
+      "section": "main",
+      "suffix": ".text",
+      "names": [
+        "proutSprintf"
+      ]
+    },
+    {
+      "owner": "asm/japan_0/short145_jp1686_003_010_00.s",
+      "section": "file_11",
+      "suffix": ".text",
+      "names": [
+        "func_801F9FB0_5B5F80"
+      ]
+    },
+    {
+      "owner": "asm/japan_0/short145_jp1686_003_010_02.s",
+      "section": "file_11",
+      "suffix": ".text",
+      "names": [
+        "func_801FA030_5B6000"
+      ]
+    },
+    {
+      "owner": "asm/japan_0/short145_jp1686_026_000_00.s",
+      "section": "file_18",
+      "suffix": ".text",
+      "names": [
+        "func_8021C4E0_685BD0"
+      ]
+    },
+    {
+      "owner": "asm/japan_0/short145_jp1686_034_005_00.s",
+      "section": "file_35",
+      "suffix": ".text",
+      "names": [
+        "func_080021E4_6DCA84"
+      ]
+    },
+    {
+      "owner": "asm/japan_0/short145_jp1686_034_005_tail.s",
+      "section": "file_35",
+      "suffix": ".text",
+      "names": [
+        "func_080025DC_6DCE7C"
+      ]
+    },
+    {
+      "owner": "asm/japan_0/short145_jp1686_128_008_00.s",
+      "section": "file_29",
+      "suffix": ".text",
+      "names": [
+        "func_080024D0_6BA250"
+      ]
+    },
+    {
+      "owner": "asm/japan_0/short145_jp1686_199_006_00.s",
+      "section": "file_27",
+      "suffix": ".text",
+      "names": [
+        "func_08000484_6B4384"
+      ]
+    },
+    {
+      "owner": "asm/japan_0/short145_jp1686_217_012_tail.s",
+      "section": "file_36",
+      "suffix": ".text",
+      "names": [
+        "func_080048AC_6E303C",
+        "func_080048F4_6E3084"
+      ]
+    },
+    {
+      "owner": "asm/japan_0/short145_jp1686_220_004_tail.s",
+      "section": "file_38",
+      "suffix": ".text",
+      "names": [
+        "func_08000F20_6E9670"
+      ]
+    },
+    {
+      "owner": "asm/japan_0/short145_jp1686_248_000_00.s",
+      "section": "file_56",
+      "suffix": ".text",
+      "names": [
+        "func_08000534_7179D4"
+      ]
+    }
+  ],
+  "blocked": [],
+  "linker_sha256": "82c0ca646a1d0f45bd63ca6ff3781738359939f38ef32f833a8776fb0abc03af"
+}

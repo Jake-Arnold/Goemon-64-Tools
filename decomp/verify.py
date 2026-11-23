@@ -436,6 +436,14 @@ def reconcile108_stage(manifest):
 
 def claimed_functions(manifest):
     """All C claims, with explicit overlay functions outside main mapping."""
+    if manifest.get('usa_native151_promotion') is not None:
+        from . import native251_promotion as native151
+        prior={k:v for k,v in manifest.items() if k!='usa_native151_promotion'}
+        before=claimed_functions(prior)
+        if (len(before),sum(f['size'] for f in before))!=(2165,100040):
+            return before  # immutable historical projections only; load_manifest validates current full stage
+        fs=native151.validate_predecessor(manifest)
+        return before+[{**{k:f[k] for k in ('name','rom_offset','vma')},'size':f['original_bytes']} for f in fs]
     if manifest.get('usa_script_vm436_promotion') is not None:
         from . import usa_script_vm436_promotion as vm436
         older={k:v for k,v in manifest.items() if k!='usa_script_vm436_promotion'}
@@ -1399,6 +1407,7 @@ def load_manifest(path):
     selector_stage_value = manifest.pop('overlay_mini_selector_stage', None)
     opening_new2_stage_value = manifest.pop('overlay_usa_opening_new2_stage', None)
     short72_stage_value = manifest.pop('overlay_usa_short72_stage', None)
+    native151_stage_value = manifest.pop('usa_native151_promotion', None)
     vm436_stage_value = manifest.pop('usa_script_vm436_promotion', None)
     for key,length in (('upstream_commit',40),('retail_sha1',40),('decompressed_sha1',40)):
         if not re.fullmatch('[0-9a-f]{'+str(length)+'}',manifest.get(key,'')):raise ValueError('Invalid '+key)
@@ -1739,6 +1748,10 @@ def load_manifest(path):
         manifest['usa_script_vm436_promotion']=vm436_stage_value
         from . import usa_script_vm436_promotion as vm436
         vm436.validate_predecessor(manifest)
+    if native151_stage_value is not None:
+        manifest['usa_native151_promotion']=native151_stage_value
+        from . import native251_promotion as native151
+        native151.validate_predecessor(manifest)
     return manifest
 
 
@@ -2596,6 +2609,7 @@ def validate_baseline_cache(checkout, manifest):
 
 def run_build(args,manifest,report):
     short72_stage_value=manifest.pop('overlay_usa_short72_stage',None)
+    native151_stage_value=manifest.pop('usa_native151_promotion',None)
     vm436_stage_value=manifest.pop('usa_script_vm436_promotion',None)
     opening_new2_stage_value=manifest.pop('overlay_usa_opening_new2_stage',None)
     selector_stage_value=manifest.pop('overlay_mini_selector_stage',None)
@@ -3662,6 +3676,20 @@ def run_build(args,manifest,report):
         report['retained_assembly_functions'].remove(vm436.NAME)
         report['sources_sha256_lf']['research/usa_script_vm_436_20261123/source/func_8003EBAC_3F7AC.c']=vm436.ORIGINAL_C_SOURCE_SHA256
         report['usa_script_vm436_promotion']=proof
+    if native151_stage_value is not None:
+        from . import native251_promotion as native151
+        if not result['full_rom_match'] or (result['matched_functions'],result['matched_function_bytes'])!=(2165,100040):
+            raise ValueError('Native151 requires exact accepted 2165-C predecessor')
+        manifest['usa_native151_promotion']=native151_stage_value
+        fs=native151.validate_predecessor(manifest,expected)
+        proof=native151.apply_usa(candidate,baseline,work,uv,args.jobs)
+        for f in fs:
+            off=f['rom_offset'];size=f['original_bytes'];fingerprint=digest(expected[off:off+size],'sha256')
+            result['functions'].append({'name':f['name'],'size':size,'guest_address':f'0x{f["vma"]:08X}','rom_offset':f'0x{off:X}','matched':True,'expected_sha256':fingerprint,'candidate_sha256':fingerprint})
+            result['claimed_functions']+=1;result['matched_functions']+=1;result['matched_function_bytes']+=size
+            if f['name'] in report['retained_assembly_functions']:report['retained_assembly_functions'].remove(f['name'])
+            report['sources_sha256_lf']['research/promotion251_20261123/'+f['source']]=f['source_sha256']
+        report['usa_native151_promotion']=proof
     if not result['full_rom_match'] or result['matched_functions']!=result['claimed_functions']:
         raise ValueError('Candidate failed exact matching')
     report['stage']='complete';report['status']='matched'

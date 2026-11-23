@@ -1,0 +1,154 @@
+{
+  "status": "PASS_ISOLATED_NATIVE_REPLAY_ONLY",
+  "matches": 8,
+  "negative_controls_rejected": 8,
+  "bytes": 576,
+  "relocations": 35,
+  "full_G2": "NOT_RUN",
+  "records": [
+    {
+      "region": "usa",
+      "name": "func_801F56EC_5B15FC",
+      "rom_offset": 5969404,
+      "bytes": 72,
+      "positive": {
+        "exact": true,
+        "reason": "EXACT",
+        "first_difference": null,
+        "relocation_count": 1
+      },
+      "negative": {
+        "exact": false,
+        "reason": "FUNC_EXTENT_MISMATCH",
+        "first_difference": 0,
+        "relocation_count": 1
+      }
+    },
+    {
+      "region": "usa",
+      "name": "func_802203C8_5DB898",
+      "rom_offset": 6142104,
+      "bytes": 72,
+      "positive": {
+        "exact": true,
+        "reason": "EXACT",
+        "first_difference": null,
+        "relocation_count": 4
+      },
+      "negative": {
+        "exact": false,
+        "reason": "FUNC_EXTENT_MISMATCH",
+        "first_difference": 0,
+        "relocation_count": 4
+      }
+    },
+    {
+      "region": "usa",
+      "name": "func_8022218C_5DD65C",
+      "rom_offset": 6149724,
+      "bytes": 72,
+      "positive": {
+        "exact": true,
+        "reason": "EXACT",
+        "first_difference": null,
+        "relocation_count": 4
+      },
+      "negative": {
+        "exact": false,
+        "reason": "FUNC_EXTENT_MISMATCH",
+        "first_difference": 0,
+        "relocation_count": 4
+      }
+    },
+    {
+      "region": "usa",
+      "name": "func_08002534_6B57D4",
+      "rom_offset": 7034836,
+      "bytes": 72,
+      "positive": {
+        "exact": true,
+        "reason": "EXACT",
+        "first_difference": null,
+        "relocation_count": 6
+      },
+      "negative": {
+        "exact": false,
+        "reason": "FUNC_EXTENT_MISMATCH",
+        "first_difference": 0,
+        "relocation_count": 6
+      }
+    },
+    {
+      "region": "usa",
+      "name": "func_08000BB8_6CFC98",
+      "rom_offset": 7142552,
+      "bytes": 72,
+      "positive": {
+        "exact": true,
+        "reason": "EXACT",
+        "first_difference": null,
+        "relocation_count": 4
+      },
+      "negative": {
+        "exact": false,
+        "reason": "FUNC_EXTENT_MISMATCH",
+        "first_difference": 0,
+        "relocation_count": 4
+      }
+    },
+    {
+      "region": "usa",
+      "name": "func_08004980_6DE850",
+      "rom_offset": 7202896,
+      "bytes": 72,
+      "positive": {
+        "exact": true,
+        "reason": "EXACT",
+        "first_difference": null,
+        "relocation_count": 4
+      },
+      "negative": {
+        "exact": false,
+        "reason": "FUNC_EXTENT_MISMATCH",
+        "first_difference": 0,
+        "relocation_count": 4
+      }
+    },
+    {
+      "region": "usa",
+      "name": "func_080049C8_6DE898",
+      "rom_offset": 7202968,
+      "bytes": 72,
+      "positive": {
+        "exact": true,
+        "reason": "EXACT",
+        "first_difference": null,
+        "relocation_count": 6
+      },
+      "negative": {
+        "exact": false,
+        "reason": "FUNC_EXTENT_MISMATCH",
+        "first_difference": 0,
+        "relocation_count": 6
+      }
+    },
+    {
+      "region": "usa",
+      "name": "func_08000ED0_711530",
+      "rom_offset": 7410992,
+      "bytes": 72,
+      "positive": {
+        "exact": true,
+        "reason": "EXACT",
+        "first_difference": null,
+        "relocation_count": 6
+      },
+      "negative": {
+        "exact": false,
+        "reason": "FUNC_EXTENT_MISMATCH",
+        "first_difference": 0,
+        "relocation_count": 6
+      }
+    }
+  ]
+}
