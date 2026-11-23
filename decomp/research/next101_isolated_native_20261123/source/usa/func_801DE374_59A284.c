@@ -1,0 +1,1 @@
+typedef unsigned char u8;struct S{char pad[0x60];u8 state;};extern void func_801F5B04_5B1A14(void*,int,int,int,int,int);extern void func_801E4078_59FF88(void*,int,int,int);void func_801DE374_59A284(struct S*a,void*b){if(a->state==2)func_801F5B04_5B1A14(a,11,105,107,4,9);else func_801E4078_59FF88(a,11,105,107);}

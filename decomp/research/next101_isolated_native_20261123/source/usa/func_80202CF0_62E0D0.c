@@ -1,0 +1,1 @@
+typedef unsigned short u16;struct A{char pad[24];u16 field;};extern char func_80202D34_62E114;extern void func_8003521C_35E1C(void*);void func_80202CF0_62E0D0(void*arg0,struct A*actor){ actor->field=(actor->field+16)&0x3ff;if(actor->field==80){func_8003521C_35E1C((void*)&func_80202D34_62E114);} }
