@@ -1,3 +1,8 @@
+## 23 November 2026 — mark legacy main/default branch read-only for agents
+
+- No new development should target `main`. Toolkit canonical baseline is `stable/toolkit` (from original `main` commit `61b5f91db12b8aa32dbcf555c8e562e7066cebdd`), decomp canonical `stable/decomp` (from original `chatgptweb/decomp` commit `6b864fac15fb4d9510a7fae5b7945b3b6cac69cf`). New topics use `toolkit/*` / `decomp/*` and target their respective `stable/*`.
+- Updated legacy `AGENTS.md`, README and toolkit policy with unmistakable redirect; `BRANCHES.md` is shared authoritative policy. No runtime/game or decomp matching-C code changed. GitHub default/ruleset changes must be done separately and verified.
+
 # Goemon 64 Tools — Development Progress
 
 ## 2026-11-22 — v0.11.81: debugger, trace recorder and reviewed address metadata

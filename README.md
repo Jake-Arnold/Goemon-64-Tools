@@ -1,3 +1,5 @@
+> **LEGACY DEFAULT BRANCH (23 Nov 2026): Do not develop on `main`.** Current toolkit branch is [`stable/toolkit`](https://github.com/Jake-Arnold/Goemon-64-Tools/tree/stable/toolkit), with `toolkit/*` feature PRs. Current decomp branch is [`stable/decomp`](https://github.com/Jake-Arnold/Goemon-64-Tools/tree/stable/decomp), with `decomp/*` feature PRs. Read [BRANCHES.md](BRANCHES.md). GitHub default-branch setting may still point here until changed in Settings.
+
 # Goemon Speedrun Tools v0.11.81 — PJ64-style Debugger and Research Metadata
 
 ## v0.11.81 — guest-RAM debugger, scripted tracing and reviewed metadata sync
@@ -20,26 +22,26 @@ This is a synthetic/test-oriented performance and usability improvement, **not**
 
 The toolkit address catalogue now includes the separately reviewed address metadata import from the newer 20 November branch. Its three JSON data files contain **549 catalogue entries** and **25 supplementary discoveries** (previous catalogue: 546 entries), with separate research-only metadata and source revision references. This does **not** promote provisional decomp code into the toolkit, change the original USA/Japan ROM images, or enable new unsafe memory writes. Toolkit v0.11.78's always-on Japanese dialogue search and character preview remain unchanged.
 
-The historical metadata-sync branches are superseded by this consolidated update. The long-lived `chatgptweb/decomp` baseline remains independent from `main`.
+The historical metadata-sync branches are superseded by this consolidated update. The long-lived `stable/decomp` baseline remains independent from `stable/toolkit`.
 
-## Run the practice toolkit from `main` (Windows and Linux)
+## Run the practice toolkit from `stable/toolkit` (Windows and Linux)
 
-**Use the `main` branch for the runnable practice toolkit.** The
-`chatgptweb/decomp` branch is a separate matching-C development workspace;
-its launcher and toolkit files may be older than the live `main` release. These
-instructions use the actual `main` entry points and do not require an N64 ROM
+**Use the `stable/toolkit` branch for the runnable practice toolkit.** The
+`stable/decomp` branch is a separate matching-C development workspace;
+its launcher and toolkit files may be older than the live `stable/toolkit` release. These
+instructions use the actual `stable/toolkit` entry points and do not require an N64 ROM
 to open the GUI. You need an independently running supported game/emulator to
 connect to live game memory. Use a disposable save for memory-writing tools.
 
 ### Get the toolkit
 
 ```bash
-git clone --branch main --single-branch https://github.com/Jake-Arnold/Goemon-64-Tools.git
+git clone --branch stable/toolkit --single-branch https://github.com/Jake-Arnold/Goemon-64-Tools.git
 cd Goemon-64-Tools
 ```
 
 If you already have a **separate clean checkout** of the toolkit, update it
-with `git switch main` and `git pull --ff-only origin main`. Do not switch
+with `git switch stable/toolkit` and `git pull --ff-only origin stable/toolkit`. Do not switch
 branches inside a working directory that contains uncommitted decomp changes.
 
 ### Windows
@@ -87,7 +89,7 @@ before enabling it. Keyboard injection is verified for X11 only, not Wayland.
 
 ### Keep toolkit and decomp development separate
 
-For toolkit updates, run `git pull --ff-only origin main` from the **main**
+For toolkit updates, run `git pull --ff-only origin stable/toolkit` from the **main**
 checkout. The experimental C decompilation branch has separate original-ROM
 build and verification requirements; the matching-C code and research are **not**
 needed to run the toolkit. Neither branch distributes game ROMs or emulators.
@@ -208,7 +210,7 @@ Source notes: `docs/JAPAN_KAI_ALPHABET_AND_NEWLINES_20261119.md`. Existing sourc
 
 **Validation 19 November 2026:** **59 focused original-ROM / Linux Xvfb Tk tests passed, zero skipped**, under portable Python 3.12.16, LZKN64 and the supplied pinned USA/Japan decompressed and 16 MiB retail ROMs. Includes all 29 screenshot/ROM record alignments, the 63 new mappings, original JP retail byte-for-byte unchanged repack, native token/control round trips and USA/Japan UI integration. No new Python dependencies are introduced. Full application Windows/Linux regressions, packaged TkDND distribution and modified Japanese retail ROM display in Project64 remain unverified.
 
-The active PR #94 is draft against `main`; `chatgptweb/decomp` and any old branch cleanup state remain untouched. No original ROM bytes, screenshots, font images or licensed assets were committed.
+The active PR #94 is draft against `stable/toolkit`; `stable/decomp` and any old branch cleanup state remain untouched. No original ROM bytes, screenshots, font images or licensed assets were committed.
 
 
 ## v0.11.69 — All candidate records visible, expanded screenshot-verified Japanese glyph map
@@ -375,7 +377,7 @@ read-only metadata analysis; it does **not** claim a verified actor-to-mesh
 mapping or RT64 renderer equivalence.
 
 This consolidates earlier stacked PRs #60, #62, #67 into a fresh
-`main`-based feature branch. Porting touches only the current entrance
+`stable/toolkit`-based feature branch. Porting touches only the current entrance
 UI, preserving the full reviewed entrance atlas, v0.11.57 flag selector,
 shared scene controls and original debug/reload protections. Existing
 native game-memory writers, region mappings and matching-C decomp code
@@ -827,7 +829,7 @@ Each explicit click sets or clears only the selected bit, retains neighbouring b
 
 Japan and USA use the same Live Memory, Unlocks and Story Progress pages. The reciprocal memory-data crosswalk lives in `practice/region_memory_crosswalk.py`, not a new Japanese diagnostics panel. Source-verified and user-observed static fields absent from the original Japanese live table appear in shared Live Memory; the 34 regional Unlocks continue using their existing explicitly sourced `practice/region_unlocks.py` mappings. Japanese saved-event/Plasma candidate addresses appear only as clearly labelled **read-only bit observations** in the existing Story Progress table. Guessed bits are not identified as completed events or made editable.
 
-Agents can look up known mappings and scoped unknown candidates with `python3 scripts/crosswalk_address.py --source usa --address 0x8015C60C --mask 0x20`. This produces no gameplay-memory writes. The confirmed Snowflake +0x57F1 exception overrides arithmetic; suspected pause `0x800CD2D6` and Sasuke Battery 1 remain unverified. Dynamic player pointers, script VM and overlay/Impact addresses must not be inferred from +0x57F0. This implementation is merged into `main` through PRs #35 and #52. The redundant crosswalk panel in PR #43 was deliberately excluded and that PR is closed.
+Agents can look up known mappings and scoped unknown candidates with `python3 scripts/crosswalk_address.py --source usa --address 0x8015C60C --mask 0x20`. This produces no gameplay-memory writes. The confirmed Snowflake +0x57F1 exception overrides arithmetic; suspected pause `0x800CD2D6` and Sasuke Battery 1 remain unverified. Dynamic player pointers, script VM and overlay/Impact addresses must not be inferred from +0x57F0. This implementation is merged into `stable/toolkit` through PRs #35 and #52. The redundant crosswalk panel in PR #43 was deliberately excluded and that PR is closed.
 
 
 **Merged verification (17 November 2026):** [Linux CI](https://github.com/Jake-Arnold/Goemon-64-Tools/actions/runs/44106257328) passed 336 synthetic tests (335 passed, 1 skipped) and 139 Xvfb Tk GUI tests; [Windows portable CI](https://github.com/Jake-Arnold/Goemon-64-Tools/actions/runs/44106257521) passed 33 tests. Actual Japanese gameplay and full Windows Tk UI remain unverified.
@@ -995,20 +997,20 @@ The user has reported the **Gourmet Sub 2F Bazooka Room (0x081)** as independent
 
 Added regression tests for debug-mode idempotence and exact write isolation, 3-endian memory handling, automatic PID selection, cached hint invalidation, PID change/ASLR, ambiguous concurrent clients, four-character transition monitoring and no unverified XYZ writes. Test runners include the new modules. **GitHub connector commits these changes but has not executed the complete Ubuntu test suite or live gameplay; the PR remains draft.**
 
-This feature branch derives from `main` v0.11.27; the separate older **v0.11.29 bugfix PR #30** remains open and should be integrated first, then this feature branch refreshed before merging to avoid README/PROGRESS/version overlap. Version numbering here is v0.11.30 so it does not collide with that pending bugfix release.
+This feature branch derives from `stable/toolkit` v0.11.27; the separate older **v0.11.29 bugfix PR #30** remains open and should be integrated first, then this feature branch refreshed before merging to avoid README/PROGRESS/version overlap. Version numbering here is v0.11.30 so it does not collide with that pending bugfix release.
 
 ## Previous v0.11.27 — one unified toolkit development branch
 ## v0.11.27 — consolidate active USA/Japan toolkit development
 
-The unified v0.11.27 USA/Japan toolkit has been **merged into `main` via PR #27**. The merge preserves the v0.11.26 Japanese-native-recomp toolkit and full 888-entrance atlas, with no feature-code reset or overwrite. It retains the current USA and Japan toolkit implementation, supported writes and process backends, Ubuntu dock launcher, 888-entry source-verified original-USA entrance atlas, unified Scene Browser, and live-memory/checkpoint tooling.
+The unified v0.11.27 USA/Japan toolkit has been **merged into `stable/toolkit` via PR #27**. The merge preserves the v0.11.26 Japanese-native-recomp toolkit and full 888-entrance atlas, with no feature-code reset or overwrite. It retains the current USA and Japan toolkit implementation, supported writes and process backends, Ubuntu dock launcher, 888-entry source-verified original-USA entrance atlas, unified Scene Browser, and live-memory/checkpoint tooling.
 
 This consolidates **the active development target**, not the separate decompilation project. The older Japan toolkit, Mupen probe, native savestate, Linux prototype and earlier Japan integration branches are now **historical references**, not parallel locations for new toolkit work. Their earlier `practice/toolkit.py` and `practice/ui_extension.py` method inventories were compared with the v0.11.26 baseline; the latest toolkit contains all method names from both earlier consolidation/integration controllers, with later ROM-validation and native-recomp logic. Old code that was deliberately removed, such as the separate experimental speed controls, has not been reintroduced.
 
-**All future toolkit changes should branch from `main` into short-lived `toolkit/*` branches, then merge reviewed PRs back into `main`.** The permanent decomp baseline stays at `chatgptweb/decomp`, with research branches off it. The previous toolkit feature branches remain historical only. Do not merge unrelated `decomp`, `file11`, Impact or ROM-research trees blindly.
+**All future toolkit changes should branch from `stable/toolkit` into short-lived `toolkit/*` branches, then merge reviewed PRs back into `stable/toolkit`.** The permanent decomp baseline stays at `stable/decomp`, with research branches off it. The previous toolkit feature branches remain historical only. Do not merge unrelated `decomp`, `file11`, Impact or ROM-research trees blindly.
 
 Full branch map, scope, old-branch provenance and Ubuntu checkout commands: **[Toolkit branch policy](docs/TOOLKIT_BRANCH_POLICY.md)**.
 
-This is a branch consolidation release; PR #27 merged into `main` on 16 November 2026. Its Ubuntu GUI regression suite and live USA/Japanese warp/write checks had not run at merge time, so runtime acceptance remains outstanding.
+This is a branch consolidation release; PR #27 merged into `stable/toolkit` on 16 November 2026. Its Ubuntu GUI regression suite and live USA/Japanese warp/write checks had not run at merge time, so runtime acceptance remains outstanding.
 
 ## Previous v0.11.26 — bundled complete USA/Japan warp entrance atlas
 ## v0.11.26 — extracted user-supplied coordinates committed to Git
@@ -1167,7 +1169,7 @@ The value `6` was observed by the user to permit moving through enemies in one t
 
 ## Active development branch and damage-event recorder
 
-Use `main` as the integrated USA/Japan toolkit baseline after PR #22 (16 November 2026). Work on isolated feature branches and merge only after tests and live acceptance. Preserve the existing right-click freeze/rename controls, fast freeze engine and external Linux PID support. See [branch workflow](docs/BRANCH_WORKFLOW.md) before creating, deleting or merging research branches.
+Use `stable/toolkit` as the integrated USA/Japan toolkit baseline after PR #22 (16 November 2026). Work on isolated feature branches and merge only after tests and live acceptance. Preserve the existing right-click freeze/rename controls, fast freeze engine and external Linux PID support. See [branch workflow](docs/BRANCH_WORKFLOW.md) before creating, deleting or merging research branches.
 
 The **Automatic events** tab captures read-only memory samples around health-loss events, ranks transient candidate fields and exports JSON evidence. It is designed to investigate damage immunity and collision handling; candidate addresses are not yet verified collision controls. Recording stops on map, character, pointer or connection changes.
 
