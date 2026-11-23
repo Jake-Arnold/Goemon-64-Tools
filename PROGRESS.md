@@ -1,3 +1,7 @@
+## 23 November 2026 — combined C-Right helper hypothesis (FAILED_NATIVE / RESEARCH_ONLY)
+
+- Combining direct volatile global with separate traversal pointers/depth locals reaches original 256B, 21/64 aligned words and all six original named relocation tuples exact in both regions. Prior 260B variants reproduced; shared-pointer negative 260B, zero aligned words, nonexact relocations. 14 compiled variants independently replayed, four prior controls replayed. First mismatch remains +0xC register allocation, final branch/delay slot also differs. No exact native match, preserve ASM. No full ROM/G2/CI/gameplay. Research ZIP and verified sources retained in decomp/research/cright_stage_helper_retry_20261123/; canonical counts unchanged.
+
 ## 23 November 2026 — third C-Right stage helper bounded retry (FAILED_NATIVE / RESEARCH_ONLY)
 
 - 16 new native IDO5.3 variants independently replayed identically. Both 256B helpers: direct global 260B and six relocations (callback positions shifted +4), separate traversal scopes 260B and 4/64 aligned words, 12-byte exact prefix unchanged. Both comparators still 9/19. No exact matches, ASM retained; no G2, inventory, full CI or gameplay. Source-only kit and representative verified controls in decomp/research/cright_stage_helper_retry_20261123/.
