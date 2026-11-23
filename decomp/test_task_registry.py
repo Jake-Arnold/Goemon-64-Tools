@@ -17,7 +17,7 @@ class TaskRegistryTests(unittest.TestCase):
     def test_checked_in_registry_valid(self):
         self.assertEqual(r.validate(self.data), [])
         self.assertGreaterEqual(len(self.data["tasks"]), 10)
-        self.assertEqual(self.data["branch"], "chatgptweb/decomp")
+        self.assertEqual(self.data["branch"], "stable/decomp")
 
     def test_distinct_and_actionable(self):
         ids = {t["id"] for t in self.data["tasks"]}

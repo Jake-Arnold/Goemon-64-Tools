@@ -1,6 +1,6 @@
 {
   "format": "goemon-task-registry-v1",
-  "branch": "chatgptweb/decomp",
+  "branch": "stable/decomp",
   "reconciled_head": "2ba2af13bf44c6260b543122a7a3bffe490412c7",
   "last_reviewed": "2026-11-21",
   "policy": "Curated actionable handoff list; GitHub issues, live manifests and verified native G2 reports supersede stale task details. Tasks are NOT proof of accepted C or authorization for unsafe gameplay writes.",

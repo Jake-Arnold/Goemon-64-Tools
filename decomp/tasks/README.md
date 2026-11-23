@@ -19,7 +19,7 @@ For every task that references a runnable script, Project64 hook, verifier, comp
 
 ## End-of-session pause / checkpoint protocol
 
-1. Re-fetch `chatgptweb/decomp` HEAD, current issues/PRs, all accepted original-ROM offset sets, and the task's references. Historical task `last_reviewed` and `reconciled_head` are **snapshots**, never automatic claims that a later promotion has not happened. Reconcile and remove/supersede completed work rather than duplicate it.
+1. Re-fetch `stable/decomp` HEAD, current issues/PRs, all accepted original-ROM offset sets, and the task's references. Historical task `last_reviewed` and `reconciled_head` are **snapshots**, never automatic claims that a later promotion has not happened. Reconcile and remove/supersede completed work rather than duplicate it.
 2. Record a compact, **complete handoff for the work actually investigated**: objective, region/revision, original offsets/VMAs, evidence links and test commands/results, first native mismatch or full-ROM proof, false hypotheses, outstanding blockers, precise next command/experiment, ownership/conflicting PRs and acceptance criteria. Keep confidential ROM/ASM/savestate/trace bytes out of Git. Refer to them by hash and safe provenance.
 3. Use a guarded checkpoint before committing a note:
    ```bash
@@ -32,15 +32,15 @@ For every task that references a runnable script, Project64 hook, verifier, comp
      --expected-sha256 '<paste exact fingerprint>'
    ```
    This only edits local JSON. It **does not** make a Git commit, push or validate gameplay/G2. When acceptance is verified, manually set `completion_proof` to the real proof/commit and `status=done` in a reviewed commit. The CLI deliberately refuses to mark tasks done.
-4. Update `PROGRESS.md` in the **same commit** as any changed registry, code, research or documentation. Update `decomp/CONTINUE.md` for newly verified C / major operational changes. Push only to `chatgptweb/decomp` after PR review/merge, verify remote SHA and task contents. Do not force-push or touch `main`.
+4. Update `PROGRESS.md` in the **same commit** as any changed registry, code, research or documentation. Update `decomp/CONTINUE.md` for newly verified C / major operational changes. Push only to `stable/decomp` after PR review/merge, verify remote SHA and task contents. Do not force-push or touch `stable/toolkit`.
 5. If the task is blocked, save the blocker and move to a genuinely independent task. Preserve source and accepted-count provenance. Never create synthetic success records or invent a native ROM gate.
 
 ## Promotion conflict and stale-proof safeguards
 
 - `conflicts_with` denotes **potential shared original functions, source owners or publication artifacts**, not a permanent dependency preventing independent research. Two independently native-exact batches can each work, but must not simultaneously publish replacements for the same original ASM owner or shared `combined.json` / inventories.
 - Before every promotion, compare original **region + ROM offset + actual source/overlay owner** against current accepted functions and every open pending batch/PR. A candidate in `ISOLATED_EXACT`, `FAILED_NATIVE`, `FAILED_ROM`, `RESEARCH_ONLY`, `PASSED_G2_LOCAL`, or an old issue is not a new accepted function. Only complete native G2 + ELF/relocation + strict inventory + full local CI + remote publication permits `done`/accepted increment.
-- Prefer a topic branch and PR for task registry and queued changes. Rebase onto the latest `chatgptweb/decomp` after other merges. If a conflict changes a C owner's original byte/relocation input, **invalidate and rerun the relevant native proofs**; do not combine stale `PASSED_G2_LOCAL` reports arithmetically.
-- [PR #149](https://github.com/Jake-Arnold/Goemon-64-Tools/pull/149) (retired G64-001–100 task machinery), [PR #150](https://github.com/Jake-Arnold/Goemon-64-Tools/pull/150) (historical docs), and [PR #153](https://github.com/Jake-Arnold/Goemon-64-Tools/pull/153) (short operational continuation and proof retention audit) are **merged** into `chatgptweb/decomp`. Their original contents and provenance remain archived; they are not pending tasks. The registry has **11 active + 2 completed maintenance** records as of 21 November 2026. Keep this queue independent of the retired plan and preserve discoverability links.
+- Prefer a topic branch and PR for task registry and queued changes. Rebase onto the latest `stable/decomp` after other merges. If a conflict changes a C owner's original byte/relocation input, **invalidate and rerun the relevant native proofs**; do not combine stale `PASSED_G2_LOCAL` reports arithmetically.
+- [PR #149](https://github.com/Jake-Arnold/Goemon-64-Tools/pull/149) (retired G64-001–100 task machinery), [PR #150](https://github.com/Jake-Arnold/Goemon-64-Tools/pull/150) (historical docs), and [PR #153](https://github.com/Jake-Arnold/Goemon-64-Tools/pull/153) (short operational continuation and proof retention audit) are **merged** into `stable/decomp`. Their original contents and provenance remain archived; they are not pending tasks. The registry has **11 active + 2 completed maintenance** records as of 21 November 2026. Keep this queue independent of the retired plan and preserve discoverability links.
 
 ## C-Right live instrumentation
 

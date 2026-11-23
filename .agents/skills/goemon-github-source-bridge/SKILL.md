@@ -7,7 +7,7 @@ description: "Use when Goemon repository access works via the GitHub connector b
 
 **Different processes have different network access.** The public GitHub repository may be readable through the connector while `git clone` fails DNS in the code-execution container. Avoid claiming a checkout from GitHub metadata alone.
 
-1. Check `git ls-remote`/`git clone` from the current execution host first. Read live branch SHA from GitHub even if cloning fails. Work on `chatgptweb/decomp`; do not alter `main`.
+1. Check `git ls-remote`/`git clone` from the current execution host first. Read live branch SHA from GitHub even if cloning fails. Work on `stable/decomp`; do not alter `stable/toolkit`.
 2. If shell cloning fails, use authorized GitHub connector read actions (`fetch`, `fetch_file`, Git commit/tree/blob APIs) to enumerate and retrieve source. Prefer a supported, verifiable transfer into the actual build filesystem (for example a materialized file or a full repository archive). **Connector text replies are not automatically local files.** If no viable transfer path exists, request a user-exported fresh `git archive` ZIP; never silently build from a stale snapshot.
 3. Authenticate every transferred source against its Git blob SHA and the selected remote commit/tree. Preserve file paths, names, file modes and symlinks. Reject missing files, truncation, inconsistent heads and accidental assets. Keep repository source separate from ROMs, extracted assembly and proprietary toolchains.
 4. Before native verification, check all required modules, manifests, scripts and build sources are **actually present** in one local tree. If materialization remains unavailable, mark `BLOCKED_INPUT`; do not claim a full-ROM verification.

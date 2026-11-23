@@ -36,8 +36,8 @@ def validate(data: dict) -> list[str]:
         return ["registry root must be an object"]
     if data.get("format") != "goemon-task-registry-v1":
         errors.append("format must be goemon-task-registry-v1")
-    if data.get("branch") != "chatgptweb/decomp":
-        errors.append("branch must remain chatgptweb/decomp")
+    if data.get("branch") != "stable/decomp":
+        errors.append("branch must remain stable/decomp")
     head = data.get("reconciled_head", "")
     if not isinstance(head, str) or not SHA_PATTERN.fullmatch(head):
         errors.append("reconciled_head must be a 40-character SHA")
@@ -201,7 +201,7 @@ def main(argv: list[str] | None = None) -> int:
             print(f"Next: {t['next_step']}\nAcceptance: {t['acceptance']}")
             print(f"Potential conflicts: {', '.join(t['conflicts_with']) or 'none explicitly listed'}")
             print("Evidence: " + ", ".join(t["evidence"]))
-            print("HANDOFF: Re-fetch the current chatgptweb/decomp HEAD and open PRs/issues; dedupe original function offsets and overlapping promotion owners before edits. Do not infer acceptance from the registry or historical reports.")
+            print("HANDOFF: Re-fetch the current stable/decomp HEAD and open PRs/issues; dedupe original function offsets and overlapping promotion owners before edits. Do not infer acceptance from the registry or historical reports.")
             if t["status"].startswith("blocked_"):
                 print("BLOCKED: Perform only independent research and evidence preparation until prerequisites are met. Do not invent live results.")
             print("For C promotion: native original-address IDO+complete ROM, ELF/relocation, strict inventory and full local_ci must pass; update PROGRESS.md in same commit and verify GitHub ref.")

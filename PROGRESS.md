@@ -1,3 +1,9 @@
+## 23 November 2026 — complete decomp agent/task routing migration
+
+- Updated active `decomp.task_registry` schema metadata, tests, CLI handoff, skill tests, source bridge and task-registry skills to `stable/decomp`. New matching-C topics must be `decomp/*`; toolkit topics `toolkit/*` target `stable/toolkit`.
+- Added current branch/status preamble to decomp README and CONTINUE, while preserving historical promotion proof below; PR template explicitly classifies workstreams. IDO and mismatch triage skills now require preflight and one of four per-attempt compiler-quirk outcomes.
+- No new native matching C, accepted counts, ELF identities, ROMs or runtime writes changed. ROM-free unit test requirements remain; no fresh native full-ROM proof claimed for routing updates.
+ 
 ## 23 November 2026 — decomp branch policy and mandatory per-native-attempt compiler findings
 
 - Migrated canonical workstream to `stable/decomp` from verified `chatgptweb/decomp` commit `6b864fac15fb4d9510a7fae5b7945b3b6cac69cf`; USA 2,090 C / 5,273 ASM; Japan 2,370 C after PR #173. Toolkit independently preserved in `stable/toolkit`; no ROM, native C or accepted-function counts changed.

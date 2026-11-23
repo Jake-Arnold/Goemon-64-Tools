@@ -29,7 +29,7 @@ class CodexSkillTests(unittest.TestCase):
 
     def test_autonomous_coordinator_requires_all_promotion_gates(self):
         source = (DIR / "goemon-autonomous-decomp" / "SKILL.md").read_text()
-        for requirement in ("chatgptweb/decomp", "decomp.verify", "decomp.inventory",
+        for requirement in ("stable/decomp", "COMPILER_QUIRKS.md", "EXISTING_QUIRK_NOT_APPLICABLE", "decomp.verify", "decomp.inventory",
                             "decomp.local_ci", "PROGRESS.md", "FAILED_ROM", "BLOCKED_INPUT"):
             with self.subTest(requirement=requirement):
                 self.assertIn(requirement, source)
