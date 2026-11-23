@@ -1,6 +1,6 @@
 # Japan cross-region30 native original-ROM promotion — 23 November 2026
 
-**Actual native local G2 PASS, source-only PR; remote publication pending.** 
+**PUBLISHED_REMOTE_VERIFIED:** actual original-region native G2 PASS; GitHub reviewed PR #196 merged to `stable/decomp` as commit `360a9f6c3e381b0a9f5c7a939f36c16a338516a0` and remotely re-read at the exact 2,428-C count. The original native G2 source proof below remains unchanged. 
 
 ## Canonical baseline
 
@@ -29,7 +29,7 @@
 | Region-specific integrity | PASS, source SHA, no duplicate promotion and inventory pinned |
 | Full *unmodified* `python3 -m decomp.local_ci` | **PASS exit 0**; 465 decomp Python tests (3 skipped), 350 verifier tests, GCC/Clang sanitizer suites and original USA strict-promotion checks; 2026-11-23 |
 | Emulator gameplay | NOT RUN |
-| GitHub remote publication | PENDING reviewed `decomp/*` PR and commit verification |
+| GitHub remote publication | **PUBLISHED_REMOTE_VERIFIED** as `360a9f6c3e381b0a9f5c7a939f36c16a338516a0`, PR #196 |
 
 ## Replay from authenticated owned inputs
 

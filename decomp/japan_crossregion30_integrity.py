@@ -65,6 +65,14 @@ def validate():
     require(proof['original_expanded_sha1']==jp.ROM_SHA and proof['original_retail_sha1']=='9843ee979b5f6c80f5eda85df0baed9ae7c4e73b','Original Japanese expanded/retail hash changed')
     for k,v in {'matching_c_after':2428,'new_native_C':30,'remaining_assembly':4948,'accepted_original_C_bytes':130268,'original_positive_elf_count':7376,'original_semantic_relocations':80745,'candidate_semantic_relocations':80745,'same_original_semantic_relocations':True,'full_original_G2':True}.items():require(inventory.get(k)==v,'strict JP2428 inventory mismatch '+k)
     require(set(inventory['retained_original_asm_excluded'])==blocked,'Three original ASM function blockers not preserved')
+    if reg.get('published'):
+        expect='360a9f6c3e381b0a9f5c7a939f36c16a338516a0'
+        require(reg.get('publication_status')=='PUBLISHED_REMOTE_VERIFIED','publication status not remotely verified')
+        require(reg.get('publication_git_commit')==expect,'wrong merge commit in JP2428 publication ledger')
+        require(proof.get('published_git_commit')==expect and proof.get('remote_publication')=='PUBLISHED_REMOTE_VERIFIED','G2 remote publication mismatch')
+        require(inventory.get('published_git_commit')==expect,'JP2428 inventory publication mismatch')
+        require((head.get('crossregion30_native_promotion') or {}).get('status')=='PUBLISHED_REMOTE_VERIFIED','Japanese regional master publication missing')
+        require((head.get('crossregion30_native_promotion') or {}).get('published_git_commit')==expect,'Japanese region published SHA mismatch')
     require(reg['base_c']==2398 and reg['matching_c']==2428 and reg['assembly_remaining']==4948 and reg['original_C_instruction_bytes']==130268,'regional stage drift')
     h=head.get('crossregion30_native_promotion') or {}
     require(h.get('accepted_original_C')==2428 and h.get('asm_remaining')==4948 and h.get('canonical_semantic_relocations')==80745,'Japanese regional head not updated coherently')
