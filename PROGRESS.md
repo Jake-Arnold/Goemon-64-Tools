@@ -1,3 +1,7 @@
+## 23 November 2026 — third C-Right stage helper bounded retry (FAILED_NATIVE / RESEARCH_ONLY)
+
+- 16 new native IDO5.3 variants independently replayed identically. Both 256B helpers: direct global 260B and six relocations (callback positions shifted +4), separate traversal scopes 260B and 4/64 aligned words, 12-byte exact prefix unchanged. Both comparators still 9/19. No exact matches, ASM retained; no G2, inventory, full CI or gameplay. Source-only kit and representative verified controls in decomp/research/cright_stage_helper_retry_20261123/.
+
 ## 23 November 2026 — further C-Right native retry (FAILED_NATIVE / RESEARCH_ONLY)
 
 - 20 new original IDO5.3 variants independently replayed, zero exact. Stage helpers remain 264B vs 256B, best 12-byte prefix; comparators unchanged 9/19. USA grid cached scale 764B vs 772B, 4/193 aligned words, stack frame 168 vs 176; main loader fixed base 1188B vs 1072B, 21/268, 80-byte prefix. All original ASM retained; no canonical G2, inventory, full CI or gameplay run. Full source-only replay ZIP and source hashes delivered in chat; follow-up evidence in decomp/research/cright_stage_helper_retry_20261123/README.md.
