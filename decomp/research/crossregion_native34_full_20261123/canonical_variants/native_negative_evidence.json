@@ -1,0 +1,46 @@
+{
+  "compiler_flags": "-c -G 0 -non_shared -O2 -mips2",
+  "ido_cc_sha256": "76d796c9591c9f5504949f85b29c32a6039a663791afe2f36f34ca18425b64d0",
+  "negative_controls": [
+    {
+      "name": "func_801D9074_603AF4",
+      "canonical_positive_sha256": "840a5231a6cd6ed93e03b987eea9f41b26884f52c89f36b0839c536791faf48b",
+      "negative_sha256": "db4507a3d32ded78db6770f0ff5d02d0c2c886a4280a1c34fa2e2f017f0f7ec6",
+      "positive_size": 40,
+      "negative_size": 48,
+      "first_differing_instruction_word": 2,
+      "original_IDO_native_negative": "PASS_DIFFERENT_CODE",
+      "compiler_quirk_outcome": "NO_NEW_COMPILER_FINDING"
+    },
+    {
+      "name": "func_802014A0_5BD470",
+      "canonical_positive_sha256": "db20c0375408bb34f4baf789582683c90404b2adfe880d6c9133d2f092941975",
+      "negative_sha256": "a396ae61853314e675e95a03b49565465300c503c1a2e946fe1e899cd4ada299",
+      "positive_size": 48,
+      "negative_size": 48,
+      "first_differing_instruction_word": 8,
+      "original_IDO_native_negative": "PASS_DIFFERENT_CODE",
+      "compiler_quirk_outcome": "NO_NEW_COMPILER_FINDING"
+    },
+    {
+      "name": "func_802014D0_5BD4A0",
+      "canonical_positive_sha256": "51a53fbeda2ef2a822786cbcd3b646987758a158205b4ba41278d3fb3229c3d4",
+      "negative_sha256": "eb5b61678920d0910cb48422c2b480e2541316a11b95742bf67909f9111027d8",
+      "positive_size": 48,
+      "negative_size": 48,
+      "first_differing_instruction_word": 8,
+      "original_IDO_native_negative": "PASS_DIFFERENT_CODE",
+      "compiler_quirk_outcome": "NO_NEW_COMPILER_FINDING"
+    },
+    {
+      "name": "func_802125D8_67BCC8",
+      "canonical_positive_sha256": "dc449b78560ffc217d804510ead18d8ced0d8b2fc337f9cded7aca35a5559054",
+      "negative_sha256": "53d1c18223262c6cfa106f45ff4a23641e5e89b1f0276afd004e78e8f5773dbc",
+      "positive_size": 48,
+      "negative_size": 48,
+      "first_differing_instruction_word": 6,
+      "original_IDO_native_negative": "PASS_DIFFERENT_CODE",
+      "compiler_quirk_outcome": "NO_NEW_COMPILER_FINDING"
+    }
+  ]
+}

@@ -1,0 +1,1 @@
+void func_80033988_34588(char*p){float* v=*(float**)(p+84);int i=0;if(v)do{*v=0.0f;i++;v++;}while(i<3);}

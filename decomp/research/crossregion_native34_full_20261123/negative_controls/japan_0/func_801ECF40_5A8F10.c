@@ -1,0 +1,1 @@
+typedef unsigned char u8;typedef struct {char pad[0xCC];u8 mode;}Actor;int func_801ECF40_5A8F10(Actor*a){return ((a->mode>=30&&a->mode<40)||a->mode==184);}

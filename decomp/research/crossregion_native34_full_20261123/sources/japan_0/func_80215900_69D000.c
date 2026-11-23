@@ -1,0 +1,1 @@
+void func_80215900_69D000(char*p,char*q){float*a=(float*)(p+92),*b=(float*)(p+104),*dst=(float*)(q+8);a[0]+=b[0];a[1]+=b[1];a[2]+=b[2];dst[0]=a[0];dst[1]=a[1];dst[2]=a[2];}

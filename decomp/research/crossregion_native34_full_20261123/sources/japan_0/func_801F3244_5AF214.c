@@ -1,0 +1,1 @@
+void func_801F3244_5AF214(char* p,int a,int b,int c,int d,int e,int f){if(p){*(unsigned char*)(p+48)=a;*(int*)(p+72)=b;*(unsigned char*)(p+76)=c;*(short*)(p+78)=d;*(short*)(p+80)=e;*(short*)(p+82)=f;}}

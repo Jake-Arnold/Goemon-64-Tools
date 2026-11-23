@@ -1,0 +1,23 @@
+{"name": "func_800352AC_35EAC", "region": "usa", "result": "FAILED_NATIVE", "first_diff": 12, "text_size": 64, "error": null}
+{"name": "func_801ECF10_5A8EE0", "region": "japan_0", "result": "ISOLATED_NATIVE_EXACT", "first_diff": null, "text_size": 48, "error": null}
+{"name": "func_801ECF40_5A8F10", "region": "japan_0", "result": "ISOLATED_NATIVE_EXACT", "first_diff": null, "text_size": 48, "error": null}
+{"name": "func_801ECEC8_5A8E98", "region": "japan_0", "result": "ISOLATED_NATIVE_EXACT", "first_diff": null, "text_size": 32, "error": null}
+{"name": "func_801ECEE8_5A8EB8", "region": "japan_0", "result": "ISOLATED_NATIVE_EXACT", "first_diff": null, "text_size": 48, "error": null}
+{"name": "func_801ED030_5A9000", "region": "japan_0", "result": "ISOLATED_NATIVE_EXACT", "first_diff": null, "text_size": 48, "error": null}
+{"name": "func_801F3244_5AF214", "region": "japan_0", "result": "ISOLATED_NATIVE_EXACT", "first_diff": null, "text_size": 64, "error": null}
+{"name": "func_80012180_12D80", "region": "japan_0", "result": "FAILED_NATIVE", "first_diff": 0, "text_size": 64, "error": null}
+{"name": "func_80012490_13090", "region": "japan_0", "result": "FAILED_NATIVE", "first_diff": 0, "text_size": 192, "error": null}
+{"name": "func_801F3308_5AF2D8", "region": "japan_0", "result": "ISOLATED_NATIVE_EXACT", "first_diff": null, "text_size": 80, "error": null}
+{"name": "func_801F334C_5AF31C", "region": "japan_0", "result": "ISOLATED_NATIVE_EXACT", "first_diff": null, "text_size": 80, "error": null}
+{"name": "alMainBusParam", "region": "japan_0", "result": "FAILED_NATIVE", "first_diff": 8, "text_size": 48, "error": null}
+{"name": "alAuxBusParam", "region": "japan_0", "result": "FAILED_NATIVE", "first_diff": 8, "text_size": 48, "error": null}
+{"name": "func_80210648_698048", "region": "usa", "result": "FAILED_NATIVE", "first_diff": 24, "text_size": 48, "error": null}
+{"name": "func_802108FC_6982FC", "region": "usa", "result": "FAILED_NATIVE", "first_diff": 24, "text_size": 48, "error": null}
+{"name": "func_80210AB4_6984B4", "region": "usa", "result": "FAILED_NATIVE", "first_diff": 24, "text_size": 48, "error": null}
+{"name": "func_80210FE0_6989E0", "region": "usa", "result": "FAILED_NATIVE", "first_diff": 24, "text_size": 48, "error": null}
+{"name": "osSyncPrintf", "region": "japan_0", "result": "ISOLATED_MATCH_CONTROL_NOT_RUN", "first_diff": null, "text_size": 32, "error": null}
+{"name": "func_8004054C_4114C", "region": "japan_0", "result": "ISOLATED_MATCH_CONTROL_NOT_RUN", "first_diff": null, "text_size": 32, "error": null}
+{"name": "func_80033988_34588", "region": "japan_0", "result": "FAILED_NATIVE", "first_diff": 12, "text_size": 48, "error": null}
+{"name": "func_80215900_69D000", "region": "japan_0", "result": "ISOLATED_NATIVE_EXACT", "first_diff": null, "text_size": 80, "error": null}
+{"name": "alSeqFileNew", "region": "japan_0", "result": "ISOLATED_NATIVE_EXACT", "first_diff": null, "text_size": 64, "error": null}
+SUMMARY 10 / 22

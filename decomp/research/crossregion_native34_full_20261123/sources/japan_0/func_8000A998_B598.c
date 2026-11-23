@@ -1,0 +1,1 @@
+void func_8000A998_B598(char*p){short i=0;do{++i; p+=884;p[-4]=0;}while(i<12);}

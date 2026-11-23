@@ -1,0 +1,1 @@
+void alLink(unsigned int *n,unsigned int *head){n[0]=head[0];n[1]=(unsigned int)head;if(head[0])((unsigned int*)head[0])[1]=(unsigned int)n;head[0]=(unsigned int)n;}

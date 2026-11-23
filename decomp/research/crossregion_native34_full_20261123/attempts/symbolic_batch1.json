@@ -1,0 +1,74 @@
+[
+  {
+    "region": "japan_0",
+    "name": "__osGetActiveQueue",
+    "source": "extern void* __osViCurr;void* __osGetActiveQueue(void){return __osViCurr;}",
+    "negative": "extern void* __osViCurr;void* __osGetActiveQueue(void){return (char*)__osViCurr+4;}",
+    "symbols": {
+      "__osViCurr": 2148007200
+    }
+  },
+  {
+    "region": "japan_0",
+    "name": "__freeParam",
+    "source": "extern char *alGlobals;void __freeParam(void *node){char *p=alGlobals;*(void**)node=*(void**)(p+44);*(void**)(p+44)=node;}",
+    "negative": "extern char *alGlobals;void __freeParam(void *node){char *p=alGlobals;*(void**)node=*(void**)(p+48);*(void**)(p+44)=node;}",
+    "symbols": {
+      "alGlobals": 2148006992
+    }
+  },
+  {
+    "region": "japan_0",
+    "name": "osGetThreadPri",
+    "source": "extern char *__osRunningThread;int osGetThreadPri(char*thread){if(!thread)thread=__osRunningThread;return *(int*)(thread+4);}",
+    "negative": "extern char *__osRunningThread;int osGetThreadPri(char*thread){if(!thread)thread=__osRunningThread;return *(int*)(thread+8);}",
+    "symbols": {
+      "__osRunningThread": 2148007072
+    }
+  },
+  {
+    "region": "japan_0",
+    "name": "func_801D9074_603AF4",
+    "source": "extern char *D_80214600;int func_801D9074_603AF4(int count){char* p=D_80214600;int diff=*(int*)(p+96)-count;*(int*)(p+96)=diff;if(diff<=0){*(int*)(p+96)=0;diff=0;}return diff;}",
+    "negative": "extern char *D_80214600;int func_801D9074_603AF4(int count){char* p=D_80214600;int diff=*(int*)(p+96)+count;*(int*)(p+96)=diff;if(diff<=0){*(int*)(p+96)=0;diff=0;}return diff;}",
+    "symbols": {
+      "D_80214600": 2149664256
+    }
+  },
+  {
+    "region": "japan_0",
+    "name": "func_800032A4_3EA4",
+    "source": "extern char* g_system_ptr;void func_800032A4_3EA4(int value){*(char*)(g_system_ptr+0x3ADE0)=value;*(char*)(g_system_ptr+0x3ADE1)=0;}",
+    "negative": "extern char* g_system_ptr;void func_800032A4_3EA4(int value){*(char*)(g_system_ptr+0x3ADE0)=value;*(char*)(g_system_ptr+0x3ADE2)=0;}",
+    "symbols": {
+      "g_system_ptr": 2148933048
+    }
+  },
+  {
+    "region": "japan_0",
+    "name": "func_802014A0_5BD470",
+    "source": "extern char *g_system_ptr;void func_802014A0_5BD470(void){char*p=*(char**)(g_system_ptr+0xCF8F0);if(p){*(unsigned short*)(p+34)&=~0x14;}}",
+    "negative": "extern char *g_system_ptr;void func_802014A0_5BD470(void){char*p=*(char**)(g_system_ptr+0xCF8F0);if(p){*(unsigned short*)(p+34)&=~0x18;}}",
+    "symbols": {
+      "g_system_ptr": 2148933048
+    }
+  },
+  {
+    "region": "japan_0",
+    "name": "func_802014D0_5BD4A0",
+    "source": "extern char *g_system_ptr;void func_802014D0_5BD4A0(void){char*p=*(char**)(g_system_ptr+0xCF8F0);if(p){*(unsigned short*)(p+34)|=0x14;}}",
+    "negative": "extern char *g_system_ptr;void func_802014D0_5BD4A0(void){char*p=*(char**)(g_system_ptr+0xCF8F0);if(p){*(unsigned short*)(p+34)|=0x18;}}",
+    "symbols": {
+      "g_system_ptr": 2148933048
+    }
+  },
+  {
+    "region": "japan_0",
+    "name": "func_802125D8_67BCC8",
+    "source": "extern char*g_system_ptr;void func_802125D8_67BCC8(void){char*p=*(char**)(g_system_ptr+0xCF8F8);char*prev=*(char**)p;p[100]=0;if(prev)prev[100]=0;}",
+    "negative": "extern char*g_system_ptr;void func_802125D8_67BCC8(void){char*p=*(char**)(g_system_ptr+0xCF8F8);char*prev=*(char**)p;p[100]=0;if(prev)prev[104]=0;}",
+    "symbols": {
+      "g_system_ptr": 2148933048
+    }
+  }
+]

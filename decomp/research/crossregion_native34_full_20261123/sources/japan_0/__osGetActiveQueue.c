@@ -1,0 +1,1 @@
+extern void* __osViCurr;void* __osGetActiveQueue(void){return __osViCurr;}

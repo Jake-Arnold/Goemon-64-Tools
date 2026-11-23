@@ -1,0 +1,1 @@
+extern char *g_system_ptr;void func_802014A0_5BD470(void){char*p=*(char**)(g_system_ptr+0xCF8F0);if(p){*(unsigned short*)(p+34)&=~0x18;}}

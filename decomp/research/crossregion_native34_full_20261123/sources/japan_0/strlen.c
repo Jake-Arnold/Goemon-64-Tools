@@ -1,0 +1,1 @@
+unsigned int strlen(char* str){char* p=str;while(*p)p++;return (unsigned int)(p-str);}

@@ -1,0 +1,1 @@
+void alSeqFileNew(char*p,int base){int i;for(i=0;i<*(short*)(p+2);i++)*(int*)(p+4+8*i)+=base;}

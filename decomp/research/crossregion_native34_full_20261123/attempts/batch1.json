@@ -1,0 +1,128 @@
+[
+  {
+    "region": "japan_0",
+    "name": "osAiGetLength",
+    "source": "unsigned int osAiGetLength(void){return *(volatile unsigned int*)0xA4500004;}",
+    "negative": "unsigned int osAiGetLength(void){return *(volatile unsigned int*)0xA4500008;}"
+  },
+  {
+    "region": "japan_0",
+    "name": "__osSpGetStatus",
+    "source": "unsigned int __osSpGetStatus(void){return *(volatile unsigned int*)0xA4040010;}",
+    "negative": "unsigned int __osSpGetStatus(void){return *(volatile unsigned int*)0xA4040014;}"
+  },
+  {
+    "region": "japan_0",
+    "name": "__osSpSetStatus",
+    "source": "void __osSpSetStatus(unsigned int value){*(volatile unsigned int*)0xA4040010=value;}",
+    "negative": "void __osSpSetStatus(unsigned int value){*(volatile unsigned int*)0xA4040014=value;}"
+  },
+  {
+    "region": "japan_0",
+    "name": "func_08001454_734ED4",
+    "source": "int func_08001454_734ED4(char *p){void *v=*(void**)(p+208);return *(int*)((char*)v+44)!=0;}",
+    "negative": "int func_08001454_734ED4(char *p){void *v=*(void**)(p+208);return *(int*)((char*)v+40)!=0;}"
+  },
+  {
+    "region": "japan_0",
+    "name": "alFxParam",
+    "source": "int alFxParam(int *p,int idx,int value){if(idx==1)*p=value;return 0;}",
+    "negative": "int alFxParam(int *p,int idx,int value){if(idx==2)*p=value;return 0;}"
+  },
+  {
+    "region": "japan_0",
+    "name": "func_801ECEC8_5A8E98",
+    "source": "int func_801ECEC8_5A8E98(char *p){unsigned char a=*(unsigned char*)(p+204);return a<4;}",
+    "negative": "int func_801ECEC8_5A8E98(char *p){unsigned char a=*(unsigned char*)(p+204);return a<5;}"
+  },
+  {
+    "region": "japan_0",
+    "name": "func_801ECF40_5A8F10",
+    "source": "int func_801ECF40_5A8F10(char *p){unsigned char a=*(unsigned char*)(p+204);return (a<29)||(a>=40)||(a==184);}",
+    "negative": "int func_801ECF40_5A8F10(char *p){unsigned char a=*(unsigned char*)(p+204);return (a<30)||(a>=40)||(a==184);}"
+  },
+  {
+    "region": "japan_0",
+    "name": "func_801ED030_5A9000",
+    "source": "int func_801ED030_5A9000(char *p){unsigned char a=*(unsigned char*)(p+204);return (a<44)||(a>=49)||(a==185);}",
+    "negative": "int func_801ED030_5A9000(char *p){unsigned char a=*(unsigned char*)(p+204);return (a<45)||(a>=49)||(a==185);}"
+  },
+  {
+    "region": "japan_0",
+    "name": "func_801ECEE8_5A8EB8",
+    "source": "int func_801ECEE8_5A8EB8(char *p){if(*(unsigned char*)(p+96)==0) return *(unsigned short*)(*(char**)(p+92)+134)!=0;return 0;}",
+    "negative": "int func_801ECEE8_5A8EB8(char *p){if(*(unsigned char*)(p+95)==0) return *(unsigned short*)(*(char**)(p+92)+134)!=0;return 0;}"
+  },
+  {
+    "region": "japan_0",
+    "name": "func_801ECF10_5A8EE0",
+    "source": "int func_801ECF10_5A8EE0(char *p){if(*(unsigned char*)(p+96)==1) return *(unsigned short*)(*(char**)(p+92)+134)==0xFFFF;return 0;}",
+    "negative": "int func_801ECF10_5A8EE0(char *p){if(*(unsigned char*)(p+95)==1) return *(unsigned short*)(*(char**)(p+92)+134)==0xFFFF;return 0;}"
+  },
+  {
+    "region": "japan_0",
+    "name": "func_80033988_34588",
+    "source": "void func_80033988_34588(char* p){float* f=*(float**)(p+84);int i;if(f)for(i=0;i<3;i++)f[i]=0.f;}",
+    "negative": "void func_80033988_34588(char* p){float* f=*(float**)(p+84);int i;if(f)for(i=0;i<4;i++)f[i]=0.f;}"
+  },
+  {
+    "region": "japan_0",
+    "name": "strlen",
+    "source": "unsigned int strlen(char* str){char* p=str;while(*p)p++;return (unsigned int)(p-str);}",
+    "negative": "unsigned int strlen(char* str){char* p=str;while(*p)p+=2;return (unsigned int)(p-str);}"
+  },
+  {
+    "region": "japan_0",
+    "name": "memcpy",
+    "source": "void* memcpy(void* dst,const void* src,unsigned int n){char *d=(char*)dst;const char *s=(const char*)src;while(n--)*d++=*s++;return dst;}",
+    "negative": "void* memcpy(void* dst,const void* src,unsigned int n){char *d=(char*)dst;const char *s=(const char*)src;while(--n)*d++=*s++;return dst;}"
+  },
+  {
+    "region": "japan_0",
+    "name": "func_8000A998_B598",
+    "source": "void func_8000A998_B598(char* p){short i;for(i=1;i<12;i++) {p+=884; p[-4]=0;}}",
+    "negative": "void func_8000A998_B598(char* p){short i;for(i=1;i<11;i++) {p+=884; p[-4]=0;}}"
+  },
+  {
+    "region": "japan_0",
+    "name": "func_8001C568_1D168",
+    "source": "void func_8001C568_1D168(char* p,char* q){float *a=(float*)(p+8),*b=(float*)(q+8);a[0]+=b[0];a[1]+=b[1];a[2]+=b[2];}",
+    "negative": "void func_8001C568_1D168(char* p,char* q){float *a=(float*)(p+12),*b=(float*)(q+8);a[0]+=b[0];a[1]+=b[1];a[2]+=b[2];}"
+  },
+  {
+    "region": "japan_0",
+    "name": "func_801F8AAC_5B4A7C",
+    "source": "void func_801F8AAC_5B4A7C(char* p,char* q){float *a=(float*)(q+8),*b=(float*)(p+108);a[0]+=b[0];a[1]+=b[1];a[2]+=b[2];}",
+    "negative": "void func_801F8AAC_5B4A7C(char* p,char* q){float *a=(float*)(q+8),*b=(float*)(p+112);a[0]+=b[0];a[1]+=b[1];a[2]+=b[2];}"
+  },
+  {
+    "region": "japan_0",
+    "name": "func_801F3244_5AF214",
+    "source": "void func_801F3244_5AF214(char* p,unsigned char a,int b,unsigned char c,short d,short e,short f){if(p){*(unsigned char*)(p+48)=a;*(int*)(p+72)=b;*(unsigned char*)(p+76)=c;*(short*)(p+78)=d;*(short*)(p+80)=e;*(short*)(p+82)=f;}}",
+    "negative": "void func_801F3244_5AF214(char* p,unsigned char a,int b,unsigned char c,short d,short e,short f){if(p){*(unsigned char*)(p+48)=a;*(int*)(p+72)=b;*(unsigned char*)(p+76)=c;*(short*)(p+78)=d;*(short*)(p+80)=e;*(short*)(p+84)=f;}}"
+  },
+  {
+    "region": "japan_0",
+    "name": "func_08000AAC_70AE1C",
+    "source": "void func_08000AAC_70AE1C(char* p,float f,short x,short y){char* obj=*(char**)(p+24);*(short*)(obj+22)=x;*(short*)(p+210)=y;*(float*)(p+212)=f;}",
+    "negative": "void func_08000AAC_70AE1C(char* p,float f,short x,short y){char* obj=*(char**)(p+24);*(short*)(obj+22)=x;*(short*)(p+210)=y;*(float*)(p+216)=f;}"
+  },
+  {
+    "region": "japan_0",
+    "name": "alLink",
+    "source": "void alLink(unsigned int *n,unsigned int *head){n[0]=head[0];n[1]=(unsigned int)head;if(head[0])((unsigned int*)head[0])[1]=(unsigned int)n;head[0]=(unsigned int)n;}",
+    "negative": "void alLink(unsigned int *n,unsigned int *head){n[0]=head[0];n[2]=(unsigned int)head;if(head[0])((unsigned int*)head[0])[1]=(unsigned int)n;head[0]=(unsigned int)n;}"
+  },
+  {
+    "region": "japan_0",
+    "name": "alSaveParam",
+    "source": "int alSaveParam(unsigned int *p,int flag,unsigned int v){if(flag==1)p[0]=v;else if(flag==6)p[5]=v;return 0;}",
+    "negative": "int alSaveParam(unsigned int *p,int flag,unsigned int v){if(flag==1)p[0]=v;else if(flag==5)p[5]=v;return 0;}"
+  },
+  {
+    "region": "usa",
+    "name": "func_800352AC_35EAC",
+    "source": "void func_800352AC_35EAC(char *p){int i;for(i=0;i<3;i++){*(float*)(p+84+i*4)=0.0f;}}",
+    "negative": "void func_800352AC_35EAC(char *p){int i;for(i=0;i<4;i++){*(float*)(p+84+i*4)=0.0f;}}"
+  }
+]

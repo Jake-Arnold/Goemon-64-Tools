@@ -1,0 +1,1 @@
+int func_08001454_734ED4(char *p){void *v=*(void**)(p+208);return *(int*)((char*)v+44)!=0;}

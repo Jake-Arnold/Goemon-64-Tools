@@ -1,0 +1,1 @@
+void func_801F8AAC_5B4A7C(char* p,char* q){float *a=(float*)(q+8),*b=(float*)(p+112);a[0]+=b[0];a[1]+=b[1];a[2]+=b[2];}
