@@ -1,3 +1,10 @@
+## 23 November 2026 — decomp branch policy and mandatory per-native-attempt compiler findings
+
+- Migrated canonical workstream to `stable/decomp` from verified `chatgptweb/decomp` commit `6b864fac15fb4d9510a7fae5b7945b3b6cac69cf`; USA 2,090 C / 5,273 ASM; Japan 2,370 C after PR #173. Toolkit independently preserved in `stable/toolkit`; no ROM, native C or accepted-function counts changed.
+- Central `BRANCHES.md`, root agent instructions, README, autonomous decomp skill, executor workflow and mismatch ledger now clearly route `decomp/*` to `stable/decomp`, `toolkit/*` to `stable/toolkit`. Historical refs are not new work destinations.
+- Every native IDO attempt now requires a quirk preflight, first-mismatch classification, one of four documented outcomes, exact flags/source SHA-256/commands and negative controls, and same-commit ledger/PROGRESS updates for new reproducible findings.
+- Documentation-only change; native G2/full ROM/gameplay were not rerun. Default branch and ruleset setup are separate GitHub admin actions.
+
 ## 23 November 2026 — USA Mini eleven C native canonical G2 PASS; atomic publication pending
 
 - Authenticated live `chatgptweb/decomp` predecessor `cc4e1e1973770afad4c3c6cd7899731e1a64d571`: **2,079 C / 93,016 original bytes / 5,284 ASM**. Deduplicated all 16 previous Mini source candidates against this entire published USA manifest: five already accepted, eleven new non-overlapping original `file_11` functions. Exactly **11 additional C / 1,652 original instruction bytes** (10 direct functions 1,268 B, plus the original eight-entry switch/jump-table speed selector 384 B).

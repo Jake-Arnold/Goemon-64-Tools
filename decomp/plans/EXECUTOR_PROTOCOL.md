@@ -3,7 +3,7 @@
 The G64-001–100 plan was closed on 14 November 2026. Its per-task scheduling and `architect_override_v2` are historical. Current target selection uses the live `decomp/CONTINUE.md`, accepted-C and remaining-ASM inventories, and independently evidenced native candidates. This protocol preserves original function and whole-ROM verification requirements.
 
 ## Source authority, truth and branch
-1. Work only on `Jake-Arnold/Goemon-64-Tools` branch `chatgptweb/decomp`. Do not merge, reset or change `main`. Never force-push. Preserve unrelated working trees.
+1. Work only on `Jake-Arnold/Goemon-64-Tools` branch `stable/decomp`. Do not merge, reset or change `stable/toolkit`. Never force-push. Preserve unrelated working trees.
 2. At session start read root `AGENTS.md`, live `decomp/CONTINUE.md`, current manifest/proof/inventory and this protocol. Use `python3 -m decomp.skill_context --status` for a compact canonical proof snapshot and consult relevant source/research files for each candidate. Do not load historical G64 task packets as current priorities.
 3. Check live `git fetch origin`, `git status --short`, `git branch --show-current`, `git rev-parse HEAD`, and remote ref before each implementation. Verify fresh proof if current HEAD has moved; do not substitute an older 136-function archive.
 4. All counts recorded in the old 100-task plan and historical reports are checkpoints only. Independently read current live `decomp/results/combined.json`, `decomp/results/inventory.json`, and later G2 ledgers. Keep locally verified, published, USA and Japanese totals distinct. No historical count is an acceptance criterion.
@@ -24,6 +24,12 @@ Never update official count, manifest ownership, `results/combined.json` or inve
 
 Choose each original-address function by live unowned assembly, actual native evidence and real dependencies, not a closed task ID. Prior FAILED_NATIVE/RESEARCH_ONLY investigations can supply research evidence but never a passing native result. Verify source hashes at integration boundaries and record verified C/byte delta, including zero.
 
+## Mandatory native IDO quirks preflight and every-attempt outcome
+
+Before **each** original-ROM native matching-C attempt, read `decomp/COMPILER_QUIRKS.md` and identify relevant previously verified behaviours. Classify the **first** original/generated mismatch (register, ABI/stack, scheduling, branch/delay slot, signedness, rodata, padding/sections, relocation or unknown) **before** variant generation. Try relevant verified workarounds using bounded controlled one-variable tests under exact original compiler flags.
+
+For each native attempt, record exactly one of `EXISTING_QUIRK_REPRODUCED`, `EXISTING_QUIRK_NOT_APPLICABLE`, `NEW_REPRODUCIBLE_QUIRK`, or `NO_NEW_COMPILER_FINDING` in sanitized evidence and handoff. Record ledger IDs/none, exact compiler flags/version, original region/ROM offset/VMA, first original-versus-generated instruction/relocation differences, SHA-256 for each source variant, reproduction commands and failed controls. `NOT_RUN` means no native compile occurred. Deduplicate reproducible new findings and useful failed hypotheses in the central ledger and `PROGRESS.md` **in the same research/implementation commit**, even if no C promotes. Never claim quirk transfer to another function without independent reproduction; full G2 proof stays mandatory.
+
 ## Always execute in this order
 1. **Identify function and prerequisites.** Check the original function VMA/ROM offset against current accepted C, assembly ownership, dependencies and relevant live files. If a target is blocked, continue with another independent function; if already accepted, report `SKIPPED_ALREADY_COMPLETE`.
 2. **Establish original boundary.** From pinned ROM and assembly determine function name, actual ROM offset, actual VMA, original length/hash, and enclosing source translation unit. Preserve original instruction order and branch-delay slots. For an overlay, use its own mapping (not main-segment formula).
@@ -43,7 +49,7 @@ git fetch origin
 git status --short
 git branch --show-current
 git rev-parse HEAD
-git ls-remote origin refs/heads/chatgptweb/decomp
+git ls-remote origin refs/heads/stable/decomp
 python3 -m unittest discover -s decomp -p 'test_*.py' -q
 python3 -m unittest tests.test_decomp_verify tests.test_decomp_batch \
   tests.test_decomp_probe_integration tests.test_decomp_elf_layout \
@@ -78,7 +84,7 @@ An old isolated object-unit script failure predates G64-014's production fix. Ne
 ## Strict evidence record (one per attempted task, sanitized JSON)
 ```json
 {
- "task_id":"G64-005","branch":"chatgptweb/decomp","base_sha":"<actual>",
+ "task_id":"G64-005","branch":"stable/decomp","base_sha":"<actual>",
  "function":"func_80034ED4_35AD4","original_rom_offset":"0x35AD4",
  "original_vma":"0x80034ED4","original_bytes":36,
  "source_sha256":"<actual>","toolchain":"<version-and-hash>",
@@ -89,6 +95,12 @@ An old isolated object-unit script failure predates G64-014's production fix. Ne
  "inventory_proof":"PASS|FAIL|NOT_RUN",
  "status":"RESEARCH_ONLY|BLOCKED_INPUT|FAILED_NATIVE|FAILED_ROM|PASSED_G2",
  "mismatch":{"first_rom_offset":null,"original_instruction":null,"candidate_instruction":null,"root_cause_hypothesis":null},
+ "compiler_quirk_outcome":"NO_NEW_COMPILER_FINDING",
+ "quirk_ledger_entry_ids":[],
+ "native_tested_source_sha256":[],
+ "native_compiler_exact_flags":null,
+ "native_reproduction_commands":[],
+ "native_negative_results":[],
  "published_commit":null
 }
 ```

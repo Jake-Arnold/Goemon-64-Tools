@@ -1,21 +1,23 @@
-## Run the practice toolkit from `main` (Windows and Linux)
+> **Canonical branches (23 Nov 2026):** toolkit `stable/toolkit` (`toolkit/*` topic PRs); decomp `stable/decomp` (`decomp/*` topic PRs). `main` and `chatgptweb/decomp` are legacy refs. See [BRANCHES.md](BRANCHES.md); do not merge histories wholesale.
 
-**Use the `main` branch for the runnable practice toolkit.** The
-`chatgptweb/decomp` branch is a separate matching-C development workspace;
-its launcher and toolkit files may be older than the live `main` release. These
-instructions use the actual `main` entry points and do not require an N64 ROM
+## Run the practice toolkit from `stable/toolkit` (Windows and Linux)
+
+**Use the `stable/toolkit` branch for the runnable practice toolkit.** The
+`stable/decomp` branch is a separate matching-C development workspace;
+its launcher and toolkit files may be older than the live `stable/toolkit` release. These
+instructions use the actual `stable/toolkit` entry points and do not require an N64 ROM
 to open the GUI. You need an independently running supported game/emulator to
 connect to live game memory. Use a disposable save for memory-writing tools.
 
 ### Get the toolkit
 
 ```bash
-git clone --branch main --single-branch https://github.com/Jake-Arnold/Goemon-64-Tools.git
+git clone --branch stable/toolkit --single-branch https://github.com/Jake-Arnold/Goemon-64-Tools.git
 cd Goemon-64-Tools
 ```
 
 If you already have a **separate clean checkout** of the toolkit, update it
-with `git switch main` and `git pull --ff-only origin main`. Do not switch
+with `git switch stable/toolkit` and `git pull --ff-only origin stable/toolkit`. Do not switch
 branches inside a working directory that contains uncommitted decomp changes.
 
 ### Windows
@@ -63,7 +65,7 @@ before enabling it. Keyboard injection is verified for X11 only, not Wayland.
 
 ### Keep toolkit and decomp development separate
 
-For toolkit updates, run `git pull --ff-only origin main` from the **main**
+For toolkit updates, run `git pull --ff-only origin stable/toolkit` from the **main**
 checkout. The experimental C decompilation branch has separate original-ROM
 build and verification requirements; the matching-C code and research are **not**
 needed to run the toolkit. Neither branch distributes game ROMs or emulators.
@@ -104,7 +106,7 @@ The value `6` was observed by the user to permit moving through enemies in one t
 
 ## Active development branch and damage-event recorder
 
-Use `chatgptweb/decomp` as the current consolidated integration branch for new toolkit work. The `main` branch is not the newest toolkit baseline. Preserve the existing right-click freeze/rename controls, fast freeze engine and external Linux PID support. See [branch workflow](docs/BRANCH_WORKFLOW.md) before creating, deleting or merging research branches.
+Use `stable/decomp` as the current consolidated integration branch for new toolkit work. The `stable/toolkit` branch is not the newest toolkit baseline. Preserve the existing right-click freeze/rename controls, fast freeze engine and external Linux PID support. See [branch workflow](docs/BRANCH_WORKFLOW.md) before creating, deleting or merging research branches.
 
 The **Automatic events** tab captures read-only memory samples around health-loss events, ranks transient candidate fields and exports JSON evidence. It is designed to investigate damage immunity and collision handling; candidate addresses are not yet verified collision controls. Recording stops on map, character, pointer or connection changes.
 

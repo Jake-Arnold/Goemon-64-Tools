@@ -1,5 +1,10 @@
 # Development instructions for automated contributors
 
+## REQUIRED branch selection — authoritative (23 Nov 2026)
+
+**Toolkit:** base/PR `stable/toolkit`, topic `toolkit/<purpose>`. **Decomp:** base/PR `stable/decomp`, topic `decomp/<purpose>`. Old `stable/toolkit` and `stable/decomp` are legacy refs; GitHub default is not an agent's task selector. Read `BRANCHES.md` on live GitHub and the relevant runbook before edits; fetch remote SHA/open PRs and confirm current proof. Do not merge complete toolkit/decomp histories. Preserve research and old PRs. Only scope-reviewed metadata can transfer. Include `PROGRESS.md` in same commit; never force-push. This rule supersedes contradictory dated text below.
+
+
 Project: Goemon 64 speedrunning/practice toolkit (Windows Python and portable C core).
 
 ## Required delivery of task-referenced scripts
@@ -17,7 +22,7 @@ before any historical G64-001–100 plans. Run
 `python3 -m decomp.task_registry resume GQ-...` in a complete checkout.
 The registry includes externally blocked, missing-source and rebase tasks;
 completed tasks are excluded from the default active listing. Re-fetch live
-`chatgptweb/decomp`, current issues/PRs and original-address ownership
+`stable/decomp`, current issues/PRs and original-address ownership
 before decomp work. Registry metadata is never native G2 proof; all function
 promotions still require original-ROM, ELF, relocations, strict inventory and
 full CI. Update `PROGRESS.md` in the same commit.
@@ -29,7 +34,7 @@ full CI. Update `PROGRESS.md` in the same commit.
 4. Treat N64 scene loading, game state, map pointers and character pointers as unsafe until the engine's native transition path is understood. Do not enable raw warp shortcuts based only on apparent map-ID changes.
 5. Do not commit ROMs, copyrighted game assets, saves, per-user routes, diagnostics containing personal information, credentials, or raw game memory dumps. Respect `.gitignore`.
 6. Preserve existing Python module organisation, autosplitter code and portable C prototypes unless a change explicitly requires restructuring.
-7. The initial v0.9.9 imported-baseline work did not establish direct warps. Later native-warp and story-flag work on `main` superseded that historical limitation (user confirmation 2026-11-08). The decomp-only branch must not revisit or modify those features without separate authorization.
+7. The initial v0.9.9 imported-baseline work did not establish direct warps. Later native-warp and story-flag work on `stable/toolkit` superseded that historical limitation (user confirmation 2026-11-08). The decomp-only branch must not revisit or modify those features without separate authorization.
 
 ## Decomp address discoveries are research metadata, not toolkit writes
 
@@ -73,11 +78,13 @@ Explicit exceptions: JP Miracle Snowflake `0x80162057` is a
 `+0x57F1` mapping; JP pause `0x800CD2D6` is disputed; JP first
 Sasuke battery `0x80161DF9 & 0x20` is unverified. Do not automatically
 promote hypotheses into matching-C claims, RAM editors, freezes or warps.
-Keep `decomp/*` research separate from `main`-based toolkit PRs.
+Keep `decomp/*` research separate from `stable/toolkit`-based toolkit PRs.
 
-## Compiler quirk knowledge base (mandatory for matching-C work)
+## Mandatory native IDO quirks preflight and every-attempt outcome
 
-Maintain [decomp/COMPILER_QUIRKS.md](decomp/COMPILER_QUIRKS.md) as a cumulative, reusable IDO/MIPS matching-C knowledge base. During every native matching attempt, record any **new, reproducible compiler/code-generation quirk** discovered, including unsuccessful experiments that clarify a constraint. Check existing entries before trying variants; deduplicate and improve earlier entries instead of appending repeated folklore. For each entry capture: region, original function and ROM offset/VMA; compiler version and exact flags; minimal C reproducer or source reference; observed versus expected MIPS/ABI, registers, stack, branches, padding or relocations; exact successful workaround or known failure; verification scope (isolated/native/combined G2); evidence paths and commands; and confidence/limitations. Distinguish empirically verified behavior from hypotheses, and note whether a quirk is portable across functions or region-specific. Do not include copyrighted original ROM/ASM dumps or proprietary binaries. Include knowledge-base updates **in the same next implementation/research commit** as the discovery, with root `PROGRESS.md` updated as required; never delay or discard the finding merely because its candidate failed promotion. This documentation does not relax any native or full-ROM acceptance gate.
+Before **each** original-ROM native matching-C attempt, read `decomp/COMPILER_QUIRKS.md` and identify relevant previously verified behaviours. Classify the **first** original/generated mismatch (register, ABI/stack, scheduling, branch/delay slot, signedness, rodata, padding/sections, relocation or unknown) **before** variant generation. Try relevant verified workarounds using bounded controlled one-variable tests under exact original compiler flags.
+
+For each native attempt, record exactly one of `EXISTING_QUIRK_REPRODUCED`, `EXISTING_QUIRK_NOT_APPLICABLE`, `NEW_REPRODUCIBLE_QUIRK`, or `NO_NEW_COMPILER_FINDING` in sanitized evidence and handoff. Record ledger IDs/none, exact compiler flags/version, original region/ROM offset/VMA, first original-versus-generated instruction/relocation differences, SHA-256 for each source variant, reproduction commands and failed controls. `NOT_RUN` means no native compile occurred. Deduplicate reproducible new findings and useful failed hypotheses in the central ledger and `PROGRESS.md` **in the same research/implementation commit**, even if no C promotes. Never claim quirk transfer to another function without independent reproduction; full G2 proof stays mandatory.
 
 ## Decomp continuation
 
@@ -104,10 +111,10 @@ The G64-001–100 execution plan was closed on 14 November 2026 and is retired f
 
 An agent must not publish a Git commit or claim `PUBLISHED_REMOTE_VERIFIED` using only a dated `results/*g2*.json` or research-source ZIP. During cross-agent work **the canonical manifest and `combined.json`/`inventory.json` are the only accepted-C count**; staging C code, isolated native match or an alternate integrated ROM proof creates no accepted count.
 
-1. Fetch live `chatgptweb/decomp` HEAD and compare every candidate identity `(region, original ROM offset, VMA, original code size)` against **the entire current canonical function ownership graph** and all pending research manifests. Deduplicate by original ROM address and range, not filename or previous staged count. Record exclusions and source/byte hashes.
+1. Fetch live `stable/decomp` HEAD and compare every candidate identity `(region, original ROM offset, VMA, original code size)` against **the entire current canonical function ownership graph** and all pending research manifests. Deduplicate by original ROM address and range, not filename or previous staged count. Record exclusions and source/byte hashes.
 2. Pin the exact parent commit and predecessor canonical manifest, proof and inventory hashes. If HEAD moves or new accepted C overlaps, **abort and rebase/reverify**. Never use stale local C counts as an acceptance basis; no history rewriting or force-push.
 3. After original IDO, complete 32 MiB ROM, all ELF identities and semantic relocations pass, run strict inventory and **full** `python3 -m decomp.local_ci`; it now includes `python3 -m decomp.promotion_integrity --validate`. This compares **both names and bytes** of every canonical C claim against the complete ROM proof and strict inventory, refusing any unpromoted staged result.
-4. Publish **one complete promotion commit** on `chatgptweb/decomp` containing native sources/adapter, canonical `decomp/manifest.json`, `decomp/results/combined.json`, `decomp/results/inventory.json`, dated G2/inventory evidence, tests, `PROGRESS.md`, and `decomp/CONTINUE.md`. Preserve previous canonical proofs separately. If any required file is absent, the work stays `RESEARCH_ONLY`; do not claim a new official count.
+4. Publish **one complete promotion commit** on `stable/decomp` containing native sources/adapter, canonical `decomp/manifest.json`, `decomp/results/combined.json`, `decomp/results/inventory.json`, dated G2/inventory evidence, tests, `PROGRESS.md`, and `decomp/CONTINUE.md`. Preserve previous canonical proofs separately. If any required file is absent, the work stays `RESEARCH_ONLY`; do not claim a new official count.
 5. Use a GitHub atomic tree/commit + expected-HEAD lease (`update_ref(expected_sha=<pinned-base>)`) and **re-fetch** the remote manifest/proof/inventory. A report of success requires the remote count to equal the locally verified count and all CI gates to be documented. Follow-up agents must read that authoritative HEAD first.
 
 Implementation/source: `decomp/promotion_integrity.py`, `decomp/test_promotion_integrity.py`, and the frozen `decomp.usa_canonical_reconcile108` stage. Local CI is a ROM-free consistency check; it **does not replace** native/whole-ROM verification.

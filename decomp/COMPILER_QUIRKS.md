@@ -2,6 +2,17 @@
 
 This is a cumulative evidence-led knowledge base for reusable compiler behavior found while matching original Goemon 64 functions. Consult it before variant searches. Record new findings in the same commit as the associated decomp research or promotion, even when a function remains assembly-owned.
 
+## Per-native-attempt outcome — mandatory (23 November 2026)
+
+Before each native IDO matching C attempt, read the verified entries below; classify the first mismatch *before* source variants. Record **one** outcome per attempt in sanitized evidence and handoff:
+
+- `EXISTING_QUIRK_REPRODUCED`: verified ledger behaviour independently reproduced on this function.
+- `EXISTING_QUIRK_NOT_APPLICABLE`: applicable verified workaround tested and failed to transfer.
+- `NEW_REPRODUCIBLE_QUIRK`: new behaviour, positive and negative controls with exact reproduction.
+- `NO_NEW_COMPILER_FINDING`: native compilation occurred without a new reusable lesson.
+
+`NOT_RUN` applies only when no native compile occurred. Record ledger entries or none, original region/ROM offset/VMA, compiler version and exact flags, source SHA-256 for each variant, first original/generated instruction/relocation difference and mismatch class, commands, tested workarounds, and falsified hypotheses. Reproduce cross-function applicability independently. Add new reproducible positive/negative lessons to this central ledger and `PROGRESS.md` in the **same** research/implementation commit; a non-promotion is still useful evidence.
+
 ## Entry template
 
 ### [Short description] — [verified / hypothesis]
