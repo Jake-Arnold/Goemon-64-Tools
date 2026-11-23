@@ -360,6 +360,21 @@ def build_steps(host_binary: Path, *, quick: bool = False):
                 '-Wl,--defsym,D_CF8F8=0xCF8F8','-o',str(binary)]),
             ('File18 new2 original source 10000-case sanitizer test',[str(binary)]),
         ])
+    if not quick:
+        # Exercise the original IDO-matching C, not a separate host model.
+        fixture=ROOT/'decomp/research/usa_script_vm_436_20261123/tests/host_actual_source.c'
+        compiler=shlex.split(os.environ.get('CC','cc'))
+        binary=host_binary.with_name('vm436-actual-source-host')
+        if not fixture.is_file():
+            raise ValueError('Missing original-source VM436 host fixture')
+        steps.extend([
+            ('VM436 actual-source ASan/UBSan build',compiler+[
+                '-std=gnu99','-O1','-g','-Wno-error=int-conversion',
+                '-fsanitize=address,undefined','-fno-sanitize-recover=all',
+                '-fno-omit-frame-pointer',str(fixture.relative_to(ROOT)),
+                '-o',str(binary)]),
+            ('VM436 actual-source 4096-case ASan/UBSan regression',[str(binary)]),
+        ])
     # The resumable queue and read-only C-Right comparator belong to the
     # same ROM-free acceptance gate as the existing Python/ledger checks.
     # Append them, preserving existing native-host fixture ordering.

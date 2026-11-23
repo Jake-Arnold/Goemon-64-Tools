@@ -436,6 +436,18 @@ def reconcile108_stage(manifest):
 
 def claimed_functions(manifest):
     """All C claims, with explicit overlay functions outside main mapping."""
+    if manifest.get('usa_script_vm436_promotion') is not None:
+        from . import usa_script_vm436_promotion as vm436
+        older={k:v for k,v in manifest.items() if k!='usa_script_vm436_promotion'}
+        predecessor=claimed_functions(older)
+        # Historical stage tests deliberately project partial older manifests.
+        # The final VM stage does not exist in those immutable historical views.
+        # load_manifest() always strictly validates the full 2164 predecessor.
+        if (len(predecessor),sum(f['size'] for f in predecessor))!=(2164,99604):
+            return predecessor
+        vm436.validate_predecessor(manifest)
+        return predecessor+[{'name':vm436.NAME,'rom_offset':vm436.OFFSET,
+                             'vma':vm436.VMA,'size':vm436.SIZE}]
     if manifest.get('overlay_usa_short72_stage') is not None:
         from . import usa_short72_promotion as short72
         d=short72.validate_predecessor(manifest)
@@ -1387,6 +1399,7 @@ def load_manifest(path):
     selector_stage_value = manifest.pop('overlay_mini_selector_stage', None)
     opening_new2_stage_value = manifest.pop('overlay_usa_opening_new2_stage', None)
     short72_stage_value = manifest.pop('overlay_usa_short72_stage', None)
+    vm436_stage_value = manifest.pop('usa_script_vm436_promotion', None)
     for key,length in (('upstream_commit',40),('retail_sha1',40),('decompressed_sha1',40)):
         if not re.fullmatch('[0-9a-f]{'+str(length)+'}',manifest.get(key,'')):raise ValueError('Invalid '+key)
     seen=set();assembly_seen=set();ranges=[]
@@ -1722,6 +1735,10 @@ def load_manifest(path):
         manifest['overlay_usa_short72_stage']=short72_stage_value
         from . import usa_short72_promotion as short72
         short72.validate_predecessor(manifest)
+    if vm436_stage_value is not None:
+        manifest['usa_script_vm436_promotion']=vm436_stage_value
+        from . import usa_script_vm436_promotion as vm436
+        vm436.validate_predecessor(manifest)
     return manifest
 
 
@@ -2579,6 +2596,7 @@ def validate_baseline_cache(checkout, manifest):
 
 def run_build(args,manifest,report):
     short72_stage_value=manifest.pop('overlay_usa_short72_stage',None)
+    vm436_stage_value=manifest.pop('usa_script_vm436_promotion',None)
     opening_new2_stage_value=manifest.pop('overlay_usa_opening_new2_stage',None)
     selector_stage_value=manifest.pop('overlay_mini_selector_stage',None)
     mini10_stage_value=manifest.pop('overlay_mini10_stage',None)
@@ -3615,6 +3633,35 @@ def run_build(args,manifest,report):
             result['claimed_functions']+=1; result['matched_functions']+=1
             result['matched_function_bytes']+=f['size']
         report['overlay_usa_short72_stage']=proof
+    if vm436_stage_value is not None:
+        from . import usa_script_vm436_promotion as vm436
+        from . import usa_short72_promotion as short72
+        if (not result['full_rom_match'] or result['matched_functions']!=2164 or
+                result['matched_function_bytes']!=99604):
+            raise ValueError('VM436 requires accepted full 2164-C predecessor exactly')
+        manifest['usa_script_vm436_promotion']=vm436_stage_value
+        vm436.validate_predecessor(manifest,expected)
+        prior=work/'accepted2164-before-vm436.elf'
+        layout=vm436.stage(candidate,work,prior)
+        logged('candidate-vm436-native-IDO-object',
+               ['make','-j'+str(args.jobs),'UV='+uv,'build/usa/src/script_vm.c.o'],candidate)
+        layout['native_object_layout']=pack_object_file(candidate/'build/usa/src/script_vm.c.o')
+        for target in ('build/usa/mnsg.elf','build/usa/mnsg.z64'):
+            (candidate/target).unlink()
+        logged('candidate-2165-C-complete-original-USA-ROM',
+               ['make','-j'+str(args.jobs),'UV='+uv],candidate)
+        layout['original_inline_abs_label_metadata']=short72.restore_original_abs_label_type(
+            candidate/'build/usa/mnsg.elf',prior)
+        proof=vm436.verify_native(baseline,prior,candidate,expected,layout)
+        fingerprint=digest(expected[vm436.OFFSET:vm436.OFFSET+vm436.SIZE],'sha256')
+        result['functions'].append({'name':vm436.NAME,'size':vm436.SIZE,
+            'guest_address':f'0x{vm436.VMA:08X}','rom_offset':f'0x{vm436.OFFSET:X}',
+            'matched':True,'expected_sha256':fingerprint,'candidate_sha256':fingerprint})
+        result['claimed_functions']+=1;result['matched_functions']+=1
+        result['matched_function_bytes']+=vm436.SIZE
+        report['retained_assembly_functions'].remove(vm436.NAME)
+        report['sources_sha256_lf']['research/usa_script_vm_436_20261123/source/func_8003EBAC_3F7AC.c']=vm436.ORIGINAL_C_SOURCE_SHA256
+        report['usa_script_vm436_promotion']=proof
     if not result['full_rom_match'] or result['matched_functions']!=result['claimed_functions']:
         raise ValueError('Candidate failed exact matching')
     report['stage']='complete';report['status']='matched'

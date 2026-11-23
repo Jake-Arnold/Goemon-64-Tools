@@ -1615,5 +1615,8 @@
   },
   "overlay_usa_short72_stage": {
     "format": "goemon-usa-short72-post2092-v1"
+  },
+  "usa_script_vm436_promotion": {
+    "format": "goemon-usa-script-vm436-post2164-v1"
   }
 }

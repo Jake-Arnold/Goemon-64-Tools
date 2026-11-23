@@ -1,10 +1,10 @@
 {
   "format": "goemon-matching-build-result-v1",
-  "started_utc": "2026-11-23T15:31:01.430799+00:00",
+  "started_utc": "2026-11-23T20:58:04.242220+00:00",
   "status": "matched",
   "upstream_commit": "7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee",
   "retail_sha1": "df8083a54296b8c151917c5333e1c85f014a2a66",
-  "verifier_source_sha256_lf": "5ef161a1f012e2c07fe5fcac3064ff2fefafa7480e35aeed9c51459c1ccad4c6",
+  "verifier_source_sha256_lf": "869641a0c621165f73bc5015d73cbe075457887af477dce103ce8bf5d48693f6",
   "tool_versions": {
     "uv": "uv offline adaptor for user-supplied portable Python 3.12 / pinned package set",
     "gcc": "gcc (Debian 14.2.0-19) 14.2.0",
@@ -2974,9 +2974,9 @@
     "expected_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
     "candidate_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
     "rom_size": 33554432,
-    "matched_functions": 2164,
-    "claimed_functions": 2164,
-    "matched_function_bytes": 99604,
+    "matched_functions": 2165,
+    "claimed_functions": 2165,
+    "matched_function_bytes": 100040,
     "functions": [
       {
         "name": "func_80023DF0_249F0",
@@ -22845,6 +22845,15 @@
         "matched": true,
         "expected_sha256": "a9470454d915fddbc361741592859974bc2ced026f9369ef573c94fa330f2d2c",
         "candidate_sha256": "a9470454d915fddbc361741592859974bc2ced026f9369ef573c94fa330f2d2c"
+      },
+      {
+        "name": "func_8003EBAC_3F7AC",
+        "size": 436,
+        "guest_address": "0x8003EBAC",
+        "rom_offset": "0x3F7AC",
+        "matched": true,
+        "expected_sha256": "67f4730f98adcd92a28b506c7631437629ffa8bd08101f2594011ce982201539",
+        "candidate_sha256": "67f4730f98adcd92a28b506c7631437629ffa8bd08101f2594011ce982201539"
       }
     ]
   },
@@ -22856,7 +22865,6 @@
     "func_8003DF98_3EB98",
     "func_8003E234_3EE34",
     "func_8003E6C0_3F2C0",
-    "func_8003EBAC_3F7AC",
     "func_8003ED60_3F960",
     "func_8003F038_3FC38",
     "func_8003F37C_3FF7C",
@@ -24406,7 +24414,8 @@
     "research/usa_short72_20261123/sources/short72_068.c": "094283dee9e5f2a3d9e2ba1bd1ec252ec5d33fd82f2c1e87272b24bb8d9be1b7",
     "research/usa_short72_20261123/sources/short72_069.c": "5afaa6cd846aba5804d8c0f8c85d35302ee404c6126c7757eac90051f4130107",
     "research/usa_short72_20261123/sources/short72_070.c": "7f3b1f84f91846405822b6229a0845521ea4d0c8091fd737bc3f247a9163e40f",
-    "research/usa_short72_20261123/sources/short72_071.c": "87cfeb9a451dff32319cbff4f1454f12a570ac2c887c88c30abec0875936f1eb"
+    "research/usa_short72_20261123/sources/short72_071.c": "87cfeb9a451dff32319cbff4f1454f12a570ac2c887c88c30abec0875936f1eb",
+    "research/usa_script_vm_436_20261123/source/func_8003EBAC_3F7AC.c": "c1e4966ed0937947c05abdc672214d0d731cf84d43147a0acc50df3f54ab8baa"
   },
   "overlay_file43_stage": {
     "ownership": {
@@ -62125,5 +62134,56 @@
     "accepted_predecessor_elf_sha256": "ad6dbdffa727e3a8fa05f7b59e8993f5a35b6937181b0f2e2f5f4295207703db",
     "candidate_elf_sha256": "7d01b2a560d816957fa0cc6ff9af543833a6d6b58fc16c0b339848b2f7f09a13"
   },
-  "ended_utc": "2026-11-23T15:33:55.364606+00:00"
+  "usa_script_vm436_promotion": {
+    "status": "PASSED_G2_LOCAL",
+    "base_matching_C": 2164,
+    "accepted_c_after": 2165,
+    "added_matching_C": 1,
+    "added_instruction_bytes": 436,
+    "accepted_original_bytes_after": 100040,
+    "remaining_assembly": 5198,
+    "full_rom_match": true,
+    "original_rom_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+    "complete_original_ROM_bytes_exact": 33554432,
+    "original_positive_ELF_functions_exact": 7376,
+    "canonical_semantic_relocations_exact": 82103,
+    "canonical_semantic_relocation_sha256": "f7f25e257c9bce27c00e756b85ca7bfa5774137925d5aba9a6626ba4693e5a97",
+    "stable_global_symbols_exact": 26714,
+    "original_function_rom_sha256": "67f4730f98adcd92a28b506c7631437629ffa8bd08101f2594011ce982201539",
+    "original_candidate_ELF_sha256": "ea292ce669ff8d16fb7701b7f4e290e59110c82de4807ae6df978b1a4382470d",
+    "canonical_predecessor_ELF_sha256": "7d01b2a560d816957fa0cc6ff9af543833a6d6b58fc16c0b339848b2f7f09a13",
+    "compiled_original_source_sha256": "55475ae86cce1431fc2916b139e6f92a7ba6a5b0a776de483ed8eea2677343d8",
+    "source_original_C_sha256": "c1e4966ed0937947c05abdc672214d0d731cf84d43147a0acc50df3f54ab8baa",
+    "layout": {
+      "old_source_sha256": "ef69896e2c6e77d9849d18700cd828a959bfa9fa269768fc40a0ad773a8dd422",
+      "new_source_sha256": "55475ae86cce1431fc2916b139e6f92a7ba6a5b0a776de483ed8eea2677343d8",
+      "old_object_sha256": "ec8b12208f2a2ed074f7ec7c4971e00dc89f7565fed5b60afc0e4ed9736f182c",
+      "original_layout_backup_sha256": "e177c0a28641a2c7b95ebb84d645c6db202d33e900d3a44cd8bbaf4eecb07f13",
+      "native_object_layout": {
+        "kind": "vm_assignment_rodata_metadata_v1",
+        "old_size": 64,
+        "new_size": 60,
+        "old_alignment": 16,
+        "new_alignment": 4,
+        "relocations_retained": 15,
+        "payload_bytes_changed": 0,
+        "input_sha256": "1aa834f84c6a9fc08a2b84ed23745419d2ae21210260bcb3a3fb4da8d49bf0f5",
+        "output_sha256": "31a6ebb33d8ad28802c058b96f6c0e27bd1be04e7a3269dfbc1fc56f8628371b",
+        "text_sha256": "9d180f9bc00b9ab2a6c05c30943cf68381b024635b0e4b3f5af94915c83128b5",
+        "compiled_table_prefix_sha256": "cfb6b1a6dee1e182ccfad56f71ce9eb34d63b82db2afccc81f65ba32d1ad28e5"
+      },
+      "original_inline_abs_label_metadata": {
+        "symbol": "D_080019A0_71D420",
+        "original_TYPE": "FUNC",
+        "source_split_TYPE": "NOTYPE",
+        "restored_elf_type": "FUNC",
+        "changed_metadata_byte": 95276908,
+        "code_and_relocations_unchanged": true,
+        "sha256_before": "cccacc69facdab6aff63d5ff4863bfa6ebada730853da6fdebfaf541fc6c6a46",
+        "sha256_after": "ea292ce669ff8d16fb7701b7f4e290e59110c82de4807ae6df978b1a4382470d"
+      }
+    },
+    "gameplay": "NOT_RUN"
+  },
+  "ended_utc": "2026-11-23T21:01:16.541087+00:00"
 }

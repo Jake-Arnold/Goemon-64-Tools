@@ -22,6 +22,7 @@ class Crossregion7StageTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.current=load_manifest(ROOT/'manifest.json')
+        cls.current.pop('usa_script_vm436_promotion',None)  # prior 2079 stage is immutable
         # Historical checkpoint projection: post2090 functions were not yet accepted.
         cls.current.pop('overlay_usa_opening_new2_stage',None)
         cls.current.pop('overlay_usa_short72_stage',None)
