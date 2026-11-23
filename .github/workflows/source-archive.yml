@@ -1,0 +1,44 @@
+name: Goemon source archive
+
+on:
+  push:
+    branches: [stable/toolkit, stable/decomp]
+  pull_request:
+    branches: [stable/toolkit, stable/decomp]
+    paths:
+      - .github/workflows/source-archive.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  archive:
+    if: github.event_name == 'pull_request' || github.ref == 'refs/heads/stable/toolkit' || github.ref == 'refs/heads/stable/decomp'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Package tracked source at the workflow commit
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          output="$RUNNER_TEMP/goemon-source"
+          mkdir -p "$output"
+          git archive --format=tar --prefix=Goemon-64-Tools/ "$GITHUB_SHA" > "$output/source.tar"
+          test "$(git get-tar-commit-id < "$output/source.tar")" = "$GITHUB_SHA"
+          gzip -n "$output/source.tar"
+          cd "$output"
+          printf '%s\n' "$GITHUB_SHA" > COMMIT.txt
+          sha256sum source.tar.gz > SHA256SUMS
+      - name: Publish SHA-pinned source
+        if: github.event_name != 'pull_request'
+        uses: actions/upload-artifact@v4
+        with:
+          name: goemon-source-${{ github.ref_name == 'stable/decomp' && 'stable-decomp' || 'stable-toolkit' }}-${{ github.sha }}
+          path: ${{ runner.temp }}/goemon-source/
+          if-no-files-found: error
+          compression-level: 0
+          retention-days: 30
