@@ -1,5 +1,9 @@
 # IDO 5.3 / MIPS matching-C compiler quirks
 
+### C-Right stage helper retry — limited source-order effect and failed workaround transfer (23 November 2026; RESEARCH_ONLY)
+
+Original USA func_8020DC78_5C9148 (0x5C9148) and JP func_80212AD0_5CE060 (0x5CE060), 256 bytes each. Pinned original IDO5.3 and authentic regional ROM; reverse two marker local initializations from old-first to marker-first. Both 264-byte candidates restore initial marker-load register and improve prefix from 8 to 12 bytes (only 3/64 aligned words); first mismatch +0xC is start-pointer copy instead of original marker copy. Extra global address HI16/LO16 and wrong loop registers remain. Source-line splitting, array declaration, register keyword, local declaration order, int-depth and byte-array variants do not solve. EXISTING_QUIRK_NOT_APPLICABLE to matching; no generalized new rule. USA/JP descriptor comparator pointer typing and register keyword remain 9/19 despite exact extent/relocs; inline and reversed return condition 7/19. USA grid radius-local refresh variant reduces 848B to 756B against 772B original, but 5 to 2 aligned words, wrong stack frame and relocations; not verified equivalent. Loader cached request and explicit zero-float controls do not improve 80-byte prefix. 26 compiled failures independently reproduced; full source and negative controls in conversation ZIP, key pairs under decomp/research/cright_stage_helper_retry_20261123/. NO_NEW_COMPILER_FINDING for larger routines. Retain ASM; no native promotion or full ROM/CI.
+
 This is a cumulative evidence-led knowledge base for reusable compiler behavior found while matching original Goemon 64 functions. Consult it before variant searches. Record new findings in the same commit as the associated decomp research or promotion, even when a function remains assembly-owned.
 
 ## Per-native-attempt outcome — mandatory (23 November 2026)
