@@ -96,6 +96,25 @@ def audit(root:Path=ROOT)->dict:
                     doc.get('original_elf_functions')!=7376 or
                     doc.get('semantic_relocations_unchanged') is not True):
                 failures.append('Crossregion7 proof is not a reviewed full-ROM acceptance')
+    # Post2090 C stages preserve the original published Mini11 predecessor proof
+    # and inventory as immutable historical evidence, rather than rewriting its
+    # ELF object fingerprints to equal later candidate link outputs.
+    new2_stage = manifest.get('overlay_usa_opening_new2_stage') is not None
+    mini_predecessor_inv=inv
+    if new2_stage:
+        historical_proof=root/'results/combined_2090_pre_opening_new2_20261123.json'
+        historical_inv=root/'results/inventory_2090_pre_opening_new2_20261123.json'
+        if not historical_proof.is_file() or not historical_inv.is_file():
+            failures.append('Post2090 new2 missing frozen 2090 predecessor proof/inventory')
+        else:
+            prev_proof=json.loads(historical_proof.read_text())
+            mini_predecessor_inv=json.loads(historical_inv.read_text())
+            if (prev_proof.get('status')!='matched' or
+                prev_proof.get('comparison',{}).get('matched_functions')!=2090 or
+                prev_proof.get('comparison',{}).get('matched_function_bytes')!=94668 or
+                prev_proof.get('comparison',{}).get('full_rom_match') is not True or
+                mini_predecessor_inv.get('summary',{}).get('newly_matching_c')!=2090):
+                failures.append('Post2090 frozen predecessor accepted-C proof invalid')
     if manifest.get('overlay_mini10_stage') or manifest.get('overlay_mini_selector_stage'):
         # Both native USA Mini stages must be reconciled atomically into the
         # complete current-branch proof. A scratch pristine ROM is not enough.
@@ -121,15 +140,44 @@ def audit(root:Path=ROOT)->dict:
                 doc.get('semantic_relocations_exact')!=82103 or
                 doc.get('complete_semantic_relocation_sha256')!='f7f25e257c9bce27c00e756b85ca7bfa5774137925d5aba9a6626ba4693e5a97' or
                 doc.get('original_elf_sha256')!=inv.get('baseline_elf_sha256') or
-                doc.get('candidate_elf_sha256')!=inv.get('candidate_elf_sha256') or
+                doc.get('candidate_elf_sha256')!=mini_predecessor_inv.get('candidate_elf_sha256') or
                 doc.get('canonical_verifier_status')!='PASS' or
                 doc.get('canonical_inventory_status')!='PASS' or
                 any(doc.get('stages',{}).get(k,{}).get('status')!='PASSED_G2_LOCAL' for k in ('mini10','selector'))):
                 failures.append('Mini11 current combined original-ROM/ELF G2 proof mismatch')
-            if (count,code_bytes)!=(2090,94668):
-                failures.append('Mini11 accepted count and ROM bytes changed')
+            if (count,code_bytes)!=((2092,94760) if new2_stage else (2090,94668)):
+                failures.append('Mini11/post2090 accepted count and ROM bytes changed')
             if len(doc.get('functions',[]))!=11 or sum(f['size'] for f in doc.get('functions',[]))!=1652:
                 failures.append('Mini11 native source/size ledger incomplete')
+    if new2_stage:
+        from . import usa_opening_new2_promotion as opening
+        evidence=root/'results/usa_file18_new2_2092_g2_20261123.json'
+        if manifest.get('overlay_usa_opening_new2_stage')!={'format':opening.FORMAT}:
+            failures.append('New2 original-source stage identity wrong')
+        if not evidence.is_file():
+            failures.append('New2 post2090 canonical 2092 full-ROM/ELF proof missing')
+        else:
+            e=json.loads(evidence.read_text())
+            stage=proof.get('overlay_usa_opening_new2_stage') or {}
+            if (e.get('status')!='PASSED_G2_LOCAL' or
+                e.get('prior_c')!=2090 or e.get('accepted_c_after')!=2092 or
+                e.get('accepted_original_bytes_after')!=94760 or
+                e.get('added_original_bytes')!=92 or
+                e.get('full_rom_sha1')!=ORIGINAL_SHA1 or
+                e.get('complete_semantic_relocations')!=82103 or
+                e.get('semantic_relocation_sha256')!=opening.RELOC_HASH or
+                e.get('candidate_elf_sha256')!=inv.get('candidate_elf_sha256') or
+                e.get('baseline_elf_sha256')!=inv.get('baseline_elf_sha256') or
+                e.get('source_manifest_sha256')!=opening.FIXTURE_HASH or
+                e.get('strict_inventory')!='PASS' or
+                e.get('complete_local_ci')!='PASS' or
+                stage.get('status')!='PASSED_G2_LOCAL' or
+                stage.get('accepted_c_after')!=2092 or
+                stage.get('all_semantic_relocations_equal') is not True or
+                stage.get('stable_ELF_globals_equal') is not True or
+                len(e.get('new_functions',[]))!=2 or
+                sum(x.get('size',0) for x in e.get('new_functions',[]))!=92):
+                failures.append('Post2090 new2 full canonical G2/ELF/inventory proof mismatch')
     return {'status':'PASS' if not failures else 'FAIL',
             'accepted_C':count,'accepted_original_bytes':code_bytes,
             'remaining_assembly':7376-count-13,'errors':failures,

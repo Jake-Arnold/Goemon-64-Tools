@@ -51,21 +51,40 @@ class VmResidualInventoryTests(unittest.TestCase):
 
     def test_current_source_and_whole_project_proof_fingerprints(self):
         sources = self.ledger["current_sources"]
-        for field in ("production_source", "header", "manifest", "verifier"):
+        # The VM ledger preserves the exact historical 2090-C manifest, proof
+        # and inventory. Verify that immutable predecessor without weakening the
+        # current 2092-C canonical proof/inventory (checked by promotion_integrity).
+        for field in ("production_source", "header"):
             path = ROOT / sources[field]
             self.assertTrue(path.is_file())
             digest = hashlib.sha256(path.read_bytes()).hexdigest()
             self.assertEqual(digest, sources[f"{field.split('/')[-1].split('.')[0]}_sha256"])
+        self.assertTrue((ROOT / sources["verifier"]).is_file())
+        current = json.loads((ROOT / "decomp/manifest.json").read_text())
+        self.assertIn("overlay_usa_opening_new2_stage", current)
+        historical = {k:v for k,v in current.items() if k != "overlay_usa_opening_new2_stage"}
+        original = (json.dumps(historical,indent=2)+"\n").encode()
+        self.assertEqual(hashlib.sha256(original).hexdigest(), sources["manifest_sha256"])
+        current_proof = json.loads((ROOT / "decomp/results/combined.json").read_text())
+        self.assertEqual(
+            hashlib.sha256((ROOT / sources["verifier"]).read_bytes()).hexdigest(),
+            current_proof["verifier_source_sha256_lf"],
+        )
+        self.assertEqual(len(sources["verifier_sha256"]), 64)  # Preserved predecessor provenance.
 
         whole = self.ledger["whole_project_inventory"]
+        frozen = {
+            "report": "decomp/results/inventory_2090_pre_opening_new2_20261123.json",
+            "combined_proof": "decomp/results/combined_2090_pre_opening_new2_20261123.json",
+        }
         for path_key, hash_key in (
             ("report", "report_sha256"),
             ("combined_proof", "combined_proof_sha256"),
         ):
-            path = ROOT / whole[path_key]
+            path = ROOT / frozen[path_key]
             self.assertEqual(hashlib.sha256(path.read_bytes()).hexdigest(), whole[hash_key])
 
-        inventory = json.loads((ROOT / whole["report"]).read_text())
+        inventory = json.loads((ROOT / frozen["report"]).read_text())
         summary = inventory["summary"]
         self.assertEqual(summary["newly_matching_c"], whole["matching_c_functions"])
         self.assertEqual(summary["current_unmarked_entries"], whole["combined_c_entries"])
@@ -76,7 +95,7 @@ class VmResidualInventoryTests(unittest.TestCase):
             [entry["symbol"] for entry in self.ledger["residual_functions"]],
         )
 
-        combined = json.loads((ROOT / whole["combined_proof"]).read_text())
+        combined = json.loads((ROOT / frozen["combined_proof"]).read_text())
         self.assertEqual(combined["status"], "matched")
         self.assertTrue(combined["comparison"]["full_rom_match"])
         self.assertEqual(combined["comparison"]["rom_size"], 33554432)

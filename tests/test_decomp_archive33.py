@@ -41,6 +41,8 @@ class Archive33Acceptance(unittest.TestCase):
         self.assertEqual(self.current['comparison']['candidate_sha1'],'6ea0ed71032ce08fc2745f412d84936382197494')
         self.assertEqual({f['name'] for f in self.current['comparison']['functions']},oldnames|newnames)
         m=load_manifest(ROOT/'decomp/manifest.json')
+        # This test deliberately reconstructs a predecessor C stage.
+        m.pop('overlay_usa_opening_new2_stage',None)
         # Project current manifest onto historical archive33 checkpoint.
         m.pop('overlay_mini_selector_stage', None)
         m.pop('overlay_mini10_stage', None)

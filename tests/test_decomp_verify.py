@@ -186,6 +186,12 @@ def native_claim_count(manifest):
 class DecompVerificationTests(unittest.TestCase):
     def test_file43_stage_definition_is_explicit_and_fail_closed(self):
         manifest=load_manifest(ROOT/'decomp/manifest.json')
+        # This assertion belongs to the frozen 1,964-C original G2 stage.
+        # Removing later stages here does not relax live 2,092-C verification.
+        for key in ('overlay_usa_opening_new2_stage',
+                    'overlay_mini_selector_stage','overlay_mini10_stage',
+                    'overlay_crossregion7_stage','overlay_reconcile108_stage'):
+            manifest.pop(key,None)
         stage=manifest['overlay_file43_stage']
         self.assertEqual(stage['function']['name'],'func_080001BC_6F369C')
         self.assertIn(stage['function'],claimed_functions(manifest))
@@ -224,6 +230,12 @@ class DecompVerificationTests(unittest.TestCase):
 
     def test_file12_stage_definition_is_explicit_and_fail_closed(self):
         manifest=load_manifest(ROOT/'decomp/manifest.json')
+        # This assertion belongs to the frozen 1,964-C original G2 stage.
+        # Removing later stages here does not relax live 2,092-C verification.
+        for key in ('overlay_usa_opening_new2_stage',
+                    'overlay_mini_selector_stage','overlay_mini10_stage',
+                    'overlay_crossregion7_stage','overlay_reconcile108_stage'):
+            manifest.pop(key,None)
         stages=manifest_file12_stages(manifest)
         promoted=json.loads((ROOT/'decomp/results/usa_file12_spatial_11_promotion_20261117.json').read_text())['functions']
         self.assertEqual([stage['function']['name'] for stage in stages], [
@@ -272,6 +284,12 @@ class DecompVerificationTests(unittest.TestCase):
 
     def test_file13_stage_definition_is_explicit_and_fail_closed(self):
         manifest=load_manifest(ROOT/'decomp/manifest.json')
+        # This assertion belongs to the frozen 1,964-C original G2 stage.
+        # Removing later stages here does not relax live 2,092-C verification.
+        for key in ('overlay_usa_opening_new2_stage',
+                    'overlay_mini_selector_stage','overlay_mini10_stage',
+                    'overlay_crossregion7_stage','overlay_reconcile108_stage'):
+            manifest.pop(key,None)
         stages=manifest_file13_stages(manifest)
         self.assertEqual([stage['function']['name'] for stage in stages], [
             'func_801D3954_5FED34', 'func_801D3A44_5FEE24',
@@ -923,6 +941,12 @@ class DecompVerificationTests(unittest.TestCase):
 
     def test_manifest_bounds_and_symbol_identity(self):
         manifest=load_manifest(ROOT/'decomp/manifest.json')
+        # This assertion belongs to the frozen 1,964-C original G2 stage.
+        # Removing later stages here does not relax live 2,092-C verification.
+        for key in ('overlay_usa_opening_new2_stage',
+                    'overlay_mini_selector_stage','overlay_mini10_stage',
+                    'overlay_crossregion7_stage','overlay_reconcile108_stage'):
+            manifest.pop(key,None)
         unit_functions=sum(len(u['functions']) for u in manifest['units'])
         claims=claimed_functions(manifest)
         # Source patches and staged overlays live outside main translation units.
@@ -1200,7 +1224,9 @@ class DecompVerificationTests(unittest.TestCase):
         verifier=(ROOT/'decomp/verify.py').read_bytes().replace(b'\r\n',b'\n')
         self.assertEqual(result['verifier_source_sha256_lf'],
                          hashlib.sha256(verifier).hexdigest())
-        self.assertEqual(hashlib.sha256(verifier).hexdigest(),
+        # VM residual inventory is historical USA2090 source fingerprinting.
+        prior=json.loads((ROOT/'decomp/results/combined_2090_pre_opening_new2_20261123.json').read_text())
+        self.assertEqual(prior['verifier_source_sha256_lf'],
                          json.loads((ROOT/'decomp/results/vm_residual_inventory.json').read_text())['current_sources']['verifier_sha256'])
         expected={f['name']:f for f in claimed_functions(manifest)}
         actual={f['name']:f for f in result['comparison']['functions']}
@@ -1287,6 +1313,10 @@ class DecompVerificationTests(unittest.TestCase):
                            for f in mini10.fixture()['functions'])
         if manifest.get('overlay_mini_selector_stage') is not None:
             sources.add('research/usa_mini_selector_20261123/mini_selector.c')
+        if manifest.get('overlay_usa_opening_new2_stage') is not None:
+            from decomp import usa_opening_new2_promotion as opening
+            sources.update('research/usa_file18_new2_20261123/sources/'+f['source']+'.c'
+                           for f in opening.fixture()['functions'])
         self.assertEqual(set(result['sources_sha256_lf']),sources)
         for name in sources:
             patches=[p for p in manifest.get('existing_source_patches', []) if p['source']==name]

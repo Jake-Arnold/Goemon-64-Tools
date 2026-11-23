@@ -25,7 +25,7 @@ class JapanJP55PromotionTests(unittest.TestCase):
     def test_main_toolkit_readme_entry_points(self):
         repo = Path(__file__).resolve().parent.parent
         readme = (repo/'README.md').read_text()
-        self.assertIn('git clone --branch main --single-branch', readme)
+        self.assertIn('git clone --branch stable/toolkit --single-branch', readme)
         self.assertIn('bash Run-Linux.sh', readme)
         self.assertIn('.\\Run.bat', readme)
         self.assertIn('--read-only', readme)

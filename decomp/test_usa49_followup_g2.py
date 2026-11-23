@@ -35,6 +35,8 @@ class TestUSA49ResearchSourceGuards(unittest.TestCase):
         # canonically reconciled. The full current 2072-C accepted set is
         # guarded separately by promotion_integrity.
         manifest=verify.load_manifest(verify.ROOT/'manifest.json')
+        # Historical checkpoint projection: post2090 functions were not yet accepted.
+        manifest.pop('overlay_usa_opening_new2_stage',None)
         manifest.pop('overlay_mini_selector_stage',None)  # Later production source stage
         manifest.pop('overlay_mini10_stage',None)  # Later production source stage
         manifest.pop('overlay_reconcile108_stage',None)

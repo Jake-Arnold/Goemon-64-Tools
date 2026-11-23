@@ -16,6 +16,8 @@ class RegistrationStageTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.manifest = load_manifest(ROOT / 'decomp/manifest.json')
+        # This test deliberately reconstructs a predecessor C stage.
+        cls.manifest.pop('overlay_usa_opening_new2_stage',None)
         cls.manifest.pop('overlay_reconcile108_stage', None)  # Historical proof stage
         # Historical checkpoint: exclude the newer Mini stages before older ones.
         cls.manifest.pop('overlay_mini_selector_stage', None)

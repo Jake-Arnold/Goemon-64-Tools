@@ -1,12 +1,12 @@
 {
   "format": "goemon-matching-build-result-v1",
-  "started_utc": "2026-11-23T00:59:17.112166+00:00",
+  "started_utc": "2026-11-23T12:20:14.598943+00:00",
   "status": "matched",
   "upstream_commit": "7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee",
   "retail_sha1": "df8083a54296b8c151917c5333e1c85f014a2a66",
-  "verifier_source_sha256_lf": "c047f26fe66df24cc0bc9fb241617d40c7494ff58d29fc129e40d32c65120374",
+  "verifier_source_sha256_lf": "81da3eed274f7debab1cb5fcfd457eadb692179de241d1986718a049865112f2",
   "tool_versions": {
-    "uv": "uv offline compatibility adapter (bundled Python 3.12.16)",
+    "uv": "uv-offline: pinned user-provided Python 3.12 runtime and wheelhouse",
     "gcc": "gcc (Debian 14.2.0-19) 14.2.0",
     "assembler": "GNU assembler (GNU Binutils for Ubuntu) 2.45.90.20260125"
   },
@@ -2974,9 +2974,9 @@
     "expected_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
     "candidate_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
     "rom_size": 33554432,
-    "matched_functions": 2090,
-    "claimed_functions": 2090,
-    "matched_function_bytes": 94668,
+    "matched_functions": 2092,
+    "claimed_functions": 2092,
+    "matched_function_bytes": 94760,
     "functions": [
       {
         "name": "func_80023DF0_249F0",
@@ -22179,6 +22179,24 @@
         "matched": true,
         "expected_sha256": "15f06b3562afd6f20f5eee826c25c0f19ed9f8ce6e8c22f34e747e8942afdb96",
         "candidate_sha256": "15f06b3562afd6f20f5eee826c25c0f19ed9f8ce6e8c22f34e747e8942afdb96"
+      },
+      {
+        "name": "func_8020D7E8_6771C8",
+        "size": 48,
+        "guest_address": "0x8020D7E8",
+        "rom_offset": "0x6771C8",
+        "matched": true,
+        "expected_sha256": "54352f8564d0078d743c3944596ad6656ef85881d9fca451292dededf30704be",
+        "candidate_sha256": "54352f8564d0078d743c3944596ad6656ef85881d9fca451292dededf30704be"
+      },
+      {
+        "name": "func_8021F330_688D10",
+        "size": 44,
+        "guest_address": "0x8021F330",
+        "rom_offset": "0x688D10",
+        "matched": true,
+        "expected_sha256": "432468847446ee7a221382f7d181d2002c0329f12f8c59560be1ddd698074e4c",
+        "candidate_sha256": "432468847446ee7a221382f7d181d2002c0329f12f8c59560be1ddd698074e4c"
       }
     ]
   },
@@ -23666,7 +23684,9 @@
     "research/usa_mini10_20261123/sources/mini_2d74.c": "49f909a1dbc901591a4aec92d24cb71ac144d8e9adcc8f540bcda4927ddc2c9a",
     "research/usa_mini10_20261123/sources/mini_31dc.c": "5de27c987afac92072c99d75b925511cec5a3e8d4e6a5c731ae7b84d434c6e78",
     "research/usa_mini10_20261123/sources/mini_3278.c": "0dcf32cdc353c52229ad7e2bdff225c0377a6a91a8817fd9814820e087b29ee2",
-    "research/usa_mini_selector_20261123/mini_selector.c": "3dcbf3eac6764dcd36e4ec402d5b0cffe6ce181ef84f40a9736fa507a495541b"
+    "research/usa_mini_selector_20261123/mini_selector.c": "3dcbf3eac6764dcd36e4ec402d5b0cffe6ce181ef84f40a9736fa507a495541b",
+    "research/usa_file18_new2_20261123/sources/new2_native_00.c": "5b02092347c9614bb1d363fff5393c579f32e44df9db662da1750e56989cd842",
+    "research/usa_file18_new2_20261123/sources/new2_native_01.c": "2fe8d88c4228ad357980a68300ab6b4c51b73ed26cd356b1ee680a6b925e2665"
   },
   "overlay_file43_stage": {
     "ownership": {
@@ -60067,5 +60087,79 @@
     "all_semantic_relocations_equal": true,
     "retained_ASM": 1
   },
-  "ended_utc": "2026-11-23T01:02:04.857685+00:00"
+  "overlay_usa_opening_new2_source_plan": {
+    "functions": 2,
+    "original_instruction_bytes": 92,
+    "retained_assembly_fragments": 2
+  },
+  "overlay_usa_opening_new2_object_layout": {
+    "functions": 241,
+    "embedded": 14,
+    "instruction_bytes": 92,
+    "C_objects": [
+      {
+        "source": "new2_native_00",
+        "relocatable": true,
+        "original_text_bytes": 48,
+        "compiler_section_bytes": 48,
+        "zero_padding_removed": 0,
+        "trimmed_object_sha256": "d466989eda1147e27d53cfd3f25e519633f589c9661fac3f0256595f3eb1d624"
+      },
+      {
+        "source": "new2_native_01",
+        "relocatable": true,
+        "original_text_bytes": 44,
+        "compiler_section_bytes": 48,
+        "zero_padding_removed": 4,
+        "trimmed_object_sha256": "fb9ad0c54bf2d7fb038811134ec89b000e1cffa8e7711d468abce9dd586035e0"
+      }
+    ],
+    "retained_ASM_objects": [
+      {
+        "object": "build/usa/asm/usa/676C80_cross47_00_w132_00_w53_01_wn49_01_w233_001_w233_000.s.o",
+        "original_text_bytes": 156,
+        "compiler_section_bytes": 160,
+        "zero_padding_removed": 4,
+        "trimmed_object_sha256": "10e800344a60d23574df627204b4b03eead4385803683b3868186c053bf3ab6f"
+      },
+      {
+        "object": "build/usa/asm/usa/676C80_cross47_05_n87_00_w132_01_w233_002_w233_000.s.o",
+        "original_text_bytes": 260,
+        "compiler_section_bytes": 272,
+        "zero_padding_removed": 12,
+        "trimmed_object_sha256": "a18781be94ceca7951b19e8a9392307f2702a833a75e44e3f6bc2edd8c5b2489"
+      }
+    ]
+  },
+  "overlay_usa_opening_new2_symbol_type_adapter": {
+    "changed_metadata_byte": 128,
+    "symbol": "D_CF8F8",
+    "original_type": "OBJECT",
+    "restored_type": "NOTYPE",
+    "native_MIPS_instructions_untouched": true,
+    "native_relocations_untouched": true,
+    "original_object_sha256": "d466989eda1147e27d53cfd3f25e519633f589c9661fac3f0256595f3eb1d624",
+    "retargeted_object_sha256": "17d7c27af6e48a5c4198f3055b62de0cc807a7baedd5247c2e916447c64fce55"
+  },
+  "overlay_usa_opening_new2_stage": {
+    "status": "PASSED_G2_LOCAL",
+    "added_c": 2,
+    "added_original_bytes": 92,
+    "accepted_c_before": 2090,
+    "accepted_c_after": 2092,
+    "accepted_original_bytes_after": 94760,
+    "remaining_asm": 5271,
+    "original_rom_size": 33554432,
+    "original_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+    "ELF_function_identities": 7376,
+    "stable_global_identical_count": 26714,
+    "complete_semantic_relocations": 82103,
+    "semantic_relocation_sha256": "f7f25e257c9bce27c00e756b85ca7bfa5774137925d5aba9a6626ba4693e5a97",
+    "full_ROM_equal": true,
+    "all_ELF_functions_equal": true,
+    "stable_ELF_globals_equal": true,
+    "all_semantic_relocations_equal": true,
+    "retained_asm_fragments": 2
+  },
+  "ended_utc": "2026-11-23T12:23:00.818324+00:00"
 }

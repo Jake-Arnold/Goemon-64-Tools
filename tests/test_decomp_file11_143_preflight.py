@@ -18,6 +18,8 @@ class File11143PreflightTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.manifest = load_manifest(mod.ROOT / 'manifest.json')
+        # This test deliberately reconstructs a predecessor C stage.
+        cls.manifest.pop('overlay_usa_opening_new2_stage',None)
         # Explicit historical 210-C projection: strip precisely the current
         # 143-C file_11 stage, the two Impact stages and the 36-byte dialogue C.
         cls.manifest = copy.deepcopy(cls.manifest)
