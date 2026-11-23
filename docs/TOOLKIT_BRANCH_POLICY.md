@@ -1,6 +1,6 @@
 # Goemon toolkit branch workflow
 
-**Current canonical toolkit branch: `stable/toolkit`.** Decomplication and original-ROM matching-C work belong on `stable/decomp`, not in this toolkit branch.
+**Current canonical toolkit branch: `stable/toolkit`.** Decompilation and original-ROM matching-C work belong on `stable/decomp`, not in this toolkit branch.
 
 See the authoritative [BRANCHES.md](../BRANCHES.md) for the full agent preflight, two-workstream table, topic branch naming, Git limitations, legacy redirects, and separate checkout commands.
 

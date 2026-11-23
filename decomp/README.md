@@ -1,3 +1,5 @@
+> **Toolkit-branch historical copy — NOT the current decomp runbook.** New native matching-C work must switch to [`stable/decomp`](https://github.com/Jake-Arnold/Goemon-64-Tools/tree/stable/decomp) and read its live `AGENTS.md`, `decomp/CONTINUE.md`, proofs and skills. This file on `stable/toolkit` is historical compatibility content only. See [BRANCHES.md](../BRANCHES.md).
+
 # Matching C reconstruction track
 
 **Continuing work? Start with [CONTINUE.md](CONTINUE.md)** for current paths,

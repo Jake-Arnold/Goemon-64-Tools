@@ -1,3 +1,7 @@
+## 23 November 2026 — mark toolkit-branch decomp copies as historical
+
+- Old `decomp/CONTINUE.md` and `decomp/README.md` in toolkit were previously able to misdirect matching-C agents. Added explicit redirects to the live `stable/decomp` counterparts and reinforced `AGENTS.md` preflight; fixed toolkit policy wording. Documentation only; no native or toolkit code changed.
+
 ## 23 November 2026 — preserve historical toolkit branch provenance in README
 
 - Clarified dated PR #27 / #94 / v0.11.27 statements: those events occurred on historical `main`, not the newly created `stable/toolkit`. Active checkout/PR instructions still use the new canonical baselines. Documentation-only correction, no native/code proof changes.
