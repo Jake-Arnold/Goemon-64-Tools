@@ -1,0 +1,531 @@
+{
+  "format": "goemon-script-vm-followup-native-probe-v1",
+  "base_sha": "78e6303e2fe5f4e5f5a17bab50cb62fc792d241b",
+  "upstream": "7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee",
+  "compiler_sha256": "76d796c9591c9f5504949f85b29c32a6039a663791afe2f36f34ca18425b64d0",
+  "compiler_flags": [
+    "-c",
+    "-G",
+    "0",
+    "-non_shared",
+    "-Xfullwarn",
+    "-Xcpluscomm",
+    "-Iinclude",
+    "-Ilibultra/include",
+    "-Ilibultra/include/PR",
+    "-Isrc",
+    "-I.",
+    "-Wab,-r4300_mul",
+    "-woff",
+    "649,838,712",
+    "-D_LANGUAGE_C",
+    "-D_FINALROM",
+    "-DF3DEX_GBI",
+    "-D__sgi",
+    "-DNDEBUG",
+    "-O2",
+    "-mips2"
+  ],
+  "ledger_sha256": "7a5e33202c7dc7c60924a5797794a5408c4318a05ed4405b7822d0688d7f2582",
+  "baseline_rom_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+  "baseline_rom_bytes": 33554432,
+  "native_invocations": 10,
+  "rows": [
+    {
+      "source": "440_no_mask.c",
+      "source_sha256": "8984f95f16b7aa4b336c8dcbc7dad9581685303e77fd3fcbd3c964268d4bd243",
+      "function": "func_8003E234_3EE34",
+      "region": "usa",
+      "rom_offset": "0x3ee34",
+      "vma": "0x8003e234",
+      "original_bytes": 440,
+      "compiled_func_size": 436,
+      "word_differences": 14,
+      "first_instruction_mismatch_offset": 384,
+      "expected_code_sha256": "acd6d1ecf74790033a8438ba6aae9c7652497de18d5ad7c205deaf2650268336",
+      "candidate_code_sha256": "757d1314bad7847a90a37e2f9e4a97685e27a66d989494fb10ea0c5592b2521f",
+      "named_relocations_original": 16,
+      "named_relocations_candidate": 16,
+      "named_relocation_exact": true,
+      "removed_relocations": [],
+      "added_relocations": [],
+      "first_relocation_mismatch_offset": null,
+      "native_pool_sha256": null,
+      "compiler_quirk_outcome": "EXISTING_QUIRK_REPRODUCED",
+      "status": "RESEARCH_ONLY"
+    },
+    {
+      "source": "440_split_line.c",
+      "source_sha256": "80e5f16933b7e5059d75e4f6e639ecb9001e5ef4f3a2c84e8b38b0b35273f515",
+      "function": "func_8003E234_3EE34",
+      "region": "usa",
+      "rom_offset": "0x3ee34",
+      "vma": "0x8003e234",
+      "original_bytes": 440,
+      "compiled_func_size": 440,
+      "word_differences": 2,
+      "first_instruction_mismatch_offset": 428,
+      "expected_code_sha256": "acd6d1ecf74790033a8438ba6aae9c7652497de18d5ad7c205deaf2650268336",
+      "candidate_code_sha256": "8310bb35aa6c23ca6f937c0916b7c6191869ad955224ab84e8ea230543bab001",
+      "named_relocations_original": 16,
+      "named_relocations_candidate": 16,
+      "named_relocation_exact": true,
+      "removed_relocations": [],
+      "added_relocations": [],
+      "first_relocation_mismatch_offset": null,
+      "native_pool_sha256": null,
+      "compiler_quirk_outcome": "EXISTING_QUIRK_REPRODUCED",
+      "status": "RESEARCH_ONLY"
+    },
+    {
+      "source": "F37C.c",
+      "source_sha256": "a99bfa1984139414440e61667508c90c25feb07091c0279842998fceeeb19ad0",
+      "function": "func_8003F37C_3FF7C",
+      "region": "usa",
+      "rom_offset": "0x3ff7c",
+      "vma": "0x8003f37c",
+      "original_bytes": 192,
+      "compiled_func_size": 192,
+      "word_differences": 8,
+      "first_instruction_mismatch_offset": 8,
+      "expected_code_sha256": "74867178f34d8d45b1753520e1218d6e6c2307f44937258e95c3828f1cf1efd0",
+      "candidate_code_sha256": "22a12ae8a685cdc874844bbf8c7f68e401c39625493785d4d6fde6478335b879",
+      "named_relocations_original": 19,
+      "named_relocations_candidate": 19,
+      "named_relocation_exact": false,
+      "removed_relocations": [
+        [
+          8,
+          6,
+          "D_8007D108_7DD08"
+        ]
+      ],
+      "added_relocations": [
+        [
+          12,
+          6,
+          "D_8007D108_7DD08"
+        ]
+      ],
+      "first_relocation_mismatch_offset": 8,
+      "native_pool_sha256": null,
+      "compiler_quirk_outcome": "EXISTING_QUIRK_REPRODUCED",
+      "status": "RESEARCH_ONLY"
+    },
+    {
+      "source": "const_external.c",
+      "source_sha256": "a847384f88219d8c1b73b0d77eedd94efd6a84d7cfb544af6abae1c32abb38fe",
+      "function": "func_8003F37C_3FF7C",
+      "region": "usa",
+      "rom_offset": "0x3ff7c",
+      "vma": "0x8003f37c",
+      "original_bytes": 192,
+      "compiled_func_size": 192,
+      "word_differences": 8,
+      "first_instruction_mismatch_offset": 8,
+      "expected_code_sha256": "74867178f34d8d45b1753520e1218d6e6c2307f44937258e95c3828f1cf1efd0",
+      "candidate_code_sha256": "22a12ae8a685cdc874844bbf8c7f68e401c39625493785d4d6fde6478335b879",
+      "named_relocations_original": 19,
+      "named_relocations_candidate": 19,
+      "named_relocation_exact": false,
+      "removed_relocations": [
+        [
+          8,
+          6,
+          "D_8007D108_7DD08"
+        ]
+      ],
+      "added_relocations": [
+        [
+          12,
+          6,
+          "D_8007D108_7DD08"
+        ]
+      ],
+      "first_relocation_mismatch_offset": 8,
+      "native_pool_sha256": null,
+      "compiler_quirk_outcome": "EXISTING_QUIRK_NOT_APPLICABLE",
+      "status": "RESEARCH_ONLY"
+    },
+    {
+      "source": "func_8003E234_3EE34.c",
+      "source_sha256": "837f4f51db537cf1ff5ca59c43b95f2e66519328fbc87f58a545c4eccb7f112d",
+      "function": "func_8003E234_3EE34",
+      "region": "usa",
+      "rom_offset": "0x3ee34",
+      "vma": "0x8003e234",
+      "original_bytes": 440,
+      "compiled_func_size": 440,
+      "word_differences": 0,
+      "first_instruction_mismatch_offset": null,
+      "expected_code_sha256": "acd6d1ecf74790033a8438ba6aae9c7652497de18d5ad7c205deaf2650268336",
+      "candidate_code_sha256": "acd6d1ecf74790033a8438ba6aae9c7652497de18d5ad7c205deaf2650268336",
+      "named_relocations_original": 16,
+      "named_relocations_candidate": 16,
+      "named_relocation_exact": true,
+      "removed_relocations": [],
+      "added_relocations": [],
+      "first_relocation_mismatch_offset": null,
+      "native_pool_sha256": null,
+      "compiler_quirk_outcome": "EXISTING_QUIRK_REPRODUCED",
+      "status": "ISOLATED_EXACT"
+    },
+    {
+      "source": "literal.c",
+      "source_sha256": "4cca0e20ec00d4b2e3b45b3acfe3d3c05fb74aa06c87f85e6da3026bdbee6cdb",
+      "function": "func_8003F37C_3FF7C",
+      "region": "usa",
+      "rom_offset": "0x3ff7c",
+      "vma": "0x8003f37c",
+      "original_bytes": 192,
+      "compiled_func_size": 192,
+      "word_differences": 0,
+      "first_instruction_mismatch_offset": null,
+      "expected_code_sha256": "74867178f34d8d45b1753520e1218d6e6c2307f44937258e95c3828f1cf1efd0",
+      "candidate_code_sha256": "74867178f34d8d45b1753520e1218d6e6c2307f44937258e95c3828f1cf1efd0",
+      "named_relocations_original": 19,
+      "named_relocations_candidate": 19,
+      "named_relocation_exact": false,
+      "removed_relocations": [
+        [
+          4,
+          5,
+          "D_8007D108_7DD08"
+        ],
+        [
+          8,
+          6,
+          "D_8007D108_7DD08"
+        ]
+      ],
+      "added_relocations": [
+        [
+          4,
+          5,
+          ".rodata"
+        ],
+        [
+          8,
+          6,
+          ".rodata"
+        ]
+      ],
+      "first_relocation_mismatch_offset": 4,
+      "native_pool_sha256": "31cf8391f9bfd8eedef79bcf6b13f2db5f20089185538b317e01e372d5b8b750",
+      "compiler_quirk_outcome": "EXISTING_QUIRK_REPRODUCED",
+      "status": "RESEARCH_ONLY"
+    },
+    {
+      "source": "local.c",
+      "source_sha256": "491924c04f7b4320ac3941abdc9b06205107e0461916e6f9be7f082db0d25edf",
+      "function": "func_8003F37C_3FF7C",
+      "region": "usa",
+      "rom_offset": "0x3ff7c",
+      "vma": "0x8003f37c",
+      "original_bytes": 192,
+      "compiled_func_size": 192,
+      "word_differences": 8,
+      "first_instruction_mismatch_offset": 8,
+      "expected_code_sha256": "74867178f34d8d45b1753520e1218d6e6c2307f44937258e95c3828f1cf1efd0",
+      "candidate_code_sha256": "22a12ae8a685cdc874844bbf8c7f68e401c39625493785d4d6fde6478335b879",
+      "named_relocations_original": 19,
+      "named_relocations_candidate": 19,
+      "named_relocation_exact": false,
+      "removed_relocations": [
+        [
+          8,
+          6,
+          "D_8007D108_7DD08"
+        ]
+      ],
+      "added_relocations": [
+        [
+          12,
+          6,
+          "D_8007D108_7DD08"
+        ]
+      ],
+      "first_relocation_mismatch_offset": 8,
+      "native_pool_sha256": null,
+      "compiler_quirk_outcome": "EXISTING_QUIRK_NOT_APPLICABLE",
+      "status": "RESEARCH_ONLY"
+    },
+    {
+      "source": "local_init.c",
+      "source_sha256": "d2d1566568bff4781cea317eb508be33f80173da9096002879a61bd3593a53df",
+      "function": "func_8003F37C_3FF7C",
+      "region": "usa",
+      "rom_offset": "0x3ff7c",
+      "vma": "0x8003f37c",
+      "original_bytes": 192,
+      "compiled_func_size": 192,
+      "word_differences": 8,
+      "first_instruction_mismatch_offset": 8,
+      "expected_code_sha256": "74867178f34d8d45b1753520e1218d6e6c2307f44937258e95c3828f1cf1efd0",
+      "candidate_code_sha256": "22a12ae8a685cdc874844bbf8c7f68e401c39625493785d4d6fde6478335b879",
+      "named_relocations_original": 19,
+      "named_relocations_candidate": 19,
+      "named_relocation_exact": false,
+      "removed_relocations": [
+        [
+          8,
+          6,
+          "D_8007D108_7DD08"
+        ]
+      ],
+      "added_relocations": [
+        [
+          12,
+          6,
+          "D_8007D108_7DD08"
+        ]
+      ],
+      "first_relocation_mismatch_offset": 8,
+      "native_pool_sha256": null,
+      "compiler_quirk_outcome": "EXISTING_QUIRK_NOT_APPLICABLE",
+      "status": "RESEARCH_ONLY"
+    },
+    {
+      "source": "reg_local.c",
+      "source_sha256": "e2d857b380ae695b381dc34e1452707750c522fe71ce24652f32a4d155827f23",
+      "function": "func_8003F37C_3FF7C",
+      "region": "usa",
+      "rom_offset": "0x3ff7c",
+      "vma": "0x8003f37c",
+      "original_bytes": 192,
+      "compiled_func_size": 192,
+      "word_differences": 8,
+      "first_instruction_mismatch_offset": 8,
+      "expected_code_sha256": "74867178f34d8d45b1753520e1218d6e6c2307f44937258e95c3828f1cf1efd0",
+      "candidate_code_sha256": "22a12ae8a685cdc874844bbf8c7f68e401c39625493785d4d6fde6478335b879",
+      "named_relocations_original": 19,
+      "named_relocations_candidate": 19,
+      "named_relocation_exact": false,
+      "removed_relocations": [
+        [
+          8,
+          6,
+          "D_8007D108_7DD08"
+        ]
+      ],
+      "added_relocations": [
+        [
+          12,
+          6,
+          "D_8007D108_7DD08"
+        ]
+      ],
+      "first_relocation_mismatch_offset": 8,
+      "native_pool_sha256": null,
+      "compiler_quirk_outcome": "EXISTING_QUIRK_NOT_APPLICABLE",
+      "status": "RESEARCH_ONLY"
+    },
+    {
+      "source": "volatile_external.c",
+      "source_sha256": "04c4ee2e922740bc18f2abd8c42e9ff7ab83e3aa610b9e4782858b83ac9397ee",
+      "function": "func_8003F37C_3FF7C",
+      "region": "usa",
+      "rom_offset": "0x3ff7c",
+      "vma": "0x8003f37c",
+      "original_bytes": 192,
+      "compiled_func_size": 196,
+      "word_differences": 47,
+      "first_instruction_mismatch_offset": 4,
+      "expected_code_sha256": "74867178f34d8d45b1753520e1218d6e6c2307f44937258e95c3828f1cf1efd0",
+      "candidate_code_sha256": "3e97cb9a08e90014d1206dbfd3ebe316d54ae7bbed206eb068450f9951acc9ea",
+      "named_relocations_original": 19,
+      "named_relocations_candidate": 19,
+      "named_relocation_exact": false,
+      "removed_relocations": [
+        [
+          8,
+          6,
+          "D_8007D108_7DD08"
+        ],
+        [
+          16,
+          5,
+          "D_8015CC30_15D830"
+        ],
+        [
+          20,
+          6,
+          "D_8015CC30_15D830"
+        ],
+        [
+          28,
+          5,
+          "D_801C7740_1C8340"
+        ],
+        [
+          32,
+          5,
+          "D_8006D920_6E520"
+        ],
+        [
+          36,
+          6,
+          "D_8006D920_6E520"
+        ],
+        [
+          40,
+          6,
+          "D_801C7740_1C8340"
+        ],
+        [
+          96,
+          4,
+          "func_80035690_36290"
+        ],
+        [
+          104,
+          5,
+          "D_8015CC30_15D830"
+        ],
+        [
+          108,
+          6,
+          "D_8015CC30_15D830"
+        ],
+        [
+          120,
+          5,
+          "D_801C7750_1C8350"
+        ],
+        [
+          132,
+          5,
+          "func_80218F30_5D4400"
+        ],
+        [
+          136,
+          6,
+          "func_80218F30_5D4400"
+        ],
+        [
+          148,
+          6,
+          "D_801C7750_1C8350"
+        ],
+        [
+          152,
+          4,
+          "func_80035244_35E44"
+        ],
+        [
+          160,
+          5,
+          "func_8021925C_5D472C"
+        ],
+        [
+          164,
+          6,
+          "func_8021925C_5D472C"
+        ],
+        [
+          168,
+          4,
+          "func_80035214_35E14"
+        ]
+      ],
+      "added_relocations": [
+        [
+          12,
+          6,
+          "D_8007D108_7DD08"
+        ],
+        [
+          24,
+          5,
+          "D_8015CC30_15D830"
+        ],
+        [
+          28,
+          6,
+          "D_8015CC30_15D830"
+        ],
+        [
+          32,
+          5,
+          "D_801C7740_1C8340"
+        ],
+        [
+          36,
+          5,
+          "D_8006D920_6E520"
+        ],
+        [
+          40,
+          6,
+          "D_8006D920_6E520"
+        ],
+        [
+          44,
+          6,
+          "D_801C7740_1C8340"
+        ],
+        [
+          100,
+          4,
+          "func_80035690_36290"
+        ],
+        [
+          108,
+          5,
+          "D_8015CC30_15D830"
+        ],
+        [
+          112,
+          6,
+          "D_8015CC30_15D830"
+        ],
+        [
+          124,
+          5,
+          "D_801C7750_1C8350"
+        ],
+        [
+          136,
+          5,
+          "func_80218F30_5D4400"
+        ],
+        [
+          140,
+          6,
+          "func_80218F30_5D4400"
+        ],
+        [
+          152,
+          6,
+          "D_801C7750_1C8350"
+        ],
+        [
+          156,
+          4,
+          "func_80035244_35E44"
+        ],
+        [
+          164,
+          5,
+          "func_8021925C_5D472C"
+        ],
+        [
+          168,
+          6,
+          "func_8021925C_5D472C"
+        ],
+        [
+          172,
+          4,
+          "func_80035214_35E14"
+        ]
+      ],
+      "first_relocation_mismatch_offset": 8,
+      "native_pool_sha256": null,
+      "compiler_quirk_outcome": "EXISTING_QUIRK_NOT_APPLICABLE",
+      "status": "RESEARCH_ONLY"
+    }
+  ],
+  "canonical_promotion": "NOT_RUN",
+  "gameplay": "NOT_RUN"
+}

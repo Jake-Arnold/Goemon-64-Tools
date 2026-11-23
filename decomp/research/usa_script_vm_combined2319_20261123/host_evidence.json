@@ -1,0 +1,13 @@
+{
+  "status": "PASS",
+  "compiler": "clang version 17.0.0 (https://github.com/swiftlang/llvm-project.git 10999b6d034fe318f3d56c83bddb6572593a8bb0)",
+  "flags": "-std=c11 -O1 -g -fsanitize=address,undefined -fno-sanitize-recover=all -fno-omit-frame-pointer",
+  "spawn_cases": 4096,
+  "dispatcher_cases": 131072,
+  "source_sha256": {
+    "decomp/research/usa_script_vm_combined2319_20261123/host_candidates.c": "ee77636d3e6943b2be161c6f0824658ae8fdf85a20cd922c18052665af51c006",
+    "decomp/research/usa_script_vm_f37c_reference_20261123/f37c.c": "4cca0e20ec00d4b2e3b45b3acfe3d3c05fb74aa06c87f85e6da3026bdbee6cdb",
+    "decomp/research/usa_script_vm_df98_reference_20261123/df98.c": "8eaf68308afa51862d07ee5795db6cbfd09250070bd243ad69744f6aa144a1f9"
+  },
+  "gameplay": "NOT_RUN"
+}

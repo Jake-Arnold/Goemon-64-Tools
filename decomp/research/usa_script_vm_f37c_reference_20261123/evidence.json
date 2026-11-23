@@ -1,0 +1,50 @@
+{
+  "status": "RESEARCH_ONLY_INDEPENDENT_ASM_REFERENCE_EXACT",
+  "function": "func_8003F37C_3FF7C",
+  "base_sha": "1ddb1b0941b0f39d4db6b0a3534fc1f230b51e0e",
+  "original_ROM_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+  "original_instruction_bytes": 192,
+  "original_code_sha256": "74867178f34d8d45b1753520e1218d6e6c2307f44937258e95c3828f1cf1efd0",
+  "native_source_sha256": "4cca0e20ec00d4b2e3b45b3acfe3d3c05fb74aa06c87f85e6da3026bdbee6cdb",
+  "original_asm_sha256": "fb6f36c159bc017dd00d2a2fda8bfc6ac97c644dd29d4509126d34810744b2d0",
+  "shadow_asm_sha256": "97b3bd432ca672a4fc2b77b6fa77a51a93e301d83581037d1937af71f7abb985",
+  "named_original_relocations": 19,
+  "shadow_reference_relocations": 19,
+  "native_relocations": 19,
+  "shadow_native_relocations_exact": true,
+  "original_to_shadow_removed": [
+    [
+      4,
+      5,
+      "D_8007D108_7DD08"
+    ],
+    [
+      8,
+      6,
+      "D_8007D108_7DD08"
+    ]
+  ],
+  "original_to_shadow_added": [
+    [
+      4,
+      5,
+      ".rodata"
+    ],
+    [
+      8,
+      6,
+      ".rodata"
+    ]
+  ],
+  "pool_original_target": "0x8007d108",
+  "negative_controls_rejected": [
+    "wrong_pool_address",
+    "wrong_pool_word",
+    "wrong_pool_addend"
+  ],
+  "compiler_quirk_outcome": "EXISTING_QUIRK_REPRODUCED",
+  "canonical_named_relocation_gate": "FAIL",
+  "full_new_claim_G2": "NOT_RUN",
+  "full_new_claim_CI": "NOT_RUN",
+  "gameplay": "NOT_RUN"
+}

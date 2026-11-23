@@ -1,0 +1,51 @@
+typedef unsigned char u8; typedef unsigned int u32; typedef int s32;
+typedef struct {u32 w0,w1;} Gfx;
+typedef struct {u8 pad[0x5C];u8 field5C,field5D;} VmState;
+extern u8 D_80077150_77D50;
+extern u8 D_800777F0_783F0;
+extern VmState *D_80077860_78460;
+extern Gfx *D_8015C5CC_15D1CC;
+extern s32 D_801C78D8_1C84D8;
+extern s32 D_801C78DC_1C84DC;
+
+void func_8003E234_3EE34(void) {
+    Gfx *temp_v0;
+    Gfx *temp_v0_10;
+    Gfx *temp_v0_11;
+    Gfx *temp_v0_2;
+    Gfx *temp_v0_3;
+    Gfx *temp_v0_4;
+    Gfx *temp_v0_5;
+    Gfx *temp_v0_6;
+    Gfx *temp_v0_7;
+    Gfx *temp_v0_8;
+    Gfx *temp_v0_9;
+
+    temp_v0 = D_8015C5CC_15D1CC++;
+    temp_v0->w0 = 0x06000000; temp_v0->w1 = &D_800777F0_783F0;
+    temp_v0_2 = D_8015C5CC_15D1CC++;
+    temp_v0_2->w0 = 0xFD100000; temp_v0_2->w1 = &D_80077150_77D50;
+    temp_v0_3 = D_8015C5CC_15D1CC++;
+temp_v0_3->w0 = 0xF5100000;     temp_v0_3->w1 = 0x07000000;
+    temp_v0_4 = D_8015C5CC_15D1CC++;
+    temp_v0_4->w1 = 0;
+    temp_v0_4->w0 = 0xE6000000;
+    temp_v0_5 = D_8015C5CC_15D1CC++;
+    temp_v0_5->w0 = 0xF3000000; temp_v0_5->w1 = 0x071FF100;
+    temp_v0_6 = D_8015C5CC_15D1CC++;
+    temp_v0_6->w1 = 0;
+    temp_v0_6->w0 = 0xE7000000;
+    temp_v0_7 = D_8015C5CC_15D1CC++;
+    temp_v0_7->w1 = 0;
+    temp_v0_7->w0 = 0xF5101000;
+    temp_v0_8 = D_8015C5CC_15D1CC++;
+    temp_v0_8->w0 = 0xF2000000; temp_v0_8->w1 = 0x7C03C;
+    temp_v0_9 = D_8015C5CC_15D1CC++;
+    temp_v0_9->w0 = (s32) ((((((u32)D_801C78D8_1C84D8 + 15U) << 2) & 0xFFF) << 0xC) | 0xE4000000 | ((((u32)D_801C78DC_1C84DC + 15U) << 2) & 0xFFF));
+    temp_v0_9->w1 = (s32) (((((u32)D_801C78D8_1C84D8 << 2) & 0xFFF) << 0xC) | (((u32)D_801C78DC_1C84DC << 2) & 0xFFF));
+    temp_v0_10 = D_8015C5CC_15D1CC++;
+    temp_v0_10->w0 = 0xB4000000;
+    temp_v0_10->w1 = (s32) (((short)(D_80077860_78460->field5D & 1)) << 0x19);
+    temp_v0_11 = D_8015C5CC_15D1CC++;
+temp_v0_11->w0 = 0xB3000000; temp_v0_11->w1 = 0x10000400;
+}

@@ -1,0 +1,8 @@
+{
+  "status": "PASS",
+  "accepted_C": 2317,
+  "accepted_original_bytes": 110288,
+  "remaining_assembly": 5046,
+  "errors": [],
+  "notice": "Stored proof only; fresh G2 and full CI separately required."
+}

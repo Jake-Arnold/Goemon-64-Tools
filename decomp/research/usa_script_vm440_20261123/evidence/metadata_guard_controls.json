@@ -1,0 +1,14 @@
+{
+  "status": "PASS",
+  "control_scope": "metadata guard, not additional native source compilation",
+  "positive_expected_object_sha256": "c464273c6495416358388abc8d7c03501aa2752793d348ec2b2625248cc54d9f",
+  "raw_control_object_sha256": "457db1586f937b1300404cc51a320fcd6d61b0b6ba5ac1d1b029489a073140b0",
+  "negative_controls_rejected": [
+    "wrong_text_word",
+    "wrong_table_word",
+    "wrong_text_relocation",
+    "wrong_symbol_size",
+    "wrong_symbol_type",
+    "missing_original_linked_global"
+  ]
+}

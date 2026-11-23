@@ -1,16 +1,17 @@
 {
   "format": "goemon-matching-build-result-v1",
-  "started_utc": "2026-11-23T21:34:40.571448+00:00",
+  "started_utc": "2026-11-23T23:18:47.209278+00:00",
   "status": "matched",
   "upstream_commit": "7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee",
   "retail_sha1": "df8083a54296b8c151917c5333e1c85f014a2a66",
-  "verifier_source_sha256_lf": "73436c40d800e32c6bfb87bd6dc65a889cf27295e1da09a4691198aabbb593c3",
+  "verifier_source_sha256_lf": "f435c996fb3a13f0a5ba99a72cac24744ff14fa8156c98a45bd8fefd72e54882",
   "tool_versions": {
-    "uv": "offline project runtime Python 3.12.16 (uv command adapter)",
+    "uv": "offline archived dependency launcher (Python 3.12.16; not uv)",
     "gcc": "gcc (Debian 14.2.0-19) 14.2.0",
     "assembler": "GNU assembler (GNU Binutils for Ubuntu) 2.45.90.20260125"
   },
-  "baseline_cache_used": true,
+  "stage": "complete",
+  "baseline_cache_used": false,
   "baseline_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
   "baseline_provenance": {
     "format": "goemon-baseline-cache-v1",
@@ -20,7 +21,6 @@
     "compiler_sha256": "8ca550d30c1fef7c14b1470a1ef93cc6d415a507c6e18c04a7bfeaf8016a7b89",
     "dependency_lock_sha256": "a8892580fba36495b3de64de202ad5482e14319748019109d9633c1290be2bf9"
   },
-  "stage": "complete",
   "overlay_file11_nop_aliases": {
     "removed_spurious_func_aliases": [
       "func_801DD6D8_5995E8",
@@ -2974,9 +2974,9 @@
     "expected_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
     "candidate_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
     "rom_size": 33554432,
-    "matched_functions": 2316,
-    "claimed_functions": 2316,
-    "matched_function_bytes": 109848,
+    "matched_functions": 2319,
+    "claimed_functions": 2319,
+    "matched_function_bytes": 111008,
     "functions": [
       {
         "name": "func_80023DF0_249F0",
@@ -24213,6 +24213,33 @@
         "matched": true,
         "expected_sha256": "dfb99d45e306dc5867435f534d59a87348ee1f5d1444c269124652c87eba5e17",
         "candidate_sha256": "dfb99d45e306dc5867435f534d59a87348ee1f5d1444c269124652c87eba5e17"
+      },
+      {
+        "name": "func_8003E234_3EE34",
+        "size": 440,
+        "guest_address": "0x8003E234",
+        "rom_offset": "0x3EE34",
+        "matched": true,
+        "expected_sha256": "acd6d1ecf74790033a8438ba6aae9c7652497de18d5ad7c205deaf2650268336",
+        "candidate_sha256": "acd6d1ecf74790033a8438ba6aae9c7652497de18d5ad7c205deaf2650268336"
+      },
+      {
+        "name": "func_8003DF98_3EB98",
+        "size": 528,
+        "guest_address": "0x8003DF98",
+        "rom_offset": "0x3EB98",
+        "matched": true,
+        "expected_sha256": "76285ca92a7f611916d867d9938f93fcb3df32ebfa2962120083f2471a501631",
+        "candidate_sha256": "76285ca92a7f611916d867d9938f93fcb3df32ebfa2962120083f2471a501631"
+      },
+      {
+        "name": "func_8003F37C_3FF7C",
+        "size": 192,
+        "guest_address": "0x8003F37C",
+        "rom_offset": "0x3FF7C",
+        "matched": true,
+        "expected_sha256": "74867178f34d8d45b1753520e1218d6e6c2307f44937258e95c3828f1cf1efd0",
+        "candidate_sha256": "74867178f34d8d45b1753520e1218d6e6c2307f44937258e95c3828f1cf1efd0"
       }
     ]
   },
@@ -24221,12 +24248,9 @@
     "func_8003D68C_3E28C",
     "func_8003DBEC_3E7EC",
     "func_8003DE80_3EA80",
-    "func_8003DF98_3EB98",
-    "func_8003E234_3EE34",
     "func_8003E6C0_3F2C0",
     "func_8003ED60_3F960",
     "func_8003F038_3FC38",
-    "func_8003F37C_3FF7C",
     "func_8003F480_40080",
     "func_8003F6E8_402E8",
     "func_80039F84_3AB84",
@@ -25924,7 +25948,10 @@
     "research/promotion251_20261123/source/usa/func_08000BB8_6CFC98.c": "d40dd4f95781d9aec0f66e80eefc18c26f768bffb88b454887d1ecfc8b685a35",
     "research/promotion251_20261123/source/usa/func_08004980_6DE850.c": "d368a7f6fe39b9b40e18ce1fed970ac327e07c56b8d5f6e30e83500aecf881fc",
     "research/promotion251_20261123/source/usa/func_080049C8_6DE898.c": "5b9f8fb813288236efcef581b9e183e0f3d30cb96460fba5187edf0207afa53e",
-    "research/promotion251_20261123/source/usa/func_08000ED0_711530.c": "fb5a1a8465c5af36785c68ec4c1a2881d405ca40a94f2f184f3d366ea17bca09"
+    "research/promotion251_20261123/source/usa/func_08000ED0_711530.c": "fb5a1a8465c5af36785c68ec4c1a2881d405ca40a94f2f184f3d366ea17bca09",
+    "research/usa_script_vm440_20261123/sources/func_8003E234_3EE34.c": "837f4f51db537cf1ff5ca59c43b95f2e66519328fbc87f58a545c4eccb7f112d",
+    "research/usa_script_vm_df98_reference_20261123/df98.c": "8eaf68308afa51862d07ee5795db6cbfd09250070bd243ad69744f6aa144a1f9",
+    "research/usa_script_vm_f37c_reference_20261123/f37c.c": "4cca0e20ec00d4b2e3b45b3acfe3d3c05fb74aa06c87f85e6da3026bdbee6cdb"
   },
   "overlay_file43_stage": {
     "ownership": {
@@ -63719,7 +63746,7 @@
       "source_sha256": "fe68d28efacebd0cc72d7892152ae3684ecc48515e32e7cc4d7ac8e25e02dbab",
       "mixed_unit_sha256": "13266e90f8320fba00d33e8281b3f5b766cb159854964ddcd5a9f0c735049273",
       "compiler_quirk_outcome": "NO_NEW_COMPILER_FINDING",
-      "ledger_sha256": "7a5e33202c7dc7c60924a5797794a5408c4318a05ed4405b7822d0688d7f2582"
+      "ledger_sha256": "0d96f21c456cf58a887286dea392a3a2388f8400c5e16cc1de336563d5a3754a"
     },
     "abs_metadata_fixes": [
       {
@@ -64011,10 +64038,122 @@
       "compiler_quirk_outcome": "EXISTING_QUIRK_REPRODUCED"
     },
     "ownership_exact": true,
-    "compiler_quirk_outcome": "EXISTING_QUIRK_REPRODUCED",
-    "retail_ROM_exact": true,
-    "retail_sha1": "df8083a54296b8c151917c5333e1c85f014a2a66",
-    "independent_full_link_trial_elf_sha256": "16fe08c2eebc6285f8c9fe882c54ca25ec5040c8eb32426b6da75c0929d52873"
+    "compiler_quirk_outcome": "EXISTING_QUIRK_REPRODUCED"
   },
-  "ended_utc": "2026-11-23T21:40:17.599549+00:00"
+  "usa_script_vm440_promotion": {
+    "status": "PASSED_G2_LOCAL",
+    "base_c": 2316,
+    "accepted_c_after": 2317,
+    "added_c": 1,
+    "added_original_bytes": 440,
+    "accepted_original_bytes_after": 110288,
+    "remaining_assembly": 5046,
+    "full_rom_match": true,
+    "original_rom_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+    "original_32MiB_ROM_bytes_exact": 33554432,
+    "positive_elf_function_identities_exact": 7376,
+    "semantic_relocations_exact": 82103,
+    "semantic_relocation_sha256": "f7f25e257c9bce27c00e756b85ca7bfa5774137925d5aba9a6626ba4693e5a97",
+    "stable_global_symbols_exact": 26714,
+    "source_sha256": "837f4f51db537cf1ff5ca59c43b95f2e66519328fbc87f58a545c4eccb7f112d",
+    "mixed_source_sha256": "c2374e3458499705603152eb3b03270e7997cfc6ab1947b09b922233b614a541",
+    "original_code_sha256": "acd6d1ecf74790033a8438ba6aae9c7652497de18d5ad7c205deaf2650268336",
+    "original_elf_sha256": "83eda0f1df831d997f9e505c92a8a7fdb55728d3ad28b30d224f5e1ae975a038",
+    "predecessor_elf_sha256": "16fe08c2eebc6285f8c9fe882c54ca25ec5040c8eb32426b6da75c0929d52873",
+    "candidate_elf_sha256": "f03cb69cf367c2627d6e5e3e0838e2753b7bd13f67da3796f7d619d323043cad",
+    "unit_text_bytes_exact": 10112,
+    "unit_text_relocations_exact": 740,
+    "unit_rodata_relocations_exact": 15,
+    "metadata_only_changed_bytes": 2,
+    "layout": {
+      "kind": "vm_assignment_rodata_metadata_v1",
+      "old_size": 64,
+      "new_size": 60,
+      "old_alignment": 16,
+      "new_alignment": 4,
+      "relocations_retained": 15,
+      "payload_bytes_changed": 0,
+      "input_sha256": "c464273c6495416358388abc8d7c03501aa2752793d348ec2b2625248cc54d9f",
+      "output_sha256": "dbffa30b519129ea0d49f7628b95e99640fb293b0056749b1e97952c01a3040d",
+      "text_sha256": "9d180f9bc00b9ab2a6c05c30943cf68381b024635b0e4b3f5af94915c83128b5",
+      "compiled_table_prefix_sha256": "cfb6b1a6dee1e182ccfad56f71ce9eb34d63b82db2afccc81f65ba32d1ad28e5"
+    },
+    "ownership_exact": true,
+    "compiler_quirk_outcome": "EXISTING_QUIRK_REPRODUCED",
+    "ledger_sha256": "0d96f21c456cf58a887286dea392a3a2388f8400c5e16cc1de336563d5a3754a",
+    "gameplay": "NOT_RUN"
+  },
+  "usa_script_vm_dual_reference": {
+    "original_named_relocations": 82103,
+    "independent_prior_relocations": 82103,
+    "native_relocations": 82102,
+    "independent_shadow_relocations": 82102,
+    "native_predecessor_relocation_sha256": "f7f25e257c9bce27c00e756b85ca7bfa5774137925d5aba9a6626ba4693e5a97",
+    "native_shadow_relocation_sha256": "d5a4088ec689e35bce8f766c400d8ddb8dd2b42662ad30cdf2492ff6d17f8e19",
+    "entire_reference_relocations_equal": true,
+    "removed_named_records": 45,
+    "added_section_records": 44,
+    "native_function_identities": 7376,
+    "native_stable_globals": 26714,
+    "independent_function_identities": 7376,
+    "independent_stable_globals": 26714,
+    "unchanged_cross_reference_metadata_sha256": "5eef2ba3a2a00040032e7643ae46e10841ace84982e71ac3f167c6fc35bcf768",
+    "original_named_relocation_gate_exact": false,
+    "ordinary_comparator_unchanged": true,
+    "status": "PASSED_G2_DUAL_REFERENCE_LOCAL",
+    "base_c": 2317,
+    "accepted_c_after": 2319,
+    "added_c": 2,
+    "added_original_bytes": 720,
+    "accepted_original_bytes_after": 111008,
+    "remaining_assembly": 5044,
+    "original_rom_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+    "full_rom_match": true,
+    "original_32MiB_ROM_bytes_exact": 33554432,
+    "retail_rom_sha1": "df8083a54296b8c151917c5333e1c85f014a2a66",
+    "retail_rom_exact": true,
+    "original_16MiB_ROM_bytes_exact": 16777216,
+    "predecessor_elf_sha256": "f03cb69cf367c2627d6e5e3e0838e2753b7bd13f67da3796f7d619d323043cad",
+    "candidate_elf_sha256": "42a11447a374762135e2bc2e72d185b4efd9e35bee5c91eec071284bfb8bcd1e",
+    "independent_prior_elf_sha256": "3f3aea199f8cf79d879399199e710a4a0884f4cf72e360e90e71c4aab1d4c666",
+    "independent_shadow_elf_sha256": "9462f9ca428f72765323b0dbcdfcb15c92c960114e5a0178cf7a472bf6019bd6",
+    "original_asm_sha256": "8926b42c28518fc93ccd74f8f2635a25a9d1d54fbe40d0b936e398f2299cfc17",
+    "original_data_sha256": "77353a624400b81dd7c3e664a3215cfb93da487723d51bac0c29256445b8b90d",
+    "independent_prior_asm_sha256": "351d6e1019f1c462651cd6ce603688cd4abaa14d2149257f87d809b9695bb6d3",
+    "independent_shadow_asm_sha256": "c71550666d6669638d25613b2304974bd032db8161a140432fcec2eebf59b5e0",
+    "mixed_source_sha256": "e95c02d7215f61aa15a5395dd21368607f626cdf43eeae67ffe13e199b01cfbb",
+    "targets": [
+      {
+        "name": "func_8003DF98_3EB98",
+        "rom_offset": 256920,
+        "vma": 2147737496,
+        "size": 528,
+        "source": "research/usa_script_vm_df98_reference_20261123/df98.c",
+        "source_sha256": "8eaf68308afa51862d07ee5795db6cbfd09250070bd243ad69744f6aa144a1f9",
+        "code_sha256": "76285ca92a7f611916d867d9938f93fcb3df32ebfa2962120083f2471a501631"
+      },
+      {
+        "name": "func_8003F37C_3FF7C",
+        "rom_offset": 262012,
+        "vma": 2147742588,
+        "size": 192,
+        "source": "research/usa_script_vm_f37c_reference_20261123/f37c.c",
+        "source_sha256": "4cca0e20ec00d4b2e3b45b3acfe3d3c05fb74aa06c87f85e6da3026bdbee6cdb",
+        "code_sha256": "74867178f34d8d45b1753520e1218d6e6c2307f44937258e95c3828f1cf1efd0"
+      }
+    ],
+    "native_object_relocations_unmodified": true,
+    "negative_controls_rejected": [
+      "wrong_removed_symbol",
+      "wrong_added_target",
+      "missing_table_reference",
+      "wrong_count",
+      "wrong_pool_entry",
+      "wrong_branch",
+      "wrong_pool_addend"
+    ],
+    "compiler_quirk_outcome": "EXISTING_QUIRK_REPRODUCED",
+    "gameplay": "NOT_RUN"
+  },
+  "ended_utc": "2026-11-23T23:24:21.795738+00:00"
 }

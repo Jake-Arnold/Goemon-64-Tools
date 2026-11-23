@@ -43,6 +43,48 @@ def names_from(value):
     return []
 
 
+def effective_vm_assembly(manifest, combined):
+    """Reconcile explicit validated additive stages with the immutable VM unit.
+
+    Do not subtract arbitrary accepted names: each retirement must have an
+    explicit stage, an original ASM owner, a matching native proof row and
+    absence from the verifier's retained assembly list.
+    """
+    from decomp.verify import claimed_functions
+    from decomp import usa_script_vm436_promotion as vm436
+    from decomp import usa_script_vm440_promotion as vm440
+    from decomp import usa_script_vm_dual_reference as vmdual
+
+    unit = next(u for u in manifest['units'] if u['source'] == 'script_vm.c')
+    original = list(unit['assembly_functions'])
+    remaining = original.copy()
+    claims = {f['name']: f for f in claimed_functions(manifest)}
+    accepted = {f['name']: f for f in combined['comparison']['functions']
+                if f['matched'] is True}
+    retained = set(combined['retained_assembly_functions'])
+    retired = []
+    if manifest.get('usa_script_vm436_promotion') is not None:
+        retired.append(vm436.NAME)
+    if manifest.get(vm440.KEY) is not None:
+        retired.append(vm440.NAME)
+    if manifest.get(vmdual.KEY) is not None:
+        retired.extend(f['name'] for f in vmdual.claims())
+    assert len(retired) == len(set(retired))
+    for name in retired:
+        assert original.count(name) == 1 and name in claims and name in accepted
+        assert name not in retained
+        claim, row = claims[name], accepted[name]
+        assert row['size'] == claim['size']
+        assert int(row['rom_offset'], 16) == claim['rom_offset']
+        assert int(row['guest_address'], 16) == claim.get('vma', claim['rom_offset'] + 0x7FFFF400)
+        assert row['expected_sha256'] == row['candidate_sha256']
+        remaining.remove(name)
+    assert len(original) <= 13 and len(remaining) == len(original) - len(retired)
+    assert not set(remaining) & set(accepted)
+    assert set(remaining) == set(original) & retained
+    return remaining
+
+
 def main(root: Path, out: Path):
     d = root/'decomp'
     combined=read_json(d/'results/combined.json')
@@ -107,20 +149,11 @@ def main(root: Path, out: Path):
         if isinstance(entry,dict):
             for key in ('name','function'):
                 residual_names+=names_from(entry.get(key))
-    # The live source manifest is the authority for the 13 unresolved script VM
-    # functions; don't infer from an older research ledger.
-    man=read_json(d/'manifest.json')
-    script_vm=next(x for x in man['units'] if x['source']=='script_vm.c')
-    live_vm_asm=script_vm['assembly_functions']
-    if man.get('usa_script_vm436_promotion') is not None:
-        # Final stage is applied after the immutable historical VM unit.
-        from decomp.usa_script_vm436_promotion import NAME, validate_predecessor
-        validate_predecessor(man)
-        assert NAME in live_vm_asm and NAME in usa
-        assert NAME not in combined['retained_assembly_functions']
-        live_vm_asm=[name for name in live_vm_asm if name!=NAME]
-    assert len(live_vm_asm)<=13
-    assert not set(live_vm_asm)&usa
+    # Load and validate every additive stage against its correct historical
+    # predecessor before reconciling effective current script VM ownership.
+    from decomp.verify import load_manifest
+    man = load_manifest(d/'manifest.json')
+    live_vm_asm = effective_vm_assembly(man, combined)
     old_registry=read_json(d/'data/candidate_registry_782_pending_20261117.json')
     assert len(old_registry['candidates'])==87
     assert all(c['name'] in (usa if c['region']=='usa' else japan) for c in old_registry['candidates'])

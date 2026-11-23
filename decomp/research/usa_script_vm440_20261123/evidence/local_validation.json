@@ -1,0 +1,25 @@
+{
+  "base": "1ddb1b0941b0f39d4db6b0a3534fc1f230b51e0e",
+  "candidate_functions": 2317,
+  "verify": "PASS",
+  "strict_inventory": "PASS",
+  "promotion_integrity": "PASS",
+  "retail_rom": "PASS",
+  "metadata_negative_controls_rejected": 6,
+  "host_sanitizer_cases": {
+    "gcc": 4096,
+    "clang": 4096
+  },
+  "local_ci": {
+    "command": "CC=clang python -m decomp.local_ci",
+    "status": "FAIL_THEN_FOCUSED_FIX_PASS",
+    "initial_exit": 1,
+    "tests": 480,
+    "skips": 3,
+    "failures": 1,
+    "failure": "test_local_ci step count and final-index expectation predate new VM host fixtures",
+    "fix": "test_local_ci updated for all 58 steps; focused 5 tests PASS; full corrected combined CI separate"
+  },
+  "publication": "NOT_PUBLISHED",
+  "gameplay": "NOT_RUN"
+}

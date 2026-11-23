@@ -16,6 +16,8 @@ class TestShort72(unittest.TestCase):
         self.assertTrue(all(hashlib.sha256((stage.SOURCE/(f['source']+'.c')).read_bytes()).hexdigest()==f['source_sha256'] for f in fs))
     def test_accepted_predecessor_no_overlap(self):
         manifest=load_manifest(stage.ROOT/'manifest.json')
+        manifest.pop('usa_script_vm_dual_reference',None)
+        manifest.pop('usa_script_vm440_promotion',None)
         manifest.pop('usa_native151_promotion',None)
         manifest.pop('usa_script_vm436_promotion', None)  # exact historical source gate
         s=stage.validate_predecessor(manifest)
@@ -24,7 +26,7 @@ class TestShort72(unittest.TestCase):
         self.assertFalse({f['name'] for f in previous} & {f['name'] for f in s['functions']})
     def test_final_claims_complete(self):
         claims=claimed_functions(load_manifest(stage.ROOT/'manifest.json'))
-        self.assertEqual((len(claims),sum(f['size'] for f in claims)),(2316,109848))
+        self.assertEqual((len(claims),sum(f['size'] for f in claims)),(2319,111008))
     def test_modified_fixture_rejected(self):
         orig=stage.FIXTURE
         self.assertTrue(orig.is_file())
@@ -32,6 +34,8 @@ class TestShort72(unittest.TestCase):
             with self.assertRaises(FileNotFoundError):stage.fixture()
     def test_duplicate_original_address_rejected(self):
         manifest=load_manifest(stage.ROOT/'manifest.json')
+        manifest.pop('usa_script_vm_dual_reference',None)
+        manifest.pop('usa_script_vm440_promotion',None)
         manifest.pop('usa_native151_promotion',None)
         manifest.pop('usa_script_vm436_promotion', None)  # immutable historical stage
         prior=claimed_functions({k:v for k,v in manifest.items() if k!='overlay_usa_short72_stage'})

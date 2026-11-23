@@ -7,6 +7,9 @@ storage, not Git. Does not deploy, launch a game or submit upstream patches.
 """
 from __future__ import annotations
 from collections import Counter
+from contextvars import ContextVar
+from copy import deepcopy
+from functools import wraps
 
 import argparse
 from datetime import datetime, timezone
@@ -434,8 +437,76 @@ def reconcile108_stage(manifest):
     return reconcile.fixture()
 
 
+# A single validation traverses a directed acyclic graph of historical manifest
+# projections. Many stage validators ask for an identical predecessor that the
+# caller has already fully checked. Memoize successful traversals only within
+# the current invocation; never reuse a validation across independent calls.
+_CLAIM_TRAVERSAL = ContextVar('goemon_claim_traversal', default=None)
+
+
+def _claim_traversal_scope(fn):
+    @wraps(fn)
+    def scoped(*args, **kwargs):
+        if _CLAIM_TRAVERSAL.get() is not None:
+            return fn(*args, **kwargs)
+        token = _CLAIM_TRAVERSAL.set({})
+        try:
+            return fn(*args, **kwargs)
+        finally:
+            _CLAIM_TRAVERSAL.reset(token)
+    return scoped
+
+
+def _claim_traversal_key(value):
+    kind = type(value)
+    if kind is dict:
+        if any(type(key) is not str for key in value):
+            raise TypeError('non-JSON manifest key')
+        return (dict, tuple((key, _claim_traversal_key(item))
+                            for key, item in value.items()))
+    if kind is list:
+        return (list, tuple(_claim_traversal_key(item) for item in value))
+    if kind in (str, int, bool, type(None)):
+        return (kind, value)
+    raise TypeError('non-JSON manifest value')
+
+
+@_claim_traversal_scope
 def claimed_functions(manifest):
     """All C claims, with explicit overlay functions outside main mapping."""
+    cache = _CLAIM_TRAVERSAL.get()
+    # The manifest is plain JSON data. Keep the entire typed structure as
+    # the key, not merely a stage name, count, object identity or digest.
+    # Unexpected Python objects are not cacheable; the original validator
+    # still decides whether to accept or reject them.
+    try:
+        key = _claim_traversal_key(manifest)
+    except (TypeError, RecursionError):
+        return _claimed_functions(manifest)
+    if key in cache:
+        return deepcopy(cache[key])
+    result = _claimed_functions(manifest)
+    cache[key] = deepcopy(result)
+    return result
+
+
+def _claimed_functions(manifest):
+    if manifest.get('usa_script_vm_dual_reference') is not None:
+        from . import usa_script_vm_dual_reference as vmdual
+        prior={k:v for k,v in manifest.items() if k!=vmdual.KEY}
+        before=claimed_functions(prior)
+        if (len(before),sum(f['size'] for f in before))!=(2317,110288):
+            return before  # immutable historical views only; load_manifest validates current stage
+        vmdual.validate_predecessor(manifest)
+        return before+vmdual.claims()
+    if manifest.get('usa_script_vm440_promotion') is not None:
+        from . import usa_script_vm440_promotion as vm440
+        prior={k:v for k,v in manifest.items() if k!=vm440.KEY}
+        before=claimed_functions(prior)
+        if (len(before),sum(f['size'] for f in before))!=(2316,109848):
+            return before  # immutable historical views only; load_manifest validates current stage
+        vm440.validate_predecessor(manifest)
+        return before+[{'name':vm440.NAME,'rom_offset':vm440.OFFSET,'vma':vm440.VMA,'size':vm440.SIZE}]
     if manifest.get('usa_native151_promotion') is not None:
         from . import native251_promotion as native151
         prior={k:v for k,v in manifest.items() if k!='usa_native151_promotion'}
@@ -1394,6 +1465,7 @@ def prepare_file12_stage_objects(candidate_checkout, stage):
     return result
 
 
+@_claim_traversal_scope
 def load_manifest(path):
     manifest=json.loads(Path(path).read_text(encoding='utf-8'))
     if manifest.get('format')!='goemon-matching-decomp-v1':raise ValueError('Unsupported manifest format')
@@ -1407,6 +1479,8 @@ def load_manifest(path):
     selector_stage_value = manifest.pop('overlay_mini_selector_stage', None)
     opening_new2_stage_value = manifest.pop('overlay_usa_opening_new2_stage', None)
     short72_stage_value = manifest.pop('overlay_usa_short72_stage', None)
+    vmdual_stage_value = manifest.pop('usa_script_vm_dual_reference', None)
+    vm440_stage_value = manifest.pop('usa_script_vm440_promotion', None)
     native151_stage_value = manifest.pop('usa_native151_promotion', None)
     vm436_stage_value = manifest.pop('usa_script_vm436_promotion', None)
     for key,length in (('upstream_commit',40),('retail_sha1',40),('decompressed_sha1',40)):
@@ -1752,6 +1826,14 @@ def load_manifest(path):
         manifest['usa_native151_promotion']=native151_stage_value
         from . import native251_promotion as native151
         native151.validate_predecessor(manifest)
+    if vm440_stage_value is not None:
+        from . import usa_script_vm440_promotion as vm440
+        manifest[vm440.KEY]=vm440_stage_value
+        vm440.validate_predecessor(manifest)
+    if vmdual_stage_value is not None:
+        from . import usa_script_vm_dual_reference as vmdual
+        manifest[vmdual.KEY]=vmdual_stage_value
+        vmdual.validate_predecessor(manifest)
     return manifest
 
 
@@ -2609,6 +2691,8 @@ def validate_baseline_cache(checkout, manifest):
 
 def run_build(args,manifest,report):
     short72_stage_value=manifest.pop('overlay_usa_short72_stage',None)
+    vmdual_stage_value=manifest.pop('usa_script_vm_dual_reference',None)
+    vm440_stage_value=manifest.pop('usa_script_vm440_promotion',None)
     native151_stage_value=manifest.pop('usa_native151_promotion',None)
     vm436_stage_value=manifest.pop('usa_script_vm436_promotion',None)
     opening_new2_stage_value=manifest.pop('overlay_usa_opening_new2_stage',None)
@@ -3690,6 +3774,34 @@ def run_build(args,manifest,report):
             if f['name'] in report['retained_assembly_functions']:report['retained_assembly_functions'].remove(f['name'])
             report['sources_sha256_lf']['research/promotion251_20261123/'+f['source']]=f['source_sha256']
         report['usa_native151_promotion']=proof
+    if vm440_stage_value is not None:
+        from . import usa_script_vm440_promotion as vm440
+        if not result['full_rom_match'] or (result['matched_functions'],result['matched_function_bytes'])!=(2316,109848):
+            raise ValueError('VM440 requires exact accepted 2316-C predecessor')
+        manifest[vm440.KEY]=vm440_stage_value
+        vm440.validate_predecessor(manifest,expected)
+        proof=vm440.apply_usa(candidate,baseline,work,uv,args.jobs)
+        fingerprint=digest(expected[vm440.OFFSET:vm440.OFFSET+vm440.SIZE],'sha256')
+        result['functions'].append({'name':vm440.NAME,'size':vm440.SIZE,'guest_address':f'0x{vm440.VMA:08X}','rom_offset':f'0x{vm440.OFFSET:X}','matched':True,'expected_sha256':fingerprint,'candidate_sha256':fingerprint})
+        result['claimed_functions']+=1;result['matched_functions']+=1
+        result['matched_function_bytes']+=vm440.SIZE
+        report['retained_assembly_functions'].remove(vm440.NAME)
+        report['sources_sha256_lf']['research/usa_script_vm440_20261123/sources/'+vm440.NAME+'.c']=vm440.SOURCE_SHA
+        report[vm440.KEY]=proof
+    if vmdual_stage_value is not None:
+        from . import usa_script_vm_dual_reference as vmdual
+        if not result['full_rom_match'] or (result['matched_functions'],result['matched_function_bytes'])!=(2317,110288):
+            raise ValueError('VM dual reference requires exact accepted 2317-C predecessor')
+        manifest[vmdual.KEY]=vmdual_stage_value
+        vmdual.validate_predecessor(manifest,expected)
+        proof=vmdual.apply_usa(candidate,baseline,work,uv,args.jobs)
+        for f in vmdual.TARGETS:
+            off=f['rom_offset'];size=f['size'];fingerprint=digest(expected[off:off+size],'sha256')
+            result['functions'].append({'name':f['name'],'size':size,'guest_address':f'0x{f["vma"]:08X}','rom_offset':f'0x{off:X}','matched':True,'expected_sha256':fingerprint,'candidate_sha256':fingerprint})
+            result['claimed_functions']+=1;result['matched_functions']+=1;result['matched_function_bytes']+=size
+            report['retained_assembly_functions'].remove(f['name'])
+            report['sources_sha256_lf'][f['source']]=f['source_sha256']
+        report[vmdual.KEY]=proof
     if not result['full_rom_match'] or result['matched_functions']!=result['claimed_functions']:
         raise ValueError('Candidate failed exact matching')
     report['stage']='complete';report['status']='matched'

@@ -1,4 +1,5 @@
 """ROM-free tests preventing false claims in the historical research index."""
+import copy
 import json
 import tempfile
 import unittest
@@ -23,6 +24,31 @@ class HistoricalAuditTests(unittest.TestCase):
         self.assertEqual(data['reconciliation']['old_registry_now_accepted'], 87)
         self.assertGreaterEqual(data['canonical_production']['usa_matching_c'], 864)
         self.assertGreaterEqual(data['canonical_production']['japan_matching_c'], 39)
+
+    def test_vm_assembly_retirement_requires_explicit_native_claims(self):
+        from decomp.verify import load_manifest
+        manifest = load_manifest(ROOT/'decomp/manifest.json')
+        proof = json.loads((ROOT/'decomp/results/combined.json').read_text())
+        remaining = audit.effective_vm_assembly(manifest, proof)
+        self.assertEqual(len(remaining), 9)
+        promoted = ('func_8003EBAC_3F7AC', 'func_8003E234_3EE34',
+                    'func_8003F37C_3FF7C', 'func_8003DF98_3EB98')
+        self.assertFalse(set(remaining) & set(promoted))
+        for name in promoted:
+            with self.subTest(name=name):
+                stale = copy.deepcopy(proof)
+                stale['retained_assembly_functions'].append(name)
+                with self.assertRaises(AssertionError):
+                    audit.effective_vm_assembly(manifest, stale)
+                stale = copy.deepcopy(proof)
+                next(f for f in stale['comparison']['functions']
+                     if f['name'] == name)['matched'] = False
+                with self.assertRaises(AssertionError):
+                    audit.effective_vm_assembly(manifest, stale)
+        forged = copy.deepcopy(proof)
+        forged['comparison']['functions'].append({'name': remaining[0], 'matched': True})
+        with self.assertRaises(AssertionError):
+            audit.effective_vm_assembly(manifest, forged)
 
     def test_names_extracted_only_from_declared_target_fields(self):
         name='func_8003DE80_3EA80'
