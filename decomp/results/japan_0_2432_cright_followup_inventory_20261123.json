@@ -1,0 +1,41 @@
+{
+  "added_C": 4,
+  "added_bytes": 316,
+  "after_C": 2432,
+  "asm_remaining": 4944,
+  "before_C": 2428,
+  "elf_identities_exact": 7376,
+  "excluded_asm": [
+    "func_8000339C_3F9C"
+  ],
+  "format": "goemon-japan0-original-C-strict-inventory-v1",
+  "full_local_ci": "PASS_EXIT_0_ON_PINNED_PREDECESSOR",
+  "full_original_expanded_rom_equal": true,
+  "full_original_retail_rom_equal": true,
+  "new_C_names": [
+    "func_80004170_4D70",
+    "func_800041AC_4DAC",
+    "func_80013654_14254",
+    "func_80212BD0_5CE160"
+  ],
+  "original_bytes_after": 130584,
+  "original_rom_offset_by_name": {
+    "func_80004170_4D70": 19824,
+    "func_800041AC_4DAC": 19884,
+    "func_80013654_14254": 82516,
+    "func_80212BD0_5CE160": 6087008
+  },
+  "semantic_relocations_exact": 80745,
+  "semantic_relocations_sha256": "43a133b21ac2b18d8e1d00f8c4e5718776b001a1f45c54e807dae12165e797c0",
+  "source_sha256_by_name": {
+    "func_80004170_4D70": "d59c3bfbd24ae69e442f47ee0bc95ac7571dd4b0e1e1e9dd93b93409435e2b5d",
+    "func_800041AC_4DAC": "1a470e2225f71a86b56d0ad0078abaa813ca4d5214fb47442c58ef57ff6fc37c",
+    "func_80013654_14254": "3e5ec03e0e461a96d9e49834575fcb95cf3d9e160c2f576147f0c8d2e0c5f044",
+    "func_80212BD0_5CE160": "00f205b377a804f1073dc144ec761f7dc5b2f2cb9225436e128ccc0d63dc129e"
+  },
+  "stable_global_symbol_identities_exact": 26393,
+  "publication": "REBASE_REQUIRED",
+  "latest_stable_sha_at_publication_attempt": "1ddb1b0941b0f39d4db6b0a3534fc1f230b51e0e",
+  "latest_japan_accepted_c": 2528,
+  "latest_promotion_overlap_count": 0
+}

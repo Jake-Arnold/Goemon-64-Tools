@@ -1,0 +1,56 @@
+[
+  {
+    "stem": "clear_5",
+    "rom_offset": 19884,
+    "vma": 2147500460,
+    "size": 48,
+    "match": true,
+    "first_difference": null,
+    "source_sha256": "1a470e2225f71a86b56d0ad0078abaa813ca4d5214fb47442c58ef57ff6fc37c",
+    "original_code_sha256": "093971f29a5ed3c1f0819fe87432d6384a52b296bd277eb5a910817f4c6e2a5d",
+    "commands": [
+      [
+        "/PRIVATE/SCRATCH/mnsg-japan/tools/ido-5.3/cc",
+        "-c",
+        "-G",
+        "0",
+        "-non_shared",
+        "-Xfullwarn",
+        "-Xcpluscomm",
+        "-Wab,-r4300_mul",
+        "-woff",
+        "649,838,712",
+        "-D_LANGUAGE_C",
+        "-D_FINALROM",
+        "-DF3DEX_GBI",
+        "-D__sgi",
+        "-DNDEBUG",
+        "-O2",
+        "-mips2",
+        "/PRIVATE/SCRATCH/probe/clear_5.c",
+        "-o",
+        "/PRIVATE/SCRATCH/probe/clear_5.o"
+      ],
+      [
+        "/PRIVATE/DEPS_PARENT/goemon-dependencies/bin/mips-linux-gnu-ld",
+        "-T",
+        "/PRIVATE/SCRATCH/probe/clear_5.ld",
+        "--defsym=g_system_ptr=0x80161db8",
+        "--emit-relocs",
+        "-o",
+        "/PRIVATE/SCRATCH/probe/clear_5.elf",
+        "/PRIVATE/SCRATCH/probe/clear_5.o"
+      ],
+      [
+        "/PRIVATE/DEPS_PARENT/goemon-dependencies/bin/mips-linux-gnu-objcopy",
+        "-j",
+        ".text",
+        "-O",
+        "binary",
+        "/PRIVATE/SCRATCH/probe/clear_5.elf",
+        "/PRIVATE/SCRATCH/probe/clear_5.bin"
+      ]
+    ],
+    "compiler_outcome": "EXISTING_QUIRK_REPRODUCED"
+  }
+]

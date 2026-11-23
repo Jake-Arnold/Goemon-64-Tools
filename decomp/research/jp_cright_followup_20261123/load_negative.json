@@ -1,0 +1,56 @@
+[
+  {
+    "stem": "load_1",
+    "rom_offset": 82516,
+    "vma": 2147563092,
+    "size": 80,
+    "match": false,
+    "first_difference": 28,
+    "source_sha256": "3b753cb25ec60c4f30150147e58fcf0941fdaa517151c070120e82fbf5b8348e",
+    "original_code_sha256": "2d09bf0c0385cbb0d8f964a9ecb13346510fc2dd2cd80c6f036c3fd0f579bdb9",
+    "commands": [
+      [
+        "/PRIVATE/SCRATCH/mnsg-japan/tools/ido-5.3/cc",
+        "-c",
+        "-G",
+        "0",
+        "-non_shared",
+        "-Xfullwarn",
+        "-Xcpluscomm",
+        "-Wab,-r4300_mul",
+        "-woff",
+        "649,838,712",
+        "-D_LANGUAGE_C",
+        "-D_FINALROM",
+        "-DF3DEX_GBI",
+        "-D__sgi",
+        "-DNDEBUG",
+        "-O2",
+        "-mips2",
+        "/PRIVATE/SCRATCH/probe/load_1.c",
+        "-o",
+        "/PRIVATE/SCRATCH/probe/load_1.o"
+      ],
+      [
+        "/PRIVATE/DEPS_PARENT/goemon-dependencies/bin/mips-linux-gnu-ld",
+        "-T",
+        "/PRIVATE/SCRATCH/probe/load_1.ld",
+        "--defsym=func_800136A4_142A4=0x800136a4",
+        "--emit-relocs",
+        "-o",
+        "/PRIVATE/SCRATCH/probe/load_1.elf",
+        "/PRIVATE/SCRATCH/probe/load_1.o"
+      ],
+      [
+        "/PRIVATE/DEPS_PARENT/goemon-dependencies/bin/mips-linux-gnu-objcopy",
+        "-j",
+        ".text",
+        "-O",
+        "binary",
+        "/PRIVATE/SCRATCH/probe/load_1.elf",
+        "/PRIVATE/SCRATCH/probe/load_1.bin"
+      ]
+    ],
+    "compiler_outcome": "NO_NEW_COMPILER_FINDING"
+  }
+]
