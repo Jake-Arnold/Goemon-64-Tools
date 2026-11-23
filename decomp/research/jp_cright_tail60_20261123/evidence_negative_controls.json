@@ -1,0 +1,101 @@
+{
+  "status": "FAILED_NATIVE",
+  "native_compiler": "SGI IDO 5.3 original mips2",
+  "attempts": [
+    {
+      "filename": "source/failed_activate104_v1.c",
+      "sha256": "cd0815303aebbe955a76c441bbda52edbe0ecc569b305999bce9bce3154b3f89",
+      "compiler": "genuine SGI IDO 5.3",
+      "compiler_quirk_classification": "EXISTING_QUIRK_NOT_APPLICABLE",
+      "native_original_rom_integration": "NOT_RUN",
+      "function": "func_802124AC_5CDA3C",
+      "original_rom_offset": "0x5CDA3C",
+      "original_vma": "0x802124AC",
+      "original_size": 104,
+      "candidate_size": 96,
+      "root_cause_class": "REGISTER_ALLOCATOR / symbolic relocation scheduling",
+      "first_difference": "function extent: 96 original 104 bytes; 2 instructions missing",
+      "control": "symbolic offset/register-address shape varied one at a time"
+    },
+    {
+      "filename": "source/failed_activate104_v2.c",
+      "sha256": "c1abaf4863338e63015cd4d2ace8c99f2625fef6e47dc874ae0489d0e8f28d15",
+      "compiler": "genuine SGI IDO 5.3",
+      "compiler_quirk_classification": "EXISTING_QUIRK_NOT_APPLICABLE",
+      "native_original_rom_integration": "NOT_RUN",
+      "function": "func_802124AC_5CDA3C",
+      "original_rom_offset": "0x5CDA3C",
+      "original_vma": "0x802124AC",
+      "original_size": 104,
+      "candidate_size": 104,
+      "root_cause_class": "REGISTER_ALLOCATOR / symbolic relocation scheduling",
+      "first_difference": "relative +0x0: original LUI destination a0, candidate a1",
+      "control": "symbolic offset/register-address shape varied one at a time"
+    },
+    {
+      "filename": "source/failed_activate104_v3.c",
+      "sha256": "f2f94b26253ff0dac6dc3d1844b87ef7d25081e4d4dd9b89b5887b79cbf1a8ab",
+      "compiler": "genuine SGI IDO 5.3",
+      "compiler_quirk_classification": "EXISTING_QUIRK_NOT_APPLICABLE",
+      "native_original_rom_integration": "NOT_RUN",
+      "function": "func_802124AC_5CDA3C",
+      "original_rom_offset": "0x5CDA3C",
+      "original_vma": "0x802124AC",
+      "original_size": 104,
+      "candidate_size": 104,
+      "root_cause_class": "REGISTER_ALLOCATOR / symbolic relocation scheduling",
+      "first_difference": "relative +0x20: original LHU destination t7, candidate v1; first 8 instructions exact",
+      "control": "symbolic offset/register-address shape varied one at a time"
+    },
+    {
+      "filename": "source/failed_activate104_v4.c",
+      "sha256": "2c2da7603110f141d02b5ec02ce880c1d8d1c661c13d51709e328250b05a75ab",
+      "compiler": "genuine SGI IDO 5.3",
+      "compiler_quirk_classification": "EXISTING_QUIRK_NOT_APPLICABLE",
+      "native_original_rom_integration": "NOT_RUN",
+      "function": "func_802124AC_5CDA3C",
+      "original_rom_offset": "0x5CDA3C",
+      "original_vma": "0x802124AC",
+      "original_size": 104,
+      "candidate_size": 104,
+      "root_cause_class": "REGISTER_ALLOCATOR / symbolic relocation scheduling",
+      "first_difference": "relative +0x20: original LHU destination t7, candidate v1; first 8 instructions exact",
+      "control": "v4 explicit table local fails to change v3 mismatch"
+    },
+    {
+      "filename": "source/failed_compare76_v1.c",
+      "sha256": "7b54d0340f4595657f2541fe44298d739873d5429ac9fc1a286b6522fc845441",
+      "compiler": "genuine SGI IDO 5.3",
+      "compiler_quirk_classification": "EXISTING_QUIRK_NOT_APPLICABLE",
+      "native_original_rom_integration": "NOT_RUN",
+      "function": "func_80212460_5CD9F0",
+      "original_rom_offset": "0x5CD9F0",
+      "original_vma": "0x80212460",
+      "original_size": 76,
+      "candidate_size": 76,
+      "first_difference": "relative +0x0: original first LUI writes v1, candidate writes v0 (register assignment)",
+      "root_cause_class": "REGISTER_ALLOCATOR",
+      "control": "v2 reverses source-load order; mismatch unchanged"
+    },
+    {
+      "filename": "source/failed_compare76_v2.c",
+      "sha256": "227de4c8d31090efce7e9b1f423441e61d9cd43502810a51b69167ec904e67bc",
+      "compiler": "genuine SGI IDO 5.3",
+      "compiler_quirk_classification": "EXISTING_QUIRK_NOT_APPLICABLE",
+      "native_original_rom_integration": "NOT_RUN",
+      "function": "func_80212460_5CD9F0",
+      "original_rom_offset": "0x5CD9F0",
+      "original_vma": "0x80212460",
+      "original_size": 76,
+      "candidate_size": 76,
+      "first_difference": "relative +0x0: original first LUI writes v1, candidate writes v0 (register assignment)",
+      "root_cause_class": "REGISTER_ALLOCATOR",
+      "control": "v2 reverses source-load order; mismatch unchanged"
+    }
+  ],
+  "non_promotion_functions": [
+    "func_80212460_5CD9F0",
+    "func_802124AC_5CDA3C"
+  ],
+  "first_original_matching_function": "func_80212C50_5CE1E0"
+}
