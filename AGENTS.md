@@ -91,6 +91,10 @@ hard-coded address authority in a new UI panel.
 Detailed contract and correction procedure:
 [docs/ADDRESS_CATALOGUE_WORKFLOW.md](docs/ADDRESS_CATALOGUE_WORKFLOW.md).
 
+### Source archive handoff
+
+For Project sessions with shell DNS failures, use the **Goemon source archive** GitHub Actions artifact for the live stable branch SHA. Verify its commit and checksum as described in [BRANCHES.md](BRANCHES.md). Matching-C promotion work follows the live `stable/decomp` instructions for fresh archive download before every attempt and publication verification after every merge.
+
 ## Decomp continuation
 
 For native matching-C work, start with [decomp/CONTINUE.md](decomp/CONTINUE.md).
