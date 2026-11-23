@@ -28,6 +28,9 @@ def manifest():
     m.pop('overlay_menu2_stage', None)
     m.pop('overlay_statecopy1_stage', None)
     m.pop('overlay_archive22_stage', None); m.pop('overlay_archive33_stage', None); m.pop('overlay_archive61_stage', None); m.pop('overlay_checkpoint500_stage', None); m.pop('overlay_rediscovery5_stage', None); m.pop('overlay_native49_stage', None); m.pop('overlay_native51_stage', None); m.pop('overlay_isolated233_stage', None); m.pop('overlay_reconcile108_stage', None)
+    # Historical checkpoint: exclude the newer Mini stages before older ones.
+    m.pop('overlay_mini_selector_stage', None)
+    m.pop('overlay_mini10_stage', None)
     m.pop('overlay_crossregion7_stage', None)  # Preserve historical C stage
     return m
 

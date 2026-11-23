@@ -34,6 +34,9 @@ class File11179StageTests(unittest.TestCase):
         cls.manifest.pop('overlay_menu2_stage', None)
         cls.manifest.pop('overlay_statecopy1_stage', None)
         cls.manifest.pop('overlay_archive22_stage', None); cls.manifest.pop('overlay_archive33_stage', None); cls.manifest.pop('overlay_archive61_stage', None); cls.manifest.pop('overlay_checkpoint500_stage', None); cls.manifest.pop('overlay_rediscovery5_stage', None); cls.manifest.pop('overlay_native49_stage', None); cls.manifest.pop('overlay_native51_stage', None); cls.manifest.pop('overlay_isolated233_stage', None); cls.manifest.pop('overlay_reconcile108_stage', None)
+        # Historical checkpoint: exclude the newer Mini stages before older ones.
+        cls.manifest.pop('overlay_mini_selector_stage', None)
+        cls.manifest.pop('overlay_mini10_stage', None)
         cls.manifest.pop('overlay_crossregion7_stage', None)  # Preserve historical C stage
         # Explicit historical 342-C projection excludes the newer file12 block.
         cls.manifest['overlay_file12_stages']=[x for x in cls.manifest['overlay_file12_stages']

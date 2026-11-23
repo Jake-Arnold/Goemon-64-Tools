@@ -35,6 +35,8 @@ class TestUSA49ResearchSourceGuards(unittest.TestCase):
         # canonically reconciled. The full current 2072-C accepted set is
         # guarded separately by promotion_integrity.
         manifest=verify.load_manifest(verify.ROOT/'manifest.json')
+        manifest.pop('overlay_mini_selector_stage',None)  # Later production source stage
+        manifest.pop('overlay_mini10_stage',None)  # Later production source stage
         manifest.pop('overlay_reconcile108_stage',None)
         manifest.pop('overlay_crossregion7_stage', None)  # Historical stage projection
         existing={x['name'] for x in verify.claimed_functions(manifest)}

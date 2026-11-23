@@ -26,6 +26,9 @@ class Camera184StageTests(unittest.TestCase):
         result.pop('overlay_menu2_stage', None)
         result.pop('overlay_statecopy1_stage', None)
         result.pop('overlay_archive22_stage', None); result.pop('overlay_archive33_stage', None); result.pop('overlay_archive61_stage', None); result.pop('overlay_checkpoint500_stage', None); result.pop('overlay_rediscovery5_stage', None); result.pop('overlay_native49_stage', None); result.pop('overlay_native51_stage', None); result.pop('overlay_isolated233_stage', None); result.pop('overlay_reconcile108_stage', None)
+        # Historical checkpoint: exclude the newer Mini stages before older ones.
+        result.pop('overlay_mini_selector_stage', None)
+        result.pop('overlay_mini10_stage', None)
         result.pop('overlay_crossregion7_stage', None)  # Preserve historical C stage
         return result
 

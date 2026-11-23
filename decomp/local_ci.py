@@ -287,6 +287,40 @@ def build_steps(host_binary: Path, *, quick: bool = False):
                 str((isolated_tests/'test_speed_ease_3de0.c').relative_to(ROOT)),'-o',str(speed_ease)]),
             ('Speed ease 220B original-source sanitizer test',[str(speed_ease)]),
         ])
+    if not quick:
+        # Original IDO-matching USA Mini C source bodies, not approximating
+        # behavioural stubs. The four host fixtures cover all eleven promoted
+        # functions (10 stage sources and the original-table selector).
+        mini11=ROOT/'decomp/research/usa_mini11_20261123'
+        mini10=ROOT/'decomp/research/usa_mini10_20261123/sources'
+        selector=ROOT/'decomp/research/usa_mini_selector_20261123/mini_selector.c'
+        native_sources=[mini10/(name+'.c') for name in (
+            'mini_2180','mini_2220','mini_2800','mini_2aa0',
+            'mini_2ba8','mini_2cec','mini_2d74')]
+        groups=(
+            ('seven',mini11/'test_host_new_seven.c',native_sources),
+            ('conditional',mini11/'test_conditional_speeds.c',[mini10/'mini_31dc.c']),
+            ('pair',mini11/'test_host_pair.c',[mini10/'mini_28d8.c',mini10/'mini_3278.c']),
+            ('selector',mini11/'test_host_selector.c',[selector]),
+        )
+        compiler=shlex.split(os.environ.get('CC','cc'))
+        # Keep exact native IDO source declarations unchanged: some unused
+        # local stack names are necessary to preserve source hash/provenance.
+        # Suppress only unused-variable warnings, not sanitizer checks.
+        flags=['-std=gnu11','-O1','-g','-Wall','-Wextra','-Werror',
+               '-Wno-unused-variable','-Wno-unused-parameter','-Wno-unused-function','-Wno-unknown-pragmas',
+               '-fsanitize=address,undefined','-fno-sanitize-recover=all',
+               '-fno-omit-frame-pointer']
+        for label,fixture,srcs in groups:
+            if not fixture.is_file() or any(not source.is_file() for source in srcs):
+                raise ValueError('Missing exact USA Mini native C host suite '+label)
+            binary=host_binary.with_name('mini11-'+label+'-native-asan-host')
+            steps.extend([
+                ('USA Mini11 '+label+' actual C ASan/UBSan host build',compiler+flags+[
+                    str(fixture.relative_to(ROOT)),
+                    *[str(src.relative_to(ROOT)) for src in srcs],'-lm','-o',str(binary)]),
+                ('USA Mini11 '+label+' actual C ASan/UBSan host regression',[str(binary)]),
+            ])
     # The resumable queue and read-only C-Right comparator belong to the
     # same ROM-free acceptance gate as the existing Python/ledger checks.
     # Append them, preserving existing native-host fixture ordering.

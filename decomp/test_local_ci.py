@@ -13,7 +13,7 @@ class LocalCITests(unittest.TestCase):
     def test_default_runs_python_validation_then_host_sanitizers(self):
         with tempfile.TemporaryDirectory() as directory:
             steps = local_ci.build_steps(Path(directory) / "host")
-        self.assertEqual(len(steps), 39)
+        self.assertEqual(len(steps), 47)
         self.assertIn("Native100 original-C 1000-case host sanitizer test", [name for name, _ in steps])
         self.assertEqual(steps[30][0], "USA 92F0 A18C/A548/A5C4/AAE8/AB30/108BC actual-source sanitizer build")
         self.assertTrue(any(path.endswith("test_usa_92f0_a18c_aae8.c") for path in steps[30][1]))
@@ -24,12 +24,19 @@ class LocalCITests(unittest.TestCase):
         self.assertEqual(steps[33][0], "Mini reset 148B original-source sanitizer test")
         self.assertEqual(steps[34][0], "Speed ease 220B original-source sanitizer build")
         self.assertEqual(steps[35][0], "Speed ease 220B original-source sanitizer test")
-        self.assertEqual(steps[36][0], "Resumable task registry validation")
-        self.assertEqual(steps[36][1][-2:], ["decomp.task_registry", "validate"])
-        self.assertEqual(steps[37][0], "C-Right live-trace comparator tests")
-        self.assertIn("decomp/tasks/cright_live_trace", steps[37][1])
-        self.assertEqual(steps[38][0], "Canonical promotion integrity (manifest+G2+inventory)")
-        self.assertEqual(steps[38][1][-2:], ["decomp.promotion_integrity", "--validate"])
+        # Eight new build/test gates exercise all eleven *actual* native C bodies.
+        for idx,label in ((36,'seven'),(38,'conditional'),(40,'pair'),(42,'selector')):
+            self.assertEqual(steps[idx][0],f'USA Mini11 {label} actual C ASan/UBSan host build')
+            self.assertEqual(steps[idx+1][0],f'USA Mini11 {label} actual C ASan/UBSan host regression')
+            self.assertIn('-fsanitize=address,undefined',steps[idx][1])
+            self.assertEqual(len(steps[idx+1][1]),1)
+        self.assertTrue(any(x.endswith('mini_selector.c') for x in steps[42][1]))
+        self.assertEqual(steps[44][0], "Resumable task registry validation")
+        self.assertEqual(steps[44][1][-2:], ["decomp.task_registry", "validate"])
+        self.assertEqual(steps[45][0], "C-Right live-trace comparator tests")
+        self.assertIn("decomp/tasks/cright_live_trace", steps[45][1])
+        self.assertEqual(steps[46][0], "Canonical promotion integrity (manifest+G2+inventory)")
+        self.assertEqual(steps[46][1][-2:], ["decomp.promotion_integrity", "--validate"])
 
         self.assertTrue(any(path.endswith("test_actual109.c") for path in steps[11][1]))
         self.assertEqual(sum(path.endswith(".c") and "usa_wide109_promotion_20261118/sources" in path for path in steps[11][1]), 68)

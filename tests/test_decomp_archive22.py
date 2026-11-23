@@ -33,6 +33,9 @@ class Archive22Gates(unittest.TestCase):
         self.assertEqual(len(new_names),22)
         self.assertFalse(old_names & new_names)
         m=load_manifest(ROOT/'decomp/manifest.json');m.pop('overlay_reconcile108_stage',None)
+        # Historical checkpoint: exclude the newer Mini stages before older ones.
+        m.pop('overlay_mini_selector_stage', None)
+        m.pop('overlay_mini10_stage', None)
         m.pop('overlay_crossregion7_stage', None)  # Preserve historical C stage
         all_c=claimed_functions({k:v for k,v in m.items() if k not in ('overlay_archive33_stage','overlay_archive61_stage','overlay_checkpoint500_stage','overlay_rediscovery5_stage','overlay_native49_stage','overlay_native51_stage','overlay_isolated233_stage')})
         self.assertEqual((len(all_c),sum(x['size'] for x in all_c)),(1523,58292))

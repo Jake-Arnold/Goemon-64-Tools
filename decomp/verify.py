@@ -436,6 +436,16 @@ def reconcile108_stage(manifest):
 
 def claimed_functions(manifest):
     """All C claims, with explicit overlay functions outside main mapping."""
+    if manifest.get('overlay_mini_selector_stage') is not None:
+        from . import usa_mini_selector_promotion as mini_selector
+        d=mini_selector.validate_predecessor(manifest)
+        predecessor={k:v for k,v in manifest.items() if k!='overlay_mini_selector_stage'}
+        return claimed_functions(predecessor)+[{k:f[k] for k in ('name','rom_offset','vma','size')} for f in d['functions']]
+    if manifest.get('overlay_mini10_stage') is not None:
+        from . import usa_mini10_promotion as mini10
+        stage=mini10.validate_predecessor(manifest)
+        predecessor={k:v for k,v in manifest.items() if k!='overlay_mini10_stage'}
+        return claimed_functions(predecessor)+[{k:f[k] for k in ('name','rom_offset','vma','size')} for f in stage['functions']]
     functions = main_claimed_functions(manifest)
     stage = manifest.get('overlay_file43_stage')
     if stage is not None:
@@ -1362,6 +1372,8 @@ def load_manifest(path):
     isolated_stage_value = manifest.pop('overlay_isolated233_stage', None)
     reconcile108_stage_value = manifest.pop('overlay_reconcile108_stage', None)
     crossregion7_stage_value = manifest.pop('overlay_crossregion7_stage', None)
+    mini10_stage_value = manifest.pop('overlay_mini10_stage', None)
+    selector_stage_value = manifest.pop('overlay_mini_selector_stage', None)
     for key,length in (('upstream_commit',40),('retail_sha1',40),('decompressed_sha1',40)):
         if not re.fullmatch('[0-9a-f]{'+str(length)+'}',manifest.get(key,'')):raise ValueError('Invalid '+key)
     seen=set();assembly_seen=set();ranges=[]
@@ -1681,6 +1693,14 @@ def load_manifest(path):
         manifest['overlay_crossregion7_stage']=crossregion7_stage_value
         from . import usa_crossregion7 as cross7
         cross7.validate_predecessor(manifest)
+    if mini10_stage_value is not None:
+        manifest['overlay_mini10_stage']=mini10_stage_value
+        from . import usa_mini10_promotion as mini10
+        mini10.validate_predecessor(manifest)
+    if selector_stage_value is not None:
+        manifest['overlay_mini_selector_stage']=selector_stage_value
+        from . import usa_mini_selector_promotion as mini_selector
+        mini_selector.validate_predecessor(manifest)
     return manifest
 
 
@@ -2537,6 +2557,8 @@ def validate_baseline_cache(checkout, manifest):
 
 
 def run_build(args,manifest,report):
+    selector_stage_value=manifest.pop('overlay_mini_selector_stage',None)
+    mini10_stage_value=manifest.pop('overlay_mini10_stage',None)
     if os.name=='nt':raise ValueError('Run the build verifier inside Linux/WSL, not native Windows')
     upstream=args.upstream.resolve();work=args.workdir.resolve()
     if work.exists():raise ValueError('Work directory already exists; choose a new path')
@@ -3399,6 +3421,93 @@ def run_build(args,manifest,report):
             result['matched_functions']+=1
             result['matched_function_bytes']+=f['size']
         report['overlay_crossregion7_stage']=proof
+    if mini10_stage_value is not None:
+        from . import usa_mini10_promotion as mini10
+        from . import overlay_isolated233 as splice
+        if mini10_stage_value!={'format':mini10.FORMAT}:
+            raise ValueError('Unsupported original USA Mini10 promotion stage')
+        if (not result['full_rom_match'] or result['matched_functions']!=2079 or
+                result['matched_function_bytes']!=93016):
+            raise ValueError('Mini10 requires fully verified 2079-C predecessor')
+        data=mini10.validate_predecessor(manifest,expected)
+        prior=work/'accepted2079-before-mini10.elf'
+        shutil.copyfile(candidate/'build/usa/mnsg.elf',prior)
+        with mini10.source_context():
+            owners=splice.find_owners(candidate,data)
+            logged('candidate-mini10-original-parents',
+                   ['make','-j'+str(args.jobs),'UV='+uv,
+                    *splice.parent_targets(owners)],candidate)
+            plan=splice.stage_linker(candidate,expected,data,owners,mini10.SRC)
+            report['overlay_mini10_source_plan']={
+                'functions':len(plan['functions']),
+                'original_instruction_bytes':sum(f['size'] for f in plan['functions']),
+                'retained_asm_slices':len(plan['assembly'])}
+            logged('candidate-mini10-objects',
+                   ['make','-j'+str(args.jobs),'UV='+uv,*splice.object_targets(plan)],candidate)
+            packed=splice.pack_objects(candidate,expected,plan)
+        packed.update(functions=10,instruction_bytes=1268,embedded=0)
+        report['overlay_mini10_object_layout']=packed
+        for target in ('build/usa/mnsg.elf','build/usa/mnsg.z64'):
+            (candidate/target).unlink()
+        logged('candidate-mini10-combined-final-build',
+               ['make','-j'+str(args.jobs),'UV='+uv],candidate)
+        proof=mini10.prove_combined(baseline,prior,candidate,expected,plan)
+        for f in data['functions']:
+            report['sources_sha256_lf']['research/usa_mini10_20261123/sources/'+f['source']+'.c']=f['source_sha256']
+            result['functions'].append({'name':f['name'],'size':f['size'],
+                'guest_address':f'0x{f["vma"]:08X}',
+                'rom_offset':f'0x{f["rom_offset"]:X}',
+                'matched':True,
+                'expected_sha256':f['original_code_sha256'],
+                'candidate_sha256':f['original_code_sha256']})
+            result['claimed_functions']+=1
+            result['matched_functions']+=1
+            result['matched_function_bytes']+=f['size']
+        report['overlay_mini10_stage']=proof
+        manifest['overlay_mini10_stage']=mini10_stage_value
+    if selector_stage_value is not None:
+        from . import usa_mini_selector_promotion as mini_selector
+        from . import overlay_isolated233 as splice
+        if selector_stage_value!={'format':mini_selector.FORMAT}:
+            raise ValueError('Unsupported Mini selector original-table stage')
+        if not result['full_rom_match'] or result['matched_functions']!=2089 or result['matched_function_bytes']!=94284:
+            raise ValueError('Mini selector must follow verified 2089 C function source build')
+        manifest['overlay_mini_selector_stage']=selector_stage_value
+        data=mini_selector.validate_predecessor(manifest,expected)
+        prior=work/'accepted2089-before-mini-selector.elf'
+        shutil.copyfile(candidate/'build/usa/mnsg.elf',prior)
+        with mini_selector.source_context():
+            owners=splice.find_owners(candidate,data)
+            logged('candidate-mini-selector-original-parents',
+                   ['make','-j'+str(args.jobs),'UV='+uv,*splice.parent_targets(owners)],candidate)
+            plan=splice.stage_linker(candidate,expected,data,owners,mini_selector.DIR)
+            report['overlay_mini_selector_source_plan']={
+                'functions':len(plan['functions']),
+                'original_instruction_bytes':sum(f['size'] for f in plan['functions']),
+                'retained_asm_slices':len(plan['assembly'])}
+            logged('candidate-mini-selector-native-objects',
+                   ['make','-j'+str(args.jobs),'UV='+uv,*splice.object_targets(plan)],candidate)
+            patch=mini_selector.patch_jumptable_symbol(candidate/'build/usa/src/mini_selector.c.o')
+            packed=splice.pack_objects(candidate,expected,plan)
+        report['overlay_mini_selector_object_layout']=packed
+        report['overlay_mini_selector_relocation_adapter']=patch
+        for target in ('build/usa/mnsg.elf','build/usa/mnsg.z64'):
+            (candidate/target).unlink()
+        logged('candidate-mini-selector-combined-final-build',
+               ['make','-j'+str(args.jobs),'UV='+uv],candidate)
+        proof=mini_selector.verify_combined(baseline,prior,candidate,expected,plan)
+        f=data['functions'][0]
+        report['sources_sha256_lf']['research/usa_mini_selector_20261123/mini_selector.c']=f['source_sha256']
+        result['functions'].append({'name':f['name'],'size':f['size'],
+            'guest_address':f'0x{f["vma"]:08X}',
+            'rom_offset':f'0x{f["rom_offset"]:X}',
+            'matched':True,
+            'expected_sha256':f['original_code_sha256'],
+            'candidate_sha256':f['original_code_sha256']})
+        result['claimed_functions']+=1
+        result['matched_functions']+=1
+        result['matched_function_bytes']+=f['size']
+        report['overlay_mini_selector_stage']=proof
     if not result['full_rom_match'] or result['matched_functions']!=result['claimed_functions']:
         raise ValueError('Candidate failed exact matching')
     report['stage']='complete';report['status']='matched'

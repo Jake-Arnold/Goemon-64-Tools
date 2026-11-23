@@ -10,6 +10,9 @@ class UsaCrossRegion47PromotionTests(unittest.TestCase):
  def setUpClass(cls):
   cls.manifest=load_manifest(ROOT/'decomp/manifest.json')
   cls.manifest.pop('overlay_reconcile108_stage', None)  # Historical 779-C checkpoint
+  # Historical checkpoint: exclude the newer Mini stages before older ones.
+  cls.manifest.pop('overlay_mini_selector_stage', None)
+  cls.manifest.pop('overlay_mini10_stage', None)
   cls.manifest.pop('overlay_crossregion7_stage', None)  # Preserve historical C stage
   cls.manifest.pop('overlay_wide132_stage', None)
   cls.manifest.pop('overlay_wide109_stage', None)

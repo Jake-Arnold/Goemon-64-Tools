@@ -1,0 +1,26 @@
+{
+  "format": "goemon-usa-mini-selector-post2089-v1",
+  "region": "usa",
+  "prior_count": 2089,
+  "prior_bytes": 94284,
+  "prior_manifest_sha256": "8447b1271718bede4dc63244b48057604d4b7af55fab9f35ab5acfd31a90e9ef",
+  "original_rom_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+  "functions": [
+    {
+      "name": "func_801E1C90_59DBA0",
+      "rom_offset": 5888928,
+      "vma": 2149457040,
+      "size": 384,
+      "source": "mini_selector",
+      "source_sha256": "3dcbf3eac6764dcd36e4ec402d5b0cffe6ce181ef84f40a9736fa507a495541b",
+      "original_code_sha256": "15f06b3562afd6f20f5eee826c25c0f19ed9f8ce6e8c22f34e747e8942afdb96",
+      "original_asm": "file_11"
+    }
+  ],
+  "original_jump_table_vma": "0x8020B2E0",
+  "original_table_count": 8,
+  "retargeted_relocation_offsets": [
+    312,
+    320
+  ]
+}

@@ -25,25 +25,25 @@
     "header": "decomp/script_vm.h",
     "header_sha256": "42aa91e7c21dba3b1e6aff8732a65d32d5fe4e727a19ad1b4fc3b61a271e1cf5",
     "manifest": "decomp/manifest.json",
-    "manifest_sha256": "10a1a4623e012fe93968ea83372718c39972f040c8bea9434afd758ea61ba3f5",
+    "manifest_sha256": "4f8efc5305d510e4f5af476e2c405cc52f38ba2a14c6fec37fc01935b2ca74e6",
     "verifier": "decomp/verify.py",
-    "verifier_sha256": "3d048064e2161377ee3b27834fc034925785f73c1a80c26582486728cbd878f5",
+    "verifier_sha256": "c047f26fe66df24cc0bc9fb241617d40c7494ff58d29fc129e40d32c65120374",
     "script_vm_sha256": "42aa91e7c21dba3b1e6aff8732a65d32d5fe4e727a19ad1b4fc3b61a271e1cf5",
-    "verify_sha256": "3d048064e2161377ee3b27834fc034925785f73c1a80c26582486728cbd878f5"
+    "verify_sha256": "c047f26fe66df24cc0bc9fb241617d40c7494ff58d29fc129e40d32c65120374"
   },
   "whole_project_inventory": {
     "report": "decomp/results/inventory.json",
-    "report_sha256": "956dc75b625718a005721ab15142424d6f77571af93bcb243e42cad235185b0f",
+    "report_sha256": "d4f10618aadc8358ddd0ae7629ffee58ca132a8e7a72e84fad401c7a315313f8",
     "combined_proof": "decomp/results/combined.json",
-    "combined_proof_sha256": "b836cb3a137fcabc71528b24bec7c08e47780eef060c0fbb2585140fbbbbe926",
-    "matching_c_functions": 2079,
-    "matching_c_bytes": 93016,
-    "combined_c_entries": 2092,
-    "asm_entries": 5284,
+    "combined_proof_sha256": "a909ea59df37a96108bae72b8da0ebf68443ad03eac7db665151e3ea799cf69c",
+    "matching_c_functions": 2090,
+    "matching_c_bytes": 94668,
+    "combined_c_entries": 2103,
+    "asm_entries": 5273,
     "identified_entries": 7376,
     "full_rom_exact": true,
-    "note": "USA 2079 original-address matching C after canonical crossregion7; all 33,554,432 original ROM bytes match, 7,376 original ELF function identities preserved, 82,103 semantic relocations unchanged and strict inventory passed. Historical 2072 proof and inventory are dated preserved snapshots.",
-    "reconciled_date": "2026-11-22"
+    "note": "USA 2090 original-address matching C after Mini11 canonical G2 (2079+10+1); full 33,554,432 USA ROM bytes, 7,376 ELF identities and 82,103 semantic relocations unchanged. Strict inventory passed. The original VM residual 13-function historical research scope remains unchanged.",
+    "reconciled_date": "2026-11-23"
   },
   "residual_functions": [
     {

@@ -96,6 +96,40 @@ def audit(root:Path=ROOT)->dict:
                     doc.get('original_elf_functions')!=7376 or
                     doc.get('semantic_relocations_unchanged') is not True):
                 failures.append('Crossregion7 proof is not a reviewed full-ROM acceptance')
+    if manifest.get('overlay_mini10_stage') or manifest.get('overlay_mini_selector_stage'):
+        # Both native USA Mini stages must be reconciled atomically into the
+        # complete current-branch proof. A scratch pristine ROM is not enough.
+        if (manifest.get('overlay_mini10_stage') != {'format':'goemon-usa-mini10-post2079-v1'} or
+            manifest.get('overlay_mini_selector_stage') != {'format':'goemon-usa-mini-selector-post2089-v1'}):
+            failures.append('Mini11 incomplete canonical stage pairing')
+        ledger=root/'results/usa_mini11_2090_g2_20261123.json'
+        if not ledger.is_file():
+            failures.append('Mini11 G2 stage proof is missing')
+        else:
+            doc=json.loads(ledger.read_text())
+            if (doc.get('format')!='goemon-usa-mini-11-post-2079-canonical-G2-v1' or
+                doc.get('status')!='PASSED_G2_LOCAL' or
+                doc.get('accepted_c_prior')!=2079 or
+                doc.get('accepted_c_after')!=2090 or
+                doc.get('new_c_functions')!=11 or
+                doc.get('new_original_instruction_bytes')!=1652 or
+                doc.get('accepted_original_bytes_after')!=94668 or
+                doc.get('remaining_assembly_entries')!=5273 or
+                doc.get('original_expanded_rom_sha1')!=ORIGINAL_SHA1 or
+                doc.get('original_32MiB_ROM_bytes_exact')!=33554432 or
+                doc.get('positive_elf_function_identities_exact')!=7376 or
+                doc.get('semantic_relocations_exact')!=82103 or
+                doc.get('complete_semantic_relocation_sha256')!='f7f25e257c9bce27c00e756b85ca7bfa5774137925d5aba9a6626ba4693e5a97' or
+                doc.get('original_elf_sha256')!=inv.get('baseline_elf_sha256') or
+                doc.get('candidate_elf_sha256')!=inv.get('candidate_elf_sha256') or
+                doc.get('canonical_verifier_status')!='PASS' or
+                doc.get('canonical_inventory_status')!='PASS' or
+                any(doc.get('stages',{}).get(k,{}).get('status')!='PASSED_G2_LOCAL' for k in ('mini10','selector'))):
+                failures.append('Mini11 current combined original-ROM/ELF G2 proof mismatch')
+            if (count,code_bytes)!=(2090,94668):
+                failures.append('Mini11 accepted count and ROM bytes changed')
+            if len(doc.get('functions',[]))!=11 or sum(f['size'] for f in doc.get('functions',[]))!=1652:
+                failures.append('Mini11 native source/size ledger incomplete')
     return {'status':'PASS' if not failures else 'FAIL',
             'accepted_C':count,'accepted_original_bytes':code_bytes,
             'remaining_assembly':7376-count-13,'errors':failures,

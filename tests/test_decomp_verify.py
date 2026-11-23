@@ -34,6 +34,9 @@ ROOT=Path(__file__).resolve().parents[1]
 _current_load_manifest = load_manifest
 def load_manifest(*args, **kwargs):
     manifest = _current_load_manifest(*args, **kwargs)
+    # Isolate historical stage projections from the 2026-11-23 Mini promotions.
+    manifest.pop('overlay_mini_selector_stage', None)
+    manifest.pop('overlay_mini10_stage', None)
     manifest.pop('overlay_reconcile108_stage', None)
     manifest.pop('overlay_crossregion7_stage', None)
     return manifest
@@ -1278,6 +1281,12 @@ class DecompVerificationTests(unittest.TestCase):
             from decomp import usa_crossregion7 as cross7
             sources.update('research/usa_crossregion7_20261122/sources/'+f['source']+'.c'
                            for f in cross7.fixture()['functions'])
+        if manifest.get('overlay_mini10_stage') is not None:
+            from decomp import usa_mini10_promotion as mini10
+            sources.update('research/usa_mini10_20261123/sources/' + f['source'] + '.c'
+                           for f in mini10.fixture()['functions'])
+        if manifest.get('overlay_mini_selector_stage') is not None:
+            sources.add('research/usa_mini_selector_20261123/mini_selector.c')
         self.assertEqual(set(result['sources_sha256_lf']),sources)
         for name in sources:
             patches=[p for p in manifest.get('existing_source_patches', []) if p['source']==name]

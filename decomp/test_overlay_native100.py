@@ -13,6 +13,8 @@ class Native100ExactC(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.manifest=load_manifest(ROOT/'manifest.json')
+        cls.manifest.pop('overlay_mini_selector_stage',None)  # Later canonical USA2090
+        cls.manifest.pop('overlay_mini10_stage',None)  # Later canonical USA2089
         cls.manifest.pop('overlay_reconcile108_stage', None)  # Historical native100 stage
         cls.manifest.pop('overlay_crossregion7_stage', None)  # Historical stage projection
         # Retain the frozen 1623 -> 1723 proof projection.

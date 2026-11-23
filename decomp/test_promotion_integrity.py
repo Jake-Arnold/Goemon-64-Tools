@@ -14,9 +14,9 @@ class CanonicalPromotionIntegrityTests(unittest.TestCase):
     def test_exact_final_c_claims_and_frozen_original_addresses(self):
         manifest=load_manifest(integrity.ROOT/'manifest.json')
         claims=claimed_functions(manifest)
-        self.assertEqual(len(claims),2079)
-        self.assertEqual(sum(f['size'] for f in claims),93016)
-        self.assertEqual(len({f['name'] for f in claims}),2079)
+        self.assertEqual(len(claims),2090)
+        self.assertEqual(sum(f['size'] for f in claims),94668)
+        self.assertEqual(len({f['name'] for f in claims}),2090)
         self.assertEqual(len(reconcile.fixture()['functions']),108)
         self.assertEqual(reconcile.fixture()['source_ownership_exception'][0]['name'],
                          'func_800108BC_114BC')
@@ -29,7 +29,8 @@ class CanonicalPromotionIntegrityTests(unittest.TestCase):
         for path,override in [('manifest.json',manifest),('results/combined.json',proof),
                               ('results/inventory.json',inventory),
                               ('results/usa_canonical_reconcile108_2072_g2_20261122.json',None),
-                              ('results/usa_crossregion7_2079_g2_20261122.json',None)]:
+                              ('results/usa_crossregion7_2079_g2_20261122.json',None),
+                              ('results/usa_mini11_2090_g2_20261123.json',None)]:
             dst=root/path
             src=canonical/path
             if not src.is_file():
@@ -41,10 +42,12 @@ class CanonicalPromotionIntegrityTests(unittest.TestCase):
         audit=integrity.audit()
         self.assertEqual(audit['status'],'PASS',audit['errors'])
         self.assertEqual((audit['accepted_C'],audit['accepted_original_bytes']),
-                         (2079,93016))
+                         (2090,94668))
 
     def test_staged_only_manifest_from_previous_commit_fails_closed(self):
         manifest=json.loads((integrity.ROOT/'manifest.json').read_text())
+        manifest.pop('overlay_mini_selector_stage')
+        manifest.pop('overlay_mini10_stage')
         manifest.pop('overlay_crossregion7_stage')
         manifest.pop('overlay_reconcile108_stage')
         folder,root=self._temporary(manifest=manifest)
@@ -71,6 +74,17 @@ class CanonicalPromotionIntegrityTests(unittest.TestCase):
             bad=integrity.audit(root)
             self.assertEqual(bad['status'],'FAIL')
             self.assertGreaterEqual(len(bad['errors']),2)
+
+    def test_mini11_stage_proof_cannot_be_forged(self):
+        folder,root=self._temporary()
+        with folder:
+            stage=root/'results/usa_mini11_2090_g2_20261123.json'
+            doc=json.loads(stage.read_text())
+            doc['semantic_relocations_exact']=0
+            stage.write_text(json.dumps(doc))
+            bad=integrity.audit(root)
+            self.assertEqual(bad['status'],'FAIL')
+            self.assertTrue(any('Mini11' in e for e in bad['errors']),bad['errors'])
 
     def test_stale_reconciled_stage_proof_fails_closed(self):
         folder,root=self._temporary()

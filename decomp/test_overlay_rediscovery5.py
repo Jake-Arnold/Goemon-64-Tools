@@ -12,6 +12,9 @@ _historical_load_manifest = load_manifest
 
 def load_manifest(*args, **kwargs):
     manifest = _historical_load_manifest(*args, **kwargs)
+    # The 2090-C Mini stages postdate this fixed historical test checkpoint.
+    manifest.pop('overlay_mini10_stage', None)
+    manifest.pop('overlay_mini_selector_stage', None)
     manifest.pop('overlay_native49_stage', None)
     manifest.pop('overlay_native51_stage', None)
     # The 233-C batch is newer than this frozen historical checkpoint.

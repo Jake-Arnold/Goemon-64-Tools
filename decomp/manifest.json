@@ -1603,5 +1603,11 @@
   },
   "overlay_crossregion7_stage": {
     "format": "goemon-usa-crossregion7-post-2072-v1"
+  },
+  "overlay_mini10_stage": {
+    "format": "goemon-usa-mini10-post2079-v1"
+  },
+  "overlay_mini_selector_stage": {
+    "format": "goemon-usa-mini-selector-post2089-v1"
   }
 }

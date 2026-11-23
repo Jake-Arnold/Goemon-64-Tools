@@ -22,6 +22,8 @@ class Crossregion7StageTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.current=load_manifest(ROOT/'manifest.json')
+        cls.current.pop('overlay_mini_selector_stage',None)  # Preserve USA2079 checkpoint
+        cls.current.pop('overlay_mini10_stage',None)  # Preserve USA2079 checkpoint
         cls.fixture=stage.validate_predecessor(cls.current)
         cls.old={k:v for k,v in cls.current.items() if k!='overlay_crossregion7_stage'}
 
