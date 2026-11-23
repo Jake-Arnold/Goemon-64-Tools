@@ -1,0 +1,339 @@
+{
+  "format": "goemon-crossregion-native34-research-pointer-v1",
+  "base_sha": "838e9f87c3a860973e9d168b58fcf88bd456bfb4",
+  "source_only_zip_sha256": "8c4adcd1311fe6e1387eeb326f4751a68d9f06120d923268d912aa3affa2373a",
+  "source_only_zip": "goemon-native34-matching-C-research-20261123.zip (download delivered in originating ChatGPT conversation; NOT stored in GitHub)",
+  "replay_original_IDO53_SHA256": "76d796c9591c9f5504949f85b29c32a6039a663791afe2f36f34ca18425b64d0",
+  "original_rom_SHA1": {
+    "usa": "6ea0ed71032ce08fc2745f412d84936382197494",
+    "japan_0": "6f8745fecc3a5e7d4918c7a73353eb0726116ded"
+  },
+  "canonical_C_unchanged": {
+    "usa": 2164,
+    "japan_0": 2398
+  },
+  "original_positive_ELF_function_ids_each_region": 7376,
+  "isolated_native_exact_functions": 34,
+  "original_instruction_bytes": 1364,
+  "previous_PR183_reproductions": 5,
+  "additional_native_exact": 29,
+  "regional_targets": {
+    "usa": 1,
+    "japan_0": 33
+  },
+  "negative_controls": "34/34 rejected",
+  "same_chat_standalone_native_replay": "34/34 PASS",
+  "host_metadata_tests": "12/12 PASS",
+  "new_full_original_ROM_G2": "NOT_RUN",
+  "new_promotion_integrity": "NOT_RUN",
+  "new_full_local_ci": "NOT_RUN",
+  "native_compiler_quirk_classification": "NO_NEW_COMPILER_FINDING",
+  "functions": [
+    {
+      "region": "japan_0",
+      "name": "func_8000A998_B598",
+      "size": 40,
+      "original_rom_offset": "0xB598",
+      "tier": "A",
+      "symbolic_original_vma_linked": false,
+      "previous_native_research": null
+    },
+    {
+      "region": "japan_0",
+      "name": "func_80012180_12D80",
+      "size": 56,
+      "original_rom_offset": "0x12D80",
+      "tier": "A",
+      "symbolic_original_vma_linked": false,
+      "previous_native_research": null
+    },
+    {
+      "region": "japan_0",
+      "name": "func_8001C568_1D168",
+      "size": 52,
+      "original_rom_offset": "0x1D168",
+      "tier": "A",
+      "symbolic_original_vma_linked": false,
+      "previous_native_research": null
+    },
+    {
+      "region": "japan_0",
+      "name": "func_80033988_34588",
+      "size": 48,
+      "original_rom_offset": "0x34588",
+      "tier": "A",
+      "symbolic_original_vma_linked": false,
+      "previous_native_research": null
+    },
+    {
+      "region": "japan_0",
+      "name": "osSyncPrintf",
+      "size": 28,
+      "original_rom_offset": "0x41130",
+      "tier": "B",
+      "symbolic_original_vma_linked": false,
+      "previous_native_research": null
+    },
+    {
+      "region": "japan_0",
+      "name": "func_8004054C_4114C",
+      "size": 28,
+      "original_rom_offset": "0x4114C",
+      "tier": "B",
+      "symbolic_original_vma_linked": false,
+      "previous_native_research": null
+    },
+    {
+      "region": "japan_0",
+      "name": "alLink",
+      "size": 36,
+      "original_rom_offset": "0x48830",
+      "tier": "A",
+      "symbolic_original_vma_linked": false,
+      "previous_native_research": null
+    },
+    {
+      "region": "japan_0",
+      "name": "osAiGetLength",
+      "size": 12,
+      "original_rom_offset": "0x48A50",
+      "tier": "A",
+      "symbolic_original_vma_linked": false,
+      "previous_native_research": null
+    },
+    {
+      "region": "japan_0",
+      "name": "__freeParam",
+      "size": 24,
+      "original_rom_offset": "0x48B58",
+      "tier": "C",
+      "symbolic_original_vma_linked": true,
+      "previous_native_research": null
+    },
+    {
+      "region": "japan_0",
+      "name": "alSeqFileNew",
+      "size": 64,
+      "original_rom_offset": "0x49388",
+      "tier": "A",
+      "symbolic_original_vma_linked": false,
+      "previous_native_research": null
+    },
+    {
+      "region": "japan_0",
+      "name": "osGetThreadPri",
+      "size": 24,
+      "original_rom_offset": "0x4AA60",
+      "tier": "C",
+      "symbolic_original_vma_linked": true,
+      "previous_native_research": null
+    },
+    {
+      "region": "japan_0",
+      "name": "strlen",
+      "size": 40,
+      "original_rom_offset": "0x4B6CC",
+      "tier": "A",
+      "symbolic_original_vma_linked": false,
+      "previous_native_research": null
+    },
+    {
+      "region": "japan_0",
+      "name": "__osGetActiveQueue",
+      "size": 12,
+      "original_rom_offset": "0x4C980",
+      "tier": "C",
+      "symbolic_original_vma_linked": true,
+      "previous_native_research": null
+    },
+    {
+      "region": "japan_0",
+      "name": "__osSpGetStatus",
+      "size": 12,
+      "original_rom_offset": "0x4CCF0",
+      "tier": "A",
+      "symbolic_original_vma_linked": false,
+      "previous_native_research": null
+    },
+    {
+      "region": "japan_0",
+      "name": "__osSpSetStatus",
+      "size": 12,
+      "original_rom_offset": "0x4D010",
+      "tier": "A",
+      "symbolic_original_vma_linked": false,
+      "previous_native_research": null
+    },
+    {
+      "region": "japan_0",
+      "name": "alSaveParam",
+      "size": 52,
+      "original_rom_offset": "0x51990",
+      "tier": "A",
+      "symbolic_original_vma_linked": false,
+      "previous_native_research": null
+    },
+    {
+      "region": "japan_0",
+      "name": "alFxParam",
+      "size": 24,
+      "original_rom_offset": "0x53054",
+      "tier": "A",
+      "symbolic_original_vma_linked": false,
+      "previous_native_research": null
+    },
+    {
+      "region": "japan_0",
+      "name": "func_801ECEC8_5A8E98",
+      "size": 32,
+      "original_rom_offset": "0x5A8E98",
+      "tier": "A",
+      "symbolic_original_vma_linked": false,
+      "previous_native_research": "PR_183"
+    },
+    {
+      "region": "japan_0",
+      "name": "func_801ECEE8_5A8EB8",
+      "size": 40,
+      "original_rom_offset": "0x5A8EB8",
+      "tier": "A",
+      "symbolic_original_vma_linked": false,
+      "previous_native_research": "PR_183"
+    },
+    {
+      "region": "japan_0",
+      "name": "func_801ECF10_5A8EE0",
+      "size": 48,
+      "original_rom_offset": "0x5A8EE0",
+      "tier": "A",
+      "symbolic_original_vma_linked": false,
+      "previous_native_research": "PR_183"
+    },
+    {
+      "region": "japan_0",
+      "name": "func_801ECF40_5A8F10",
+      "size": 40,
+      "original_rom_offset": "0x5A8F10",
+      "tier": "A",
+      "symbolic_original_vma_linked": false,
+      "previous_native_research": "PR_183"
+    },
+    {
+      "region": "japan_0",
+      "name": "func_801ED030_5A9000",
+      "size": 40,
+      "original_rom_offset": "0x5A9000",
+      "tier": "A",
+      "symbolic_original_vma_linked": false,
+      "previous_native_research": "PR_183"
+    },
+    {
+      "region": "japan_0",
+      "name": "func_801F3244_5AF214",
+      "size": 52,
+      "original_rom_offset": "0x5AF214",
+      "tier": "A",
+      "symbolic_original_vma_linked": false,
+      "previous_native_research": null
+    },
+    {
+      "region": "japan_0",
+      "name": "func_801F3308_5AF2D8",
+      "size": 68,
+      "original_rom_offset": "0x5AF2D8",
+      "tier": "A",
+      "symbolic_original_vma_linked": false,
+      "previous_native_research": null
+    },
+    {
+      "region": "japan_0",
+      "name": "func_801F334C_5AF31C",
+      "size": 68,
+      "original_rom_offset": "0x5AF31C",
+      "tier": "A",
+      "symbolic_original_vma_linked": false,
+      "previous_native_research": null
+    },
+    {
+      "region": "japan_0",
+      "name": "func_801F8AAC_5B4A7C",
+      "size": 52,
+      "original_rom_offset": "0x5B4A7C",
+      "tier": "A",
+      "symbolic_original_vma_linked": false,
+      "previous_native_research": null
+    },
+    {
+      "region": "japan_0",
+      "name": "func_802014A0_5BD470",
+      "size": 48,
+      "original_rom_offset": "0x5BD470",
+      "tier": "C",
+      "symbolic_original_vma_linked": true,
+      "previous_native_research": null
+    },
+    {
+      "region": "japan_0",
+      "name": "func_802014D0_5BD4A0",
+      "size": 48,
+      "original_rom_offset": "0x5BD4A0",
+      "tier": "C",
+      "symbolic_original_vma_linked": true,
+      "previous_native_research": null
+    },
+    {
+      "region": "japan_0",
+      "name": "func_801D9074_603AF4",
+      "size": 40,
+      "original_rom_offset": "0x603AF4",
+      "tier": "C",
+      "symbolic_original_vma_linked": true,
+      "previous_native_research": null
+    },
+    {
+      "region": "japan_0",
+      "name": "func_802125D8_67BCC8",
+      "size": 48,
+      "original_rom_offset": "0x67BCC8",
+      "tier": "C",
+      "symbolic_original_vma_linked": true,
+      "previous_native_research": null
+    },
+    {
+      "region": "japan_0",
+      "name": "func_80215900_69D000",
+      "size": 76,
+      "original_rom_offset": "0x69D000",
+      "tier": "A",
+      "symbolic_original_vma_linked": false,
+      "previous_native_research": null
+    },
+    {
+      "region": "japan_0",
+      "name": "func_08000AAC_70AE1C",
+      "size": 32,
+      "original_rom_offset": "0x70AE1C",
+      "tier": "A",
+      "symbolic_original_vma_linked": false,
+      "previous_native_research": null
+    },
+    {
+      "region": "japan_0",
+      "name": "func_08001454_734ED4",
+      "size": 20,
+      "original_rom_offset": "0x734ED4",
+      "tier": "A",
+      "symbolic_original_vma_linked": false,
+      "previous_native_research": null
+    },
+    {
+      "region": "usa",
+      "name": "func_80035314_35F14",
+      "size": 48,
+      "original_rom_offset": "0x35F14",
+      "tier": "C",
+      "symbolic_original_vma_linked": true,
+      "previous_native_research": null
+    }
+  ]
+}
