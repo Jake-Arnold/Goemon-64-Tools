@@ -33,6 +33,8 @@ class Checkpoint500(unittest.TestCase):
 
     def test_claim_is_unique_and_after_1617(self):
         m=load_manifest(Path(__file__).resolve().parent/'manifest.json')
+        # Historical checkpoint projection: post2090 functions were not yet accepted.
+        m.pop('overlay_usa_opening_new2_stage',None)
         m.pop('overlay_rediscovery5_stage',None)
         previous=claimed_functions({k:v for k,v in m.items() if k not in ('overlay_checkpoint500_stage','overlay_rediscovery5_stage')})
         self.assertEqual(len(previous),1617)

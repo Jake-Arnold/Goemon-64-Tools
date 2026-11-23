@@ -321,6 +321,30 @@ def build_steps(host_binary: Path, *, quick: bool = False):
                     *[str(src.relative_to(ROOT)) for src in srcs],'-lm','-o',str(binary)]),
                 ('USA Mini11 '+label+' actual C ASan/UBSan host regression',[str(binary)]),
             ])
+    if not quick:
+        # Execute both actual new post2090 USA file18 native C implementations,
+        # including null child, callback side effects and a bounded table index.
+        pair=ROOT/'decomp/research/usa_file18_new2_20261123'
+        cfiles=[pair/'sources/new2_native_00.c',pair/'sources/new2_native_01.c']
+        fixture=pair/'tests/test_new2.c'
+        if not fixture.is_file() or any(not x.is_file() for x in cfiles):
+            raise ValueError('Missing original-source USA file18 new2 host regression')
+        compiler=shlex.split(os.environ.get('CC','cc'))
+        binary=host_binary.with_name('usa-file18-new2-original-asan-host')
+        steps.extend([
+            ('File18 new2 original C source ASan/UBSan build',compiler+[
+                '-std=gnu11','-O1','-g','-Wall','-Wextra','-Werror',
+                '-Wno-pointer-to-int-cast',
+                # The synthetic N64 absolute-offset symbol is a constant only
+                # for a non-PIE host executable. PIE would add the load base.
+                '-fno-pie','-no-pie',
+                '-fsanitize=address,undefined','-fno-sanitize-recover=all',
+                '-fno-omit-frame-pointer',
+                str(fixture.relative_to(ROOT)),
+                *[str(f.relative_to(ROOT)) for f in cfiles],
+                '-Wl,--defsym,D_CF8F8=0xCF8F8','-o',str(binary)]),
+            ('File18 new2 original source 10000-case sanitizer test',[str(binary)]),
+        ])
     # The resumable queue and read-only C-Right comparator belong to the
     # same ROM-free acceptance gate as the existing Python/ledger checks.
     # Append them, preserving existing native-host fixture ordering.

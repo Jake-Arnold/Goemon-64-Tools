@@ -1,0 +1,113 @@
+{
+  "format": "goemon-usa-file18-new2-post2090-canonical-G2-v1",
+  "status": "PASSED_G2_LOCAL",
+  "region": "usa",
+  "base_commit": "3b28d931078f697d8987de3dd5191737e41fc8db",
+  "upstream_commit": "7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee",
+  "source_manifest_sha256": "0403e2cd99315379c79a8c454de45bf5e8b8b6c7d20544c8b941da2399f43ee3",
+  "prior_c": 2090,
+  "prior_original_bytes": 94668,
+  "accepted_c_after": 2092,
+  "accepted_original_bytes_after": 94760,
+  "new_C_functions": 2,
+  "added_original_bytes": 92,
+  "new_functions": [
+    {
+      "name": "func_8020D7E8_6771C8",
+      "rom_offset": 6779336,
+      "vma": 2149636072,
+      "size": 48,
+      "source": "new2_native_00",
+      "source_sha256": "5b02092347c9614bb1d363fff5393c579f32e44df9db662da1750e56989cd842",
+      "original_code_sha256": "54352f8564d0078d743c3944596ad6656ef85881d9fca451292dededf30704be",
+      "original_asm": "file_18"
+    },
+    {
+      "name": "func_8021F330_688D10",
+      "rom_offset": 6851856,
+      "vma": 2149708592,
+      "size": 44,
+      "source": "new2_native_01",
+      "source_sha256": "2fe8d88c4228ad357980a68300ab6b4c51b73ed26cd356b1ee680a6b925e2665",
+      "original_code_sha256": "432468847446ee7a221382f7d181d2002c0329f12f8c59560be1ddd698074e4c",
+      "original_asm": "file_18"
+    }
+  ],
+  "remaining_assembly_entries": 5271,
+  "full_rom_bytes": 33554432,
+  "full_rom_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+  "complete_semantic_relocations": 82103,
+  "semantic_relocation_sha256": "f7f25e257c9bce27c00e756b85ca7bfa5774137925d5aba9a6626ba4693e5a97",
+  "positive_elf_function_identities": 7376,
+  "stable_global_symbol_identities": 26714,
+  "baseline_elf_sha256": "83eda0f1df831d997f9e505c92a8a7fdb55728d3ad28b30d224f5e1ae975a038",
+  "predecessor_2090_elf_sha256": "be30ab4a7add4378abe704fc2f8078582fdf1a81a5774243c040fdec0fca55ba",
+  "candidate_elf_sha256": "ad6dbdffa727e3a8fa05f7b59e8993f5a35b6937181b0f2e2f5f4295207703db",
+  "compiler_metadata_adapter": {
+    "changed_metadata_byte": 128,
+    "symbol": "D_CF8F8",
+    "original_type": "OBJECT",
+    "restored_type": "NOTYPE",
+    "native_MIPS_instructions_untouched": true,
+    "native_relocations_untouched": true,
+    "original_object_sha256": "d466989eda1147e27d53cfd3f25e519633f589c9661fac3f0256595f3eb1d624",
+    "retargeted_object_sha256": "17d7c27af6e48a5c4198f3055b62de0cc807a7baedd5247c2e916447c64fce55"
+  },
+  "source_plan": {
+    "functions": 2,
+    "original_instruction_bytes": 92,
+    "retained_assembly_fragments": 2
+  },
+  "native_elf_layout": {
+    "functions": 241,
+    "embedded": 14,
+    "instruction_bytes": 92,
+    "C_objects": [
+      {
+        "source": "new2_native_00",
+        "relocatable": true,
+        "original_text_bytes": 48,
+        "compiler_section_bytes": 48,
+        "zero_padding_removed": 0,
+        "trimmed_object_sha256": "d466989eda1147e27d53cfd3f25e519633f589c9661fac3f0256595f3eb1d624"
+      },
+      {
+        "source": "new2_native_01",
+        "relocatable": true,
+        "original_text_bytes": 44,
+        "compiler_section_bytes": 48,
+        "zero_padding_removed": 4,
+        "trimmed_object_sha256": "fb9ad0c54bf2d7fb038811134ec89b000e1cffa8e7711d468abce9dd586035e0"
+      }
+    ],
+    "retained_ASM_objects": [
+      {
+        "object": "build/usa/asm/usa/676C80_cross47_00_w132_00_w53_01_wn49_01_w233_001_w233_000.s.o",
+        "original_text_bytes": 156,
+        "compiler_section_bytes": 160,
+        "zero_padding_removed": 4,
+        "trimmed_object_sha256": "10e800344a60d23574df627204b4b03eead4385803683b3868186c053bf3ab6f"
+      },
+      {
+        "object": "build/usa/asm/usa/676C80_cross47_05_n87_00_w132_01_w233_002_w233_000.s.o",
+        "original_text_bytes": 260,
+        "compiler_section_bytes": 272,
+        "zero_padding_removed": 12,
+        "trimmed_object_sha256": "a18781be94ceca7951b19e8a9392307f2702a833a75e44e3f6bc2edd8c5b2489"
+      }
+    ]
+  },
+  "canonical_verifier": "PASS",
+  "strict_inventory": "PASS",
+  "complete_local_ci": "PASS",
+  "gameplay": "NOT_RUN",
+  "checks": {
+    "exact_33554432_rom": true,
+    "function_symbols_7376": true,
+    "complete_semantic_relocations": true,
+    "stable_global_symbols_excluding_retired_asm_markers": true,
+    "strict_new_C_inventory": true,
+    "zero_opcodes_patched": true,
+    "one_metadata_byte_retyped": true
+  }
+}

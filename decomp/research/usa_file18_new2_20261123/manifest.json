@@ -1,0 +1,30 @@
+{
+  "format": "goemon-usa-file18-new2-post2090-v1",
+  "region": "usa",
+  "original_rom_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+  "upstream_commit": "7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee",
+  "prior_c": 2090,
+  "prior_bytes": 94668,
+  "functions": [
+    {
+      "name": "func_8020D7E8_6771C8",
+      "rom_offset": 6779336,
+      "vma": 2149636072,
+      "size": 48,
+      "source": "new2_native_00",
+      "source_sha256": "5b02092347c9614bb1d363fff5393c579f32e44df9db662da1750e56989cd842",
+      "original_code_sha256": "54352f8564d0078d743c3944596ad6656ef85881d9fca451292dededf30704be",
+      "original_asm": "file_18"
+    },
+    {
+      "name": "func_8021F330_688D10",
+      "rom_offset": 6851856,
+      "vma": 2149708592,
+      "size": 44,
+      "source": "new2_native_01",
+      "source_sha256": "2fe8d88c4228ad357980a68300ab6b4c51b73ed26cd356b1ee680a6b925e2665",
+      "original_code_sha256": "432468847446ee7a221382f7d181d2002c0329f12f8c59560be1ddd698074e4c",
+      "original_asm": "file_18"
+    }
+  ]
+}

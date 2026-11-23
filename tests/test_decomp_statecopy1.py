@@ -17,6 +17,8 @@ class Statecopy1Tests(unittest.TestCase):
         self.assertEqual(prior['comparison']['matched_functions'],1500)
         self.assertNotIn(function['name'],{f['name'] for f in prior['comparison']['functions']})
         current=load_manifest(adapter.ROOT/'manifest.json')
+        # This test deliberately reconstructs a predecessor C stage.
+        current.pop('overlay_usa_opening_new2_stage',None)
         current.pop('overlay_reconcile108_stage',None)
         # Historical checkpoint: exclude the newer Mini stages before older ones.
         current.pop('overlay_mini_selector_stage', None)

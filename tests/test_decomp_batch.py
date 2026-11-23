@@ -216,8 +216,8 @@ class PublishedBatchEvidenceTests(unittest.TestCase):
         self.assertEqual(current['status'],'matched')
         self.assertTrue(current['comparison']['full_rom_match'])
         # Live canonical original-address matching C, including eleven Mini C promotions.
-        self.assertEqual(current['comparison']['matched_functions'],2090)
-        self.assertEqual(current['comparison']['matched_function_bytes'],94668)
+        self.assertEqual(current['comparison']['matched_functions'],2092)
+        self.assertEqual(current['comparison']['matched_function_bytes'],94760)
         preserved1723=json.loads((ROOT/'results/combined_1723_pre_isolated233_20261120.json').read_text())
         self.assertEqual((preserved1723['comparison']['matched_functions'],
                           preserved1723['comparison']['matched_function_bytes']), (1723,69344))
@@ -282,8 +282,11 @@ class PublishedBatchEvidenceTests(unittest.TestCase):
         self.assertEqual(historic['verifier_source_sha256_lf'],
                          '1c60206c7007b9e499250fc2512851bfa2c1d07f5743e607b90938196bd4280b')
         current_sha = hashlib.sha256((ROOT/'verify.py').read_bytes().replace(b'\r\n',b'\n')).hexdigest()
-        verified_current_sha = json.loads((ROOT/'results/vm_residual_inventory.json').read_text())['current_sources']['verifier_sha256']
-        self.assertEqual(current_sha, verified_current_sha)
+        # The VM residual ledger records the unmodified USA2090 predecessor.
+        historical=json.loads((ROOT/'results/combined_2090_pre_opening_new2_20261123.json').read_text())
+        verified_prior_sha=json.loads((ROOT/'results/vm_residual_inventory.json').read_text())['current_sources']['verifier_sha256']
+        self.assertEqual(historical['verifier_source_sha256_lf'],verified_prior_sha)
+        self.assertEqual(current_sha,current['verifier_source_sha256_lf'])
         for name in ('batch_pilot.json','batch_search_pilot.json','batch_entrance_followup.json','batch_ui_followup.json','batch_autonomous_main_v1.json'):
             result=json.loads((ROOT/'results'/name).read_text())
             self.assertEqual(result['newly_verified_full_rom_functions'],0)

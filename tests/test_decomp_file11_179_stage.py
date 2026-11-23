@@ -17,6 +17,8 @@ class File11179StageTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.manifest=load('decomp/manifest.json')
+        # This test deliberately reconstructs a predecessor C stage.
+        cls.manifest.pop('overlay_usa_opening_new2_stage',None)
         cls.manifest['overlay_file11_stage']={'format':'goemon-file11-179-central-v1'}
         # Project the current manifest onto its historical 342-C baseline.
         cls.manifest.pop('overlay_crossregion47_stage', None)

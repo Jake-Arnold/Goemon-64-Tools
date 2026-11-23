@@ -39,6 +39,8 @@ class Rediscovery5(unittest.TestCase):
 
     def test_original_offsets_distinct_and_new(self):
         manifest = load_manifest(Path(__file__).parent / 'manifest.json')
+        # Historical checkpoint projection: post2090 functions were not yet accepted.
+        manifest.pop('overlay_usa_opening_new2_stage',None)
         prior = claimed_functions({k: v for k, v in manifest.items() if k != 'overlay_rediscovery5_stage'})
         self.assertEqual(len(prior), 1618)
         current = claimed_functions(manifest)
