@@ -1,0 +1,45 @@
+{
+  "status": "RESEARCH_ONLY",
+  "base": "1ddb1b0941b0f39d4db6b0a3534fc1f230b51e0e",
+  "matches": [
+    {
+      "region": "usa",
+      "name": "func_8020D6BC_5C8B8C",
+      "rom_offset": "0x5C8B8C",
+      "original_bytes": 104,
+      "words": "26/26",
+      "relocations": "6/6",
+      "sha256": "2801ec6b97a1084a2e2a43c889a65c700c054c7691c208dfeaeff153195d6427"
+    },
+    {
+      "region": "japan_0",
+      "name": "func_802124AC_5CDA3C",
+      "rom_offset": "0x5CDA3C",
+      "original_bytes": 104,
+      "words": "26/26",
+      "relocations": "6/6",
+      "sha256": "776b50079986b45407d5ea8acbf6b65b860b00133a9e87ceb624c499535c440a"
+    },
+    {
+      "region": "usa",
+      "name": "func_8020DD78_5C9248",
+      "rom_offset": "0x5C9248",
+      "original_bytes": 128,
+      "words": "32/32",
+      "relocations": "10/10",
+      "sha256": "c0c131ab2fa9cfc6e6c4e78a33da24eded85a0df7113423d6b054c424520b499"
+    }
+  ],
+  "negative_variants_rejected": 9,
+  "usa_whole_original_upstream": {
+    "independent_positive_runs": 2,
+    "rom_bytes_exact": 33554432,
+    "rom_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+    "func_identities": 7376,
+    "pristine_semantic_relocations": 82216,
+    "guarded_metadata_only_symbol_types": 3
+  },
+  "new_accepted_C": 0,
+  "canonical_full_G2": "NOT_RUN",
+  "full_local_ci": "ATTEMPTED_NOT_PASS"
+}

@@ -1,5 +1,9 @@
 # IDO 5.3 / MIPS matching-C compiler quirks
 
+### C-Right file12 descriptor-local source-shape register selection — limited NEW_REPRODUCIBLE_QUIRK (23 November 2026)
+
+Original SGI IDO5.3 at USA func_8020D6BC_5C8B8C (ROM 0x5C8B8C, 104B) and Japan-0 func_802124AC_5CDA3C (ROM 0x5CDA3C, 104B) compiles all 26 original instruction words and six named relocations in each region when a descriptor-table pointer is stored to a named C local before callback access. Inlining the equivalent expression independently yields only 12/26 words for each region, changing first LUI register allocation. Verified pinned original compiler with full upstream flags and controlled negative sources; exact source SHA-256 fingerprints and private-ROM replay are supplied in conversation artifact Goemon_CRight_Native_Research_20261123.zip. This result is specific to this regional function pair, not a general compiler rewrite rule. The USA original-pristine two-C full 32MiB ROM/ELF/relocation scratch proof passes, but the canonical combined-C G2/inventory/full CI gates were not completed and accepted counts remain unchanged. See decomp/research/cright_regional_loader_native_20261123/.
+
 This is a cumulative evidence-led knowledge base for reusable compiler behavior found while matching original Goemon 64 functions. Consult it before variant searches. Record new findings in the same commit as the associated decomp research or promotion, even when a function remains assembly-owned.
 
 ## Per-native-attempt outcome — mandatory (23 November 2026)
