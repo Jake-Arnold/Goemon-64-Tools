@@ -2,40 +2,13 @@
 
 Project: Goemon 64 speedrunning/practice toolkit (Windows Python and portable C core).
 
-## Required branch selection (read before editing)
+## REQUIRED: canonical branches and route check (23 November 2026)
 
-This repository has **two long-lived development baselines**. Choose the
-correct one *before making any changes*:
+**Toolkit base / PR target: `stable/toolkit`; only `toolkit/<topic>` feature branches.**
+**Decomp base / PR target: `stable/decomp`; only `decomp/<topic>` feature branches.**
+`main` and `chatgptweb/decomp` are legacy refs and are **not** new work destinations. Git forbids simultaneously using a bare `toolkit` with `toolkit/*`, or a bare `decomp` with `decomp/*`. Never infer the workstream from GitHub's default branch, an old ZIP, a dated report or a prior chat.
 
-| Work type | Starting branch | Temporary feature branch | PR target |
-| --- | --- | --- | --- |
-| Toolkit UI, USA/Japan runtime, Linux launchers, practice controls, warps, autosplitter, memory tooling | `main` | `toolkit/<topic>` | `main` |
-| Matching-C decomp, MIPS/ROM mapping, function discovery, research observations, relocation proofs | `chatgptweb/decomp` | `decomp/<topic>` | `chatgptweb/decomp` |
-
-**`main` is the canonical toolkit branch** since PR #27 merged v0.11.27
-on 16 November 2026. **`chatgptweb/decomp` is the separate canonical
-decomp baseline**; PRs #23, #24 and #26 are based on that branch. There is
-no permanently active `toolkit` integration branch. Prior branches such as
-`chatgptweb/toolkit-unified`,
-`chatgptweb/japan-native-recomp-toolkit-v01118`,
-`chatgptweb/japan-toolkit-consolidation` and earlier regional prototypes
-are historical and **must not be used as new feature branch bases**.
-
-Before any work, inspect `git status`, `git branch --show-current` and
-`git fetch origin`; verify the chosen baseline is up to date. Do not
-switch/reset a working tree with uncommitted changes or force-push a
-shared branch. Do not merge the entire decomp history into `main`
-or the toolkit history into the decomp branch; extract only specifically
-reviewed cross-project changes. Preserve research PRs and avoid treating
-unpromoted matching-C functions as official production matches.
-
-**Full runbook:** [docs/TOOLKIT_BRANCH_POLICY.md](docs/TOOLKIT_BRANCH_POLICY.md).
-For decomp-specific continuation also read
-[decomp/CONTINUE.md](decomp/CONTINUE.md).
-On any conflict between outdated README/PROGRESS historical entries and
-these branch rules, treat this section and the current branch policy as
-authoritative. If the branch scheme intentionally changes, update
-`AGENTS.md` and the runbook together in the same PR.
+Read [BRANCHES.md](BRANCHES.md) first, classify the work, fetch the live target and inspect open PRs, check the branch/HEAD, then use a correctly named topic PR. Preserve legacy PR/research, never force-push, never merge toolkit/decomp histories wholesale, and require the appropriate tests plus `PROGRESS.md` in the change commit. If an older paragraph below contradicts this section, this section controls.
 
 1. For **every change**, update root `PROGRESS.md` with date, summary, reason, tests, limitations and next step. Include `PROGRESS.md` in the same Git commit as implementation changes.
 2. Push each completed commit to the connected GitHub repository `Jake-Arnold/Goemon-64-Tools`; check the remote commit SHA and report truthfully. If credentials/network/repository access are unavailable, provide the local commit or patch and explicitly say that the push did not occur. Do not simulate a push.
@@ -43,7 +16,7 @@ authoritative. If the branch scheme intentionally changes, update
 4. Treat N64 scene loading, game state, map pointers and character pointers as unsafe until the engine's native transition path is understood. Do not enable raw warp shortcuts based only on apparent map-ID changes.
 5. Do not commit ROMs, copyrighted game assets, saves, per-user routes, diagnostics containing personal information, credentials, or raw game memory dumps. Respect `.gitignore`.
 6. Preserve existing Python module organisation, autosplitter code and portable C prototypes unless a change explicitly requires restructuring.
-7. The current toolkit baseline is v0.11.27 on `main` as of 16 November 2026. Older v0.9.x instructions are historical. Scene-warp code and ROM-derived entrance data exist, but live USA/Japanese native gameplay tests must be distinguished from synthetic memory tests; do not claim unverified behaviour has passed.
+7. Read the live toolkit version from `practice/version.py`; historical release numbers are not branch-routing authority. Older v0.9.x instructions are historical. Scene-warp code and ROM-derived entrance data exist, but live USA/Japanese native gameplay tests must be distinguished from synthetic memory tests; do not claim unverified behaviour has passed.
 
 ## Mandatory USA ↔ Japan memory-data crosswalk for all agents
 
@@ -77,7 +50,7 @@ Known exceptions: Japanese Miracle Snowflake `0x80162057` corresponds
 to USA `0x8015C866` (**+0x57F1**, not +0x57F0); proposed Japanese pause
 `0x800CD2D6` is **disputed**; Japanese Sasuke battery
 `0x80161DF9 & 0x20` remains **unverified**. Keep toolkit changes based
-on `main` and original-MIPS/decomp changes based on `chatgptweb/decomp`;
+on `stable/toolkit` and original-MIPS/decomp changes based on `stable/decomp`;
 never merge those unrelated histories.
 
 ## Mandatory canonical address-registry updates (toolkit and decomp agents)
@@ -100,8 +73,8 @@ hard-coded address authority in a new UI panel.
    never invent an access width or semantic meaning.
 2. Toolkit work updates `practice/data/address_discoveries_v1.json`.
    Matching-C/decomp research updates `decomp/address_discoveries_v1.json`
-   on `chatgptweb/decomp`, not the toolkit tree. The import workflow creates
-   a **metadata-only PR**; no decomp code is implicitly merged to `main`.
+   on `stable/decomp`, not the toolkit tree. The import workflow creates
+   a **metadata-only PR**; no decomp code is implicitly merged to `stable/toolkit`.
 3. Run `python3 -m scripts.sync_address_catalogue --write`, then
    `python3 -m scripts.sync_address_catalogue --check`; add relevant ROM-free
    tests and update `PROGRESS.md` in the same change. Review any generated

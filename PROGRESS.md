@@ -1,3 +1,10 @@
+## 23 November 2026 — adopt canonical two-baseline branch workflow (toolkit)
+
+- Created `stable/toolkit` from former toolkit `main` at `61b5f91db12b8aa32dbcf555c8e562e7066cebdd`; decomp baseline independently created as `stable/decomp` from published `chatgptweb/decomp` at `6b864fac15fb4d9510a7fae5b7945b3b6cac69cf`.
+- New feature branches must use `toolkit/*` → `stable/toolkit` and `decomp/*` → `stable/decomp`; old `main` and `chatgptweb/decomp` are legacy names, not integration destinations. Source history preserved; no toolkit code, ROM or matching-C proof changed by this policy commit.
+- Updated `AGENTS.md`, README, canonical `BRANCHES.md`, toolkit branch runbook and PR template. Server-side default-branch/ruleset changes are separate administrative operations; do not claim completed until verified.
+- Verification: branch-head fetch and GitHub commit/tree publication; no game runtime or decomp native verification is asserted for documentation-only changes.
+
 # Goemon 64 Tools — Development Progress
 
 ## 2026-11-22 — v0.11.81: debugger, trace recorder and reviewed address metadata
