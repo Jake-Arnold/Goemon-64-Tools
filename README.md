@@ -89,7 +89,7 @@ before enabling it. Keyboard injection is verified for X11 only, not Wayland.
 
 ### Keep toolkit and decomp development separate
 
-For toolkit updates, run `git pull --ff-only origin stable/toolkit` from the **main**
+For toolkit updates, run `git pull --ff-only origin stable/toolkit` from the **stable/toolkit**
 checkout. The experimental C decompilation branch has separate original-ROM
 build and verification requirements; the matching-C code and research are **not**
 needed to run the toolkit. Neither branch distributes game ROMs or emulators.
@@ -210,7 +210,7 @@ Source notes: `docs/JAPAN_KAI_ALPHABET_AND_NEWLINES_20261119.md`. Existing sourc
 
 **Validation 19 November 2026:** **59 focused original-ROM / Linux Xvfb Tk tests passed, zero skipped**, under portable Python 3.12.16, LZKN64 and the supplied pinned USA/Japan decompressed and 16 MiB retail ROMs. Includes all 29 screenshot/ROM record alignments, the 63 new mappings, original JP retail byte-for-byte unchanged repack, native token/control round trips and USA/Japan UI integration. No new Python dependencies are introduced. Full application Windows/Linux regressions, packaged TkDND distribution and modified Japanese retail ROM display in Project64 remain unverified.
 
-The active PR #94 is draft against `stable/toolkit`; `stable/decomp` and any old branch cleanup state remain untouched. No original ROM bytes, screenshots, font images or licensed assets were committed.
+The active PR #94 was drafted against historical `main`; `stable/decomp` and any old branch cleanup state remain untouched. No original ROM bytes, screenshots, font images or licensed assets were committed.
 
 
 ## v0.11.69 — All candidate records visible, expanded screenshot-verified Japanese glyph map
@@ -997,12 +997,12 @@ The user has reported the **Gourmet Sub 2F Bazooka Room (0x081)** as independent
 
 Added regression tests for debug-mode idempotence and exact write isolation, 3-endian memory handling, automatic PID selection, cached hint invalidation, PID change/ASLR, ambiguous concurrent clients, four-character transition monitoring and no unverified XYZ writes. Test runners include the new modules. **GitHub connector commits these changes but has not executed the complete Ubuntu test suite or live gameplay; the PR remains draft.**
 
-This feature branch derives from `stable/toolkit` v0.11.27; the separate older **v0.11.29 bugfix PR #30** remains open and should be integrated first, then this feature branch refreshed before merging to avoid README/PROGRESS/version overlap. Version numbering here is v0.11.30 so it does not collide with that pending bugfix release.
+This feature branch derives from historical `main` v0.11.27; the separate older **v0.11.29 bugfix PR #30** remains open and should be integrated first, then this feature branch refreshed before merging to avoid README/PROGRESS/version overlap. Version numbering here is v0.11.30 so it does not collide with that pending bugfix release.
 
 ## Previous v0.11.27 — one unified toolkit development branch
 ## v0.11.27 — consolidate active USA/Japan toolkit development
 
-The unified v0.11.27 USA/Japan toolkit has been **merged into `stable/toolkit` via PR #27**. The merge preserves the v0.11.26 Japanese-native-recomp toolkit and full 888-entrance atlas, with no feature-code reset or overwrite. It retains the current USA and Japan toolkit implementation, supported writes and process backends, Ubuntu dock launcher, 888-entry source-verified original-USA entrance atlas, unified Scene Browser, and live-memory/checkpoint tooling.
+The unified v0.11.27 USA/Japan toolkit has been **merged into historical `main` via PR #27**. The merge preserves the v0.11.26 Japanese-native-recomp toolkit and full 888-entrance atlas, with no feature-code reset or overwrite. It retains the current USA and Japan toolkit implementation, supported writes and process backends, Ubuntu dock launcher, 888-entry source-verified original-USA entrance atlas, unified Scene Browser, and live-memory/checkpoint tooling.
 
 This consolidates **the active development target**, not the separate decompilation project. The older Japan toolkit, Mupen probe, native savestate, Linux prototype and earlier Japan integration branches are now **historical references**, not parallel locations for new toolkit work. Their earlier `practice/toolkit.py` and `practice/ui_extension.py` method inventories were compared with the v0.11.26 baseline; the latest toolkit contains all method names from both earlier consolidation/integration controllers, with later ROM-validation and native-recomp logic. Old code that was deliberately removed, such as the separate experimental speed controls, has not been reintroduced.
 
@@ -1010,7 +1010,7 @@ This consolidates **the active development target**, not the separate decompilat
 
 Full branch map, scope, old-branch provenance and Ubuntu checkout commands: **[Toolkit branch policy](docs/TOOLKIT_BRANCH_POLICY.md)**.
 
-This is a branch consolidation release; PR #27 merged into `stable/toolkit` on 16 November 2026. Its Ubuntu GUI regression suite and live USA/Japanese warp/write checks had not run at merge time, so runtime acceptance remains outstanding.
+This is a branch consolidation release; PR #27 merged into historical `main` on 16 November 2026. Its Ubuntu GUI regression suite and live USA/Japanese warp/write checks had not run at merge time, so runtime acceptance remains outstanding.
 
 ## Previous v0.11.26 — bundled complete USA/Japan warp entrance atlas
 ## v0.11.26 — extracted user-supplied coordinates committed to Git
