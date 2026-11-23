@@ -1,3 +1,7 @@
+## 23 November 2026 — correct canonical/legacy agent banner
+
+- Corrected `AGENTS.md` to identify `main` and `chatgptweb/decomp` as legacy refs; `stable/toolkit` and `stable/decomp` are the only canonical baselines. This fixes a documentation substitution mistake and changes no native/proof/runtime files.
+
 ## 23 November 2026 — PR workstream routing check
 
 - Added a GitHub Actions **PR branch-route check only**: `toolkit/*` must target `stable/toolkit`; `decomp/*` targets `stable/decomp`; legacy `main` and `chatgptweb/decomp` reject new PRs. Six already-open pre-migration research PRs keep their existing heads while targeting `stable/decomp`.

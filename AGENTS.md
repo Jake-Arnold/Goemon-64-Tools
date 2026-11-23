@@ -2,7 +2,7 @@
 
 ## REQUIRED branch selection — authoritative (23 Nov 2026)
 
-**Toolkit:** base/PR `stable/toolkit`, topic `toolkit/<purpose>`. **Decomp:** base/PR `stable/decomp`, topic `decomp/<purpose>`. Old `stable/toolkit` and `stable/decomp` are legacy refs; GitHub default is not an agent's task selector. Read `BRANCHES.md` on live GitHub and the relevant runbook before edits; fetch remote SHA/open PRs and confirm current proof. Do not merge complete toolkit/decomp histories. Preserve research and old PRs. Only scope-reviewed metadata can transfer. Include `PROGRESS.md` in same commit; never force-push. This rule supersedes contradictory dated text below.
+**Toolkit:** base/PR `stable/toolkit`, topic `toolkit/<purpose>`. **Decomp:** base/PR `stable/decomp`, topic `decomp/<purpose>`. Old `main` and `chatgptweb/decomp` are legacy refs; GitHub default is not an agent's task selector. Read `BRANCHES.md` on live GitHub and the relevant runbook before edits; fetch remote SHA/open PRs and confirm current proof. Do not merge complete toolkit/decomp histories. Preserve research and old PRs. Only scope-reviewed metadata can transfer. Include `PROGRESS.md` in same commit; never force-push. This rule supersedes contradictory dated text below.
 
 
 Project: Goemon 64 speedrunning/practice toolkit (Windows Python and portable C core).
