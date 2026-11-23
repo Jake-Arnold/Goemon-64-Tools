@@ -1,3 +1,10 @@
+## 23 November 2026 - publish SHA-pinned Goemon source artifacts
+
+- Publish tracked source on stable pushes and allow manual refresh so Project sessions can download it through the GitHub connector.
+- Document fresh archive verification before decomp promotions and publication verification after each merge.
+- Validate the archive workflow locally and on its PR. Native ROM and gameplay checks are outside this workflow-only change.
+- Verify the first stable-branch artifact after merge.
+
 ## 23 November 2026 - route v0.11.81 toolkit automation to the canonical branches
 
 - Point the scheduled metadata import at the live `stable/decomp` manifest and open metadata-only PRs against `stable/toolkit`. Build and publish Windows releases from `stable/toolkit` and retain an existing published release on reruns.
