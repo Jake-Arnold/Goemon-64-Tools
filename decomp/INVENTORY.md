@@ -1,5 +1,9 @@
 # Whole-build function inventory
 
+## Current verified region-specific checkpoint — 23 November 2026
+
+The preceding historical comparison table below is retained for provenance. **Current accepted USA: 2,079 C / 93,016 original instruction bytes / 5,284 ASM**, on the [USA crossregion7 G2 proof](results/usa_crossregion7_2079_g2_20261122.json). **Japan-0 dual-original-reference C-Right checkpoint: 2,370 C / 127,008 original instruction bytes / 5,006 ASM**, documented in [Japanese 2,370 inventory](results/japan_0_2370_cright_inventory_20261123.json) and [three-way native G2 proof](results/japan_0_2370_cright_dual_reference_g2_20261123.json). All three original-reference Japanese builds match the exact 32MiB original ROM and all 7,376 ELF identities. The raw Splat-ASM ELF has 80,747 relocation tuples; an independently rebuilt original-ASM reference (only two proven numeric-controller-offset annotation spellings changed) and the new C candidate each have exactly the **same 80,745 relocations**. The raw strict 80,747-to-80,745 relocation gate remains **FAILED**; dual-reference exact equality is a distinct, fully disclosed acceptance tier, not ordinary strict G2. Emulator gameplay was not run. These counts are independent and never added together.
+
 This document explains the stored USA ELF inventory and the later 21 November 2026 full-G2 promotions, including the latest Japan-only **published** result at 2,123 matching C. **This is not a replacement for fresh native proof.** Read [CONTINUE.md](CONTINUE.md) and [the latest acceptance report](docs/GOEMON_START5_G2_PROMOTION_20261121.md) before using any figures.
 
 ## Versioned counts

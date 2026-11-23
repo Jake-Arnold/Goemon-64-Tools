@@ -1114,5 +1114,31 @@
     "gameplay": "NOT_RUN",
     "published_commit": "921b024be4efd068e98f30853c62401ecae55f92",
     "publication_record": "results/japan_0_2314_expand7_publication_20261121.json"
-  }
+  },
+    "cright_dual_reference_20261123": {
+      "format": "goemon-japan-cright-dual-original-reference-G2-v1",
+      "status": "PASSED_G2_DUAL_REFERENCE_LOCAL",
+      "original_c_before": 2369,
+      "new_matching_c": 1,
+      "matching_c_functions": 2370,
+      "matching_c_bytes": 127008,
+      "asm_remaining": 5006,
+      "target": "func_80212514_5CDAA4",
+      "rom_offset": 6085284,
+      "vma": 2149655828,
+      "size": 396,
+      "original_rom_sha1": "6f8745fecc3a5e7d4918c7a73353eb0726116ded",
+      "original_relocation_reference_count": 80747,
+      "independent_original_asm_relocation_reference_count": 80745,
+      "candidate_relocation_count": 80745,
+      "ordinary_raw_splat_relocation_equal": false,
+      "dual_original_reference_relocation_exact": true,
+      "reference_sha256": "43a133b21ac2b18d8e1d00f8c4e5718776b001a1f45c54e807dae12165e797c0",
+      "source": "research/jp_cright_initializer_20261122/stage_second_symbolic_99of99.c",
+      "stager": "japan_cright_promotion.py",
+      "provenance_checker": "japan_cright_dual_reference.py",
+      "proof": "results/japan_0_2370_cright_dual_reference_g2_20261123.json",
+      "inventory": "results/japan_0_2370_cright_inventory_20261123.json",
+      "gameplay": "NOT_RUN"
+    }
 }
