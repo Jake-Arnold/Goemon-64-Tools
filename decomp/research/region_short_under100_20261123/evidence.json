@@ -1,0 +1,92 @@
+{
+  "format": "goemon-original-short-native-audit-20261123",
+  "base_commit": "4b289a015a2ffd9f47ca3356d09a248836e8dee8",
+  "publication": "RESEARCH_ONLY",
+  "canonical": {
+    "usa": {
+      "accepted": 2092,
+      "bytes": 94760,
+      "asm": 5271,
+      "under_100_unaccepted": 961
+    },
+    "jp": {
+      "accepted": 2370,
+      "bytes": 127008,
+      "asm": 5006,
+      "under_100_unaccepted": 824
+    }
+  },
+  "audit": {
+    "byte_identical_accepted_donors": 38,
+    "cross_region_remaining_asm_pairs": 211,
+    "intra_asm_duplicate_groups": 45,
+    "cross_region_both_accepted_groups": 335
+  },
+  "native_flags": "-c -G 0 -non_shared -O2 -mips2",
+  "ido_cc_sha256": "76d796c9591c9f5504949f85b29c32a6039a663791afe2f36f34ca18425b64d0",
+  "gates": {
+    "isolated_ido": "PASS_6",
+    "negative_controls": "PASS_6",
+    "native_source_unit": "NOT_RUN",
+    "original_rom_full": "NOT_RUN",
+    "strict_inventory_new": "NOT_RUN",
+    "full_local_ci": "NOT_COMPLETED",
+    "promotion_integrity_unchanged": "PASS_2092"
+  },
+  "matches": [
+    {
+      "region": "usa",
+      "name": "func_800352AC_35EAC",
+      "rom": 220844,
+      "vma": 2147701420,
+      "size": 64,
+      "negative_first_word_offset": 20,
+      "source_sha256": "ca6401092c58f0c5cf0b2625e6ea0aea290a4e9a50c6701912a2cabcc9eb927a"
+    },
+    {
+      "region": "japan_0",
+      "name": "func_801ECEC8_5A8E98",
+      "rom": 5934744,
+      "vma": 2149502664,
+      "size": 32,
+      "negative_first_word_offset": 20,
+      "source_sha256": "b5740b0350ed1202c0b67648f8bd4e30678289c9b0f5dc54c05d743f7f3fd6cf"
+    },
+    {
+      "region": "japan_0",
+      "name": "func_801ECEE8_5A8EB8",
+      "rom": 5934776,
+      "vma": 2149502696,
+      "size": 40,
+      "negative_first_word_offset": 4,
+      "source_sha256": "6685b0fd8f0b5718768e45733384fc6f4b48932a509c9c15c36222dbec61ba36"
+    },
+    {
+      "region": "japan_0",
+      "name": "func_801ECF10_5A8EE0",
+      "rom": 5934816,
+      "vma": 2149502736,
+      "size": 48,
+      "negative_first_word_offset": 12,
+      "source_sha256": "4995f79108d390050112ef88bd0d7ed0f80403570f48d86e8d88e26dce84c39c"
+    },
+    {
+      "region": "japan_0",
+      "name": "func_801ECF40_5A8F10",
+      "rom": 5934864,
+      "vma": 2149502784,
+      "size": 40,
+      "negative_first_word_offset": 24,
+      "source_sha256": "9f9984940d3099d0bf2aa34283af94c59e761b81c298f540bb7e9e32a276a523"
+    },
+    {
+      "region": "japan_0",
+      "name": "func_801ED030_5A9000",
+      "rom": 5935104,
+      "vma": 2149503024,
+      "size": 40,
+      "negative_first_word_offset": 24,
+      "source_sha256": "3babd3eb06fbcdf7a1b94236c6cebca9fc1f45f2922a106fefc5efd94b949b4a"
+    }
+  ]
+}
