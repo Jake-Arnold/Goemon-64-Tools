@@ -1,0 +1,51 @@
+name: Goemon PR workstream routing
+on:
+  pull_request:
+    types: [opened, reopened, synchronize, edited, ready_for_review]
+    branches:
+      - stable/toolkit
+      - stable/decomp
+      - main
+      - chatgptweb/decomp
+permissions:
+  contents: read
+jobs:
+  check-route:
+    name: Branch base and topic prefix
+    runs-on: ubuntu-latest
+    steps:
+      - name: Enforce toolkit/decomp separation
+        shell: bash
+        env:
+          PR_BASE: ${{ github.event.pull_request.base.ref }}
+          PR_HEAD: ${{ github.event.pull_request.head.ref }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+        run: |
+          case "$PR_BASE" in
+            stable/toolkit)
+              if [[ "$PR_HEAD" == toolkit/* ]]; then
+                echo "Toolkit topic correctly targets stable/toolkit."
+                exit 0
+              fi
+              echo "::error::Toolkit PRs must use toolkit/* and target stable/toolkit."
+              exit 1
+              ;;
+            stable/decomp)
+              if [[ "$PR_HEAD" == decomp/* ]]; then
+                echo "Decomp topic correctly targets stable/decomp."
+                exit 0
+              fi
+              case "$PR_NUMBER" in
+                144|152|155|156|160|161)
+                  echo "Grandfathered pre-migration research head; base is stable/decomp."
+                  exit 0
+                  ;;
+              esac
+              echo "::error::New decomp PRs must use decomp/* and target stable/decomp."
+              exit 1
+              ;;
+            *)
+              echo "::error::main and chatgptweb/decomp are legacy; target stable/toolkit or stable/decomp."
+              exit 1
+              ;;
+          esac

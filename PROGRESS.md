@@ -1,3 +1,8 @@
+## 23 November 2026 — automated legacy branch PR redirect
+
+- Added a PR routing check to this legacy branch: any new PR targeting `main` or `chatgptweb/decomp` fails with a redirect to `stable/toolkit` or `stable/decomp`. This check runs on PR events only and is not a native decomp CI test. It is enforceable only when required by GitHub branch settings.
+- No gameplay/runtime/ROM/matching-C code changed. This legacy ref remains for historical compatibility.
+
 ## 23 November 2026 — legacy decomp branch redirect only
 
 - `chatgptweb/decomp` is now a legacy ref; new matching-C work must use `stable/decomp` and `decomp/*` topic PRs. Toolkit is `stable/toolkit` and `toolkit/*`. This preserves existing research links/commits while redirecting all new agents; no ROM/native C manifest/proof/count changes.
