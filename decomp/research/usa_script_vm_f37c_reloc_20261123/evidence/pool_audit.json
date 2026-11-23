@@ -1,0 +1,19 @@
+{
+  "status": "TARGET_EQUIVALENCE_ONLY_CANONICAL_RELOC_FAIL",
+  "exact_instructions": 48,
+  "original_named_relocations": 19,
+  "unchanged_named_relocations": 17,
+  "resolved_original_target": "0x8007d108",
+  "native_pool_addend": 0,
+  "native_pool_bytes": 4,
+  "native_pool_alignment_padding": 12,
+  "native_pool_sha256": "31cf8391f9bfd8eedef79bcf6b13f2db5f20089185538b317e01e372d5b8b750",
+  "ordinary_linker_alias_preserves_name_but_not_relocation_provenance": true,
+  "negative_controls_rejected": [
+    "wrong_pool_word",
+    "wrong_native_addend",
+    "wrong_linked_instruction",
+    "wrong_pool_address"
+  ],
+  "canonical_promotion": "NOT_RUN"
+}

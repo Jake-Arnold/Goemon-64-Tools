@@ -1,0 +1,299 @@
+{
+  "format": "goemon-f37c-named-relocation-research-v1",
+  "base_sha": "1ddb1b0941b0f39d4db6b0a3534fc1f230b51e0e",
+  "upstream": "7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee",
+  "compiler_sha256": "76d796c9591c9f5504949f85b29c32a6039a663791afe2f36f34ca18425b64d0",
+  "compiler_flags": [
+    "-c",
+    "-G",
+    "0",
+    "-non_shared",
+    "-Xfullwarn",
+    "-Xcpluscomm",
+    "-Iinclude",
+    "-Ilibultra/include",
+    "-Ilibultra/include/PR",
+    "-Isrc",
+    "-I.",
+    "-Wab,-r4300_mul",
+    "-woff",
+    "649,838,712",
+    "-D_LANGUAGE_C",
+    "-D_FINALROM",
+    "-DF3DEX_GBI",
+    "-D__sgi",
+    "-DNDEBUG",
+    "-O2",
+    "-mips2"
+  ],
+  "ledger_sha256": "16b9be01454539c1f51699143575c0905560fa13ff9267688e2c939c345547a7",
+  "baseline_rom_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+  "baseline_rom_bytes": 33554432,
+  "native_invocations": 7,
+  "rows": [
+    {
+      "source": "00_named.c",
+      "source_sha256": "a99bfa1984139414440e61667508c90c25feb07091c0279842998fceeeb19ad0",
+      "function": "func_8003F37C_3FF7C",
+      "region": "usa",
+      "rom_offset": "0x3ff7c",
+      "vma": "0x8003f37c",
+      "original_bytes": 192,
+      "compiled_func_size": 192,
+      "word_differences": 8,
+      "first_instruction_mismatch_offset": 8,
+      "expected_code_sha256": "74867178f34d8d45b1753520e1218d6e6c2307f44937258e95c3828f1cf1efd0",
+      "candidate_code_sha256": "22a12ae8a685cdc874844bbf8c7f68e401c39625493785d4d6fde6478335b879",
+      "named_relocations_original": 19,
+      "named_relocations_candidate": 19,
+      "named_relocation_exact": false,
+      "removed_relocations": [
+        [
+          8,
+          6,
+          "D_8007D108_7DD08"
+        ]
+      ],
+      "added_relocations": [
+        [
+          12,
+          6,
+          "D_8007D108_7DD08"
+        ]
+      ],
+      "first_relocation_mismatch_offset": 8,
+      "native_pool_sha256": null,
+      "native_pool_section": null,
+      "compiler_quirk_outcome": "EXISTING_QUIRK_REPRODUCED",
+      "status": "RESEARCH_ONLY"
+    },
+    {
+      "source": "01_literal.c",
+      "source_sha256": "4cca0e20ec00d4b2e3b45b3acfe3d3c05fb74aa06c87f85e6da3026bdbee6cdb",
+      "function": "func_8003F37C_3FF7C",
+      "region": "usa",
+      "rom_offset": "0x3ff7c",
+      "vma": "0x8003f37c",
+      "original_bytes": 192,
+      "compiled_func_size": 192,
+      "word_differences": 0,
+      "first_instruction_mismatch_offset": null,
+      "expected_code_sha256": "74867178f34d8d45b1753520e1218d6e6c2307f44937258e95c3828f1cf1efd0",
+      "candidate_code_sha256": "74867178f34d8d45b1753520e1218d6e6c2307f44937258e95c3828f1cf1efd0",
+      "named_relocations_original": 19,
+      "named_relocations_candidate": 19,
+      "named_relocation_exact": false,
+      "removed_relocations": [
+        [
+          4,
+          5,
+          "D_8007D108_7DD08"
+        ],
+        [
+          8,
+          6,
+          "D_8007D108_7DD08"
+        ]
+      ],
+      "added_relocations": [
+        [
+          4,
+          5,
+          ".rodata"
+        ],
+        [
+          8,
+          6,
+          ".rodata"
+        ]
+      ],
+      "first_relocation_mismatch_offset": 4,
+      "native_pool_sha256": "31cf8391f9bfd8eedef79bcf6b13f2db5f20089185538b317e01e372d5b8b750",
+      "native_pool_section": ".rodata",
+      "compiler_quirk_outcome": "EXISTING_QUIRK_REPRODUCED",
+      "status": "RESEARCH_ONLY"
+    },
+    {
+      "source": "02_named_array.c",
+      "source_sha256": "57da7ff6556d27953940ef9b0f9e5939850454720ea8dfbc84dc06970f5d2fc7",
+      "function": "func_8003F37C_3FF7C",
+      "region": "usa",
+      "rom_offset": "0x3ff7c",
+      "vma": "0x8003f37c",
+      "original_bytes": 192,
+      "compiled_func_size": 192,
+      "word_differences": 8,
+      "first_instruction_mismatch_offset": 8,
+      "expected_code_sha256": "74867178f34d8d45b1753520e1218d6e6c2307f44937258e95c3828f1cf1efd0",
+      "candidate_code_sha256": "22a12ae8a685cdc874844bbf8c7f68e401c39625493785d4d6fde6478335b879",
+      "named_relocations_original": 19,
+      "named_relocations_candidate": 19,
+      "named_relocation_exact": false,
+      "removed_relocations": [
+        [
+          8,
+          6,
+          "D_8007D108_7DD08"
+        ]
+      ],
+      "added_relocations": [
+        [
+          12,
+          6,
+          "D_8007D108_7DD08"
+        ]
+      ],
+      "first_relocation_mismatch_offset": 8,
+      "native_pool_sha256": null,
+      "native_pool_section": null,
+      "compiler_quirk_outcome": "NO_NEW_COMPILER_FINDING",
+      "status": "RESEARCH_ONLY"
+    },
+    {
+      "source": "03_zero_local.c",
+      "source_sha256": "2f6db375014703dd1595acadfdcd8557445e887d89f00523c263daa89f06ccd1",
+      "function": "func_8003F37C_3FF7C",
+      "region": "usa",
+      "rom_offset": "0x3ff7c",
+      "vma": "0x8003f37c",
+      "original_bytes": 192,
+      "compiled_func_size": 192,
+      "word_differences": 8,
+      "first_instruction_mismatch_offset": 8,
+      "expected_code_sha256": "74867178f34d8d45b1753520e1218d6e6c2307f44937258e95c3828f1cf1efd0",
+      "candidate_code_sha256": "22a12ae8a685cdc874844bbf8c7f68e401c39625493785d4d6fde6478335b879",
+      "named_relocations_original": 19,
+      "named_relocations_candidate": 19,
+      "named_relocation_exact": false,
+      "removed_relocations": [
+        [
+          8,
+          6,
+          "D_8007D108_7DD08"
+        ]
+      ],
+      "added_relocations": [
+        [
+          12,
+          6,
+          "D_8007D108_7DD08"
+        ]
+      ],
+      "first_relocation_mismatch_offset": 8,
+      "native_pool_sha256": null,
+      "native_pool_section": null,
+      "compiler_quirk_outcome": "NO_NEW_COMPILER_FINDING",
+      "status": "RESEARCH_ONLY"
+    },
+    {
+      "source": "04_both_locals.c",
+      "source_sha256": "4f8fd378f54a3367c9bd2326f432e1db840ef3893f61241b9f66f3d05b860c62",
+      "function": "func_8003F37C_3FF7C",
+      "region": "usa",
+      "rom_offset": "0x3ff7c",
+      "vma": "0x8003f37c",
+      "original_bytes": 192,
+      "compiled_func_size": 192,
+      "word_differences": 8,
+      "first_instruction_mismatch_offset": 8,
+      "expected_code_sha256": "74867178f34d8d45b1753520e1218d6e6c2307f44937258e95c3828f1cf1efd0",
+      "candidate_code_sha256": "22a12ae8a685cdc874844bbf8c7f68e401c39625493785d4d6fde6478335b879",
+      "named_relocations_original": 19,
+      "named_relocations_candidate": 19,
+      "named_relocation_exact": false,
+      "removed_relocations": [
+        [
+          8,
+          6,
+          "D_8007D108_7DD08"
+        ]
+      ],
+      "added_relocations": [
+        [
+          12,
+          6,
+          "D_8007D108_7DD08"
+        ]
+      ],
+      "first_relocation_mismatch_offset": 8,
+      "native_pool_sha256": null,
+      "native_pool_section": null,
+      "compiler_quirk_outcome": "NO_NEW_COMPILER_FINDING",
+      "status": "RESEARCH_ONLY"
+    },
+    {
+      "source": "05_named_split_lines.c",
+      "source_sha256": "c3fb96042107c71c397d587bdd53c14fd1d7935750d97790fa3218ca363780c7",
+      "function": "func_8003F37C_3FF7C",
+      "region": "usa",
+      "rom_offset": "0x3ff7c",
+      "vma": "0x8003f37c",
+      "original_bytes": 192,
+      "compiled_func_size": 192,
+      "word_differences": 8,
+      "first_instruction_mismatch_offset": 8,
+      "expected_code_sha256": "74867178f34d8d45b1753520e1218d6e6c2307f44937258e95c3828f1cf1efd0",
+      "candidate_code_sha256": "22a12ae8a685cdc874844bbf8c7f68e401c39625493785d4d6fde6478335b879",
+      "named_relocations_original": 19,
+      "named_relocations_candidate": 19,
+      "named_relocation_exact": false,
+      "removed_relocations": [
+        [
+          8,
+          6,
+          "D_8007D108_7DD08"
+        ]
+      ],
+      "added_relocations": [
+        [
+          12,
+          6,
+          "D_8007D108_7DD08"
+        ]
+      ],
+      "first_relocation_mismatch_offset": 8,
+      "native_pool_sha256": null,
+      "native_pool_section": null,
+      "compiler_quirk_outcome": "EXISTING_QUIRK_NOT_APPLICABLE",
+      "status": "RESEARCH_ONLY"
+    },
+    {
+      "source": "06_named_const_definition.c",
+      "source_sha256": "c5c48b0bacdcbb92d4987c2b5165c6c37c51b3d5afbb2fc31bcab9e328893871",
+      "function": "func_8003F37C_3FF7C",
+      "region": "usa",
+      "rom_offset": "0x3ff7c",
+      "vma": "0x8003f37c",
+      "original_bytes": 192,
+      "compiled_func_size": 192,
+      "word_differences": 8,
+      "first_instruction_mismatch_offset": 8,
+      "expected_code_sha256": "74867178f34d8d45b1753520e1218d6e6c2307f44937258e95c3828f1cf1efd0",
+      "candidate_code_sha256": "22a12ae8a685cdc874844bbf8c7f68e401c39625493785d4d6fde6478335b879",
+      "named_relocations_original": 19,
+      "named_relocations_candidate": 19,
+      "named_relocation_exact": false,
+      "removed_relocations": [
+        [
+          8,
+          6,
+          "D_8007D108_7DD08"
+        ]
+      ],
+      "added_relocations": [
+        [
+          12,
+          6,
+          "D_8007D108_7DD08"
+        ]
+      ],
+      "first_relocation_mismatch_offset": 8,
+      "native_pool_sha256": "31cf8391f9bfd8eedef79bcf6b13f2db5f20089185538b317e01e372d5b8b750",
+      "native_pool_section": ".data",
+      "compiler_quirk_outcome": "NO_NEW_COMPILER_FINDING",
+      "status": "RESEARCH_ONLY"
+    }
+  ],
+  "canonical_promotion": "NOT_RUN",
+  "gameplay": "NOT_RUN"
+}
