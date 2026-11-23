@@ -1,0 +1,24 @@
+{
+  "status": "PASSED_ORIGINAL_ROM_G2_SCRATCH_RESEARCH_ONLY",
+  "original_rom_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+  "original_rom_bytes": 33554432,
+  "source_sha256": "c1e4966ed0937947c05abdc672214d0d731cf84d43147a0acc50df3f54ab8baa",
+  "function": "func_8003EBAC_3F7AC",
+  "size": 436,
+  "relo_count": 8,
+  "elf_functions_preserved": 7376,
+  "semantic_relocs_preserved": 82103,
+  "semantic_reloc_sha256": "f7f25e257c9bce27c00e756b85ca7bfa5774137925d5aba9a6626ba4693e5a97",
+  "scratch_inventory": {
+    "c": 2165,
+    "asm": 5198
+  },
+  "published": {
+    "c": 2164,
+    "asm": 5199
+  },
+  "old_c_full_local_ci": "PASS",
+  "new_c_production_verify": "NOT_RUN",
+  "new_c_full_local_ci": "NOT_RUN",
+  "new_c_promotion_integrity": "NOT_RUN"
+}
