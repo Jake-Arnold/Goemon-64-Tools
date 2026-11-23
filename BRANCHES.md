@@ -36,6 +36,8 @@ Create topics after fetching the appropriate base: `git switch -c toolkit/my-fea
 
 ### Operational limitation
 
-GitHub's **default branch** and branch **rulesets/protection** are server-side settings, not changed by committing this file. Verify those settings separately. Until the default is switched to `stable/toolkit`, cloning without `--branch` may still select `main` and must be corrected before work. Require PRs and appropriate reviews/status checks on both stable baselines; block direct unreviewed pushes.
+GitHub defaults to `stable/toolkit`. For decomp work, fetch and select `stable/decomp` explicitly. Check the live repository rules before merging.
 
-This document and the prominent top-of-file rules in `AGENTS.md` are the current authority. Older dated setup documents and legacy references remain historical rather than overriding it.
+For unattended sessions and ChatGPT Project instructions, use this policy as the entry point. On the live decomp checkout, follow `decomp/CONTINUE.md`, `.agents/skills/goemon-autonomous-decomp/SKILL.md`, and `decomp/plans/EXECUTOR_PROTOCOL.md`. Read `decomp/COMPILER_QUIRKS.md` before each native IDO attempt, record the outcome and reproduction evidence even for negative attempts, and run the full native proof gates before promotion. Refresh any copied prompt against these files at the start of every session.
+
+The scheduled toolkit address import reads the published address manifest from `stable/decomp` and proposes a metadata-only `toolkit/*` PR against `stable/toolkit`. Windows release automation publishes from `stable/toolkit`. Keep the historical refs while [issue #175](https://github.com/Jake-Arnold/Goemon-64-Tools/issues/175) tracks agent and branch retirement.

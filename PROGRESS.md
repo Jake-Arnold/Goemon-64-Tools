@@ -1,3 +1,10 @@
+## 23 November 2026 - route v0.11.81 toolkit automation to the canonical branches
+
+- Point the scheduled metadata import at the live `stable/decomp` manifest and open metadata-only PRs against `stable/toolkit`. Build and publish Windows releases from `stable/toolkit` and retain an existing published release on reruns.
+- Keep the branch policy prominent while restoring the README's version heading to its first line. Document the live decomp preflight and compiler-quirk evidence requirements for future agent and Project sessions.
+- Validation uses the packaging, toolkit version, address metadata, debugger and scripted tracing tests plus local workflow checks. Hosted scheduling and Windows publication are separate from these checks. No native ROM or gameplay verification was run.
+- Next, review and merge the workflow PR, then verify the scheduled import with an authorized PR-creation identity and continue the branch audit in #175. The prior GitHub Actions token was denied PR creation.
+
 ## 23 November 2026 — mark toolkit-branch decomp copies as historical
 
 - Old `decomp/CONTINUE.md` and `decomp/README.md` in toolkit were previously able to misdirect matching-C agents. Added explicit redirects to the live `stable/decomp` counterparts and reinforced `AGENTS.md` preflight; fixed toolkit policy wording. Documentation only; no native or toolkit code changed.

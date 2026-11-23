@@ -1,6 +1,6 @@
-> **Repository branch policy (23 November 2026):** Toolkit development uses `stable/toolkit` → `toolkit/<topic>` → PR to `stable/toolkit`. Decomp work uses `stable/decomp` → `decomp/<topic>` → PR to `stable/decomp`. `main` and `chatgptweb/decomp` are legacy names, not new baselines. Read [BRANCHES.md](BRANCHES.md). Never merge the entire branches together.
-
 # Goemon Speedrun Tools v0.11.81 — PJ64-style Debugger and Research Metadata
+
+> **Repository branch policy (23 November 2026):** Toolkit development uses `stable/toolkit` → `toolkit/<topic>` → PR to `stable/toolkit`. Decomp work uses `stable/decomp` → `decomp/<topic>` → PR to `stable/decomp`. `main` and `chatgptweb/decomp` are legacy names, not new baselines. Read [BRANCHES.md](BRANCHES.md). Never merge the entire branches together.
 
 ## v0.11.81 — guest-RAM debugger, scripted tracing and reviewed metadata sync
 
