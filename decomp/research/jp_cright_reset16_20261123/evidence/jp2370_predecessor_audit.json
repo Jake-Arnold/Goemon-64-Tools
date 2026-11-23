@@ -1,0 +1,9 @@
+{
+  "status": "ROM_ELF_PASS_RELOC_SPECIAL",
+  "rom_sha1": "6f8745fecc3a5e7d4918c7a73353eb0726116ded",
+  "elf_count": 7376,
+  "elf_exact": true,
+  "reloc_count": 80745,
+  "reloc_sha": "43a133b21ac2b18d8e1d00f8c4e5718776b001a1f45c54e807dae12165e797c0",
+  "candidate_c_count": 2370
+}

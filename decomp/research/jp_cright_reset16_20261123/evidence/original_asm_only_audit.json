@@ -1,0 +1,15 @@
+{
+  "format": "jp-cright-reset16-original-asm-g2-research-v1",
+  "status": "PASSED_ORIGINAL_UPSTREAM_ROM_ELF_RELOC",
+  "original_elf_func_count": 7376,
+  "original_reloc_count": 80810,
+  "candidate_reloc_count": 80810,
+  "relo_sha256": "82493bc7aa5eca079b1573a1f7999e99fb28384eed1efe8c4cf1777826dc2805",
+  "original_rom_sha1": "6f8745fecc3a5e7d4918c7a73353eb0726116ded",
+  "candidate_sha1": "6f8745fecc3a5e7d4918c7a73353eb0726116ded",
+  "new_research_function": "func_80004170_4D70",
+  "original_rom_offset": 19824,
+  "size": 60,
+  "full_accepted_combined_g2": "NOT_RUN",
+  "no_promotion": true
+}
