@@ -1,0 +1,151 @@
+{
+  "status": "ISOLATED_NATIVE_RESEARCH_ONLY",
+  "base_commit": "4b289a015a2ffd9f47ca3356d09a248836e8dee8",
+  "original_upstream": "7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee",
+  "verified": 10,
+  "usa": 5,
+  "japan_0": 5,
+  "original_bytes": 632,
+  "symbolic_relocs": 39,
+  "negative_controls_pass": 10,
+  "ido_flags": "-c -G 0 -non_shared -O2 -mips2",
+  "ido_cc_sha256": "76d796c9591c9f5504949f85b29c32a6039a663791afe2f36f34ca18425b64d0",
+  "original_sha1": {
+    "usa": "6ea0ed71032ce08fc2745f412d84936382197494",
+    "japan_0": "6f8745fecc3a5e7d4918c7a73353eb0726116ded"
+  },
+  "verification": {
+    "exact_original_function_body": "PASS_10",
+    "symbolic_relocs": "PASS_39",
+    "elf_function_size": "PASS_10",
+    "source_mutation_negatives": "FAIL_AS_EXPECTED_10",
+    "full_native_original_unit": "NOT_RUN",
+    "all_elf_identities": "NOT_RUN",
+    "full_original_rom": "NOT_RUN",
+    "strict_new_inventory": "NOT_RUN",
+    "full_new_source_local_ci": "NOT_RUN",
+    "canonical_promoted_delta": 0
+  },
+  "functions": [
+    {
+      "region": "usa",
+      "name": "func_080023E4_6C1B34",
+      "offset": "0x6c1b34",
+      "vma": "0x080023e4",
+      "original_bytes": 68,
+      "relocations": 6,
+      "positive_native_exact": true,
+      "negative_mismatch": "RELOC_MISMATCH",
+      "negative_first_offset": 0,
+      "compiler_quirk_outcome": "NO_NEW_COMPILER_FINDING"
+    },
+    {
+      "region": "usa",
+      "name": "func_08002A98_6C21E8",
+      "offset": "0x6c21e8",
+      "vma": "0x08002a98",
+      "original_bytes": 52,
+      "relocations": 4,
+      "positive_native_exact": true,
+      "negative_mismatch": "RELOC_MISMATCH",
+      "negative_first_offset": 0,
+      "compiler_quirk_outcome": "NO_NEW_COMPILER_FINDING"
+    },
+    {
+      "region": "usa",
+      "name": "func_08001F24_6E5F04",
+      "offset": "0x6e5f04",
+      "vma": "0x08001f24",
+      "original_bytes": 84,
+      "relocations": 6,
+      "positive_native_exact": true,
+      "negative_mismatch": "WORD_DIFF",
+      "negative_first_offset": 28,
+      "compiler_quirk_outcome": "NO_NEW_COMPILER_FINDING"
+    },
+    {
+      "region": "usa",
+      "name": "func_08000AA8_739178",
+      "offset": "0x739178",
+      "vma": "0x08000aa8",
+      "original_bytes": 68,
+      "relocations": 4,
+      "positive_native_exact": true,
+      "negative_mismatch": "WORD_DIFF",
+      "negative_first_offset": 12,
+      "compiler_quirk_outcome": "NO_NEW_COMPILER_FINDING"
+    },
+    {
+      "region": "usa",
+      "name": "func_801F1B78_61CF58",
+      "offset": "0x61cf58",
+      "vma": "0x801f1b78",
+      "original_bytes": 48,
+      "relocations": 1,
+      "positive_native_exact": true,
+      "negative_mismatch": "WORD_DIFF",
+      "negative_first_offset": 16,
+      "compiler_quirk_outcome": "NO_NEW_COMPILER_FINDING"
+    },
+    {
+      "region": "japan_0",
+      "name": "func_08001ECC_6EA61C",
+      "offset": "0x6ea61c",
+      "vma": "0x08001ecc",
+      "original_bytes": 84,
+      "relocations": 6,
+      "positive_native_exact": true,
+      "negative_mismatch": "WORD_DIFF",
+      "negative_first_offset": 28,
+      "compiler_quirk_outcome": "NO_NEW_COMPILER_FINDING"
+    },
+    {
+      "region": "japan_0",
+      "name": "func_080009D0_73D450",
+      "offset": "0x73d450",
+      "vma": "0x080009d0",
+      "original_bytes": 68,
+      "relocations": 4,
+      "positive_native_exact": true,
+      "negative_mismatch": "WORD_DIFF",
+      "negative_first_offset": 12,
+      "compiler_quirk_outcome": "NO_NEW_COMPILER_FINDING"
+    },
+    {
+      "region": "japan_0",
+      "name": "func_801E6500_5A24D0",
+      "offset": "0x5a24d0",
+      "vma": "0x801e6500",
+      "original_bytes": 68,
+      "relocations": 5,
+      "positive_native_exact": true,
+      "negative_mismatch": "NONZERO_RELOC_ADDEND",
+      "negative_first_offset": 36,
+      "compiler_quirk_outcome": "NO_NEW_COMPILER_FINDING"
+    },
+    {
+      "region": "japan_0",
+      "name": "func_0800601C_6CA1DC",
+      "offset": "0x6ca1dc",
+      "vma": "0x0800601c",
+      "original_bytes": 44,
+      "relocations": 2,
+      "positive_native_exact": true,
+      "negative_mismatch": "WORD_DIFF",
+      "negative_first_offset": 24,
+      "compiler_quirk_outcome": "NO_NEW_COMPILER_FINDING"
+    },
+    {
+      "region": "japan_0",
+      "name": "func_80206078_630AF8",
+      "offset": "0x630af8",
+      "vma": "0x80206078",
+      "original_bytes": 48,
+      "relocations": 1,
+      "positive_native_exact": true,
+      "negative_mismatch": "WORD_DIFF",
+      "negative_first_offset": 16,
+      "compiler_quirk_outcome": "NO_NEW_COMPILER_FINDING"
+    }
+  ]
+}
