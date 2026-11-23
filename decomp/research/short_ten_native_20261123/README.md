@@ -1,0 +1,11 @@
+# Ten short functions — independently replayed original IDO C (23 November 2026)
+
+**RESEARCH_ONLY, no canonical C promotions.** Live base `4b289a015a2ffd9f47ca3356d09a248836e8dee8`. Functions remain ASM-owned in canonical USA 2,092 C / 5,271 ASM and JP 2,370 C / 5,006 ASM.
+
+- Ten distinct and previously unaccepted original addresses: **five USA + five Japan**, **632 original instruction bytes** and **39 relocation records**.
+- The private original 32 MiB ROMs and Splat ASM owners were authenticated to the pinned `klorfmorf/mnsg@7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee`. Pinned SGI IDO5.3 (SHA256 `76d796c9591c9f5504949f85b29c32a6039a663791afe2f36f34ca18425b64d0`) compiled source with `-c -G 0 -non_shared -O2 -mips2`. All original function-body instructions matched after reloc comparison, all ELF target function sizes exact and all relocation offsets, types, names and zero addends checked.
+- **10/10 bounded negative source variants** compiled and yielded mismatches (see `evidence.json`). Compiler classification `NO_NEW_COMPILER_FINDING`. Independently reproduced a second time against the source-only packaged harness.
+- Complete standalone `replay.py`, 10 matching C files, 10 negative source controls, full manifest and private-input reproduction instructions were delivered as the verified **same-chat ZIP** `goemon-ten-native-ido-20261123.zip` SHA256 `aed368e322164d2770dfbbfa31a2de33a5590481f5e0366ebf2fa9c0595657d0`. The ZIP is source-only; original ROMs, Splat ASM, compilers and original machine bytes are excluded.
+- The repository files here preserve the ten positive source bodies and the regional metadata; use the complete chat ZIP for the negative-control replay, or adapt its harness using these exact C sources and the private pinned original data.
+
+**Not performed for these ten:** actual mixed source-unit assembly and ELF layout integration; complete-region original-ROM 33,554,432-byte identity; full original 7,376 symbol/semantic relocation inventory in candidate; strict post-staging canonical inventory; fresh full `decomp.local_ci` on new staged C. No official accepted-count changes; no in-game test. These sources are not safely promotable until all gates pass.
