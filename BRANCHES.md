@@ -39,3 +39,9 @@ Create topics after fetching the appropriate base: `git switch -c toolkit/my-fea
 GitHub's **default branch** and branch **rulesets/protection** are server-side settings, not changed by committing this file. Verify those settings separately. Until the default is switched to `stable/toolkit`, cloning without `--branch` may still select `main` and must be corrected before work. Require PRs and appropriate reviews/status checks on both stable baselines; block direct unreviewed pushes.
 
 This document and the prominent top-of-file rules in `AGENTS.md` are the current authority. Older dated setup documents and legacy references remain historical rather than overriding it.
+
+### Source archives for ChatGPT Project sessions
+
+Resolve the current stable ref to its full commit SHA using GitHub. Find a successful **Goemon source archive** workflow run for that branch and SHA. Download its `goemon-source-stable-decomp-<sha>` or `goemon-source-stable-toolkit-<sha>` artifact with the GitHub connector's **Download workflow artifact** action. Check `COMMIT.txt` against the live SHA and verify `source.tar.gz` against `SHA256SUMS`. Extract to an empty directory with safe tar extraction. The inner tar preserves executable bits and Git symlinks. It contains tracked source at the workflow commit. Git history and native build inputs are separate.
+
+Every push to either stable branch publishes an artifact. If the current artifact is missing or expired, dispatch **Goemon source archive** on that stable branch, wait for the run to succeed, and check its SHA again. Never substitute an artifact from a previous commit. For Goemon matching-C promotions, fetch and verify a fresh artifact before each attempt and verify publication again after the merged promotion.

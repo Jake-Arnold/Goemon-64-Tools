@@ -107,6 +107,12 @@ Use `python3 -m decomp.local_ci` from any directory in the checkout for the ROM-
 The G64-001–100 execution plan was closed on 14 November 2026 and is retired from active scheduling. Choose work from the current remaining-assembly inventory, live `decomp/CONTINUE.md`, unpromoted native evidence and verified source ownership. Follow [decomp/plans/EXECUTOR_PROTOCOL.md](decomp/plans/EXECUTOR_PROTOCOL.md) for bounded attempts and mandatory full-ROM G2 acceptance. Historical G64 research ledgers remain available in `decomp/plans/execution/`; do not infer current blockers or matching-C counts from those old task statuses.
 
 
+### Source archive preflight for every promotion
+
+Before each promotion attempt, resolve the live `stable/decomp` SHA and download a fresh matching **Goemon source archive** via the GitHub connector. Follow the checksum and extraction steps in [BRANCHES.md](BRANCHES.md). Reuse a repository-backed Git worktree for edits and publication only after verifying its base against the same SHA. If the artifact is missing or stale, dispatch the workflow on `stable/decomp` and wait for the matching artifact. Keep the attempt blocked if the live source cannot be verified.
+
+After every successful promotion merge, confirm that the workflow published an artifact for the new `stable/decomp` SHA. If automatic publication fails, rerun or dispatch the workflow and verify the new artifact before closing the handoff. Record the archive run or artifact with the published promotion evidence. The archive carries source only. All native proof gates remain required.
+
 ## Atomic canonical decomp promotion transaction — mandatory (22 November 2026)
 
 An agent must not publish a Git commit or claim `PUBLISHED_REMOTE_VERIFIED` using only a dated `results/*g2*.json` or research-source ZIP. During cross-agent work **the canonical manifest and `combined.json`/`inventory.json` are the only accepted-C count**; staging C code, isolated native match or an alternate integrated ROM proof creates no accepted count.
