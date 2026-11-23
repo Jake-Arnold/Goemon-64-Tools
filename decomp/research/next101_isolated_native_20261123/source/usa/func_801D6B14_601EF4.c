@@ -1,0 +1,1 @@
+typedef unsigned char u8;extern u8 func_801D6CB0_602090(void*,float);extern void func_801D600C_6013EC(void*);u8 func_801D6B14_601EF4(u8 *actor,float v) {u8 rv=func_801D6CB0_602090(actor+112,v);func_801D600C_6013EC(actor);return rv;}

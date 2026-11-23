@@ -1,0 +1,730 @@
+{
+  "tries": 91,
+  "reasons": {
+    "WORD_DIFF": 33,
+    "RELOC_MISMATCH": 34,
+    "COMPILER_ERROR": 23
+  },
+  "examples": [
+    {
+      "target": "_nsqrtf",
+      "donor": "func_08003230_6DD100",
+      "variant": "PORT",
+      "reason": "WORD_DIFF",
+      "offset": 4,
+      "error": ""
+    },
+    {
+      "target": "_nsqrtf",
+      "donor": "func_08003230_6DD100",
+      "variant": "PORT",
+      "reason": "WORD_DIFF",
+      "offset": 4,
+      "error": ""
+    },
+    {
+      "target": "__osSpGetStatus",
+      "donor": "__osSpGetStatus",
+      "variant": "PORT",
+      "reason": "RELOC_MISMATCH",
+      "offset": 0,
+      "error": ""
+    },
+    {
+      "target": "__osSpGetStatus",
+      "donor": "osAiGetLength",
+      "variant": "PORT",
+      "reason": "RELOC_MISMATCH",
+      "offset": 0,
+      "error": ""
+    },
+    {
+      "target": "__osSpGetStatus",
+      "donor": "__osGetActiveQueue",
+      "variant": "PORT",
+      "reason": "WORD_DIFF",
+      "offset": 0,
+      "error": ""
+    },
+    {
+      "target": "osAiGetLength",
+      "donor": "osAiGetLength",
+      "variant": "PORT",
+      "reason": "RELOC_MISMATCH",
+      "offset": 0,
+      "error": ""
+    },
+    {
+      "target": "osAiGetLength",
+      "donor": "__osSpGetStatus",
+      "variant": "PORT",
+      "reason": "RELOC_MISMATCH",
+      "offset": 0,
+      "error": ""
+    },
+    {
+      "target": "osAiGetLength",
+      "donor": "__osGetActiveQueue",
+      "variant": "PORT",
+      "reason": "WORD_DIFF",
+      "offset": 0,
+      "error": ""
+    },
+    {
+      "target": "__osSpSetStatus",
+      "donor": "__osSpSetStatus",
+      "variant": "PORT",
+      "reason": "RELOC_MISMATCH",
+      "offset": 0,
+      "error": ""
+    },
+    {
+      "target": "_nsqrtf",
+      "donor": "func_08003230_6DD100",
+      "variant": "PORT",
+      "reason": "WORD_DIFF",
+      "offset": 4,
+      "error": ""
+    },
+    {
+      "target": "_nsqrtf",
+      "donor": "func_08003230_6DD100",
+      "variant": "PORT",
+      "reason": "WORD_DIFF",
+      "offset": 4,
+      "error": ""
+    },
+    {
+      "target": "func_080003D0_717270",
+      "donor": "func_08001488_6C0BD8",
+      "variant": "PORT",
+      "reason": "WORD_DIFF",
+      "offset": 16,
+      "error": ""
+    },
+    {
+      "target": "func_080003D0_717270",
+      "donor": "func_08001488_6C0BD8",
+      "variant": "SINGLE_0",
+      "reason": "WORD_DIFF",
+      "offset": 28,
+      "error": ""
+    },
+    {
+      "target": "func_080003D0_717270",
+      "donor": "func_08001488_6C0BD8",
+      "variant": "SINGLE_1",
+      "reason": "WORD_DIFF",
+      "offset": 16,
+      "error": ""
+    },
+    {
+      "target": "func_80222B30_5DE000",
+      "donor": "func_802278A0_5E2E30",
+      "variant": "PORT",
+      "reason": "RELOC_MISMATCH",
+      "offset": 0,
+      "error": ""
+    },
+    {
+      "target": "func_800372E8_37EE8",
+      "donor": "func_80036F58_37B58",
+      "variant": "PORT",
+      "reason": "RELOC_MISMATCH",
+      "offset": 0,
+      "error": ""
+    },
+    {
+      "target": "func_800372E8_37EE8",
+      "donor": "func_80037084_37C84",
+      "variant": "PORT",
+      "reason": "RELOC_MISMATCH",
+      "offset": 0,
+      "error": ""
+    },
+    {
+      "target": "func_800372E8_37EE8",
+      "donor": "func_80037084_37C84",
+      "variant": "SINGLE_0",
+      "reason": "RELOC_MISMATCH",
+      "offset": 0,
+      "error": ""
+    },
+    {
+      "target": "func_80037414_38014",
+      "donor": "func_80037084_37C84",
+      "variant": "PORT",
+      "reason": "RELOC_MISMATCH",
+      "offset": 0,
+      "error": ""
+    },
+    {
+      "target": "func_80037414_38014",
+      "donor": "func_80036F58_37B58",
+      "variant": "PORT",
+      "reason": "RELOC_MISMATCH",
+      "offset": 0,
+      "error": ""
+    },
+    {
+      "target": "func_80037414_38014",
+      "donor": "func_80036F58_37B58",
+      "variant": "SINGLE_0",
+      "reason": "RELOC_MISMATCH",
+      "offset": 0,
+      "error": ""
+    },
+    {
+      "target": "func_80037470_38070",
+      "donor": "func_800370E0_37CE0",
+      "variant": "PORT",
+      "reason": "RELOC_MISMATCH",
+      "offset": 0,
+      "error": ""
+    },
+    {
+      "target": "func_8001B4A8_1C0A8",
+      "donor": "func_8001B918_1C518",
+      "variant": "PORT",
+      "reason": "RELOC_MISMATCH",
+      "offset": 0,
+      "error": ""
+    },
+    {
+      "target": "func_8001B4A8_1C0A8",
+      "donor": "func_8001B918_1C518",
+      "variant": "PORT",
+      "reason": "RELOC_MISMATCH",
+      "offset": 0,
+      "error": ""
+    },
+    {
+      "target": "func_800273D4_27FD4",
+      "donor": "alSynDelete",
+      "variant": "PORT",
+      "reason": "WORD_DIFF",
+      "offset": 4,
+      "error": ""
+    },
+    {
+      "target": "func_800273D4_27FD4",
+      "donor": "alSynDelete",
+      "variant": "PORT",
+      "reason": "WORD_DIFF",
+      "offset": 4,
+      "error": ""
+    },
+    {
+      "target": "func_800273D4_27FD4",
+      "donor": "func_08000410_70A450",
+      "variant": "PORT",
+      "reason": "WORD_DIFF",
+      "offset": 4,
+      "error": ""
+    },
+    {
+      "target": "func_800273D4_27FD4",
+      "donor": "func_08000410_70A450",
+      "variant": "PORT",
+      "reason": "WORD_DIFF",
+      "offset": 4,
+      "error": ""
+    },
+    {
+      "target": "func_800273D4_27FD4",
+      "donor": "func_08003CC0_6F71A0",
+      "variant": "PORT",
+      "reason": "WORD_DIFF",
+      "offset": 4,
+      "error": ""
+    },
+    {
+      "target": "func_8000C560_D160",
+      "donor": "alSynDelete",
+      "variant": "PORT",
+      "reason": "WORD_DIFF",
+      "offset": 4,
+      "error": ""
+    },
+    {
+      "target": "func_8000C560_D160",
+      "donor": "alSynDelete",
+      "variant": "PORT",
+      "reason": "WORD_DIFF",
+      "offset": 4,
+      "error": ""
+    },
+    {
+      "target": "func_8000C560_D160",
+      "donor": "func_08000410_70A450",
+      "variant": "PORT",
+      "reason": "WORD_DIFF",
+      "offset": 4,
+      "error": ""
+    },
+    {
+      "target": "func_8000C560_D160",
+      "donor": "func_08000410_70A450",
+      "variant": "PORT",
+      "reason": "WORD_DIFF",
+      "offset": 4,
+      "error": ""
+    },
+    {
+      "target": "func_8000C560_D160",
+      "donor": "func_08003CC0_6F71A0",
+      "variant": "PORT",
+      "reason": "WORD_DIFF",
+      "offset": 4,
+      "error": ""
+    },
+    {
+      "target": "func_8000C568_D168",
+      "donor": "alSynDelete",
+      "variant": "PORT",
+      "reason": "WORD_DIFF",
+      "offset": 4,
+      "error": ""
+    },
+    {
+      "target": "func_8000C568_D168",
+      "donor": "alSynDelete",
+      "variant": "PORT",
+      "reason": "WORD_DIFF",
+      "offset": 4,
+      "error": ""
+    },
+    {
+      "target": "func_8000C568_D168",
+      "donor": "func_08000410_70A450",
+      "variant": "PORT",
+      "reason": "WORD_DIFF",
+      "offset": 4,
+      "error": ""
+    },
+    {
+      "target": "func_8000C568_D168",
+      "donor": "func_08000410_70A450",
+      "variant": "PORT",
+      "reason": "WORD_DIFF",
+      "offset": 4,
+      "error": ""
+    },
+    {
+      "target": "func_8000C568_D168",
+      "donor": "func_08003CC0_6F71A0",
+      "variant": "PORT",
+      "reason": "WORD_DIFF",
+      "offset": 4,
+      "error": ""
+    },
+    {
+      "target": "func_80027094_27C94",
+      "donor": "alSynDelete",
+      "variant": "PORT",
+      "reason": "WORD_DIFF",
+      "offset": 4,
+      "error": ""
+    },
+    {
+      "target": "func_80027094_27C94",
+      "donor": "alSynDelete",
+      "variant": "PORT",
+      "reason": "WORD_DIFF",
+      "offset": 4,
+      "error": ""
+    },
+    {
+      "target": "func_80027094_27C94",
+      "donor": "func_08000410_70A450",
+      "variant": "PORT",
+      "reason": "WORD_DIFF",
+      "offset": 4,
+      "error": ""
+    },
+    {
+      "target": "func_80027094_27C94",
+      "donor": "func_08000410_70A450",
+      "variant": "PORT",
+      "reason": "WORD_DIFF",
+      "offset": 4,
+      "error": ""
+    },
+    {
+      "target": "func_80027094_27C94",
+      "donor": "func_08003CC0_6F71A0",
+      "variant": "PORT",
+      "reason": "WORD_DIFF",
+      "offset": 4,
+      "error": ""
+    },
+    {
+      "target": "func_080049C8_6DE898",
+      "donor": "func_080003EC_6CF4CC",
+      "variant": "PORT",
+      "reason": "WORD_DIFF",
+      "offset": 24,
+      "error": ""
+    },
+    {
+      "target": "func_080049C8_6DE898",
+      "donor": "func_080003EC_6CF4CC",
+      "variant": "PORT",
+      "reason": "WORD_DIFF",
+      "offset": 24,
+      "error": ""
+    },
+    {
+      "target": "func_80221F34_5DD404",
+      "donor": "func_80226CA4_5E2234",
+      "variant": "PORT",
+      "reason": "RELOC_MISMATCH",
+      "offset": 0,
+      "error": ""
+    },
+    {
+      "target": "func_80034E98_35A98",
+      "donor": "func_80034B08_35708",
+      "variant": "PORT",
+      "reason": "RELOC_MISMATCH",
+      "offset": 0,
+      "error": ""
+    },
+    {
+      "target": "func_800370B0_37CB0",
+      "donor": "func_80036D20_37920",
+      "variant": "PORT",
+      "reason": "RELOC_MISMATCH",
+      "offset": 0,
+      "error": ""
+    },
+    {
+      "target": "func_800370B0_37CB0",
+      "donor": "func_8003704C_37C4C",
+      "variant": "PORT",
+      "reason": "RELOC_MISMATCH",
+      "offset": 0,
+      "error": ""
+    },
+    {
+      "target": "func_800370B0_37CB0",
+      "donor": "func_8003704C_37C4C",
+      "variant": "SINGLE_0",
+      "reason": "RELOC_MISMATCH",
+      "offset": 0,
+      "error": ""
+    },
+    {
+      "target": "func_800373DC_37FDC",
+      "donor": "func_8003704C_37C4C",
+      "variant": "PORT",
+      "reason": "RELOC_MISMATCH",
+      "offset": 0,
+      "error": ""
+    },
+    {
+      "target": "func_800373DC_37FDC",
+      "donor": "func_80036D20_37920",
+      "variant": "PORT",
+      "reason": "RELOC_MISMATCH",
+      "offset": 0,
+      "error": ""
+    },
+    {
+      "target": "func_800373DC_37FDC",
+      "donor": "func_80036D20_37920",
+      "variant": "SINGLE_0",
+      "reason": "RELOC_MISMATCH",
+      "offset": 0,
+      "error": ""
+    },
+    {
+      "target": "func_800374AC_380AC",
+      "donor": "func_8003711C_37D1C",
+      "variant": "PORT",
+      "reason": "RELOC_MISMATCH",
+      "offset": 0,
+      "error": ""
+    },
+    {
+      "target": "func_80224110_68D800",
+      "donor": "func_8021F330_688D10",
+      "variant": "PORT",
+      "reason": "RELOC_MISMATCH",
+      "offset": 0,
+      "error": ""
+    },
+    {
+      "target": "func_80226C60_5E21F0",
+      "donor": "func_80221EF0_5DD3C0",
+      "variant": "PORT",
+      "reason": "RELOC_MISMATCH",
+      "offset": 0,
+      "error": ""
+    },
+    {
+      "target": "func_8000A3A8_AFA8",
+      "donor": "func_8000A4F8_B0F8",
+      "variant": "PORT",
+      "reason": null,
+      "offset": null,
+      "error": "8/test.c, line 2: Empty declaration\n extern s32 g_system + 0xBBB90;\n -----------------------------^\n"
+    },
+    {
+      "target": "func_8000A3A8_AFA8",
+      "donor": "func_8000A430_B030",
+      "variant": "PORT",
+      "reason": null,
+      "offset": null,
+      "error": "8/test.c, line 2: Empty declaration\n extern s32 g_system + 0xBBB90;\n -----------------------------^\n"
+    },
+    {
+      "target": "func_8000A3A8_AFA8",
+      "donor": "func_8000A430_B030",
+      "variant": "SINGLE_0",
+      "reason": null,
+      "offset": null,
+      "error": "8/test.c, line 2: Empty declaration\n extern s32 g_system + 0xBBB90;\n -----------------------------^\n"
+    },
+    {
+      "target": "func_8000A3A8_AFA8",
+      "donor": "func_8000A430_B030",
+      "variant": "SINGLE_1",
+      "reason": null,
+      "offset": null,
+      "error": "8/test.c, line 2: Empty declaration\n extern s32 g_system + 0xBBB90;\n -----------------------------^\n"
+    },
+    {
+      "target": "func_8000A3A8_AFA8",
+      "donor": "func_8000A430_B030",
+      "variant": "COMBINED",
+      "reason": null,
+      "offset": null,
+      "error": "8/test.c, line 2: Empty declaration\n extern s32 g_system + 0xBBB90;\n -----------------------------^\n"
+    },
+    {
+      "target": "func_8000A3A8_AFA8",
+      "donor": "func_8000A344_AF44",
+      "variant": "PORT",
+      "reason": null,
+      "offset": null,
+      "error": "8/test.c, line 2: Empty declaration\n extern s32 g_system + 0xBBB90;\n -----------------------------^\n"
+    },
+    {
+      "target": "func_8000A3A8_AFA8",
+      "donor": "func_8000A344_AF44",
+      "variant": "SINGLE_0",
+      "reason": null,
+      "offset": null,
+      "error": "8/test.c, line 2: Empty declaration\n extern s32 g_system + 0xBBB90;\n -----------------------------^\n"
+    },
+    {
+      "target": "func_8000A3A8_AFA8",
+      "donor": "func_8000A344_AF44",
+      "variant": "SINGLE_1",
+      "reason": null,
+      "offset": null,
+      "error": "8/test.c, line 2: Empty declaration\n extern s32 g_system + 0xBBB90;\n -----------------------------^\n"
+    },
+    {
+      "target": "func_8000A3A8_AFA8",
+      "donor": "func_8000A344_AF44",
+      "variant": "COMBINED",
+      "reason": null,
+      "offset": null,
+      "error": "8/test.c, line 2: Empty declaration\n extern s32 g_system + 0xBBB90;\n -----------------------------^\n"
+    },
+    {
+      "target": "func_8000A1F4_ADF4",
+      "donor": "func_8000A344_AF44",
+      "variant": "PORT",
+      "reason": null,
+      "offset": null,
+      "error": "4/test.c, line 2: Empty declaration\n extern s32 g_system + 0x3B668;\n -----------------------------^\n"
+    },
+    {
+      "target": "func_8000A1F4_ADF4",
+      "donor": "func_8000A430_B030",
+      "variant": "PORT",
+      "reason": null,
+      "offset": null,
+      "error": "4/test.c, line 2: Empty declaration\n extern s32 g_system + 0x3B668;\n -----------------------------^\n"
+    },
+    {
+      "target": "func_8000A1F4_ADF4",
+      "donor": "func_8000A430_B030",
+      "variant": "SINGLE_0",
+      "reason": null,
+      "offset": null,
+      "error": "4/test.c, line 2: Empty declaration\n extern s32 g_system + 0x3B668;\n -----------------------------^\n"
+    },
+    {
+      "target": "func_8000A1F4_ADF4",
+      "donor": "func_8000A4F8_B0F8",
+      "variant": "PORT",
+      "reason": null,
+      "offset": null,
+      "error": "4/test.c, line 2: Empty declaration\n extern s32 g_system + 0x3B668;\n -----------------------------^\n"
+    },
+    {
+      "target": "func_8000A1F4_ADF4",
+      "donor": "func_8000A4F8_B0F8",
+      "variant": "SINGLE_0",
+      "reason": null,
+      "offset": null,
+      "error": "4/test.c, line 2: Empty declaration\n extern s32 g_system + 0x3B668;\n -----------------------------^\n"
+    },
+    {
+      "target": "func_8000A1F4_ADF4",
+      "donor": "func_8000A4F8_B0F8",
+      "variant": "SINGLE_1",
+      "reason": null,
+      "offset": null,
+      "error": "4/test.c, line 2: Empty declaration\n extern s32 g_system + 0x3B668;\n -----------------------------^\n"
+    },
+    {
+      "target": "func_8000A1F4_ADF4",
+      "donor": "func_8000A4F8_B0F8",
+      "variant": "COMBINED",
+      "reason": null,
+      "offset": null,
+      "error": "4/test.c, line 2: Empty declaration\n extern s32 g_system + 0x3B668;\n -----------------------------^\n"
+    },
+    {
+      "target": "func_8000A2E0_AEE0",
+      "donor": "func_8000A430_B030",
+      "variant": "PORT",
+      "reason": null,
+      "offset": null,
+      "error": "0/test.c, line 2: Empty declaration\n extern s32 g_system + 0xBBB08;\n -----------------------------^\n"
+    },
+    {
+      "target": "func_8000A2E0_AEE0",
+      "donor": "func_8000A344_AF44",
+      "variant": "PORT",
+      "reason": null,
+      "offset": null,
+      "error": "0/test.c, line 2: Empty declaration\n extern s32 g_system + 0xBBB08;\n -----------------------------^\n"
+    },
+    {
+      "target": "func_8000A2E0_AEE0",
+      "donor": "func_8000A344_AF44",
+      "variant": "SINGLE_0",
+      "reason": null,
+      "offset": null,
+      "error": "0/test.c, line 2: Empty declaration\n extern s32 g_system + 0xBBB08;\n -----------------------------^\n"
+    },
+    {
+      "target": "func_8000A2E0_AEE0",
+      "donor": "func_8000A4F8_B0F8",
+      "variant": "PORT",
+      "reason": null,
+      "offset": null,
+      "error": "0/test.c, line 2: Empty declaration\n extern s32 g_system + 0xBBB08;\n -----------------------------^\n"
+    },
+    {
+      "target": "func_8000A2E0_AEE0",
+      "donor": "func_8000A4F8_B0F8",
+      "variant": "SINGLE_0",
+      "reason": null,
+      "offset": null,
+      "error": "0/test.c, line 2: Empty declaration\n extern s32 g_system + 0xBBB08;\n -----------------------------^\n"
+    },
+    {
+      "target": "func_8000A2E0_AEE0",
+      "donor": "func_8000A4F8_B0F8",
+      "variant": "SINGLE_1",
+      "reason": null,
+      "offset": null,
+      "error": "0/test.c, line 2: Empty declaration\n extern s32 g_system + 0xBBB08;\n -----------------------------^\n"
+    },
+    {
+      "target": "func_8000A2E0_AEE0",
+      "donor": "func_8000A4F8_B0F8",
+      "variant": "COMBINED",
+      "reason": null,
+      "offset": null,
+      "error": "0/test.c, line 2: Empty declaration\n extern s32 g_system + 0xBBB08;\n -----------------------------^\n"
+    },
+    {
+      "target": "func_801CB56C_63A3BC",
+      "donor": "func_801FB270_5B7180",
+      "variant": "PORT",
+      "reason": "RELOC_MISMATCH",
+      "offset": 0,
+      "error": ""
+    },
+    {
+      "target": "func_80200180_5BC150",
+      "donor": "func_801FB270_5B7180",
+      "variant": "PORT",
+      "reason": "RELOC_MISMATCH",
+      "offset": 0,
+      "error": ""
+    },
+    {
+      "target": "func_8020F13C_66E0EC",
+      "donor": "func_801FB270_5B7180",
+      "variant": "PORT",
+      "reason": "RELOC_MISMATCH",
+      "offset": 0,
+      "error": ""
+    },
+    {
+      "target": "func_8020F13C_66E0EC",
+      "donor": "func_801FB270_5B7180",
+      "variant": "SINGLE_0",
+      "reason": "RELOC_MISMATCH",
+      "offset": 0,
+      "error": ""
+    },
+    {
+      "target": "func_801D0C9C_63F18C",
+      "donor": "func_801FB270_5B7180",
+      "variant": "PORT",
+      "reason": "RELOC_MISMATCH",
+      "offset": 0,
+      "error": ""
+    },
+    {
+      "target": "func_801EF84C_61AC2C",
+      "donor": "func_801F4F7C_61F9FC",
+      "variant": "PORT",
+      "reason": "RELOC_MISMATCH",
+      "offset": 0,
+      "error": ""
+    },
+    {
+      "target": "func_80213F2C_672D9C",
+      "donor": "func_801FB270_5B7180",
+      "variant": "PORT",
+      "reason": "RELOC_MISMATCH",
+      "offset": 0,
+      "error": ""
+    },
+    {
+      "target": "func_80213F2C_672D9C",
+      "donor": "func_801FB270_5B7180",
+      "variant": "SINGLE_0",
+      "reason": "RELOC_MISMATCH",
+      "offset": 0,
+      "error": ""
+    },
+    {
+      "target": "func_080048F4_6E3084",
+      "donor": "func_080003EC_6CF4CC",
+      "variant": "PORT",
+      "reason": "WORD_DIFF",
+      "offset": 24,
+      "error": ""
+    },
+    {
+      "target": "func_080048F4_6E3084",
+      "donor": "func_080003EC_6CF4CC",
+      "variant": "PORT",
+      "reason": "WORD_DIFF",
+      "offset": 24,
+      "error": ""
+    }
+  ]
+}
