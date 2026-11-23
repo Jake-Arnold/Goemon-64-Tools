@@ -1,0 +1,15 @@
+{
+  "status": "PASS",
+  "command": "python -m decomp.local_ci",
+  "exit_code": 0,
+  "decomp_tests": 474,
+  "decomp_skipped": 3,
+  "verifier_ledger_tests": 350,
+  "comparator_tests": 7,
+  "all_configured_actual_source_asan_ubsan_fixtures": "PASS",
+  "canonical_promotion_integrity": "PASS",
+  "japan_native100_integrity": "PASS",
+  "task_registry_validation": "PASS",
+  "original_rom_proof": "Separate exact regional G2 evidence",
+  "original_log_sha256": "cd38c3e2ae6a4f4a66513458248458abfbe2d9371c557c380ba47e1e67875872"
+}
