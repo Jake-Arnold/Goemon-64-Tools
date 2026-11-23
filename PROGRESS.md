@@ -1,3 +1,8 @@
+## 23 November 2026 — PR workstream routing check
+
+- Added a GitHub Actions **PR branch-route check only**: `toolkit/*` must target `stable/toolkit`; `decomp/*` targets `stable/decomp`; legacy `main` and `chatgptweb/decomp` reject new PRs. Six already-open pre-migration research PRs keep their existing heads while targeting `stable/decomp`.
+- This is a routing check, **not decomp native CI** or evidence for exact ROM matching. It becomes an enforced merge gate only if the GitHub ruleset/branch protection requires it. No game/runtime/native matching-C code modified.
+
 ## 23 November 2026 — adopt canonical two-baseline branch workflow (toolkit)
 
 - Created `stable/toolkit` from former toolkit `main` at `61b5f91db12b8aa32dbcf555c8e562e7066cebdd`; decomp baseline independently created as `stable/decomp` from published `chatgptweb/decomp` at `6b864fac15fb4d9510a7fae5b7945b3b6cac69cf`.
