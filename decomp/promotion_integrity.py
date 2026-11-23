@@ -41,6 +41,35 @@ def audit(root:Path=ROOT)->dict:
         inv=json.loads((root/'results/inventory.json').read_text())
     except (FileNotFoundError,ValueError) as exc:
         return {'status':'FAIL','errors':['Missing/malformed canonical proof/inventory: '+str(exc)]}
+    # The original 2164-C proof and ELF inventory must remain immutable.
+    # A VM436 promotion is an additive final stage, not a rewrite of short72.
+    vm436_stage = manifest.get('usa_script_vm436_promotion') is not None
+    frozen_2164_inv = inv
+    if vm436_stage:
+        from . import usa_script_vm436_promotion as vm436
+        if manifest.get('usa_script_vm436_promotion') != {'format':vm436.FORMAT}:
+            failures.append('Unreviewed VM436 source stage')
+        frozen_p = root/'results/combined_2164_before_vm436_20261123.json'
+        frozen_i = root/'results/inventory_2164_before_vm436_20261123.json'
+        if not frozen_p.is_file() or not frozen_i.is_file():
+            failures.append('VM436 missing immutable original 2164-C snapshots')
+        else:
+            frozen_p_hash=hashlib.sha256(frozen_p.read_bytes()).hexdigest()
+            frozen_i_hash=hashlib.sha256(frozen_i.read_bytes()).hexdigest()
+            if (frozen_p_hash!='0e50cb93034e48ba721c76d69906a997e44f2e5ff2a2c6eb4b35a386af941b2e' or
+                    frozen_i_hash!='4dd32f74c5bf051f99a3da108b766faeb6c64812ae4e7ba9ce786011c5fa4f20'):
+                failures.append('VM436 original accepted G2 snapshot bytes changed')
+            frozen_proof=json.loads(frozen_p.read_text())
+            frozen_2164_inv=json.loads(frozen_i.read_text())
+            cp=frozen_proof.get('comparison') or {}
+            summary_old=frozen_2164_inv.get('summary') or {}
+            if (frozen_proof.get('status')!='matched' or cp.get('matched_functions')!=2164 or
+                    cp.get('matched_function_bytes')!=99604 or cp.get('full_rom_match') is not True or
+                    summary_old.get('newly_matching_c')!=2164 or
+                    summary_old.get('remaining_assembly_entries')!=5199):
+                failures.append('VM436 original 2164-C predecessor identity failed')
+            if frozen_2164_inv.get('baseline_elf_sha256')!=inv.get('baseline_elf_sha256'):
+                failures.append('VM436 original ELF baseline changed')
     comparison=proof.get('comparison') or {}
     summary=inv.get('summary') or {}
     if proof.get('status')!='matched' or comparison.get('full_rom_match') is not True:
@@ -162,7 +191,7 @@ def audit(root:Path=ROOT)->dict:
                 doc.get('canonical_inventory_status')!='PASS' or
                 any(doc.get('stages',{}).get(k,{}).get('status')!='PASSED_G2_LOCAL' for k in ('mini10','selector'))):
                 failures.append('Mini11 current combined original-ROM/ELF G2 proof mismatch')
-            if (count,code_bytes)!=((2164,99604) if short72_stage else (2092,94760) if new2_stage else (2090,94668)):
+            if (count,code_bytes)!=((2165,100040) if vm436_stage else (2164,99604) if short72_stage else (2092,94760) if new2_stage else (2090,94668)):
                 failures.append('Mini11/post2090 accepted count and ROM bytes changed')
             if len(doc.get('functions',[]))!=11 or sum(f['size'] for f in doc.get('functions',[]))!=1652:
                 failures.append('Mini11 native source/size ledger incomplete')
@@ -216,7 +245,7 @@ def audit(root:Path=ROOT)->dict:
                 e.get('semantic_relocation_sha256')!=short72.RELOC_HASH or
                 e.get('stable_global_symbol_identities_exact')!=26714 or
                 e.get('original_elf_sha256')!=inv.get('baseline_elf_sha256') or
-                e.get('candidate_elf_sha256')!=inv.get('candidate_elf_sha256') or
+                e.get('candidate_elf_sha256')!=frozen_2164_inv.get('candidate_elf_sha256') or
                 e.get('original_source_manifest_sha256')!=short72.FROZEN_FIXTURE_HASH or
                 e.get('strict_inventory')!='PASS' or
                 e.get('complete_local_ci')!='PASS' or
@@ -224,8 +253,44 @@ def audit(root:Path=ROOT)->dict:
                 stage.get('accepted_c_after')!=2164 or
                 stage.get('all_semantic_relocations_equal') is not True or
                 stage.get('stable_ELF_globals_equal') is not True or
-                (count,code_bytes)!=(2164,99604)):
+                (count,code_bytes)!=((2165,100040) if vm436_stage else (2164,99604))):
                 failures.append('Post2092 short72 atomic canonical G2/ELF/relocation/local CI evidence mismatch')
+    if vm436_stage:
+        from . import usa_script_vm436_promotion as vm436
+        stage=proof.get('usa_script_vm436_promotion') or {}
+        path=root/'results/usa_script_vm436_2165_g2_20261123.json'
+        if not path.is_file():
+            failures.append('VM436 missing new 2165-C exact original-ROM G2 record')
+        else:
+            dated=json.loads(path.read_text())
+            if (dated.get('status')!='PASSED_G2_LOCAL' or dated.get('name')!=vm436.NAME or
+                    dated.get('source_sha256')!=vm436.ORIGINAL_C_SOURCE_SHA256 or
+                    dated.get('rom_sha1')!=ORIGINAL_SHA1 or dated.get('accepted_c')!=2165 or
+                    dated.get('remaining_assembly')!=5198 or dated.get('elf_function_identities')!=7376 or
+                    dated.get('semantic_relocations')!=82103 or
+                    dated.get('candidate_elf_sha256')!=inv.get('candidate_elf_sha256') or
+                    dated.get('predecessor_elf_sha256')!=frozen_2164_inv.get('candidate_elf_sha256') or
+                    dated.get('full_rom_g2')!='PASS' or dated.get('inventory')!='PASS'):
+                failures.append('VM436 dated G2/inventory transaction mismatched')
+        if (stage.get('status')!='PASSED_G2_LOCAL' or
+                stage.get('base_matching_C')!=2164 or stage.get('accepted_c_after')!=2165 or
+                stage.get('added_matching_C')!=1 or stage.get('added_instruction_bytes')!=436 or
+                stage.get('accepted_original_bytes_after')!=100040 or
+                stage.get('remaining_assembly')!=5198 or stage.get('full_rom_match') is not True or
+                stage.get('original_rom_sha1')!=ORIGINAL_SHA1 or
+                stage.get('complete_original_ROM_bytes_exact')!=33554432 or
+                stage.get('original_positive_ELF_functions_exact')!=7376 or
+                stage.get('canonical_semantic_relocations_exact')!=82103 or
+                stage.get('canonical_semantic_relocation_sha256')!='f7f25e257c9bce27c00e756b85ca7bfa5774137925d5aba9a6626ba4693e5a97' or
+                stage.get('stable_global_symbols_exact')!=26714 or
+                stage.get('source_original_C_sha256')!=vm436.ORIGINAL_C_SOURCE_SHA256 or
+                stage.get('compiled_original_source_sha256')!=vm436.MERGED_VM_SOURCE_SHA256 or
+                stage.get('canonical_predecessor_ELF_sha256')!=frozen_2164_inv.get('candidate_elf_sha256') or
+                stage.get('original_candidate_ELF_sha256')!=inv.get('candidate_elf_sha256') or
+                proof.get('retained_assembly_functions',[]).count(vm436.NAME)!=0 or
+                inv.get('summary',{}).get('size_annotation_differences')!=
+                    [{'name':'func_8003F6E8_402E8','baseline_size':48,'candidate_size':56}]):
+            failures.append('VM436 current 2165-C exact original-ROM/ELF/relocation proof mismatch')
     return {'status':'PASS' if not failures else 'FAIL',
             'accepted_C':count,'accepted_original_bytes':code_bytes,
             'remaining_assembly':7376-count-13,'errors':failures,

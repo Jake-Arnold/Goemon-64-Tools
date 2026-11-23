@@ -40,6 +40,7 @@ def load_manifest(*args, **kwargs):
     manifest.pop('overlay_reconcile108_stage', None)
     manifest.pop('overlay_crossregion7_stage', None)
     manifest.pop('overlay_usa_short72_stage', None)
+    manifest.pop('usa_script_vm436_promotion', None)
     return manifest
 
 
@@ -187,6 +188,7 @@ def native_claim_count(manifest):
 class DecompVerificationTests(unittest.TestCase):
     def test_file43_stage_definition_is_explicit_and_fail_closed(self):
         manifest=load_manifest(ROOT/'decomp/manifest.json')
+        manifest.pop('usa_script_vm436_promotion', None)  # frozen 1964-C projection
         # This assertion belongs to the frozen 1,964-C original G2 stage.
         # Removing later stages here does not relax live 2,092-C verification.
         for key in ('overlay_usa_opening_new2_stage',
@@ -1322,6 +1324,9 @@ class DecompVerificationTests(unittest.TestCase):
             from decomp import usa_short72_promotion as short72
             sources.update('research/usa_short72_20261123/sources/'+f['source']+'.c'
                            for f in short72.fixture()['functions'])
+        if manifest.get('usa_script_vm436_promotion') is not None:
+            from decomp import usa_script_vm436_promotion as vm436
+            sources.add(vm436.SOURCE.relative_to(ROOT/'decomp').as_posix())
         self.assertEqual(set(result['sources_sha256_lf']),sources)
         for name in sources:
             patches=[p for p in manifest.get('existing_source_patches', []) if p['source']==name]

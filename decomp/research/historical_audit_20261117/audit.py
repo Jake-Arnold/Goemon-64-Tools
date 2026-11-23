@@ -112,6 +112,13 @@ def main(root: Path, out: Path):
     man=read_json(d/'manifest.json')
     script_vm=next(x for x in man['units'] if x['source']=='script_vm.c')
     live_vm_asm=script_vm['assembly_functions']
+    if man.get('usa_script_vm436_promotion') is not None:
+        # Final stage is applied after the immutable historical VM unit.
+        from decomp.usa_script_vm436_promotion import NAME, validate_predecessor
+        validate_predecessor(man)
+        assert NAME in live_vm_asm and NAME in usa
+        assert NAME not in combined['retained_assembly_functions']
+        live_vm_asm=[name for name in live_vm_asm if name!=NAME]
     assert len(live_vm_asm)<=13
     assert not set(live_vm_asm)&usa
     old_registry=read_json(d/'data/candidate_registry_782_pending_20261117.json')
