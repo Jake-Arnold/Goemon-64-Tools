@@ -1163,6 +1163,7 @@
     "retail_sha1": "9843ee979b5f6c80f5eda85df0baed9ae7c4e73b",
     "source_manifest": "decomp/regions/japan_0_crossregion30_2428.json",
     "stable_global_symbol_identities_exact": 26393,
-    "status": "PASSED_G2_LOCAL"
+    "status": "PUBLISHED_REMOTE_VERIFIED",
+    "published_git_commit": "360a9f6c3e381b0a9f5c7a939f36c16a338516a0"
   }
 }

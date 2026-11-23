@@ -46,6 +46,7 @@
   "original_semantic_relocations": 80745,
   "previous_asm": 4978,
   "previous_original_C_bytes": 128988,
+  "published_git_commit": "360a9f6c3e381b0a9f5c7a939f36c16a338516a0",
   "region": "japan_0",
   "relocation_sha256": "43a133b21ac2b18d8e1d00f8c4e5718776b001a1f45c54e807dae12165e797c0",
   "remaining_assembly": 4948,
