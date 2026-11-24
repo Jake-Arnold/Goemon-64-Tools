@@ -1,0 +1,68 @@
+{
+  "status": "PASSED_G2_LOCAL",
+  "base_commit": "64e5445b5b044cfd1f841b21c23af81f44da5644",
+  "source_manifest_sha256": "2f92e36edba2b754a7be6ad3f9737a21f1962204108ca72d6e5a1c4a27ba7592",
+  "base_c": 2325,
+  "added_c": 29,
+  "added_bytes": 3372,
+  "accepted_c_after": 2354,
+  "accepted_original_bytes_after": 115792,
+  "full_rom_match": true,
+  "expanded_bytes": 33554432,
+  "expanded_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+  "retail_exact": true,
+  "retail_bytes": 16777216,
+  "retail_sha1": "df8083a54296b8c151917c5333e1c85f014a2a66",
+  "positive_function_identities": 7376,
+  "stable_globals": 26714,
+  "semantic_relocations": 82080,
+  "semantic_relocation_sha256": "4355f0fb9f6fa47bc6c301ac91b93c97682abb205df57db5052d31fa665a7722",
+  "prior_elf_sha256": "bb2691558d9c65b6443aaa60d26154286d52ffcaf4f84ed0cfe3d1db6cbf082b",
+  "candidate_elf_sha256": "23b0af722f70a8aa86a7ca73874a3a7cd0235cff896f6364333cac04f394d724",
+  "native_function_records": 29,
+  "native_negative_controls_rejected": 29,
+  "guarded_metadata_correction": {
+    "symbol": "D_801D7030_6A9C50",
+    "undefined_size": 36,
+    "st_info_bytes_changed": 1,
+    "code_and_relocations_unchanged": true,
+    "source_object_sha256": "47dfb18af9834531f52801607fe4fe628b6de1a7b6809de5d7245a1a54cac6c6",
+    "original_provenance_object_sha256": "3a4f61548d485e2c4b1e9ed55c63121a6a134f7a6118f6a2de23802b83ea3535",
+    "compiler_outcome": "EXISTING_QUIRK_REPRODUCED"
+  },
+  "strict_inventory": {
+    "identified_function_entries": 7376,
+    "upstream_unmarked_entries": 13,
+    "newly_matching_c": 2354,
+    "current_unmarked_entries": 2367,
+    "remaining_assembly_entries": 5009,
+    "baseline_zero_sized_function_labels_ignored": 0,
+    "candidate_zero_sized_function_labels_ignored": 825,
+    "extra_positive_alias_entries": 0,
+    "upstream_unmarked_names": [
+      "func_8000A480_B080",
+      "func_80013940_14540",
+      "func_80013AC4_146C4",
+      "func_80013C0C_1480C",
+      "func_80013C70_14870",
+      "func_800141C4_14DC4",
+      "func_8001481C_1541C",
+      "func_80014840_15440",
+      "func_800148C0_154C0",
+      "func_80014C00_15800",
+      "func_80014C20_15820",
+      "func_80029E58_2AA58",
+      "func_8002A168_2AD68"
+    ],
+    "size_annotation_differences": [
+      {
+        "name": "func_8003F6E8_402E8",
+        "baseline_size": 48,
+        "candidate_size": 56
+      }
+    ],
+    "function_entry_identity_sha256": "01f41037ac83f6e18e80c83489a18b870e4fef907c67d20a345871c7c34fe787"
+  },
+  "compiler_outcome": "EXISTING_QUIRK_REPRODUCED",
+  "gameplay": "NOT_RUN"
+}

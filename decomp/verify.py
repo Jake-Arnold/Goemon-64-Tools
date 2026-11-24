@@ -491,6 +491,13 @@ def claimed_functions(manifest):
 
 
 def _claimed_functions(manifest):
+    if manifest.get('usa_consolidated29_promotion') is not None:
+        from . import consolidated_batch_promotion as batch
+        before=claimed_functions({k:v for k,v in manifest.items() if k!=batch.KEY})
+        if (len(before),sum(f['size'] for f in before))!=(2325,112420):
+            return before  # immutable historical projections only
+        batch.validate_predecessor(manifest)
+        return before+batch.claims()
     if manifest.get('usa_transition_final_promotion') is not None:
         from . import transition_final_promotion as tf
         before=claimed_functions({k:v for k,v in manifest.items() if k!=tf.KEY})
@@ -1500,6 +1507,7 @@ def load_manifest(path):
     selector_stage_value = manifest.pop('overlay_mini_selector_stage', None)
     opening_new2_stage_value = manifest.pop('overlay_usa_opening_new2_stage', None)
     short72_stage_value = manifest.pop('overlay_usa_short72_stage', None)
+    consolidated_value = manifest.pop('usa_consolidated29_promotion', None)
     transition_final_value = manifest.pop('usa_transition_final_promotion', None)
     transition_stage_value = manifest.pop('usa_transition1_promotion', None)
     cright4_stage_value = manifest.pop('usa_cright4_promotion', None)
@@ -1870,6 +1878,10 @@ def load_manifest(path):
         from . import transition_final_promotion as tf
         manifest[tf.KEY]=transition_final_value
         tf.validate_predecessor(manifest)
+    if consolidated_value is not None:
+        from . import consolidated_batch_promotion as batch
+        manifest[batch.KEY]=consolidated_value
+        batch.validate_predecessor(manifest)
     return manifest
 
 
@@ -2743,6 +2755,7 @@ def apply_transition_stage(candidate,baseline,work,uv,jobs,manifest,report,expec
 
 
 def run_build(args,manifest,report):
+    consolidated_value=manifest.pop('usa_consolidated29_promotion',None)
     transition_final_value=manifest.pop('usa_transition_final_promotion',None)
     transition_stage_value=manifest.pop('usa_transition1_promotion',None)
     short72_stage_value=manifest.pop('overlay_usa_short72_stage',None)
@@ -3881,6 +3894,10 @@ def run_build(args,manifest,report):
         from . import transition_final_promotion as tf
         manifest[tf.KEY]=transition_final_value
         tf.apply(candidate,baseline,work,uv,args.jobs,manifest,report,expected)
+    if consolidated_value is not None:
+        from . import consolidated_batch_promotion as batch
+        manifest[batch.KEY]=consolidated_value
+        batch.apply(candidate,baseline,work,uv,args.jobs,manifest,report,expected)
     if not result['full_rom_match'] or result['matched_functions']!=result['claimed_functions']:
         raise ValueError('Candidate failed exact matching')
     report['stage']='complete';report['status']='matched'

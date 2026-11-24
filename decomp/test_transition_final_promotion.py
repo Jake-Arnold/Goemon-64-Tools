@@ -5,7 +5,7 @@ from decomp import transition_final_promotion as t,verify,promotion_integrity
 
 class FinalTransitionTests(unittest.TestCase):
     def test_additive_ownership(self):
-        m=verify.load_manifest(t.ROOT/'manifest.json');rows=verify.claimed_functions(m)
+        m=verify.load_manifest(t.ROOT/'results/manifest_2325_before_consolidated29_20261124.json');rows=verify.claimed_functions(m)
         self.assertEqual((len(rows),sum(f['size'] for f in rows)),(2325,112420))
         self.assertEqual(rows[-1],t.claims()[0]);self.assertEqual(promotion_integrity.audit()['status'],'PASS')
         self.assertEqual(len(t.validate_predecessor(m)),2324)
@@ -21,7 +21,7 @@ class FinalTransitionTests(unittest.TestCase):
             q=copy.deepcopy(p);q['assembly_caller_contract'][k]=v
             with self.subTest(key=k),self.assertRaises(ValueError):t.validate_proof(q)
     def test_bad_manifest_and_inventory_rejected(self):
-        m=verify.load_manifest(t.ROOT/'manifest.json');p=t.read(t.ROOT/'results/combined.json');i=t.read(t.ROOT/'results/inventory.json')
+        m=verify.load_manifest(t.ROOT/'results/manifest_2325_before_consolidated29_20261124.json');p=t.read(t.ROOT/'results/combined_2325_before_consolidated29_20261124.json');i=t.read(t.ROOT/'results/inventory_2325_before_consolidated29_20261124.json')
         q=copy.deepcopy(m);q['units'][0]['functions'][0]['size']+=4
         with self.assertRaisesRegex(ValueError,'frozen USA2324'):t.validate_predecessor(q)
         q=copy.deepcopy(i);q['summary']['candidate_zero_sized_function_labels_ignored']+=5

@@ -74,7 +74,8 @@ def plan(co,r,selected=None,*,candidates=None):
     for name,(own,m) in owners.items():groups[own].append(target[name])
     return rom,ldpath,ld,cache,groups,blocked
 
-def stage(co,r,selected=None,*,candidates=None):
+def stage(co,r,selected=None,*,candidates=None,namespace="cright10"):
+    if not re.fullmatch(r"[a-z][a-z0-9_]*",namespace):raise ValueError("Invalid staging namespace")
     rom,ldpath,ld,cache,groups,blocked=plan(co,r,selected,candidates=candidates)
     out=[];frags=[];parent_records=[];sections=set()
     for i,(own,rs) in enumerate(sorted(groups.items())):
@@ -99,14 +100,14 @@ def stage(co,r,selected=None,*,candidates=None):
                 frag=raw[cursor:m.start()]
                 if off>cur:
                     if jp55.word_span(frag)!=(cur,off):raise ValueError('Noncontiguous leading ASM span')
-                    path=f'asm/{r}/cright10_{i:03}_{j:03}.s';parts.append(('asm',path,(header+frag).encode(),cur,off,None))
+                    path=f'asm/{r}/{namespace}_{i:03}_{j:03}.s';parts.append(('asm',path,(header+frag).encode(),cur,off,None))
                 elif re.search(r'/\* [0-9A-Fa-f]{5,8} [0-9A-Fa-f]{8} [0-9A-Fa-f]{8} \*/',frag):raise ValueError('Unowned ASM before candidate')
-                path=f'src/cright10/{c["name"]}.c';parts.append(('c',path,(BATCH/c['source']).read_bytes(),off,off+size,c))
+                path=f'src/{namespace}/{c["name"]}.c';parts.append(('c',path,(BATCH/c['source']).read_bytes(),off,off+size,c))
                 cur=off+size;cursor=m.end()
             if cur<end_real:
                 frag=raw[cursor:]
                 if jp55.word_span(frag)!=(cur,end_real):raise ValueError('Noncontiguous final ASM span')
-                path=f'asm/{r}/cright10_{i:03}_tail.s';parts.append(('asm',path,(header+frag).encode(),cur,end_real,None))
+                path=f'asm/{r}/{namespace}_{i:03}_tail.s';parts.append(('asm',path,(header+frag).encode(),cur,end_real,None))
             assert parts[0][3]==begin and parts[-1][4]==end_real and all(a[4]==b[3] for a,b in zip(parts,parts[1:]))
             orig=f'build/{r}/{own}.o';needle=f'{orig}({suffix});'
             if ld.count(needle)!=1:raise ValueError('Missing unique original input section')
@@ -128,7 +129,7 @@ def stage(co,r,selected=None,*,candidates=None):
         assert n<=1
     ldpath.write_text(ld)
     doc={'region':r,'functions':out,'fragments':frags,'parents':parent_records,'blocked':blocked,'linker_sha256':sha(ld.encode())}
-    write(co/f'build/{r}/cright10-stage.json',doc)
+    write(co/f'build/{r}/{namespace}-stage.json',doc)
     return doc
 
 def compile_pack(co,r,stage,pristine,uv="uv",jobs=4):

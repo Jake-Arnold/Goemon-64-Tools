@@ -1,0 +1,11 @@
+typedef unsigned char u8;typedef unsigned int u32;
+extern void *func_80034E08_35A08(void*,void(*)(void),int);extern void func_80217560_680F40(void);
+extern char func_080004E8_6ACA38[],D_8006D920_6E520[];extern float D_8022AA1C_6943FC;
+extern void func_8000DBF0_E7F0(void*,u32,void*,float,float,float,int,int,int,float,float,float,int,int);
+void *func_80217754_681134(void*a,float x,float y,float z){
+ u8 *p=func_80034E08_35A08(a,func_80217560_680F40,0);
+ if(p==0)return 0;
+ { float v=D_8022AA1C_6943FC;
+ func_8000DBF0_E7F0(p,(u32)(func_080004E8_6ACA38+0x34)+0x10000000,D_8006D920_6E520,x,y,z,0,0,0,v,v,v,0x4dc,0);}
+ return p;
+}
