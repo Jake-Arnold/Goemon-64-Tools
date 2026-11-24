@@ -21,7 +21,7 @@ ROOT=Path(__file__).resolve().parent
 class Crossregion7StageTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        cls.current=load_manifest(ROOT/'manifest.json')
+        cls.current=load_manifest(ROOT/'results/manifest_2325_before_consolidated29_20261124.json')
         cls.current.pop('usa_transition_final_promotion',None)
         cls.current.pop('usa_transition1_promotion',None)
         cls.current.pop('usa_cright4_promotion',None)  # Preserve USA2079 checkpoint

@@ -1,3 +1,8 @@
+## 2026-11-24 — consolidated USA29 candidate native G2 and strict inventory PASS
+
+- Verified current CI-policy base `64e5445b5b044cfd1f841b21c23af81f44da5644`, source archive artifact 14952568232. Recovered 29 independently native-matching repository-owned sources across File 18, scheduler/task lifecycle and File 22; 3,372 original bytes. Fresh combined native link of the exact 2325-C predecessor matches 2354 new C / 115,792 bytes / 5,009 ASM, original expanded and retail ROMs, all 7,376 function identities, 26,714 stable globals and 82,080 canonical relocations. Independent assembled references and all 29 negative controls pass, with one guarded original ABS symbol metadata restoration. Strict original-upstream inventory and canonical promotion integrity PASS. No runtime or toolkit work.
+- `decomp/consolidated_batch_promotion.py` is the additive full native replay stage; its source manifest and negative-control evidence are in `decomp/research/consolidated42_20261124/`. Preserve the immutable 2325-C predecessor snapshots. Fresh full canonical decomp.verify exit 0; full hosted ROM-free regression pending on the exact PR merge revision. Accepted publication requires the exact PR revision and normal merge.
+
 ## 2026-11-24 — USA transition state 22/22, final 3CF0 full native gates PASS
 
 - Exact base `stable/decomp@bd11874060a88dcac218550013796a82b802a89b`; original pinned IDO and upstream. USA `func_800030F0_3CF0` +568 bytes; full candidate 2,325 C / 112,420 bytes / 5,038 ASM. USA transition unit 22/22. Japan 2,551 C / 4,825 ASM unchanged, last 3C90 85/111 and retained ASM.

@@ -1636,5 +1636,8 @@
   },
   "usa_transition_final_promotion": {
     "format": "goemon-transition-final-usa-original-g2-v1"
+  },
+  "usa_consolidated29_promotion": {
+    "format": "goemon-usa-consolidated29-post2325-v1"
   }
 }

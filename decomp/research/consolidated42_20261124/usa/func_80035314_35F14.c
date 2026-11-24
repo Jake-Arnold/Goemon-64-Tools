@@ -1,0 +1,1 @@
+extern char* D_8016DAB4_16E6B4;typedef void(*Func)(char*,void*);void func_80035314_35F14(char*task,Func cb){*(Func*)(task+12)=cb;cb(task,*(void**)(D_8016DAB4_16E6B4+24));}
