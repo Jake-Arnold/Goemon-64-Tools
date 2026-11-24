@@ -32,7 +32,7 @@
       "region": "japan",
       "revision": "NG5J-0",
       "signed": false,
-      "source_revision": "c2103dd32a4c0833c6754e75edb65bf8f5e6010c",
+      "source_revision": "878d8cffdf3baf98a5dfcf4dc6fc5cb5b7ca45d1",
       "sources": [
         "decomp/docs/GOEMON_VM_TWO_G2_PROMOTION_20261121.md"
       ],
@@ -71,7 +71,7 @@
       "region": "japan",
       "revision": "NG5J-0",
       "signed": false,
-      "source_revision": "c2103dd32a4c0833c6754e75edb65bf8f5e6010c",
+      "source_revision": "878d8cffdf3baf98a5dfcf4dc6fc5cb5b7ca45d1",
       "sources": [
         "decomp/docs/GOEMON_GLITCH_RESEARCH_MASTER_20261120.md"
       ],
@@ -110,7 +110,7 @@
       "region": "japan",
       "revision": "NG5J-0",
       "signed": null,
-      "source_revision": "c2103dd32a4c0833c6754e75edb65bf8f5e6010c",
+      "source_revision": "878d8cffdf3baf98a5dfcf4dc6fc5cb5b7ca45d1",
       "sources": [
         "decomp/docs/GOEMON_VM_TWO_G2_PROMOTION_20261121.md"
       ],
@@ -277,7 +277,7 @@
       "region": "japan",
       "revision": "NG5J-0",
       "signed": false,
-      "source_revision": "c2103dd32a4c0833c6754e75edb65bf8f5e6010c",
+      "source_revision": "878d8cffdf3baf98a5dfcf4dc6fc5cb5b7ca45d1",
       "sources": [
         "decomp/docs/GOEMON_START_DIALOGUE_SKIP_CONTROL_FLOW_20261120.md"
       ],
@@ -571,7 +571,7 @@
       "region": "japan",
       "revision": "NG5J-0",
       "signed": false,
-      "source_revision": "c2103dd32a4c0833c6754e75edb65bf8f5e6010c",
+      "source_revision": "878d8cffdf3baf98a5dfcf4dc6fc5cb5b7ca45d1",
       "sources": [
         "decomp/USA_JAPAN_MEMORY_CROSSWALK_PLAYBOOK.md:30@chatgptweb/decomp",
         "decomp/docs/GOEMON_START_DIALOGUE_SKIP_CONTROL_FLOW_20261120.md",
@@ -692,7 +692,7 @@
       "region": "japan",
       "revision": "NG5J-0",
       "signed": false,
-      "source_revision": "c2103dd32a4c0833c6754e75edb65bf8f5e6010c",
+      "source_revision": "878d8cffdf3baf98a5dfcf4dc6fc5cb5b7ca45d1",
       "sources": [
         "decomp/docs/GOEMON_START_DIALOGUE_SKIP_CONTROL_FLOW_20261120.md"
       ],
@@ -739,6 +739,44 @@
       ],
       "updated": "2026-11-17",
       "width": 1
+    },
+    {
+      "address": "0x80161DB8",
+      "aliases": [],
+      "category": "engine_state",
+      "confidence": "research_observed",
+      "confidence_sources": [
+        {
+          "confidence": "research_observed",
+          "evidence": "Authenticated original Japanese func_80004170_4D70 decodes LUI/LW pointer load at original ROM 0x4D70/0x4D74. Native decomp symbol map names g_system_ptr at 0x80161DB8; paired independent USA ROM function forms and writes 0x8015C5C8. 32-bit fixed-global slot, +0x57F0 address delta.",
+          "source_id": "research:jp_system_pointer_slot_cright_20261123"
+        }
+      ],
+      "context": "Value at slot is a dynamic pointer; JP reset clears 16 one-byte records at pointer-relative +0x3B168, not a fixed guest address. USA function at the same code VMA performs different work; full runtime value/lifetime and corresponding field layout are not verified. Never write or dereference automatically.",
+      "control": null,
+      "counterpart": "0x8015C5C8",
+      "data_type": "u32",
+      "discovered": "2026-11-23",
+      "endian": "big",
+      "evidence": "Authenticated original Japanese func_80004170_4D70 decodes LUI/LW pointer load at original ROM 0x4D70/0x4D74. Native decomp symbol map names g_system_ptr at 0x80161DB8; paired independent USA ROM function forms and writes 0x8015C5C8. 32-bit fixed-global slot, +0x57F0 address delta.",
+      "id": "research:jp_system_pointer_slot_cright_20261123",
+      "id_aliases": [],
+      "live_readable": false,
+      "mask": null,
+      "mips_refs": [
+        "func_80004170_4D70 (JP original, ROM 0x4D70)"
+      ],
+      "name": "Japanese system pointer slot g_system_ptr",
+      "owner": "fixed guest-RAM global pointer slot; pointed-to table is dynamic",
+      "region": "japan",
+      "revision": "NG5J-0",
+      "signed": false,
+      "source_revision": "878d8cffdf3baf98a5dfcf4dc6fc5cb5b7ca45d1",
+      "sources": [
+        "decomp/research/jp_cright_reset16_20261123/crosswalk.json"
+      ],
+      "updated": "2026-11-23",
+      "width": 4
     },
     {
       "address": "0x80161DC4",
@@ -6901,7 +6939,7 @@
       "region": "japan",
       "revision": "NG5J-0",
       "signed": false,
-      "source_revision": "c2103dd32a4c0833c6754e75edb65bf8f5e6010c",
+      "source_revision": "878d8cffdf3baf98a5dfcf4dc6fc5cb5b7ca45d1",
       "sources": [
         "decomp/docs/GOEMON_DIALOGUE_GRANTS_AND_FLAG_COUPLING_20261120.md"
       ],
@@ -6981,7 +7019,7 @@
       "region": "japan",
       "revision": "NG5J-0",
       "signed": false,
-      "source_revision": "c2103dd32a4c0833c6754e75edb65bf8f5e6010c",
+      "source_revision": "878d8cffdf3baf98a5dfcf4dc6fc5cb5b7ca45d1",
       "sources": [
         "decomp/docs/GOEMON_DIALOGUE_GRANTS_AND_FLAG_COUPLING_20261120.md"
       ],
@@ -7060,7 +7098,7 @@
       "region": "japan",
       "revision": "NG5J-0",
       "signed": false,
-      "source_revision": "c2103dd32a4c0833c6754e75edb65bf8f5e6010c",
+      "source_revision": "878d8cffdf3baf98a5dfcf4dc6fc5cb5b7ca45d1",
       "sources": [
         "decomp/docs/GOEMON_DIALOGUE_GRANTS_AND_FLAG_COUPLING_20261120.md"
       ],
@@ -7139,7 +7177,7 @@
       "region": "japan",
       "revision": "NG5J-0",
       "signed": false,
-      "source_revision": "c2103dd32a4c0833c6754e75edb65bf8f5e6010c",
+      "source_revision": "878d8cffdf3baf98a5dfcf4dc6fc5cb5b7ca45d1",
       "sources": [
         "decomp/docs/GOEMON_DIALOGUE_GRANTS_AND_FLAG_COUPLING_20261120.md"
       ],
@@ -7218,7 +7256,7 @@
       "region": "japan",
       "revision": "NG5J-0",
       "signed": false,
-      "source_revision": "c2103dd32a4c0833c6754e75edb65bf8f5e6010c",
+      "source_revision": "878d8cffdf3baf98a5dfcf4dc6fc5cb5b7ca45d1",
       "sources": [
         "decomp/docs/GOEMON_DIALOGUE_GRANTS_AND_FLAG_COUPLING_20261120.md"
       ],
@@ -7298,7 +7336,7 @@
       "region": "japan",
       "revision": "NG5J-0",
       "signed": false,
-      "source_revision": "c2103dd32a4c0833c6754e75edb65bf8f5e6010c",
+      "source_revision": "878d8cffdf3baf98a5dfcf4dc6fc5cb5b7ca45d1",
       "sources": [
         "decomp/docs/GOEMON_DIALOGUE_GRANTS_AND_FLAG_COUPLING_20261120.md"
       ],
@@ -7377,7 +7415,7 @@
       "region": "japan",
       "revision": "NG5J-0",
       "signed": false,
-      "source_revision": "c2103dd32a4c0833c6754e75edb65bf8f5e6010c",
+      "source_revision": "878d8cffdf3baf98a5dfcf4dc6fc5cb5b7ca45d1",
       "sources": [
         "decomp/docs/GOEMON_DIALOGUE_GRANTS_AND_FLAG_COUPLING_20261120.md"
       ],
@@ -7457,7 +7495,7 @@
       "region": "japan",
       "revision": "NG5J-0",
       "signed": false,
-      "source_revision": "c2103dd32a4c0833c6754e75edb65bf8f5e6010c",
+      "source_revision": "878d8cffdf3baf98a5dfcf4dc6fc5cb5b7ca45d1",
       "sources": [
         "decomp/docs/GOEMON_DIALOGUE_GRANTS_AND_FLAG_COUPLING_20261120.md"
       ],
@@ -7537,7 +7575,7 @@
       "region": "japan",
       "revision": "NG5J-0",
       "signed": false,
-      "source_revision": "c2103dd32a4c0833c6754e75edb65bf8f5e6010c",
+      "source_revision": "878d8cffdf3baf98a5dfcf4dc6fc5cb5b7ca45d1",
       "sources": [
         "decomp/docs/GOEMON_DIALOGUE_GRANTS_AND_FLAG_COUPLING_20261120.md"
       ],
@@ -7617,7 +7655,7 @@
       "region": "japan",
       "revision": "NG5J-0",
       "signed": false,
-      "source_revision": "c2103dd32a4c0833c6754e75edb65bf8f5e6010c",
+      "source_revision": "878d8cffdf3baf98a5dfcf4dc6fc5cb5b7ca45d1",
       "sources": [
         "decomp/docs/GOEMON_DIALOGUE_GRANTS_AND_FLAG_COUPLING_20261120.md"
       ],
@@ -7696,7 +7734,7 @@
       "region": "japan",
       "revision": "NG5J-0",
       "signed": false,
-      "source_revision": "c2103dd32a4c0833c6754e75edb65bf8f5e6010c",
+      "source_revision": "878d8cffdf3baf98a5dfcf4dc6fc5cb5b7ca45d1",
       "sources": [
         "decomp/docs/GOEMON_DIALOGUE_GRANTS_AND_FLAG_COUPLING_20261120.md"
       ],
@@ -7775,7 +7813,7 @@
       "region": "japan",
       "revision": "NG5J-0",
       "signed": false,
-      "source_revision": "c2103dd32a4c0833c6754e75edb65bf8f5e6010c",
+      "source_revision": "878d8cffdf3baf98a5dfcf4dc6fc5cb5b7ca45d1",
       "sources": [
         "decomp/docs/GOEMON_DIALOGUE_GRANTS_AND_FLAG_COUPLING_20261120.md"
       ],
@@ -7854,7 +7892,7 @@
       "region": "japan",
       "revision": "NG5J-0",
       "signed": false,
-      "source_revision": "c2103dd32a4c0833c6754e75edb65bf8f5e6010c",
+      "source_revision": "878d8cffdf3baf98a5dfcf4dc6fc5cb5b7ca45d1",
       "sources": [
         "decomp/docs/GOEMON_DIALOGUE_GRANTS_AND_FLAG_COUPLING_20261120.md"
       ],
@@ -8082,7 +8120,7 @@
       "region": "japan",
       "revision": "NG5J-0",
       "signed": false,
-      "source_revision": "c2103dd32a4c0833c6754e75edb65bf8f5e6010c",
+      "source_revision": "878d8cffdf3baf98a5dfcf4dc6fc5cb5b7ca45d1",
       "sources": [
         "decomp/docs/GOEMON_DIALOGUE_GRANTS_AND_FLAG_COUPLING_20261120.md"
       ],
@@ -8162,7 +8200,7 @@
       "region": "japan",
       "revision": "NG5J-0",
       "signed": false,
-      "source_revision": "c2103dd32a4c0833c6754e75edb65bf8f5e6010c",
+      "source_revision": "878d8cffdf3baf98a5dfcf4dc6fc5cb5b7ca45d1",
       "sources": [
         "decomp/docs/GOEMON_DIALOGUE_GRANTS_AND_FLAG_COUPLING_20261120.md"
       ],
@@ -8236,7 +8274,7 @@
       "region": "japan",
       "revision": "NG5J-0",
       "signed": false,
-      "source_revision": "c2103dd32a4c0833c6754e75edb65bf8f5e6010c",
+      "source_revision": "878d8cffdf3baf98a5dfcf4dc6fc5cb5b7ca45d1",
       "sources": [
         "decomp/docs/GOEMON_DIALOGUE_GRANTS_AND_FLAG_COUPLING_20261120.md"
       ],
@@ -8443,7 +8481,7 @@
       "region": "japan",
       "revision": "NG5J-0",
       "signed": false,
-      "source_revision": "c2103dd32a4c0833c6754e75edb65bf8f5e6010c",
+      "source_revision": "878d8cffdf3baf98a5dfcf4dc6fc5cb5b7ca45d1",
       "sources": [
         "decomp/docs/GOEMON_GLITCH_RESEARCH_MASTER_20261120.md"
       ],
@@ -8481,7 +8519,7 @@
       "region": "japan",
       "revision": "NG5J-0",
       "signed": false,
-      "source_revision": "c2103dd32a4c0833c6754e75edb65bf8f5e6010c",
+      "source_revision": "878d8cffdf3baf98a5dfcf4dc6fc5cb5b7ca45d1",
       "sources": [
         "decomp/docs/GOEMON_GLITCH_RESEARCH_MASTER_20261120.md"
       ],
@@ -8519,7 +8557,7 @@
       "region": "japan",
       "revision": "NG5J-0",
       "signed": false,
-      "source_revision": "c2103dd32a4c0833c6754e75edb65bf8f5e6010c",
+      "source_revision": "878d8cffdf3baf98a5dfcf4dc6fc5cb5b7ca45d1",
       "sources": [
         "decomp/docs/GOEMON_GLITCH_RESEARCH_MASTER_20261120.md"
       ],
@@ -8557,7 +8595,7 @@
       "region": "japan",
       "revision": "NG5J-0",
       "signed": false,
-      "source_revision": "c2103dd32a4c0833c6754e75edb65bf8f5e6010c",
+      "source_revision": "878d8cffdf3baf98a5dfcf4dc6fc5cb5b7ca45d1",
       "sources": [
         "decomp/docs/GOEMON_DIALOGUE_GRANTS_AND_FLAG_COUPLING_20261120.md"
       ],
@@ -8637,7 +8675,7 @@
       "region": "japan",
       "revision": "NG5J-0",
       "signed": false,
-      "source_revision": "c2103dd32a4c0833c6754e75edb65bf8f5e6010c",
+      "source_revision": "878d8cffdf3baf98a5dfcf4dc6fc5cb5b7ca45d1",
       "sources": [
         "decomp/docs/GOEMON_DIALOGUE_GRANTS_AND_FLAG_COUPLING_20261120.md"
       ],
@@ -8716,7 +8754,7 @@
       "region": "japan",
       "revision": "NG5J-0",
       "signed": false,
-      "source_revision": "c2103dd32a4c0833c6754e75edb65bf8f5e6010c",
+      "source_revision": "878d8cffdf3baf98a5dfcf4dc6fc5cb5b7ca45d1",
       "sources": [
         "decomp/docs/GOEMON_DIALOGUE_GRANTS_AND_FLAG_COUPLING_20261120.md"
       ],
@@ -8795,7 +8833,7 @@
       "region": "japan",
       "revision": "NG5J-0",
       "signed": false,
-      "source_revision": "c2103dd32a4c0833c6754e75edb65bf8f5e6010c",
+      "source_revision": "878d8cffdf3baf98a5dfcf4dc6fc5cb5b7ca45d1",
       "sources": [
         "decomp/docs/GOEMON_DIALOGUE_GRANTS_AND_FLAG_COUPLING_20261120.md"
       ],
@@ -8917,7 +8955,7 @@
       "region": "japan",
       "revision": "NG5J-0",
       "signed": false,
-      "source_revision": "c2103dd32a4c0833c6754e75edb65bf8f5e6010c",
+      "source_revision": "878d8cffdf3baf98a5dfcf4dc6fc5cb5b7ca45d1",
       "sources": [
         "decomp/docs/GOEMON_DIALOGUE_GRANTS_AND_FLAG_COUPLING_20261120.md"
       ],
@@ -9461,7 +9499,7 @@
       "region": "japan",
       "revision": "NG5J-0",
       "signed": false,
-      "source_revision": "c2103dd32a4c0833c6754e75edb65bf8f5e6010c",
+      "source_revision": "878d8cffdf3baf98a5dfcf4dc6fc5cb5b7ca45d1",
       "sources": [
         "decomp/docs/GOEMON_GLITCH_RESEARCH_MASTER_20261120.md"
       ],
@@ -9716,7 +9754,7 @@
       "region": "japan",
       "revision": "NG5J-0",
       "signed": false,
-      "source_revision": "c2103dd32a4c0833c6754e75edb65bf8f5e6010c",
+      "source_revision": "878d8cffdf3baf98a5dfcf4dc6fc5cb5b7ca45d1",
       "sources": [
         "decomp/docs/GOEMON_GLITCH_RESEARCH_MASTER_20261120.md"
       ],
@@ -9755,7 +9793,7 @@
       "region": "japan",
       "revision": "NG5J-0",
       "signed": true,
-      "source_revision": "c2103dd32a4c0833c6754e75edb65bf8f5e6010c",
+      "source_revision": "878d8cffdf3baf98a5dfcf4dc6fc5cb5b7ca45d1",
       "sources": [
         "decomp/docs/GOEMON_VM_TWO_G2_PROMOTION_20261121.md"
       ],
@@ -9794,7 +9832,7 @@
       "region": "japan",
       "revision": "NG5J-0",
       "signed": false,
-      "source_revision": "c2103dd32a4c0833c6754e75edb65bf8f5e6010c",
+      "source_revision": "878d8cffdf3baf98a5dfcf4dc6fc5cb5b7ca45d1",
       "sources": [
         "decomp/docs/GOEMON_GLITCH_RESEARCH_MASTER_20261120.md"
       ],
@@ -9834,7 +9872,7 @@
       "region": "japan",
       "revision": "NG5J-0",
       "signed": false,
-      "source_revision": "c2103dd32a4c0833c6754e75edb65bf8f5e6010c",
+      "source_revision": "878d8cffdf3baf98a5dfcf4dc6fc5cb5b7ca45d1",
       "sources": [
         "decomp/docs/GOEMON_GLITCH_RESEARCH_MASTER_20261120.md"
       ],
@@ -12180,7 +12218,7 @@
       "region": "usa",
       "revision": "NG5E-0",
       "signed": false,
-      "source_revision": "c2103dd32a4c0833c6754e75edb65bf8f5e6010c",
+      "source_revision": "878d8cffdf3baf98a5dfcf4dc6fc5cb5b7ca45d1",
       "sources": [
         "decomp/docs/GOEMON_VM_TWO_G2_PROMOTION_20261121.md"
       ],
@@ -12278,7 +12316,7 @@
       "region": "usa",
       "revision": "NG5E-0",
       "signed": null,
-      "source_revision": "c2103dd32a4c0833c6754e75edb65bf8f5e6010c",
+      "source_revision": "878d8cffdf3baf98a5dfcf4dc6fc5cb5b7ca45d1",
       "sources": [
         "decomp/docs/GOEMON_VM_TWO_G2_PROMOTION_20261121.md"
       ],
@@ -12496,7 +12534,7 @@
       "region": "usa",
       "revision": "NG5E-0",
       "signed": false,
-      "source_revision": "c2103dd32a4c0833c6754e75edb65bf8f5e6010c",
+      "source_revision": "878d8cffdf3baf98a5dfcf4dc6fc5cb5b7ca45d1",
       "sources": [
         "decomp/docs/GOEMON_START_DIALOGUE_SKIP_CONTROL_FLOW_20261120.md"
       ],
@@ -12883,7 +12921,7 @@
       "region": "usa",
       "revision": "NG5E-0",
       "signed": false,
-      "source_revision": "c2103dd32a4c0833c6754e75edb65bf8f5e6010c",
+      "source_revision": "878d8cffdf3baf98a5dfcf4dc6fc5cb5b7ca45d1",
       "sources": [
         "decomp/USA_JAPAN_MEMORY_CROSSWALK_PLAYBOOK.md:30@chatgptweb/decomp",
         "decomp/docs/GOEMON_START_DIALOGUE_SKIP_CONTROL_FLOW_20261120.md",
@@ -13096,7 +13134,7 @@
       "region": "usa",
       "revision": "NG5E-0",
       "signed": false,
-      "source_revision": "c2103dd32a4c0833c6754e75edb65bf8f5e6010c",
+      "source_revision": "878d8cffdf3baf98a5dfcf4dc6fc5cb5b7ca45d1",
       "sources": [
         "decomp/docs/GOEMON_START_DIALOGUE_SKIP_CONTROL_FLOW_20261120.md"
       ],
@@ -13334,7 +13372,7 @@
       "region": "usa",
       "revision": "NG5E-0",
       "signed": true,
-      "source_revision": "c2103dd32a4c0833c6754e75edb65bf8f5e6010c",
+      "source_revision": "878d8cffdf3baf98a5dfcf4dc6fc5cb5b7ca45d1",
       "sources": [
         "decomp/research/usa_unique_three_20261122/crosswalk.json"
       ],
@@ -13373,7 +13411,7 @@
       "region": "usa",
       "revision": "NG5E-0",
       "signed": true,
-      "source_revision": "c2103dd32a4c0833c6754e75edb65bf8f5e6010c",
+      "source_revision": "878d8cffdf3baf98a5dfcf4dc6fc5cb5b7ca45d1",
       "sources": [
         "decomp/research/usa_unique_three_20261122/crosswalk.json"
       ],
@@ -13412,7 +13450,7 @@
       "region": "usa",
       "revision": "NG5E-0",
       "signed": true,
-      "source_revision": "c2103dd32a4c0833c6754e75edb65bf8f5e6010c",
+      "source_revision": "878d8cffdf3baf98a5dfcf4dc6fc5cb5b7ca45d1",
       "sources": [
         "decomp/research/usa_unique_three_20261122/crosswalk.json"
       ],
@@ -13451,7 +13489,7 @@
       "region": "usa",
       "revision": "NG5E-0",
       "signed": true,
-      "source_revision": "c2103dd32a4c0833c6754e75edb65bf8f5e6010c",
+      "source_revision": "878d8cffdf3baf98a5dfcf4dc6fc5cb5b7ca45d1",
       "sources": [
         "decomp/research/usa_unique_three_20261122/crosswalk.json"
       ],
@@ -13490,7 +13528,7 @@
       "region": "usa",
       "revision": "NG5E-0",
       "signed": true,
-      "source_revision": "c2103dd32a4c0833c6754e75edb65bf8f5e6010c",
+      "source_revision": "878d8cffdf3baf98a5dfcf4dc6fc5cb5b7ca45d1",
       "sources": [
         "decomp/research/usa_unique_three_20261122/crosswalk.json"
       ],
@@ -13549,6 +13587,44 @@
       ],
       "updated": "2026-11-17",
       "width": 1
+    },
+    {
+      "address": "0x8015C5C8",
+      "aliases": [],
+      "category": "engine_state",
+      "confidence": "research_observed",
+      "confidence_sources": [
+        {
+          "confidence": "research_observed",
+          "evidence": "Authenticated original USA func_80004170_4D70 forms and stores 32-bit pointer to fixed guest slot 0x8015C5C8 via LUI/ADDIU/SW at ROM 0x4D8C/0x4D94/0x4D9C. `decomp/system_memory.c` names D_8015C5C8_15D1C8; independently authenticated Japanese ROM loads g_system_ptr at 0x80161DB8. Exact +0x57F0 address relation.",
+          "source_id": "research:usa_system_pointer_slot_cright_20261123"
+        }
+      ],
+      "context": "Original USA initializer writes pointer; original JP same-named VMA is a different reset function that reads pointer. Mapping is of fixed pointer slots only. Pointee address and offset +0x3B168 are dynamic, not suitable for cross-region arithmetic or toolkit memory writes.",
+      "control": null,
+      "counterpart": "0x80161DB8",
+      "data_type": "u32",
+      "discovered": "2026-11-23",
+      "endian": "big",
+      "evidence": "Authenticated original USA func_80004170_4D70 forms and stores 32-bit pointer to fixed guest slot 0x8015C5C8 via LUI/ADDIU/SW at ROM 0x4D8C/0x4D94/0x4D9C. `decomp/system_memory.c` names D_8015C5C8_15D1C8; independently authenticated Japanese ROM loads g_system_ptr at 0x80161DB8. Exact +0x57F0 address relation.",
+      "id": "research:usa_system_pointer_slot_cright_20261123",
+      "id_aliases": [],
+      "live_readable": false,
+      "mask": null,
+      "mips_refs": [
+        "func_80004170_4D70 (USA original, ROM 0x4D8C..0x4D9C)"
+      ],
+      "name": "USA system pointer slot D_8015C5C8_15D1C8",
+      "owner": "fixed guest-RAM global pointer slot; pointed-to table is dynamic",
+      "region": "usa",
+      "revision": "NG5E-0",
+      "signed": false,
+      "source_revision": "878d8cffdf3baf98a5dfcf4dc6fc5cb5b7ca45d1",
+      "sources": [
+        "decomp/research/jp_cright_reset16_20261123/crosswalk.json"
+      ],
+      "updated": "2026-11-23",
+      "width": 4
     },
     {
       "address": "0x8015C5D4",
@@ -21393,7 +21469,7 @@
       "region": "usa",
       "revision": "NG5E-0",
       "signed": false,
-      "source_revision": "c2103dd32a4c0833c6754e75edb65bf8f5e6010c",
+      "source_revision": "878d8cffdf3baf98a5dfcf4dc6fc5cb5b7ca45d1",
       "sources": [
         "decomp/docs/GOEMON_DIALOGUE_GRANTS_AND_FLAG_COUPLING_20261120.md"
       ],
@@ -21473,7 +21549,7 @@
       "region": "usa",
       "revision": "NG5E-0",
       "signed": false,
-      "source_revision": "c2103dd32a4c0833c6754e75edb65bf8f5e6010c",
+      "source_revision": "878d8cffdf3baf98a5dfcf4dc6fc5cb5b7ca45d1",
       "sources": [
         "decomp/docs/GOEMON_DIALOGUE_GRANTS_AND_FLAG_COUPLING_20261120.md"
       ],
@@ -21553,7 +21629,7 @@
       "region": "usa",
       "revision": "NG5E-0",
       "signed": false,
-      "source_revision": "c2103dd32a4c0833c6754e75edb65bf8f5e6010c",
+      "source_revision": "878d8cffdf3baf98a5dfcf4dc6fc5cb5b7ca45d1",
       "sources": [
         "decomp/docs/GOEMON_DIALOGUE_GRANTS_AND_FLAG_COUPLING_20261120.md"
       ],
@@ -21633,7 +21709,7 @@
       "region": "usa",
       "revision": "NG5E-0",
       "signed": false,
-      "source_revision": "c2103dd32a4c0833c6754e75edb65bf8f5e6010c",
+      "source_revision": "878d8cffdf3baf98a5dfcf4dc6fc5cb5b7ca45d1",
       "sources": [
         "decomp/docs/GOEMON_DIALOGUE_GRANTS_AND_FLAG_COUPLING_20261120.md"
       ],
@@ -21713,7 +21789,7 @@
       "region": "usa",
       "revision": "NG5E-0",
       "signed": false,
-      "source_revision": "c2103dd32a4c0833c6754e75edb65bf8f5e6010c",
+      "source_revision": "878d8cffdf3baf98a5dfcf4dc6fc5cb5b7ca45d1",
       "sources": [
         "decomp/docs/GOEMON_DIALOGUE_GRANTS_AND_FLAG_COUPLING_20261120.md"
       ],
@@ -21793,7 +21869,7 @@
       "region": "usa",
       "revision": "NG5E-0",
       "signed": false,
-      "source_revision": "c2103dd32a4c0833c6754e75edb65bf8f5e6010c",
+      "source_revision": "878d8cffdf3baf98a5dfcf4dc6fc5cb5b7ca45d1",
       "sources": [
         "decomp/docs/GOEMON_DIALOGUE_GRANTS_AND_FLAG_COUPLING_20261120.md"
       ],
@@ -21873,7 +21949,7 @@
       "region": "usa",
       "revision": "NG5E-0",
       "signed": false,
-      "source_revision": "c2103dd32a4c0833c6754e75edb65bf8f5e6010c",
+      "source_revision": "878d8cffdf3baf98a5dfcf4dc6fc5cb5b7ca45d1",
       "sources": [
         "decomp/docs/GOEMON_DIALOGUE_GRANTS_AND_FLAG_COUPLING_20261120.md"
       ],
@@ -21953,7 +22029,7 @@
       "region": "usa",
       "revision": "NG5E-0",
       "signed": false,
-      "source_revision": "c2103dd32a4c0833c6754e75edb65bf8f5e6010c",
+      "source_revision": "878d8cffdf3baf98a5dfcf4dc6fc5cb5b7ca45d1",
       "sources": [
         "decomp/docs/GOEMON_DIALOGUE_GRANTS_AND_FLAG_COUPLING_20261120.md"
       ],
@@ -22033,7 +22109,7 @@
       "region": "usa",
       "revision": "NG5E-0",
       "signed": false,
-      "source_revision": "c2103dd32a4c0833c6754e75edb65bf8f5e6010c",
+      "source_revision": "878d8cffdf3baf98a5dfcf4dc6fc5cb5b7ca45d1",
       "sources": [
         "decomp/docs/GOEMON_DIALOGUE_GRANTS_AND_FLAG_COUPLING_20261120.md"
       ],
@@ -22113,7 +22189,7 @@
       "region": "usa",
       "revision": "NG5E-0",
       "signed": false,
-      "source_revision": "c2103dd32a4c0833c6754e75edb65bf8f5e6010c",
+      "source_revision": "878d8cffdf3baf98a5dfcf4dc6fc5cb5b7ca45d1",
       "sources": [
         "decomp/docs/GOEMON_DIALOGUE_GRANTS_AND_FLAG_COUPLING_20261120.md",
         "practice/MEMORY_MAP.md:56@toolkit/unlocks-items-and-flags-20261117",
@@ -22201,7 +22277,7 @@
       "region": "usa",
       "revision": "NG5E-0",
       "signed": false,
-      "source_revision": "c2103dd32a4c0833c6754e75edb65bf8f5e6010c",
+      "source_revision": "878d8cffdf3baf98a5dfcf4dc6fc5cb5b7ca45d1",
       "sources": [
         "decomp/docs/GOEMON_DIALOGUE_GRANTS_AND_FLAG_COUPLING_20261120.md"
       ],
@@ -22281,7 +22357,7 @@
       "region": "usa",
       "revision": "NG5E-0",
       "signed": false,
-      "source_revision": "c2103dd32a4c0833c6754e75edb65bf8f5e6010c",
+      "source_revision": "878d8cffdf3baf98a5dfcf4dc6fc5cb5b7ca45d1",
       "sources": [
         "decomp/docs/GOEMON_DIALOGUE_GRANTS_AND_FLAG_COUPLING_20261120.md"
       ],
@@ -22361,7 +22437,7 @@
       "region": "usa",
       "revision": "NG5E-0",
       "signed": false,
-      "source_revision": "c2103dd32a4c0833c6754e75edb65bf8f5e6010c",
+      "source_revision": "878d8cffdf3baf98a5dfcf4dc6fc5cb5b7ca45d1",
       "sources": [
         "decomp/docs/GOEMON_DIALOGUE_GRANTS_AND_FLAG_COUPLING_20261120.md"
       ],
@@ -22633,7 +22709,7 @@
       "region": "usa",
       "revision": "NG5E-0",
       "signed": false,
-      "source_revision": "c2103dd32a4c0833c6754e75edb65bf8f5e6010c",
+      "source_revision": "878d8cffdf3baf98a5dfcf4dc6fc5cb5b7ca45d1",
       "sources": [
         "decomp/docs/GOEMON_DIALOGUE_GRANTS_AND_FLAG_COUPLING_20261120.md",
         "practice/MEMORY_MAP.md:58@toolkit/unlocks-items-and-flags-20261117",
@@ -22718,7 +22794,7 @@
       "region": "usa",
       "revision": "NG5E-0",
       "signed": false,
-      "source_revision": "c2103dd32a4c0833c6754e75edb65bf8f5e6010c",
+      "source_revision": "878d8cffdf3baf98a5dfcf4dc6fc5cb5b7ca45d1",
       "sources": [
         "decomp/docs/GOEMON_DIALOGUE_GRANTS_AND_FLAG_COUPLING_20261120.md"
       ],
@@ -22798,7 +22874,7 @@
       "region": "usa",
       "revision": "NG5E-0",
       "signed": false,
-      "source_revision": "c2103dd32a4c0833c6754e75edb65bf8f5e6010c",
+      "source_revision": "878d8cffdf3baf98a5dfcf4dc6fc5cb5b7ca45d1",
       "sources": [
         "decomp/docs/GOEMON_DIALOGUE_GRANTS_AND_FLAG_COUPLING_20261120.md"
       ],
@@ -23009,7 +23085,7 @@
       "region": "usa",
       "revision": "NG5E-0",
       "signed": false,
-      "source_revision": "c2103dd32a4c0833c6754e75edb65bf8f5e6010c",
+      "source_revision": "878d8cffdf3baf98a5dfcf4dc6fc5cb5b7ca45d1",
       "sources": [
         "decomp/docs/GOEMON_GLITCH_RESEARCH_MASTER_20261120.md"
       ],
@@ -23047,7 +23123,7 @@
       "region": "usa",
       "revision": "NG5E-0",
       "signed": false,
-      "source_revision": "c2103dd32a4c0833c6754e75edb65bf8f5e6010c",
+      "source_revision": "878d8cffdf3baf98a5dfcf4dc6fc5cb5b7ca45d1",
       "sources": [
         "decomp/docs/GOEMON_GLITCH_RESEARCH_MASTER_20261120.md"
       ],
@@ -23085,7 +23161,7 @@
       "region": "usa",
       "revision": "NG5E-0",
       "signed": false,
-      "source_revision": "c2103dd32a4c0833c6754e75edb65bf8f5e6010c",
+      "source_revision": "878d8cffdf3baf98a5dfcf4dc6fc5cb5b7ca45d1",
       "sources": [
         "decomp/docs/GOEMON_GLITCH_RESEARCH_MASTER_20261120.md"
       ],
@@ -23123,7 +23199,7 @@
       "region": "usa",
       "revision": "NG5E-0",
       "signed": false,
-      "source_revision": "c2103dd32a4c0833c6754e75edb65bf8f5e6010c",
+      "source_revision": "878d8cffdf3baf98a5dfcf4dc6fc5cb5b7ca45d1",
       "sources": [
         "decomp/docs/GOEMON_DIALOGUE_GRANTS_AND_FLAG_COUPLING_20261120.md"
       ],
@@ -23204,7 +23280,7 @@
       "region": "usa",
       "revision": "NG5E-0",
       "signed": false,
-      "source_revision": "c2103dd32a4c0833c6754e75edb65bf8f5e6010c",
+      "source_revision": "878d8cffdf3baf98a5dfcf4dc6fc5cb5b7ca45d1",
       "sources": [
         "decomp/docs/GOEMON_DIALOGUE_GRANTS_AND_FLAG_COUPLING_20261120.md"
       ],
@@ -23285,7 +23361,7 @@
       "region": "usa",
       "revision": "NG5E-0",
       "signed": false,
-      "source_revision": "c2103dd32a4c0833c6754e75edb65bf8f5e6010c",
+      "source_revision": "878d8cffdf3baf98a5dfcf4dc6fc5cb5b7ca45d1",
       "sources": [
         "decomp/docs/GOEMON_DIALOGUE_GRANTS_AND_FLAG_COUPLING_20261120.md"
       ],
@@ -23366,7 +23442,7 @@
       "region": "usa",
       "revision": "NG5E-0",
       "signed": false,
-      "source_revision": "c2103dd32a4c0833c6754e75edb65bf8f5e6010c",
+      "source_revision": "878d8cffdf3baf98a5dfcf4dc6fc5cb5b7ca45d1",
       "sources": [
         "decomp/docs/GOEMON_DIALOGUE_GRANTS_AND_FLAG_COUPLING_20261120.md"
       ],
@@ -23449,7 +23525,7 @@
       "region": "usa",
       "revision": "NG5E-0",
       "signed": false,
-      "source_revision": "c2103dd32a4c0833c6754e75edb65bf8f5e6010c",
+      "source_revision": "878d8cffdf3baf98a5dfcf4dc6fc5cb5b7ca45d1",
       "sources": [
         "decomp/docs/GOEMON_DIALOGUE_GRANTS_AND_FLAG_COUPLING_20261120.md"
       ],
@@ -23955,7 +24031,7 @@
       "region": "usa",
       "revision": "NG5E-0",
       "signed": false,
-      "source_revision": "c2103dd32a4c0833c6754e75edb65bf8f5e6010c",
+      "source_revision": "878d8cffdf3baf98a5dfcf4dc6fc5cb5b7ca45d1",
       "sources": [
         "decomp/docs/GOEMON_GLITCH_RESEARCH_MASTER_20261120.md"
       ],
@@ -24171,7 +24247,7 @@
       "region": "usa",
       "revision": "NG5E-0",
       "signed": null,
-      "source_revision": "c2103dd32a4c0833c6754e75edb65bf8f5e6010c",
+      "source_revision": "878d8cffdf3baf98a5dfcf4dc6fc5cb5b7ca45d1",
       "sources": [
         "decomp/VM_RUNTIME_CURSOR_FIELD_REPORT.md"
       ],
@@ -24325,7 +24401,7 @@
       "region": "usa",
       "revision": "NG5E-0",
       "signed": null,
-      "source_revision": "c2103dd32a4c0833c6754e75edb65bf8f5e6010c",
+      "source_revision": "878d8cffdf3baf98a5dfcf4dc6fc5cb5b7ca45d1",
       "sources": [
         "decomp/VM_RUNTIME_CURSOR_FIELD_REPORT.md",
         "decomp/VM_RUNTIME_CURSOR_FIELD_REPORT.md:83@chatgptweb/decomp"
@@ -24364,7 +24440,7 @@
       "region": "usa",
       "revision": "NG5E-0",
       "signed": null,
-      "source_revision": "c2103dd32a4c0833c6754e75edb65bf8f5e6010c",
+      "source_revision": "878d8cffdf3baf98a5dfcf4dc6fc5cb5b7ca45d1",
       "sources": [
         "decomp/VM_RUNTIME_CURSOR_FIELD_REPORT.md",
         "decomp/VM_RUNTIME_CURSOR_FIELD_REPORT.md:65@chatgptweb/decomp"
@@ -24453,7 +24529,7 @@
       "region": "usa",
       "revision": "NG5E-0",
       "signed": false,
-      "source_revision": "c2103dd32a4c0833c6754e75edb65bf8f5e6010c",
+      "source_revision": "878d8cffdf3baf98a5dfcf4dc6fc5cb5b7ca45d1",
       "sources": [
         "decomp/CONTINUE.md:49@chatgptweb/decomp",
         "decomp/VM_RUNTIME_CURSOR_FIELD_REPORT.md",
@@ -24489,6 +24565,7 @@
       "evidence": "Conflicts with canonical research:vm_active_countdown at 0x801C77F8. ROM: func_8003F460 copies countdown input and func_8003E654 decrements state 7; original JP func_8003E2C4_3EEC4 is native-G2 identical and corresponds to accepted USA func_8003E654_3F254",
       "id": "decomp:conflict:research:vm_active_countdown:41dc7404e23a:801c77f8",
       "id_aliases": [
+        "decomp:conflict:research:vm_active_countdown:878d8cffdf3b:801c77f8",
         "decomp:conflict:research:vm_active_countdown:c2103dd32a4c:801c77f8"
       ],
       "live_readable": false,
@@ -24584,7 +24661,7 @@
       "region": "usa",
       "revision": "NG5E-0",
       "signed": false,
-      "source_revision": "c2103dd32a4c0833c6754e75edb65bf8f5e6010c",
+      "source_revision": "878d8cffdf3baf98a5dfcf4dc6fc5cb5b7ca45d1",
       "sources": [
         "decomp/VM_RUNTIME_CURSOR_FIELD_REPORT.md",
         "decomp/VM_RUNTIME_CURSOR_FIELD_REPORT.md:32@chatgptweb/decomp",
@@ -24624,7 +24701,7 @@
       "region": "usa",
       "revision": "NG5E-0",
       "signed": false,
-      "source_revision": "c2103dd32a4c0833c6754e75edb65bf8f5e6010c",
+      "source_revision": "878d8cffdf3baf98a5dfcf4dc6fc5cb5b7ca45d1",
       "sources": [
         "decomp/VM_RUNTIME_CURSOR_FIELD_REPORT.md",
         "decomp/VM_RUNTIME_CURSOR_FIELD_REPORT.md:95@chatgptweb/decomp"
@@ -24713,7 +24790,7 @@
       "region": "usa",
       "revision": "NG5E-0",
       "signed": null,
-      "source_revision": "c2103dd32a4c0833c6754e75edb65bf8f5e6010c",
+      "source_revision": "878d8cffdf3baf98a5dfcf4dc6fc5cb5b7ca45d1",
       "sources": [
         "decomp/VM_RUNTIME_CURSOR_FIELD_REPORT.md",
         "decomp/VM_RUNTIME_CURSOR_FIELD_REPORT.md:92@chatgptweb/decomp"
@@ -24753,7 +24830,7 @@
       "region": "usa",
       "revision": "NG5E-0",
       "signed": false,
-      "source_revision": "c2103dd32a4c0833c6754e75edb65bf8f5e6010c",
+      "source_revision": "878d8cffdf3baf98a5dfcf4dc6fc5cb5b7ca45d1",
       "sources": [
         "decomp/VM_RUNTIME_CURSOR_FIELD_REPORT.md",
         "decomp/VM_RUNTIME_CURSOR_FIELD_REPORT.md:32@chatgptweb/decomp",
@@ -25465,6 +25542,7 @@
     "decomp/docs/GOEMON_GLITCH_RESEARCH_MASTER_20261120.md",
     "decomp/docs/GOEMON_START_DIALOGUE_SKIP_CONTROL_FLOW_20261120.md",
     "decomp/docs/GOEMON_VM_TWO_G2_PROMOTION_20261121.md",
+    "decomp/research/jp_cright_reset16_20261123/crosswalk.json",
     "decomp/research/usa_unique_three_20261122/crosswalk.json",
     "docs/EBISUMARU_TRANSFORMATION_RUNTIME_FINDINGS_2026-11-14.md",
     "docs/EBISUMARU_TRANSFORMATION_RUNTIME_FINDINGS_2026-11-14.md:103@main",
