@@ -1178,5 +1178,19 @@
     "source_manifest": "decomp/regions/japan_0_native100_2528.json",
     "proof": "decomp/results/japan_0_2528_native100_g2_20261123.json",
     "inventory": "decomp/results/japan_0_2528_native100_inventory_20261123.json"
+  },
+  "cright6_promotion": {
+    "format": "goemon-jp-cright6-post2528-v1",
+    "status": "PASSED_G2_LOCAL",
+    "base_original_C": 2528,
+    "new_original_C": 6,
+    "accepted_original_C": 2534,
+    "accepted_original_bytes": 138028,
+    "asm_remaining": 4842,
+    "canonical_semantic_relocations": 80745,
+    "full_original_elf_identities": 7376,
+    "source_manifest": "decomp/regions/japan_0_cright6_2534.json",
+    "proof": "decomp/results/japan_0_2534_cright6_g2_20261124.json",
+    "inventory": "decomp/results/japan_0_2534_cright6_inventory_20261124.json"
   }
 }

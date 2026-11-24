@@ -1,0 +1,251 @@
+{
+  "status": "PASSED_G2_LOCAL",
+  "region": "japan_0",
+  "base_commit": "02e042d969c382217f4561fffd9cc719523de970",
+  "before_C": 2528,
+  "after_C": 2534,
+  "added_C": 6,
+  "added_bytes": 624,
+  "original_bytes_after": 138028,
+  "asm_remaining": 4842,
+  "rom_bytes": 33554432,
+  "rom_sha1": "6f8745fecc3a5e7d4918c7a73353eb0726116ded",
+  "retail_bytes": 16777216,
+  "retail_sha1": "9843ee979b5f6c80f5eda85df0baed9ae7c4e73b",
+  "retail_ROM_exact": true,
+  "full_ROM_exact": true,
+  "elf_identities_exact": 7376,
+  "semantic_relocations_exact": 80745,
+  "semantic_relocations_sha256": "43a133b21ac2b18d8e1d00f8c4e5718776b001a1f45c54e807dae12165e797c0",
+  "stable_global_symbol_identities_exact": 26393,
+  "source_manifest_sha256": "eb75b75e6d19fe0667350b9cacd1e466e4b7a9e7160e4afb2e385f8fd82fd5bf",
+  "predecessor_elf_sha256": "08423cd434cbd132e4f5827eb9fedc2e9cf21c5f903577876e509ef0166d094c",
+  "candidate_elf_sha256": "bac3a17e39eb80c54ab1dfc1a523d060455ab1f91ce0e6e871f242bb77b7b776",
+  "abs_metadata_fix": {
+    "symbol": "D_3B03C",
+    "undefined_size": 0,
+    "st_info_bytes_changed": 1,
+    "code_and_relocations_unchanged": true,
+    "source_object_sha256": "9fef9cbfaacd9f96b52291ce2559337754e4d594b91efbf94dc9d10687c2f4d4",
+    "original_provenance_object_sha256": "1c0a235f4323db653d64b82edff0b2fa8f1b32ccb8a69c5a8f217576426d6a54",
+    "compiler_outcome": "EXISTING_QUIRK_REPRODUCED"
+  },
+  "ownership_exact": true,
+  "new_C_names": [
+    "func_80004170_4D70",
+    "func_800041AC_4DAC",
+    "func_80013654_14254",
+    "func_80212090_5CD620",
+    "func_802124AC_5CDA3C",
+    "func_80212BD0_5CE160"
+  ],
+  "native_compile_records": [
+    {
+      "name": "func_80212BD0_5CE160",
+      "compiler_quirk_outcome": "NO_NEW_COMPILER_FINDING",
+      "ledger_sha256": "7d6ef4821cbf0f196b97d0e0e70fd39e69889439c7adb8c280b823430aabb043",
+      "source_sha256": "00f205b377a804f1073dc144ec761f7dc5b2f2cb9225436e128ccc0d63dc129e",
+      "relocations": [
+        [
+          0,
+          "R_MIPS_HI16",
+          "D_80162420_163020"
+        ],
+        [
+          4,
+          "R_MIPS_LO16",
+          "D_80162420_163020"
+        ],
+        [
+          48,
+          "R_MIPS_26",
+          "func_8021E024_5D95B4"
+        ],
+        [
+          56,
+          "R_MIPS_HI16",
+          "D_8020151C_5BD4EC"
+        ],
+        [
+          60,
+          "R_MIPS_LO16",
+          "D_8020151C_5BD4EC"
+        ],
+        [
+          64,
+          "R_MIPS_HI16",
+          "D_80162420_163020"
+        ],
+        [
+          68,
+          "R_MIPS_LO16",
+          "D_80162420_163020"
+        ],
+        [
+          76,
+          "R_MIPS_HI16",
+          "D_80201514_5BD4E4"
+        ],
+        [
+          84,
+          "R_MIPS_LO16",
+          "D_80201514_5BD4E4"
+        ],
+        [
+          104,
+          "R_MIPS_26",
+          "func_80212090_5CD620"
+        ]
+      ],
+      "pack": {
+        "original_text_bytes": 128,
+        "compiler_section_bytes": 128,
+        "zero_padding_removed": 0,
+        "trimmed_object_sha256": "958251348684079394cb10de1452d1c6648eaed608af95c33d4dfa2e83d6a86c"
+      }
+    },
+    {
+      "name": "func_80212090_5CD620",
+      "compiler_quirk_outcome": "NO_NEW_COMPILER_FINDING",
+      "ledger_sha256": "7d6ef4821cbf0f196b97d0e0e70fd39e69889439c7adb8c280b823430aabb043",
+      "source_sha256": "96ef2307beefed45ddd7bac30d2e6b57a448917686df667d152573856b2b03ad",
+      "relocations": [
+        [
+          0,
+          "R_MIPS_HI16",
+          "D_80162420_163020"
+        ],
+        [
+          4,
+          "R_MIPS_LO16",
+          "D_80162420_163020"
+        ],
+        [
+          180,
+          "R_MIPS_26",
+          "func_8021215C_5CD6EC"
+        ]
+      ],
+      "pack": {
+        "original_text_bytes": 204,
+        "compiler_section_bytes": 208,
+        "zero_padding_removed": 4,
+        "trimmed_object_sha256": "27bb571de7db807edea7dd761c127fc965311d9780ef4d7372f133f687ee89fe"
+      }
+    },
+    {
+      "name": "func_802124AC_5CDA3C",
+      "compiler_quirk_outcome": "NO_NEW_COMPILER_FINDING",
+      "ledger_sha256": "7d6ef4821cbf0f196b97d0e0e70fd39e69889439c7adb8c280b823430aabb043",
+      "source_sha256": "776b50079986b45407d5ea8acbf6b65b860b00133a9e87ceb624c499535c440a",
+      "relocations": [
+        [
+          0,
+          "R_MIPS_HI16",
+          "g_system_ptr"
+        ],
+        [
+          4,
+          "R_MIPS_LO16",
+          "g_system_ptr"
+        ],
+        [
+          36,
+          "R_MIPS_HI16",
+          "D_80235FE8_5F1578"
+        ],
+        [
+          40,
+          "R_MIPS_HI16",
+          "D_3B03C"
+        ],
+        [
+          52,
+          "R_MIPS_LO16",
+          "D_80235FE8_5F1578"
+        ],
+        [
+          64,
+          "R_MIPS_LO16",
+          "D_3B03C"
+        ]
+      ],
+      "pack": {
+        "original_text_bytes": 104,
+        "compiler_section_bytes": 112,
+        "zero_padding_removed": 8,
+        "trimmed_object_sha256": "9fef9cbfaacd9f96b52291ce2559337754e4d594b91efbf94dc9d10687c2f4d4"
+      }
+    },
+    {
+      "name": "func_80013654_14254",
+      "compiler_quirk_outcome": "NO_NEW_COMPILER_FINDING",
+      "ledger_sha256": "7d6ef4821cbf0f196b97d0e0e70fd39e69889439c7adb8c280b823430aabb043",
+      "source_sha256": "3e5ec03e0e461a96d9e49834575fcb95cf3d9e160c2f576147f0c8d2e0c5f044",
+      "relocations": [
+        [
+          32,
+          "R_MIPS_26",
+          "func_800136A4_142A4"
+        ]
+      ],
+      "pack": {
+        "original_text_bytes": 80,
+        "compiler_section_bytes": 80,
+        "zero_padding_removed": 0,
+        "trimmed_object_sha256": "c23d78ed518d30efba1840f31793802d4a3f47890f1c761039b41e2488dd1afd"
+      }
+    },
+    {
+      "name": "func_80004170_4D70",
+      "compiler_quirk_outcome": "NO_NEW_COMPILER_FINDING",
+      "ledger_sha256": "7d6ef4821cbf0f196b97d0e0e70fd39e69889439c7adb8c280b823430aabb043",
+      "source_sha256": "d59c3bfbd24ae69e442f47ee0bc95ac7571dd4b0e1e1e9dd93b93409435e2b5d",
+      "relocations": [
+        [
+          0,
+          "R_MIPS_HI16",
+          "g_system_ptr"
+        ],
+        [
+          4,
+          "R_MIPS_LO16",
+          "g_system_ptr"
+        ]
+      ],
+      "pack": {
+        "original_text_bytes": 60,
+        "compiler_section_bytes": 64,
+        "zero_padding_removed": 4,
+        "trimmed_object_sha256": "9e614d5452a5132103d319513e8617ae1f526419f5b6d0055edbc86bbccb9c43"
+      }
+    },
+    {
+      "name": "func_800041AC_4DAC",
+      "compiler_quirk_outcome": "NO_NEW_COMPILER_FINDING",
+      "ledger_sha256": "7d6ef4821cbf0f196b97d0e0e70fd39e69889439c7adb8c280b823430aabb043",
+      "source_sha256": "1a470e2225f71a86b56d0ad0078abaa813ca4d5214fb47442c58ef57ff6fc37c",
+      "relocations": [
+        [
+          0,
+          "R_MIPS_HI16",
+          "g_system_ptr"
+        ],
+        [
+          4,
+          "R_MIPS_LO16",
+          "g_system_ptr"
+        ]
+      ],
+      "pack": {
+        "original_text_bytes": 48,
+        "compiler_section_bytes": 48,
+        "zero_padding_removed": 0,
+        "trimmed_object_sha256": "0b11fd9825d07525f956452e51a92a1ac71406f7676a92c9ae4939bc4d11d7fe"
+      }
+    }
+  ],
+  "compiler_sha256": "76d796c9591c9f5504949f85b29c32a6039a663791afe2f36f34ca18425b64d0",
+  "compiler_quirk_outcome": "EXISTING_QUIRK_REPRODUCED",
+  "gameplay": "NOT_RUN"
+}
