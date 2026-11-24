@@ -14,9 +14,9 @@ class CanonicalPromotionIntegrityTests(unittest.TestCase):
     def test_exact_final_c_claims_and_frozen_original_addresses(self):
         manifest=load_manifest(integrity.ROOT/'manifest.json')
         claims=claimed_functions(manifest)
-        self.assertEqual(len(claims),2323)
-        self.assertEqual(sum(f['size'] for f in claims),111736)
-        self.assertEqual(len({f['name'] for f in claims}),2323)
+        self.assertEqual(len(claims),2324)
+        self.assertEqual(sum(f['size'] for f in claims),111852)
+        self.assertEqual(len({f['name'] for f in claims}),2324)
         self.assertEqual(len(reconcile.fixture()['functions']),108)
         self.assertEqual(reconcile.fixture()['source_ownership_exception'][0]['name'],
                          'func_800108BC_114BC')
@@ -56,7 +56,8 @@ class CanonicalPromotionIntegrityTests(unittest.TestCase):
                               ('results/inventory_2319_before_cright4_20261124.json',None),
                               ('results/usa_cright4_2323_g2_20261124.json',None)]:
             dst=root/path
-            src=canonical/path
+            frozen={'manifest.json':'manifest_2323_before_transition_20261124.json','results/combined.json':'combined_2323_before_transition_20261124.json','results/inventory.json':'inventory_2323_before_transition_20261124.json'}
+            src=canonical/'results'/frozen[path] if path in frozen else canonical/path
             if not src.is_file():
                 raise ValueError('Missing canonical test proof '+str(src))
             dst.write_text(src.read_text() if override is None else json.dumps(override))
@@ -66,10 +67,10 @@ class CanonicalPromotionIntegrityTests(unittest.TestCase):
         audit=integrity.audit()
         self.assertEqual(audit['status'],'PASS',audit['errors'])
         self.assertEqual((audit['accepted_C'],audit['accepted_original_bytes']),
-                         (2323,111736))
+                         (2324,111852))
 
     def test_staged_only_manifest_from_previous_commit_fails_closed(self):
-        manifest=json.loads((integrity.ROOT/'manifest.json').read_text())
+        manifest=json.loads((integrity.ROOT/'results/manifest_2323_before_transition_20261124.json').read_text())
         manifest.pop('usa_cright4_promotion')
         manifest.pop('usa_script_vm_dual_reference')
         manifest.pop('usa_script_vm440_promotion')
@@ -88,7 +89,7 @@ class CanonicalPromotionIntegrityTests(unittest.TestCase):
             self.assertTrue(any('disagree' in e for e in bad['errors']),bad['errors'])
 
     def test_forged_inventory_count_fails_closed(self):
-        inv=json.loads((integrity.ROOT/'results/inventory.json').read_text())
+        inv=json.loads((integrity.ROOT/'results/inventory_2323_before_transition_20261124.json').read_text())
         inv['summary']['newly_matching_c']=1964
         folder,root=self._temporary(inventory=inv)
         with folder:
@@ -97,7 +98,7 @@ class CanonicalPromotionIntegrityTests(unittest.TestCase):
             self.assertTrue(any('inventory C count' in e for e in bad['errors']),bad['errors'])
 
     def test_forged_full_rom_or_function_list_fails_closed(self):
-        report=json.loads((integrity.ROOT/'results/combined.json').read_text())
+        report=json.loads((integrity.ROOT/'results/combined_2323_before_transition_20261124.json').read_text())
         report['comparison']['full_rom_match']=False
         report['comparison']['functions'].pop()
         folder,root=self._temporary(proof=report)

@@ -1630,5 +1630,8 @@
   },
   "usa_cright4_promotion": {
     "format": "goemon-usa-cright4-post2319-v1"
+  },
+  "usa_transition1_promotion": {
+    "format": "goemon-transition-state-original-g2-v1"
   }
 }

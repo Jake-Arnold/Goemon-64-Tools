@@ -1,0 +1,869 @@
+{
+  "base_commit": "4efacadb87c1d3f14fc082959e280325ccec5185",
+  "usa": {
+    "name": "func_8000394C_454C",
+    "rom_offset": 17740,
+    "vma": 2147498316,
+    "size": 116,
+    "source": "usa/454c.c",
+    "source_sha256": "609a5ba602914b8ad14af2cd7516f6716a6b8461f9152925f22b93e06423ad7f",
+    "original_sha256": "1cc9c4dd44c8e502915ab8c38af2bf9b79e7c79401a30749d73d8d447f638109"
+  },
+  "japan": [
+    {
+      "name": "func_800032A4_3EA4",
+      "rom_offset": 16036,
+      "vma": 2147496612,
+      "size": 48,
+      "source": "japan/source/func_800032A4_3EA4.c",
+      "source_sha256": "bfc99835e9f0e997bce5091c1e80685878d3549b57d2ec84004798a68bc00d34",
+      "original_sha256": "8012b956a6e6b92113cf0ec0d572855259cd2cad27bd8eb77d206b0b023b23fa",
+      "named_relocs": 6,
+      "numeric_relocs": 2
+    },
+    {
+      "name": "func_800032D4_3ED4",
+      "rom_offset": 16084,
+      "vma": 2147496660,
+      "size": 60,
+      "source": "japan/source/func_800032D4_3ED4.c",
+      "source_sha256": "2a7b08095763a27c9cba1db42f8406d078c5e46ceb0b5c4a603bf5dedf2332f0",
+      "original_sha256": "a92977325d8c9eb9a33a3ae95eb38edba00c603937f6dd36d3319ecb43760897",
+      "named_relocs": 8,
+      "numeric_relocs": 2
+    },
+    {
+      "name": "func_80003310_3F10",
+      "rom_offset": 16144,
+      "vma": 2147496720,
+      "size": 60,
+      "source": "japan/source/func_80003310_3F10.c",
+      "source_sha256": "182988bd4edbb49a51e9ab8d6c315fa97eaeeac3b88aa4f6cce30cc08c325892",
+      "original_sha256": "1de603ffe51ac87eacde952233de5e1aa71b37fe6a4a5d1a58a82517c20452be",
+      "named_relocs": 8,
+      "numeric_relocs": 2
+    },
+    {
+      "name": "func_8000334C_3F4C",
+      "rom_offset": 16204,
+      "vma": 2147496780,
+      "size": 80,
+      "source": "japan/source/func_8000334C_3F4C.c",
+      "source_sha256": "3411e5a060fffb4234a62fa89530f4f4a48838cbce0aaf906b55f76ffbc9a639",
+      "original_sha256": "074c1d175e9dc1e08774ecd20412be7f2ccafa37899dec12c1fd6eb6906dac72",
+      "named_relocs": 7,
+      "numeric_relocs": 3
+    },
+    {
+      "name": "func_8000339C_3F9C",
+      "rom_offset": 16284,
+      "vma": 2147496860,
+      "size": 88,
+      "source": "japan/source/func_8000339C_3F9C.c",
+      "source_sha256": "f622f163e3df01edff02e430532fbba7a974b7acc643ca4f173c1e70f3b6c1ad",
+      "original_sha256": "dc147be65d4af75af7ebb5d064239468e356f4b7c0ae1079479db570b124efda",
+      "named_relocs": 9,
+      "numeric_relocs": 3
+    },
+    {
+      "name": "func_800033F4_3FF4",
+      "rom_offset": 16372,
+      "vma": 2147496948,
+      "size": 88,
+      "source": "japan/source/func_800033F4_3FF4.c",
+      "source_sha256": "7f3946182e1123749c77143bc43af41e7dd21e29ad14f2ba042b9a927bd18126",
+      "original_sha256": "f41304b28de9e275be92a232ac1f18c812b074ed1e3e18b9b1be4ee3c5813e80",
+      "named_relocs": 9,
+      "numeric_relocs": 3
+    },
+    {
+      "name": "func_8000344C_404C",
+      "rom_offset": 16460,
+      "vma": 2147497036,
+      "size": 80,
+      "source": "japan/source/func_8000344C_404C.c",
+      "source_sha256": "138e39539b3f3cfadc7f96c8450b982956c179c24d52fb13e51e5a11cface2c5",
+      "original_sha256": "bf57e4506f502a0b682d69a39f0133ed7d33623dc0efc2426de1a30dd526ffbf",
+      "named_relocs": 7,
+      "numeric_relocs": 3
+    },
+    {
+      "name": "func_8000349C_409C",
+      "rom_offset": 16540,
+      "vma": 2147497116,
+      "size": 88,
+      "source": "japan/source/func_8000349C_409C.c",
+      "source_sha256": "68b91860730d47b1ed996c7d5a09ffb60a8aed0a83cb000b3ce71542e0848c87",
+      "original_sha256": "5c7f1a4dbc5c52c2e6d9613bf7f469f313a4fcebea2781caa86137ade06c9455",
+      "named_relocs": 9,
+      "numeric_relocs": 3
+    },
+    {
+      "name": "func_800034F4_40F4",
+      "rom_offset": 16628,
+      "vma": 2147497204,
+      "size": 88,
+      "source": "japan/source/func_800034F4_40F4.c",
+      "source_sha256": "96532636be495ff8bda05a6ede684f19e538680a4e51a513053709c1e17f350b",
+      "original_sha256": "aab5d8bb3eb614bc0d61b5ce081abe0d31ef007a24abf188295f93cbb2f20387",
+      "named_relocs": 9,
+      "numeric_relocs": 3
+    },
+    {
+      "name": "func_8000354C_414C",
+      "rom_offset": 16716,
+      "vma": 2147497292,
+      "size": 80,
+      "source": "japan/source/func_8000354C_414C.c",
+      "source_sha256": "3d3def9ec8d994302db522b409e91cc39587b1b40e559ec5d3e7d10d65c72e67",
+      "original_sha256": "6997a797cb04c2a6a7fa1046379ebe99018e09003428f71917f9a15f2fc1be22",
+      "named_relocs": 7,
+      "numeric_relocs": 3
+    },
+    {
+      "name": "func_8000359C_419C",
+      "rom_offset": 16796,
+      "vma": 2147497372,
+      "size": 88,
+      "source": "japan/source/func_8000359C_419C.c",
+      "source_sha256": "bc22ceb6b48fec21f2da5c3d81f168ff2fa85f9c2c3984a979cae84f511a680f",
+      "original_sha256": "0c8f9e2b9f9fca82e504f7076557c22961255603e56ff12a6e7eeaade0021924",
+      "named_relocs": 9,
+      "numeric_relocs": 3
+    },
+    {
+      "name": "func_800035F4_41F4",
+      "rom_offset": 16884,
+      "vma": 2147497460,
+      "size": 88,
+      "source": "japan/source/func_800035F4_41F4.c",
+      "source_sha256": "6bf717f2f90107342defa3900eabe826a43e292046e8208a666a19253ca7d527",
+      "original_sha256": "9d164f697dbacdbbdaf0f3dfa3ae662cf38c3d38efe2f0a1c4b1ec6958e90ea1",
+      "named_relocs": 9,
+      "numeric_relocs": 3
+    },
+    {
+      "name": "func_8000364C_424C",
+      "rom_offset": 16972,
+      "vma": 2147497548,
+      "size": 100,
+      "source": "japan/source/func_8000364C_424C.c",
+      "source_sha256": "0d534f796165b47b0a7de3ae1c9be8ea87fb5b8ddfc912cd2eeb0800a097ef37",
+      "original_sha256": "59e6aec7d6d555916bd36784f48e2c20b59bd5e6ebc22905725a5040497469b3",
+      "named_relocs": 9,
+      "numeric_relocs": 3
+    },
+    {
+      "name": "func_800036B0_42B0",
+      "rom_offset": 17072,
+      "vma": 2147497648,
+      "size": 88,
+      "source": "japan/source/func_800036B0_42B0.c",
+      "source_sha256": "c61b599f4959a8e897c82bde7439bfc17fea7fea5ebb81e70625e970c55ce2d2",
+      "original_sha256": "dfbae9db95119a2388c3b91ac6c63dcf6fc3754285beb40cb7eeb77c2d2bea61",
+      "named_relocs": 9,
+      "numeric_relocs": 3
+    },
+    {
+      "name": "func_80003708_4308",
+      "rom_offset": 17160,
+      "vma": 2147497736,
+      "size": 88,
+      "source": "japan/source/func_80003708_4308.c",
+      "source_sha256": "0363da8b521e3361e325f54979a114cf5ece881a6f96b4a437dec744b2cd6439",
+      "original_sha256": "029065febf9102a9d6364b1581580e3931abc89b85d4fde4281e4c0130d4e111",
+      "named_relocs": 9,
+      "numeric_relocs": 3
+    },
+    {
+      "name": "func_80003808_4408",
+      "rom_offset": 17416,
+      "vma": 2147497992,
+      "size": 104,
+      "source": "japan/source/func_80003808_4408.c",
+      "source_sha256": "e8b75f0ab6017fd428a139bf58b0f56d7073e2cc184397f89f85557f19f36ac3",
+      "original_sha256": "2c8e33542d6bdfd27f0a4e47e298768e6db0d51bd772a113948d477f4f86d399",
+      "named_relocs": 13,
+      "numeric_relocs": 9
+    },
+    {
+      "name": "func_80003870_4470",
+      "rom_offset": 17520,
+      "vma": 2147498096,
+      "size": 116,
+      "source": "japan/source/func_80003870_4470_baseexpr.c",
+      "source_sha256": "f24004cb4b1118120f27f24b0a451e07057417e91bbe617a33b73785e8188173",
+      "original_sha256": "139913653d08d667c75dfc0897611d97d598fabaa04449ab22fb9a552c851ec1",
+      "named_relocs": 13,
+      "numeric_relocs": 9
+    }
+  ],
+  "headers": {
+    "usa/transition.h": "9bbe57788cc6866b4d713e4b5f0f8cb07641d117a4d3e21cc8be4eee3df0cc74",
+    "japan/source/jp_transition.h": "8f7de327cfe734c25c69ba97e93fae7620a5b9a414a32241c0756884e141e616"
+  },
+  "removed_relocations": {
+    "usa": [
+      [
+        ".rel.main",
+        2147498388,
+        "R_MIPS_HI16",
+        241110,
+        "D_3ADD6"
+      ],
+      [
+        ".rel.main",
+        2147498392,
+        "R_MIPS_HI16",
+        241110,
+        "D_3ADD6"
+      ],
+      [
+        ".rel.main",
+        2147498400,
+        "R_MIPS_LO16",
+        241110,
+        "D_3ADD6"
+      ],
+      [
+        ".rel.main",
+        2147498412,
+        "R_MIPS_LO16",
+        241110,
+        "D_3ADD6"
+      ]
+    ],
+    "japan": [
+      [
+        ".rel.main",
+        2147496624,
+        "R_MIPS_HI16",
+        241120,
+        "D_3ADE0"
+      ],
+      [
+        ".rel.main",
+        2147496636,
+        "R_MIPS_LO16",
+        241120,
+        "D_3ADE0"
+      ],
+      [
+        ".rel.main",
+        2147496644,
+        "R_MIPS_HI16",
+        241121,
+        "D_3ADE1"
+      ],
+      [
+        ".rel.main",
+        2147496656,
+        "R_MIPS_LO16",
+        241121,
+        "D_3ADE1"
+      ],
+      [
+        ".rel.main",
+        2147496672,
+        "R_MIPS_HI16",
+        241120,
+        "D_3ADE0"
+      ],
+      [
+        ".rel.main",
+        2147496676,
+        "R_MIPS_HI16",
+        241120,
+        "D_3ADE0"
+      ],
+      [
+        ".rel.main",
+        2147496684,
+        "R_MIPS_LO16",
+        241120,
+        "D_3ADE0"
+      ],
+      [
+        ".rel.main",
+        2147496696,
+        "R_MIPS_LO16",
+        241120,
+        "D_3ADE0"
+      ],
+      [
+        ".rel.main",
+        2147496704,
+        "R_MIPS_HI16",
+        241121,
+        "D_3ADE1"
+      ],
+      [
+        ".rel.main",
+        2147496716,
+        "R_MIPS_LO16",
+        241121,
+        "D_3ADE1"
+      ],
+      [
+        ".rel.main",
+        2147496732,
+        "R_MIPS_HI16",
+        241120,
+        "D_3ADE0"
+      ],
+      [
+        ".rel.main",
+        2147496736,
+        "R_MIPS_HI16",
+        241120,
+        "D_3ADE0"
+      ],
+      [
+        ".rel.main",
+        2147496744,
+        "R_MIPS_LO16",
+        241120,
+        "D_3ADE0"
+      ],
+      [
+        ".rel.main",
+        2147496756,
+        "R_MIPS_LO16",
+        241120,
+        "D_3ADE0"
+      ],
+      [
+        ".rel.main",
+        2147496764,
+        "R_MIPS_HI16",
+        241121,
+        "D_3ADE1"
+      ],
+      [
+        ".rel.main",
+        2147496776,
+        "R_MIPS_LO16",
+        241121,
+        "D_3ADE1"
+      ],
+      [
+        ".rel.main",
+        2147496796,
+        "R_MIPS_HI16",
+        241118,
+        "D_3ADDE"
+      ],
+      [
+        ".rel.main",
+        2147496816,
+        "R_MIPS_LO16",
+        241118,
+        "D_3ADDE"
+      ],
+      [
+        ".rel.main",
+        2147496824,
+        "R_MIPS_HI16",
+        241119,
+        "D_3ADDF"
+      ],
+      [
+        ".rel.main",
+        2147496840,
+        "R_MIPS_LO16",
+        241119,
+        "D_3ADDF"
+      ],
+      [
+        ".rel.main",
+        2147496876,
+        "R_MIPS_HI16",
+        241118,
+        "D_3ADDE"
+      ],
+      [
+        ".rel.main",
+        2147496888,
+        "R_MIPS_LO16",
+        241118,
+        "D_3ADDE"
+      ],
+      [
+        ".rel.main",
+        2147496892,
+        "R_MIPS_HI16",
+        241118,
+        "D_3ADDE"
+      ],
+      [
+        ".rel.main",
+        2147496904,
+        "R_MIPS_LO16",
+        241118,
+        "D_3ADDE"
+      ],
+      [
+        ".rel.main",
+        2147496912,
+        "R_MIPS_HI16",
+        241119,
+        "D_3ADDF"
+      ],
+      [
+        ".rel.main",
+        2147496928,
+        "R_MIPS_LO16",
+        241119,
+        "D_3ADDF"
+      ],
+      [
+        ".rel.main",
+        2147496964,
+        "R_MIPS_HI16",
+        241118,
+        "D_3ADDE"
+      ],
+      [
+        ".rel.main",
+        2147496976,
+        "R_MIPS_LO16",
+        241118,
+        "D_3ADDE"
+      ],
+      [
+        ".rel.main",
+        2147496980,
+        "R_MIPS_HI16",
+        241118,
+        "D_3ADDE"
+      ],
+      [
+        ".rel.main",
+        2147496992,
+        "R_MIPS_LO16",
+        241118,
+        "D_3ADDE"
+      ],
+      [
+        ".rel.main",
+        2147497000,
+        "R_MIPS_HI16",
+        241119,
+        "D_3ADDF"
+      ],
+      [
+        ".rel.main",
+        2147497016,
+        "R_MIPS_LO16",
+        241119,
+        "D_3ADDF"
+      ],
+      [
+        ".rel.main",
+        2147497052,
+        "R_MIPS_HI16",
+        241112,
+        "D_3ADD8"
+      ],
+      [
+        ".rel.main",
+        2147497072,
+        "R_MIPS_LO16",
+        241112,
+        "D_3ADD8"
+      ],
+      [
+        ".rel.main",
+        2147497080,
+        "R_MIPS_HI16",
+        241113,
+        "D_3ADD9"
+      ],
+      [
+        ".rel.main",
+        2147497096,
+        "R_MIPS_LO16",
+        241113,
+        "D_3ADD9"
+      ],
+      [
+        ".rel.main",
+        2147497132,
+        "R_MIPS_HI16",
+        241112,
+        "D_3ADD8"
+      ],
+      [
+        ".rel.main",
+        2147497144,
+        "R_MIPS_LO16",
+        241112,
+        "D_3ADD8"
+      ],
+      [
+        ".rel.main",
+        2147497148,
+        "R_MIPS_HI16",
+        241112,
+        "D_3ADD8"
+      ],
+      [
+        ".rel.main",
+        2147497160,
+        "R_MIPS_LO16",
+        241112,
+        "D_3ADD8"
+      ],
+      [
+        ".rel.main",
+        2147497168,
+        "R_MIPS_HI16",
+        241113,
+        "D_3ADD9"
+      ],
+      [
+        ".rel.main",
+        2147497184,
+        "R_MIPS_LO16",
+        241113,
+        "D_3ADD9"
+      ],
+      [
+        ".rel.main",
+        2147497220,
+        "R_MIPS_HI16",
+        241112,
+        "D_3ADD8"
+      ],
+      [
+        ".rel.main",
+        2147497232,
+        "R_MIPS_LO16",
+        241112,
+        "D_3ADD8"
+      ],
+      [
+        ".rel.main",
+        2147497236,
+        "R_MIPS_HI16",
+        241112,
+        "D_3ADD8"
+      ],
+      [
+        ".rel.main",
+        2147497248,
+        "R_MIPS_LO16",
+        241112,
+        "D_3ADD8"
+      ],
+      [
+        ".rel.main",
+        2147497256,
+        "R_MIPS_HI16",
+        241113,
+        "D_3ADD9"
+      ],
+      [
+        ".rel.main",
+        2147497272,
+        "R_MIPS_LO16",
+        241113,
+        "D_3ADD9"
+      ],
+      [
+        ".rel.main",
+        2147497308,
+        "R_MIPS_HI16",
+        241110,
+        "D_3ADD6"
+      ],
+      [
+        ".rel.main",
+        2147497328,
+        "R_MIPS_LO16",
+        241110,
+        "D_3ADD6"
+      ],
+      [
+        ".rel.main",
+        2147497336,
+        "R_MIPS_HI16",
+        241111,
+        "D_3ADD7"
+      ],
+      [
+        ".rel.main",
+        2147497352,
+        "R_MIPS_LO16",
+        241111,
+        "D_3ADD7"
+      ],
+      [
+        ".rel.main",
+        2147497388,
+        "R_MIPS_HI16",
+        241110,
+        "D_3ADD6"
+      ],
+      [
+        ".rel.main",
+        2147497400,
+        "R_MIPS_LO16",
+        241110,
+        "D_3ADD6"
+      ],
+      [
+        ".rel.main",
+        2147497404,
+        "R_MIPS_HI16",
+        241110,
+        "D_3ADD6"
+      ],
+      [
+        ".rel.main",
+        2147497416,
+        "R_MIPS_LO16",
+        241110,
+        "D_3ADD6"
+      ],
+      [
+        ".rel.main",
+        2147497424,
+        "R_MIPS_HI16",
+        241111,
+        "D_3ADD7"
+      ],
+      [
+        ".rel.main",
+        2147497440,
+        "R_MIPS_LO16",
+        241111,
+        "D_3ADD7"
+      ],
+      [
+        ".rel.main",
+        2147497476,
+        "R_MIPS_HI16",
+        241110,
+        "D_3ADD6"
+      ],
+      [
+        ".rel.main",
+        2147497488,
+        "R_MIPS_LO16",
+        241110,
+        "D_3ADD6"
+      ],
+      [
+        ".rel.main",
+        2147497492,
+        "R_MIPS_HI16",
+        241110,
+        "D_3ADD6"
+      ],
+      [
+        ".rel.main",
+        2147497504,
+        "R_MIPS_LO16",
+        241110,
+        "D_3ADD6"
+      ],
+      [
+        ".rel.main",
+        2147497512,
+        "R_MIPS_HI16",
+        241111,
+        "D_3ADD7"
+      ],
+      [
+        ".rel.main",
+        2147497528,
+        "R_MIPS_LO16",
+        241111,
+        "D_3ADD7"
+      ],
+      [
+        ".rel.main",
+        2147497564,
+        "R_MIPS_HI16",
+        241108,
+        "D_3ADD4"
+      ],
+      [
+        ".rel.main",
+        2147497584,
+        "R_MIPS_LO16",
+        241108,
+        "D_3ADD4"
+      ],
+      [
+        ".rel.main",
+        2147497592,
+        "R_MIPS_HI16",
+        241109,
+        "D_3ADD5"
+      ],
+      [
+        ".rel.main",
+        2147497604,
+        "R_MIPS_LO16",
+        241109,
+        "D_3ADD5"
+      ],
+      [
+        ".rel.main",
+        2147497612,
+        "R_MIPS_HI16",
+        241098,
+        "D_3ADCA"
+      ],
+      [
+        ".rel.main",
+        2147497628,
+        "R_MIPS_LO16",
+        241098,
+        "D_3ADCA"
+      ],
+      [
+        ".rel.main",
+        2147497664,
+        "R_MIPS_HI16",
+        241108,
+        "D_3ADD4"
+      ],
+      [
+        ".rel.main",
+        2147497676,
+        "R_MIPS_LO16",
+        241108,
+        "D_3ADD4"
+      ],
+      [
+        ".rel.main",
+        2147497680,
+        "R_MIPS_HI16",
+        241108,
+        "D_3ADD4"
+      ],
+      [
+        ".rel.main",
+        2147497692,
+        "R_MIPS_LO16",
+        241108,
+        "D_3ADD4"
+      ],
+      [
+        ".rel.main",
+        2147497700,
+        "R_MIPS_HI16",
+        241109,
+        "D_3ADD5"
+      ],
+      [
+        ".rel.main",
+        2147497716,
+        "R_MIPS_LO16",
+        241109,
+        "D_3ADD5"
+      ],
+      [
+        ".rel.main",
+        2147497752,
+        "R_MIPS_HI16",
+        241108,
+        "D_3ADD4"
+      ],
+      [
+        ".rel.main",
+        2147497764,
+        "R_MIPS_LO16",
+        241108,
+        "D_3ADD4"
+      ],
+      [
+        ".rel.main",
+        2147497768,
+        "R_MIPS_HI16",
+        241108,
+        "D_3ADD4"
+      ],
+      [
+        ".rel.main",
+        2147497780,
+        "R_MIPS_LO16",
+        241108,
+        "D_3ADD4"
+      ],
+      [
+        ".rel.main",
+        2147497788,
+        "R_MIPS_HI16",
+        241109,
+        "D_3ADD5"
+      ],
+      [
+        ".rel.main",
+        2147497804,
+        "R_MIPS_LO16",
+        241109,
+        "D_3ADD5"
+      ],
+      [
+        ".rel.main",
+        2147498044,
+        "R_MIPS_HI16",
+        241110,
+        "D_3ADD6"
+      ],
+      [
+        ".rel.main",
+        2147498048,
+        "R_MIPS_HI16",
+        241110,
+        "D_3ADD6"
+      ],
+      [
+        ".rel.main",
+        2147498056,
+        "R_MIPS_LO16",
+        241110,
+        "D_3ADD6"
+      ],
+      [
+        ".rel.main",
+        2147498076,
+        "R_MIPS_LO16",
+        241110,
+        "D_3ADD6"
+      ],
+      [
+        ".rel.main",
+        2147498168,
+        "R_MIPS_HI16",
+        241110,
+        "D_3ADD6"
+      ],
+      [
+        ".rel.main",
+        2147498172,
+        "R_MIPS_HI16",
+        241110,
+        "D_3ADD6"
+      ],
+      [
+        ".rel.main",
+        2147498180,
+        "R_MIPS_LO16",
+        241110,
+        "D_3ADD6"
+      ],
+      [
+        ".rel.main",
+        2147498192,
+        "R_MIPS_LO16",
+        241110,
+        "D_3ADD6"
+      ]
+    ]
+  }
+}

@@ -1,0 +1,42 @@
+{
+  "date": "2026-11-24",
+  "base": "4efacadb87c1d3f14fc082959e280325ccec5185",
+  "command": "CC='gcc -no-pie' python3 -m decomp.local_ci",
+  "exit_code": 0,
+  "status": "PASS",
+  "python_suites": [
+    {
+      "tests": 504,
+      "skipped": 3,
+      "seconds": 81.906
+    },
+    {
+      "tests": 351,
+      "skipped": 0,
+      "seconds": 28.985
+    },
+    {
+      "tests": 7,
+      "skipped": 0,
+      "seconds": 0.002
+    }
+  ],
+  "configured_sanitizers": "PASS",
+  "promotion_integrity": {
+    "usa": "PASS",
+    "japan": "PASS"
+  },
+  "host_semantic_cases": {
+    "usa": 66051,
+    "japan": 70400,
+    "compilers": [
+      "GCC ASan/UBSan",
+      "Clang ASan/UBSan"
+    ]
+  },
+  "native_g2": "separately PASS in both regional G2 reports",
+  "gameplay": "NOT_RUN",
+  "initial_ci_failures": "Stale historical test projections corrected; complete rerun exit 0",
+  "usa_matching_c": 2324,
+  "japan_matching_c": 2551
+}

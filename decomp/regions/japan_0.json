@@ -1192,5 +1192,19 @@
     "source_manifest": "decomp/regions/japan_0_cright6_2534.json",
     "proof": "decomp/results/japan_0_2534_cright6_g2_20261124.json",
     "inventory": "decomp/results/japan_0_2534_cright6_inventory_20261124.json"
+  },
+  "transition17_promotion": {
+    "format": "goemon-transition-state-original-g2-v1",
+    "status": "PASSED_G2_LOCAL",
+    "base_original_C": 2534,
+    "new_original_C": 17,
+    "accepted_original_C": 2551,
+    "accepted_original_bytes": 139460,
+    "asm_remaining": 4825,
+    "canonical_semantic_relocations": 80655,
+    "full_original_elf_identities": 7376,
+    "source_manifest": "decomp/regions/japan_0_transition17_2551.json",
+    "proof": "decomp/results/japan_0_2551_transition17_g2_20261124.json",
+    "inventory": "decomp/results/japan_0_2551_transition17_inventory_20261124.json"
   }
 }
