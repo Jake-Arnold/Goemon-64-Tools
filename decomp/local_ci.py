@@ -428,6 +428,16 @@ def build_steps(host_binary: Path, *, quick: bool = False):
                     '-I'+str(batch/region),*[str(p) for p in sources],'-o',str(binary)]),
                 ('Transition '+region+' actual-source ASan/UBSan regression',[str(binary)]),
             ])
+    if not quick:
+        final=ROOT/'decomp/research/transition_final_20261124'
+        binary=host_binary.with_name('transition-usa-final-host')
+        steps.extend([
+            ('USA final transition exact-source ASan/UBSan build',shlex.split(os.environ.get('CC','cc'))+[
+                '-std=c99','-O1','-g','-fsanitize=address,undefined','-fno-sanitize-recover=all',
+                '-fno-omit-frame-pointer','-no-pie','-I'+str(final/'host'),'-I'+str(final),
+                str(ROOT/'decomp/research/transition_state_20261124/usa/454c.c'),str(final/'arg_s32_add.c'),str(final/'host/test_transition_arg.c'),'-o',str(binary)]),
+            ('USA final transition exact-source ASan/UBSan regression',[str(binary)]),
+        ])
     steps.append(('Transition Japan source/G2/inventory validation',[sys.executable,'-m','decomp.transition_promotion']))
     return steps
 
