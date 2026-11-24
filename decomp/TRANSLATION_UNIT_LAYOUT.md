@@ -23,4 +23,6 @@ No fresh private native compilation or ROM verification was performed for this n
 4. Recompile consolidated units with pinned native IDO/flags and independently verify all affected functions, original extents, section layout, symbolic relocations, and compiler negative controls. Require fresh full original-ROM G2, ELF/global identities, semantic relocations, strict inventory, promotion integrity and the required full hosted regression before merging any source/build changes. If unsuccessful, retain the existing verified layout and record the blocker. Never weaken gates or use synthetic padding/instruction patches to claim a match.
 5. Track matching functions/bytes, fully reconstructed inferred translation units, and source-layout fidelity separately. Do not conflate an upstream Splat guess, a matching synthetic object, or a fully matching reconstructed unit with a proven historical file boundary. No double counting or forced mass regrouping.
 
+Binding workflow references: root AGENTS.md, executor protocol and autonomous decomp skill. Apply this strategy without weakening existing proof requirements.
+
 See [manifest](manifest.json), [verifier](verify.py), [compiler ledger](COMPILER_QUIRKS.md), [executor protocol](plans/EXECUTOR_PROTOCOL.md) and [continuation](CONTINUE.md).

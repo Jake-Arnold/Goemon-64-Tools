@@ -1,0 +1,1817 @@
+[
+  {
+    "region": "japan_0",
+    "name": "func_8021961C_682D0C",
+    "pr": 199,
+    "git_blob": "9efd051e94b32457055edb00bbf560ba6fe1550d",
+    "source_sha256": "54fe4a9ea0351c116c048b5b290645a74e5d24fad9e9a568780e3650c2f5b164",
+    "rom_offset": 6827276,
+    "vma": 2149684764,
+    "original_bytes": 168,
+    "code_sha256": "64ac1518ddfe547bb1cf927ef94fbac01c67b42a656998fd37a3b147b06cd57f",
+    "owner": "682300.s",
+    "source": "research/consolidated42_20261124/japan_0/func_8021961C_682D0C.c",
+    "status": "ISOLATED_EXACT",
+    "reference_extent": [
+      [
+        0,
+        168
+      ]
+    ],
+    "relocation_count": 10,
+    "trials": [
+      {
+        "variant": "source",
+        "source_sha256": "54fe4a9ea0351c116c048b5b290645a74e5d24fad9e9a568780e3650c2f5b164",
+        "compiler_quirk_outcome": "NO_NEW_COMPILER_FINDING",
+        "ledger_sha256": "7a436ad8aba39e432374e10fb4834d1db3ec8e9cbb9c5fcffb061c855a558362",
+        "flags": [
+          "-c",
+          "-G",
+          "0",
+          "-non_shared",
+          "-Xfullwarn",
+          "-Xcpluscomm",
+          "-Iinclude",
+          "-Ilibultra/include",
+          "-Ilibultra/include/PR",
+          "-Isrc",
+          "-I.",
+          "-Wab,-r4300_mul",
+          "-woff",
+          "649,838,712",
+          "-D_LANGUAGE_C",
+          "-D_FINALROM",
+          "-DF3DEX_GBI",
+          "-D__sgi",
+          "-DNDEBUG",
+          "-O2",
+          "-mips2"
+        ],
+        "compiler_exit": 0,
+        "status": "EXACT",
+        "size": [
+          [
+            0,
+            168
+          ]
+        ],
+        "first_word_difference": null,
+        "reference_relocation_count": 10,
+        "native_relocation_count": 10,
+        "first_relocation_difference": null,
+        "text_sha256": "8eff7a53a7fe77d5c089356af2ba064408026f157ad9e7ccb8ece10f16ac90e6",
+        "reference_sha256": "8eff7a53a7fe77d5c089356af2ba064408026f157ad9e7ccb8ece10f16ac90e6"
+      },
+      {
+        "variant": "negative",
+        "source_sha256": "e58b6836301c92d99044dcbff5e8b0ae49f5914d46404e63d9b4b0014bc18396",
+        "compiler_quirk_outcome": "NO_NEW_COMPILER_FINDING",
+        "ledger_sha256": "7a436ad8aba39e432374e10fb4834d1db3ec8e9cbb9c5fcffb061c855a558362",
+        "flags": [
+          "-c",
+          "-G",
+          "0",
+          "-non_shared",
+          "-Xfullwarn",
+          "-Xcpluscomm",
+          "-Iinclude",
+          "-Ilibultra/include",
+          "-Ilibultra/include/PR",
+          "-Isrc",
+          "-I.",
+          "-Wab,-r4300_mul",
+          "-woff",
+          "649,838,712",
+          "-D_LANGUAGE_C",
+          "-D_FINALROM",
+          "-DF3DEX_GBI",
+          "-D__sgi",
+          "-DNDEBUG",
+          "-O2",
+          "-mips2"
+        ],
+        "compiler_exit": 0,
+        "status": "FAILED_NATIVE",
+        "size": [
+          [
+            0,
+            176
+          ]
+        ],
+        "first_word_difference": 16,
+        "reference_relocation_count": 10,
+        "native_relocation_count": 10,
+        "first_relocation_difference": {
+          "removed": [
+            [
+              16,
+              "R_MIPS_HI16",
+              "func_80219580_682C70"
+            ],
+            [
+              24,
+              "R_MIPS_LO16",
+              "func_80219580_682C70"
+            ],
+            [
+              28,
+              "R_MIPS_26",
+              "func_80034A78_35678"
+            ]
+          ],
+          "added": [
+            [
+              20,
+              "R_MIPS_HI16",
+              "func_80219580_682C70"
+            ],
+            [
+              32,
+              "R_MIPS_LO16",
+              "func_80219580_682C70"
+            ],
+            [
+              36,
+              "R_MIPS_26",
+              "func_80034A78_35678"
+            ]
+          ]
+        },
+        "text_sha256": "afaa8158329ca156a74001cb8569260e4efabf734c6508e6f19f08c409dc9a71",
+        "reference_sha256": "8eff7a53a7fe77d5c089356af2ba064408026f157ad9e7ccb8ece10f16ac90e6"
+      }
+    ],
+    "compiler_quirk_outcome": "NO_NEW_COMPILER_FINDING"
+  },
+  {
+    "region": "japan_0",
+    "name": "func_8021986C_682F5C",
+    "pr": 199,
+    "git_blob": "81238c80c207cb13a9f2facc03052299eb8eee66",
+    "source_sha256": "26083f070f20d1beee50d4fe6331a342d9c413dab3ee05892f44a252b667470f",
+    "rom_offset": 6827868,
+    "vma": 2149685356,
+    "original_bytes": 168,
+    "code_sha256": "87fc98487ca1f3a57c9cc9ef203b50eacd45104d7ff8b5b778352eb3a5274484",
+    "owner": "682300.s",
+    "source": "research/consolidated42_20261124/japan_0/func_8021986C_682F5C.c",
+    "status": "ISOLATED_EXACT",
+    "reference_extent": [
+      [
+        0,
+        168
+      ]
+    ],
+    "relocation_count": 10,
+    "trials": [
+      {
+        "variant": "source",
+        "source_sha256": "26083f070f20d1beee50d4fe6331a342d9c413dab3ee05892f44a252b667470f",
+        "compiler_quirk_outcome": "NO_NEW_COMPILER_FINDING",
+        "ledger_sha256": "7a436ad8aba39e432374e10fb4834d1db3ec8e9cbb9c5fcffb061c855a558362",
+        "flags": [
+          "-c",
+          "-G",
+          "0",
+          "-non_shared",
+          "-Xfullwarn",
+          "-Xcpluscomm",
+          "-Iinclude",
+          "-Ilibultra/include",
+          "-Ilibultra/include/PR",
+          "-Isrc",
+          "-I.",
+          "-Wab,-r4300_mul",
+          "-woff",
+          "649,838,712",
+          "-D_LANGUAGE_C",
+          "-D_FINALROM",
+          "-DF3DEX_GBI",
+          "-D__sgi",
+          "-DNDEBUG",
+          "-O2",
+          "-mips2"
+        ],
+        "compiler_exit": 0,
+        "status": "EXACT",
+        "size": [
+          [
+            0,
+            168
+          ]
+        ],
+        "first_word_difference": null,
+        "reference_relocation_count": 10,
+        "native_relocation_count": 10,
+        "first_relocation_difference": null,
+        "text_sha256": "197284f3a5d7984f38a09ea375a3c8e8646a0c6a17d01d3b542c79d44eee31f2",
+        "reference_sha256": "197284f3a5d7984f38a09ea375a3c8e8646a0c6a17d01d3b542c79d44eee31f2"
+      },
+      {
+        "variant": "negative",
+        "source_sha256": "80a7216fa03bae9f491c6f74a67104e63026e8cef3d3aa503070657328f01144",
+        "compiler_quirk_outcome": "NO_NEW_COMPILER_FINDING",
+        "ledger_sha256": "7a436ad8aba39e432374e10fb4834d1db3ec8e9cbb9c5fcffb061c855a558362",
+        "flags": [
+          "-c",
+          "-G",
+          "0",
+          "-non_shared",
+          "-Xfullwarn",
+          "-Xcpluscomm",
+          "-Iinclude",
+          "-Ilibultra/include",
+          "-Ilibultra/include/PR",
+          "-Isrc",
+          "-I.",
+          "-Wab,-r4300_mul",
+          "-woff",
+          "649,838,712",
+          "-D_LANGUAGE_C",
+          "-D_FINALROM",
+          "-DF3DEX_GBI",
+          "-D__sgi",
+          "-DNDEBUG",
+          "-O2",
+          "-mips2"
+        ],
+        "compiler_exit": 0,
+        "status": "FAILED_NATIVE",
+        "size": [
+          [
+            0,
+            176
+          ]
+        ],
+        "first_word_difference": 16,
+        "reference_relocation_count": 10,
+        "native_relocation_count": 10,
+        "first_relocation_difference": {
+          "removed": [
+            [
+              16,
+              "R_MIPS_HI16",
+              "func_802196C4_682DB4"
+            ],
+            [
+              24,
+              "R_MIPS_LO16",
+              "func_802196C4_682DB4"
+            ],
+            [
+              28,
+              "R_MIPS_26",
+              "func_80034A78_35678"
+            ]
+          ],
+          "added": [
+            [
+              20,
+              "R_MIPS_HI16",
+              "func_802196C4_682DB4"
+            ],
+            [
+              32,
+              "R_MIPS_LO16",
+              "func_802196C4_682DB4"
+            ],
+            [
+              36,
+              "R_MIPS_26",
+              "func_80034A78_35678"
+            ]
+          ]
+        },
+        "text_sha256": "c8e32e008b514e6bbc789c6fc4dc0360de939538c96878437c28845d1139e9ff",
+        "reference_sha256": "197284f3a5d7984f38a09ea375a3c8e8646a0c6a17d01d3b542c79d44eee31f2"
+      }
+    ],
+    "compiler_quirk_outcome": "NO_NEW_COMPILER_FINDING"
+  },
+  {
+    "region": "japan_0",
+    "name": "func_8021C534_685C24",
+    "pr": 199,
+    "git_blob": "c2c22963ef987f4ca39601a69147f5af483f6b90",
+    "source_sha256": "663f1c044091f2f7bd5a18d387ba273f2bffcf0e6c346c88f9bad970b77840d3",
+    "rom_offset": 6839332,
+    "vma": 2149696820,
+    "original_bytes": 168,
+    "code_sha256": "8333a89b72b051e89390c378153e44679d2d979d70fbb810285fcd9cb7bab8a7",
+    "owner": "685A30.s",
+    "source": "research/consolidated42_20261124/japan_0/func_8021C534_685C24.c",
+    "status": "ISOLATED_EXACT",
+    "reference_extent": [
+      [
+        0,
+        168
+      ]
+    ],
+    "relocation_count": 10,
+    "trials": [
+      {
+        "variant": "source",
+        "source_sha256": "663f1c044091f2f7bd5a18d387ba273f2bffcf0e6c346c88f9bad970b77840d3",
+        "compiler_quirk_outcome": "NO_NEW_COMPILER_FINDING",
+        "ledger_sha256": "7a436ad8aba39e432374e10fb4834d1db3ec8e9cbb9c5fcffb061c855a558362",
+        "flags": [
+          "-c",
+          "-G",
+          "0",
+          "-non_shared",
+          "-Xfullwarn",
+          "-Xcpluscomm",
+          "-Iinclude",
+          "-Ilibultra/include",
+          "-Ilibultra/include/PR",
+          "-Isrc",
+          "-I.",
+          "-Wab,-r4300_mul",
+          "-woff",
+          "649,838,712",
+          "-D_LANGUAGE_C",
+          "-D_FINALROM",
+          "-DF3DEX_GBI",
+          "-D__sgi",
+          "-DNDEBUG",
+          "-O2",
+          "-mips2"
+        ],
+        "compiler_exit": 0,
+        "status": "EXACT",
+        "size": [
+          [
+            0,
+            168
+          ]
+        ],
+        "first_word_difference": null,
+        "reference_relocation_count": 10,
+        "native_relocation_count": 10,
+        "first_relocation_difference": null,
+        "text_sha256": "ebd64f10a4c30039653c658356362441fdfc905a1811e522c81bbaef6e1b4bce",
+        "reference_sha256": "ebd64f10a4c30039653c658356362441fdfc905a1811e522c81bbaef6e1b4bce"
+      },
+      {
+        "variant": "negative",
+        "source_sha256": "f53aa1ff286670b4f9a36ce0c4a4d139dc554dd49dcee79a3a7f536cb5a2fa00",
+        "compiler_quirk_outcome": "NO_NEW_COMPILER_FINDING",
+        "ledger_sha256": "7a436ad8aba39e432374e10fb4834d1db3ec8e9cbb9c5fcffb061c855a558362",
+        "flags": [
+          "-c",
+          "-G",
+          "0",
+          "-non_shared",
+          "-Xfullwarn",
+          "-Xcpluscomm",
+          "-Iinclude",
+          "-Ilibultra/include",
+          "-Ilibultra/include/PR",
+          "-Isrc",
+          "-I.",
+          "-Wab,-r4300_mul",
+          "-woff",
+          "649,838,712",
+          "-D_LANGUAGE_C",
+          "-D_FINALROM",
+          "-DF3DEX_GBI",
+          "-D__sgi",
+          "-DNDEBUG",
+          "-O2",
+          "-mips2"
+        ],
+        "compiler_exit": 0,
+        "status": "FAILED_NATIVE",
+        "size": [
+          [
+            0,
+            176
+          ]
+        ],
+        "first_word_difference": 16,
+        "reference_relocation_count": 10,
+        "native_relocation_count": 10,
+        "first_relocation_difference": {
+          "removed": [
+            [
+              16,
+              "R_MIPS_HI16",
+              "func_8021C340_685A30"
+            ],
+            [
+              24,
+              "R_MIPS_LO16",
+              "func_8021C340_685A30"
+            ],
+            [
+              28,
+              "R_MIPS_26",
+              "func_80034A78_35678"
+            ]
+          ],
+          "added": [
+            [
+              20,
+              "R_MIPS_HI16",
+              "func_8021C340_685A30"
+            ],
+            [
+              32,
+              "R_MIPS_LO16",
+              "func_8021C340_685A30"
+            ],
+            [
+              36,
+              "R_MIPS_26",
+              "func_80034A78_35678"
+            ]
+          ]
+        },
+        "text_sha256": "e086f7b67b7afe09e857ee12f8df3c4b4e9091963ad9c7e38063d6b4066453b8",
+        "reference_sha256": "ebd64f10a4c30039653c658356362441fdfc905a1811e522c81bbaef6e1b4bce"
+      }
+    ],
+    "compiler_quirk_outcome": "NO_NEW_COMPILER_FINDING"
+  },
+  {
+    "region": "japan_0",
+    "name": "func_8021C7A0_685E90",
+    "pr": 199,
+    "git_blob": "640eab91609c9fff90a871cc5dcc249134039ba3",
+    "source_sha256": "c6814eab08a88bb1317575f67825930a636353bcae67eb936210984e7e2c9dce",
+    "rom_offset": 6839952,
+    "vma": 2149697440,
+    "original_bytes": 168,
+    "code_sha256": "5347daf4fa08da8432f96aabf6b83a5ae173de9f76e4c565dc45fed66335c01e",
+    "owner": "685A30.s",
+    "source": "research/consolidated42_20261124/japan_0/func_8021C7A0_685E90.c",
+    "status": "ISOLATED_EXACT",
+    "reference_extent": [
+      [
+        0,
+        168
+      ]
+    ],
+    "relocation_count": 10,
+    "trials": [
+      {
+        "variant": "source",
+        "source_sha256": "c6814eab08a88bb1317575f67825930a636353bcae67eb936210984e7e2c9dce",
+        "compiler_quirk_outcome": "NO_NEW_COMPILER_FINDING",
+        "ledger_sha256": "7a436ad8aba39e432374e10fb4834d1db3ec8e9cbb9c5fcffb061c855a558362",
+        "flags": [
+          "-c",
+          "-G",
+          "0",
+          "-non_shared",
+          "-Xfullwarn",
+          "-Xcpluscomm",
+          "-Iinclude",
+          "-Ilibultra/include",
+          "-Ilibultra/include/PR",
+          "-Isrc",
+          "-I.",
+          "-Wab,-r4300_mul",
+          "-woff",
+          "649,838,712",
+          "-D_LANGUAGE_C",
+          "-D_FINALROM",
+          "-DF3DEX_GBI",
+          "-D__sgi",
+          "-DNDEBUG",
+          "-O2",
+          "-mips2"
+        ],
+        "compiler_exit": 0,
+        "status": "EXACT",
+        "size": [
+          [
+            0,
+            168
+          ]
+        ],
+        "first_word_difference": null,
+        "reference_relocation_count": 10,
+        "native_relocation_count": 10,
+        "first_relocation_difference": null,
+        "text_sha256": "355f339a47ab53a7e81e6192b7fb2077341e3cfac862fc88d7c83b920ed64b9d",
+        "reference_sha256": "355f339a47ab53a7e81e6192b7fb2077341e3cfac862fc88d7c83b920ed64b9d"
+      },
+      {
+        "variant": "negative",
+        "source_sha256": "58a2291f5e4e59c88ee191e99fb2b4a13f96d3cc6a02881a5b64b55285df04c0",
+        "compiler_quirk_outcome": "NO_NEW_COMPILER_FINDING",
+        "ledger_sha256": "7a436ad8aba39e432374e10fb4834d1db3ec8e9cbb9c5fcffb061c855a558362",
+        "flags": [
+          "-c",
+          "-G",
+          "0",
+          "-non_shared",
+          "-Xfullwarn",
+          "-Xcpluscomm",
+          "-Iinclude",
+          "-Ilibultra/include",
+          "-Ilibultra/include/PR",
+          "-Isrc",
+          "-I.",
+          "-Wab,-r4300_mul",
+          "-woff",
+          "649,838,712",
+          "-D_LANGUAGE_C",
+          "-D_FINALROM",
+          "-DF3DEX_GBI",
+          "-D__sgi",
+          "-DNDEBUG",
+          "-O2",
+          "-mips2"
+        ],
+        "compiler_exit": 0,
+        "status": "FAILED_NATIVE",
+        "size": [
+          [
+            0,
+            176
+          ]
+        ],
+        "first_word_difference": 16,
+        "reference_relocation_count": 10,
+        "native_relocation_count": 10,
+        "first_relocation_difference": {
+          "removed": [
+            [
+              16,
+              "R_MIPS_HI16",
+              "func_8021C5DC_685CCC"
+            ],
+            [
+              24,
+              "R_MIPS_LO16",
+              "func_8021C5DC_685CCC"
+            ],
+            [
+              28,
+              "R_MIPS_26",
+              "func_80034A78_35678"
+            ]
+          ],
+          "added": [
+            [
+              20,
+              "R_MIPS_HI16",
+              "func_8021C5DC_685CCC"
+            ],
+            [
+              32,
+              "R_MIPS_LO16",
+              "func_8021C5DC_685CCC"
+            ],
+            [
+              36,
+              "R_MIPS_26",
+              "func_80034A78_35678"
+            ]
+          ]
+        },
+        "text_sha256": "d6f19b0274b06a14430cbd0471839a6d7bd2e561132d2501db9c11de77483291",
+        "reference_sha256": "355f339a47ab53a7e81e6192b7fb2077341e3cfac862fc88d7c83b920ed64b9d"
+      }
+    ],
+    "compiler_quirk_outcome": "NO_NEW_COMPILER_FINDING"
+  },
+  {
+    "region": "japan_0",
+    "name": "func_8021CA44_686134",
+    "pr": 199,
+    "git_blob": "92e9120db68be9f3fd0333dc1e107da44045383f",
+    "source_sha256": "45c437fce2e1ccfa783b3149ec54596e7ac7cd078f1684d5b90359aa4afe6c8c",
+    "rom_offset": 6840628,
+    "vma": 2149698116,
+    "original_bytes": 168,
+    "code_sha256": "7ce81b434984f586b03c58b6c203bd4e45f42b2b8dd148baed09e436b0296605",
+    "owner": "685A30.s",
+    "source": "research/consolidated42_20261124/japan_0/func_8021CA44_686134.c",
+    "status": "ISOLATED_EXACT",
+    "reference_extent": [
+      [
+        0,
+        168
+      ]
+    ],
+    "relocation_count": 10,
+    "trials": [
+      {
+        "variant": "source",
+        "source_sha256": "45c437fce2e1ccfa783b3149ec54596e7ac7cd078f1684d5b90359aa4afe6c8c",
+        "compiler_quirk_outcome": "NO_NEW_COMPILER_FINDING",
+        "ledger_sha256": "7a436ad8aba39e432374e10fb4834d1db3ec8e9cbb9c5fcffb061c855a558362",
+        "flags": [
+          "-c",
+          "-G",
+          "0",
+          "-non_shared",
+          "-Xfullwarn",
+          "-Xcpluscomm",
+          "-Iinclude",
+          "-Ilibultra/include",
+          "-Ilibultra/include/PR",
+          "-Isrc",
+          "-I.",
+          "-Wab,-r4300_mul",
+          "-woff",
+          "649,838,712",
+          "-D_LANGUAGE_C",
+          "-D_FINALROM",
+          "-DF3DEX_GBI",
+          "-D__sgi",
+          "-DNDEBUG",
+          "-O2",
+          "-mips2"
+        ],
+        "compiler_exit": 0,
+        "status": "EXACT",
+        "size": [
+          [
+            0,
+            168
+          ]
+        ],
+        "first_word_difference": null,
+        "reference_relocation_count": 10,
+        "native_relocation_count": 10,
+        "first_relocation_difference": null,
+        "text_sha256": "af4f3a2b2206ee1aa2363ac02d323641e3450b3970d6620ecacfbbde8fa4ac91",
+        "reference_sha256": "af4f3a2b2206ee1aa2363ac02d323641e3450b3970d6620ecacfbbde8fa4ac91"
+      },
+      {
+        "variant": "negative",
+        "source_sha256": "2248b82dbd9228c09f94f3782761234e942e4d684ccf7bf482047eb3c48ee2b1",
+        "compiler_quirk_outcome": "NO_NEW_COMPILER_FINDING",
+        "ledger_sha256": "7a436ad8aba39e432374e10fb4834d1db3ec8e9cbb9c5fcffb061c855a558362",
+        "flags": [
+          "-c",
+          "-G",
+          "0",
+          "-non_shared",
+          "-Xfullwarn",
+          "-Xcpluscomm",
+          "-Iinclude",
+          "-Ilibultra/include",
+          "-Ilibultra/include/PR",
+          "-Isrc",
+          "-I.",
+          "-Wab,-r4300_mul",
+          "-woff",
+          "649,838,712",
+          "-D_LANGUAGE_C",
+          "-D_FINALROM",
+          "-DF3DEX_GBI",
+          "-D__sgi",
+          "-DNDEBUG",
+          "-O2",
+          "-mips2"
+        ],
+        "compiler_exit": 0,
+        "status": "FAILED_NATIVE",
+        "size": [
+          [
+            0,
+            176
+          ]
+        ],
+        "first_word_difference": 16,
+        "reference_relocation_count": 10,
+        "native_relocation_count": 10,
+        "first_relocation_difference": {
+          "removed": [
+            [
+              16,
+              "R_MIPS_HI16",
+              "func_8021C848_685F38"
+            ],
+            [
+              24,
+              "R_MIPS_LO16",
+              "func_8021C848_685F38"
+            ],
+            [
+              28,
+              "R_MIPS_26",
+              "func_80034A78_35678"
+            ]
+          ],
+          "added": [
+            [
+              20,
+              "R_MIPS_HI16",
+              "func_8021C848_685F38"
+            ],
+            [
+              32,
+              "R_MIPS_LO16",
+              "func_8021C848_685F38"
+            ],
+            [
+              36,
+              "R_MIPS_26",
+              "func_80034A78_35678"
+            ]
+          ]
+        },
+        "text_sha256": "c0b5379162c5abfd1bd9b2d6ac8112f69083987718b01cba0de4287b7ff2affc",
+        "reference_sha256": "af4f3a2b2206ee1aa2363ac02d323641e3450b3970d6620ecacfbbde8fa4ac91"
+      }
+    ],
+    "compiler_quirk_outcome": "NO_NEW_COMPILER_FINDING"
+  },
+  {
+    "region": "japan_0",
+    "name": "func_8021CC34_686324",
+    "pr": 199,
+    "git_blob": "1237ed973a62f1860809407540476a49ddc407c1",
+    "source_sha256": "cba277f1af31d0d027db33191784d1e43a72f2f721db600b7255eb7ee95567b9",
+    "rom_offset": 6841124,
+    "vma": 2149698612,
+    "original_bytes": 180,
+    "code_sha256": "5fd23a82e7a8b492a25e5560562fc7d11052723c740d46aff29cbcad7d242056",
+    "owner": "685A30.s",
+    "source": "research/consolidated42_20261124/japan_0/func_8021CC34_686324.c",
+    "status": "ISOLATED_EXACT",
+    "reference_extent": [
+      [
+        0,
+        180
+      ]
+    ],
+    "relocation_count": 10,
+    "trials": [
+      {
+        "variant": "source",
+        "source_sha256": "cba277f1af31d0d027db33191784d1e43a72f2f721db600b7255eb7ee95567b9",
+        "compiler_quirk_outcome": "NO_NEW_COMPILER_FINDING",
+        "ledger_sha256": "7a436ad8aba39e432374e10fb4834d1db3ec8e9cbb9c5fcffb061c855a558362",
+        "flags": [
+          "-c",
+          "-G",
+          "0",
+          "-non_shared",
+          "-Xfullwarn",
+          "-Xcpluscomm",
+          "-Iinclude",
+          "-Ilibultra/include",
+          "-Ilibultra/include/PR",
+          "-Isrc",
+          "-I.",
+          "-Wab,-r4300_mul",
+          "-woff",
+          "649,838,712",
+          "-D_LANGUAGE_C",
+          "-D_FINALROM",
+          "-DF3DEX_GBI",
+          "-D__sgi",
+          "-DNDEBUG",
+          "-O2",
+          "-mips2"
+        ],
+        "compiler_exit": 0,
+        "status": "EXACT",
+        "size": [
+          [
+            0,
+            180
+          ]
+        ],
+        "first_word_difference": null,
+        "reference_relocation_count": 10,
+        "native_relocation_count": 10,
+        "first_relocation_difference": null,
+        "text_sha256": "97bac0fc81064f31f5fdb0a023481dc57dc3d38d0ba3901b4613f87f51bf89f7",
+        "reference_sha256": "97bac0fc81064f31f5fdb0a023481dc57dc3d38d0ba3901b4613f87f51bf89f7"
+      },
+      {
+        "variant": "negative",
+        "source_sha256": "690f0fe673417c9fd2c09003d167446ab386fe419e90ff0faf77877d07a77045",
+        "compiler_quirk_outcome": "NO_NEW_COMPILER_FINDING",
+        "ledger_sha256": "7a436ad8aba39e432374e10fb4834d1db3ec8e9cbb9c5fcffb061c855a558362",
+        "flags": [
+          "-c",
+          "-G",
+          "0",
+          "-non_shared",
+          "-Xfullwarn",
+          "-Xcpluscomm",
+          "-Iinclude",
+          "-Ilibultra/include",
+          "-Ilibultra/include/PR",
+          "-Isrc",
+          "-I.",
+          "-Wab,-r4300_mul",
+          "-woff",
+          "649,838,712",
+          "-D_LANGUAGE_C",
+          "-D_FINALROM",
+          "-DF3DEX_GBI",
+          "-D__sgi",
+          "-DNDEBUG",
+          "-O2",
+          "-mips2"
+        ],
+        "compiler_exit": 0,
+        "status": "FAILED_NATIVE",
+        "size": [
+          [
+            0,
+            188
+          ]
+        ],
+        "first_word_difference": 16,
+        "reference_relocation_count": 10,
+        "native_relocation_count": 10,
+        "first_relocation_difference": {
+          "removed": [
+            [
+              16,
+              "R_MIPS_HI16",
+              "func_8021CAEC_6861DC"
+            ],
+            [
+              24,
+              "R_MIPS_LO16",
+              "func_8021CAEC_6861DC"
+            ],
+            [
+              28,
+              "R_MIPS_26",
+              "func_80034A78_35678"
+            ]
+          ],
+          "added": [
+            [
+              20,
+              "R_MIPS_HI16",
+              "func_8021CAEC_6861DC"
+            ],
+            [
+              32,
+              "R_MIPS_LO16",
+              "func_8021CAEC_6861DC"
+            ],
+            [
+              36,
+              "R_MIPS_26",
+              "func_80034A78_35678"
+            ]
+          ]
+        },
+        "text_sha256": "95b8927d24ff6105f68aa2681fea8f368a8c972a48595f4966bb1725c8ff5267",
+        "reference_sha256": "97bac0fc81064f31f5fdb0a023481dc57dc3d38d0ba3901b4613f87f51bf89f7"
+      }
+    ],
+    "compiler_quirk_outcome": "NO_NEW_COMPILER_FINDING"
+  },
+  {
+    "region": "japan_0",
+    "name": "func_8021CDFC_6864EC",
+    "pr": 199,
+    "git_blob": "9f3dc4af4321c9fea9a5c4263460bb0d50863ce9",
+    "source_sha256": "af2f29d81cdd5f36071ec19049bfe19a51124a2b81800e3bdc1270d0fd530815",
+    "rom_offset": 6841580,
+    "vma": 2149699068,
+    "original_bytes": 180,
+    "code_sha256": "f8eeb3d6f847182afc861de1e8d6c20f3d419f5b5709ddaa8f0b9ad6460cf42e",
+    "owner": "685A30.s",
+    "source": "research/consolidated42_20261124/japan_0/func_8021CDFC_6864EC.c",
+    "status": "ISOLATED_EXACT",
+    "reference_extent": [
+      [
+        0,
+        180
+      ]
+    ],
+    "relocation_count": 10,
+    "trials": [
+      {
+        "variant": "source",
+        "source_sha256": "af2f29d81cdd5f36071ec19049bfe19a51124a2b81800e3bdc1270d0fd530815",
+        "compiler_quirk_outcome": "NO_NEW_COMPILER_FINDING",
+        "ledger_sha256": "7a436ad8aba39e432374e10fb4834d1db3ec8e9cbb9c5fcffb061c855a558362",
+        "flags": [
+          "-c",
+          "-G",
+          "0",
+          "-non_shared",
+          "-Xfullwarn",
+          "-Xcpluscomm",
+          "-Iinclude",
+          "-Ilibultra/include",
+          "-Ilibultra/include/PR",
+          "-Isrc",
+          "-I.",
+          "-Wab,-r4300_mul",
+          "-woff",
+          "649,838,712",
+          "-D_LANGUAGE_C",
+          "-D_FINALROM",
+          "-DF3DEX_GBI",
+          "-D__sgi",
+          "-DNDEBUG",
+          "-O2",
+          "-mips2"
+        ],
+        "compiler_exit": 0,
+        "status": "EXACT",
+        "size": [
+          [
+            0,
+            180
+          ]
+        ],
+        "first_word_difference": null,
+        "reference_relocation_count": 10,
+        "native_relocation_count": 10,
+        "first_relocation_difference": null,
+        "text_sha256": "a1577e0d1f09f1baf35bcbe826783c4d51e597042ffdf8365d040aa7d32475d4",
+        "reference_sha256": "a1577e0d1f09f1baf35bcbe826783c4d51e597042ffdf8365d040aa7d32475d4"
+      },
+      {
+        "variant": "negative",
+        "source_sha256": "1807084085869330962b9b42fdc8248ce49b4dbcbff0fa153fe08b80fad7e97b",
+        "compiler_quirk_outcome": "NO_NEW_COMPILER_FINDING",
+        "ledger_sha256": "7a436ad8aba39e432374e10fb4834d1db3ec8e9cbb9c5fcffb061c855a558362",
+        "flags": [
+          "-c",
+          "-G",
+          "0",
+          "-non_shared",
+          "-Xfullwarn",
+          "-Xcpluscomm",
+          "-Iinclude",
+          "-Ilibultra/include",
+          "-Ilibultra/include/PR",
+          "-Isrc",
+          "-I.",
+          "-Wab,-r4300_mul",
+          "-woff",
+          "649,838,712",
+          "-D_LANGUAGE_C",
+          "-D_FINALROM",
+          "-DF3DEX_GBI",
+          "-D__sgi",
+          "-DNDEBUG",
+          "-O2",
+          "-mips2"
+        ],
+        "compiler_exit": 0,
+        "status": "FAILED_NATIVE",
+        "size": [
+          [
+            0,
+            188
+          ]
+        ],
+        "first_word_difference": 16,
+        "reference_relocation_count": 10,
+        "native_relocation_count": 10,
+        "first_relocation_difference": {
+          "removed": [
+            [
+              16,
+              "R_MIPS_HI16",
+              "func_8021CCE8_6863D8"
+            ],
+            [
+              24,
+              "R_MIPS_LO16",
+              "func_8021CCE8_6863D8"
+            ],
+            [
+              28,
+              "R_MIPS_26",
+              "func_80034A78_35678"
+            ]
+          ],
+          "added": [
+            [
+              20,
+              "R_MIPS_HI16",
+              "func_8021CCE8_6863D8"
+            ],
+            [
+              32,
+              "R_MIPS_LO16",
+              "func_8021CCE8_6863D8"
+            ],
+            [
+              36,
+              "R_MIPS_26",
+              "func_80034A78_35678"
+            ]
+          ]
+        },
+        "text_sha256": "144ed3450da4bfba95ab0427470fa25f3d9b3f55efff541e03032c4314d7c010",
+        "reference_sha256": "a1577e0d1f09f1baf35bcbe826783c4d51e597042ffdf8365d040aa7d32475d4"
+      }
+    ],
+    "compiler_quirk_outcome": "NO_NEW_COMPILER_FINDING"
+  },
+  {
+    "region": "japan_0",
+    "name": "func_8021CFC4_6866B4",
+    "pr": 199,
+    "git_blob": "a8aeae4c6213247a6e5567bbdaa59d2d1446b586",
+    "source_sha256": "c52ccb206276b9f02d0a2a140224028f87ad90c3c35c1e64327648f55370fd71",
+    "rom_offset": 6842036,
+    "vma": 2149699524,
+    "original_bytes": 180,
+    "code_sha256": "eee8784e5e544ae249a96653a44ea3de62165b51ed0b0a67b1dba211a892364a",
+    "owner": "685A30.s",
+    "source": "research/consolidated42_20261124/japan_0/func_8021CFC4_6866B4.c",
+    "status": "ISOLATED_EXACT",
+    "reference_extent": [
+      [
+        0,
+        180
+      ]
+    ],
+    "relocation_count": 10,
+    "trials": [
+      {
+        "variant": "source",
+        "source_sha256": "c52ccb206276b9f02d0a2a140224028f87ad90c3c35c1e64327648f55370fd71",
+        "compiler_quirk_outcome": "NO_NEW_COMPILER_FINDING",
+        "ledger_sha256": "7a436ad8aba39e432374e10fb4834d1db3ec8e9cbb9c5fcffb061c855a558362",
+        "flags": [
+          "-c",
+          "-G",
+          "0",
+          "-non_shared",
+          "-Xfullwarn",
+          "-Xcpluscomm",
+          "-Iinclude",
+          "-Ilibultra/include",
+          "-Ilibultra/include/PR",
+          "-Isrc",
+          "-I.",
+          "-Wab,-r4300_mul",
+          "-woff",
+          "649,838,712",
+          "-D_LANGUAGE_C",
+          "-D_FINALROM",
+          "-DF3DEX_GBI",
+          "-D__sgi",
+          "-DNDEBUG",
+          "-O2",
+          "-mips2"
+        ],
+        "compiler_exit": 0,
+        "status": "EXACT",
+        "size": [
+          [
+            0,
+            180
+          ]
+        ],
+        "first_word_difference": null,
+        "reference_relocation_count": 10,
+        "native_relocation_count": 10,
+        "first_relocation_difference": null,
+        "text_sha256": "6e776b58b86eb3ba1da0bd2070afb9818e5adb9daec15d657ae4f34b228c8c9c",
+        "reference_sha256": "6e776b58b86eb3ba1da0bd2070afb9818e5adb9daec15d657ae4f34b228c8c9c"
+      },
+      {
+        "variant": "negative",
+        "source_sha256": "63e0f2f2cd4605589634a1eb58c481968e1f3d068942a3587b2c0da358db9097",
+        "compiler_quirk_outcome": "NO_NEW_COMPILER_FINDING",
+        "ledger_sha256": "7a436ad8aba39e432374e10fb4834d1db3ec8e9cbb9c5fcffb061c855a558362",
+        "flags": [
+          "-c",
+          "-G",
+          "0",
+          "-non_shared",
+          "-Xfullwarn",
+          "-Xcpluscomm",
+          "-Iinclude",
+          "-Ilibultra/include",
+          "-Ilibultra/include/PR",
+          "-Isrc",
+          "-I.",
+          "-Wab,-r4300_mul",
+          "-woff",
+          "649,838,712",
+          "-D_LANGUAGE_C",
+          "-D_FINALROM",
+          "-DF3DEX_GBI",
+          "-D__sgi",
+          "-DNDEBUG",
+          "-O2",
+          "-mips2"
+        ],
+        "compiler_exit": 0,
+        "status": "FAILED_NATIVE",
+        "size": [
+          [
+            0,
+            188
+          ]
+        ],
+        "first_word_difference": 16,
+        "reference_relocation_count": 10,
+        "native_relocation_count": 10,
+        "first_relocation_difference": {
+          "removed": [
+            [
+              16,
+              "R_MIPS_HI16",
+              "func_8021CEB0_6865A0"
+            ],
+            [
+              24,
+              "R_MIPS_LO16",
+              "func_8021CEB0_6865A0"
+            ],
+            [
+              28,
+              "R_MIPS_26",
+              "func_80034A78_35678"
+            ]
+          ],
+          "added": [
+            [
+              20,
+              "R_MIPS_HI16",
+              "func_8021CEB0_6865A0"
+            ],
+            [
+              32,
+              "R_MIPS_LO16",
+              "func_8021CEB0_6865A0"
+            ],
+            [
+              36,
+              "R_MIPS_26",
+              "func_80034A78_35678"
+            ]
+          ]
+        },
+        "text_sha256": "2898203c58222f2cdaf8f28f286e7c2c305344c95f113e02ef0d071b36a87154",
+        "reference_sha256": "6e776b58b86eb3ba1da0bd2070afb9818e5adb9daec15d657ae4f34b228c8c9c"
+      }
+    ],
+    "compiler_quirk_outcome": "NO_NEW_COMPILER_FINDING"
+  },
+  {
+    "region": "japan_0",
+    "name": "func_80217464_680B54",
+    "pr": 199,
+    "git_blob": "3c0c25e4fb24cf26e91ac7dad6ce46ab933dc6e4",
+    "source_sha256": "97784132289d2e86157704584c3bae32eb934815c92994cfb87fb21565f47b71",
+    "rom_offset": 6818644,
+    "vma": 2149676132,
+    "original_bytes": 120,
+    "code_sha256": "dfb23ef38bcaa27df26023b962679d386432343ae0c4dff0cd0be14d8e9a0628",
+    "owner": "680430.s",
+    "source": "research/consolidated42_20261124/japan_0/func_80217464_680B54.c",
+    "status": "ISOLATED_EXACT",
+    "reference_extent": [
+      [
+        0,
+        120
+      ]
+    ],
+    "relocation_count": 5,
+    "trials": [
+      {
+        "variant": "source",
+        "source_sha256": "97784132289d2e86157704584c3bae32eb934815c92994cfb87fb21565f47b71",
+        "compiler_quirk_outcome": "NO_NEW_COMPILER_FINDING",
+        "ledger_sha256": "7a436ad8aba39e432374e10fb4834d1db3ec8e9cbb9c5fcffb061c855a558362",
+        "flags": [
+          "-c",
+          "-G",
+          "0",
+          "-non_shared",
+          "-Xfullwarn",
+          "-Xcpluscomm",
+          "-Iinclude",
+          "-Ilibultra/include",
+          "-Ilibultra/include/PR",
+          "-Isrc",
+          "-I.",
+          "-Wab,-r4300_mul",
+          "-woff",
+          "649,838,712",
+          "-D_LANGUAGE_C",
+          "-D_FINALROM",
+          "-DF3DEX_GBI",
+          "-D__sgi",
+          "-DNDEBUG",
+          "-O2",
+          "-mips2"
+        ],
+        "compiler_exit": 0,
+        "status": "EXACT",
+        "size": [
+          [
+            0,
+            120
+          ]
+        ],
+        "first_word_difference": null,
+        "reference_relocation_count": 5,
+        "native_relocation_count": 5,
+        "first_relocation_difference": null,
+        "text_sha256": "3a8ff336d392e4491bf8d1ce7f52ec05459bb89cd64361f64fe62289c541a9c7",
+        "reference_sha256": "3a8ff336d392e4491bf8d1ce7f52ec05459bb89cd64361f64fe62289c541a9c7"
+      },
+      {
+        "variant": "negative",
+        "source_sha256": "bfa33cb5a1a11500283de9d1177140051ad61bc260df1213ef40e4a3a2f1a302",
+        "compiler_quirk_outcome": "NO_NEW_COMPILER_FINDING",
+        "ledger_sha256": "7a436ad8aba39e432374e10fb4834d1db3ec8e9cbb9c5fcffb061c855a558362",
+        "flags": [
+          "-c",
+          "-G",
+          "0",
+          "-non_shared",
+          "-Xfullwarn",
+          "-Xcpluscomm",
+          "-Iinclude",
+          "-Ilibultra/include",
+          "-Ilibultra/include/PR",
+          "-Isrc",
+          "-I.",
+          "-Wab,-r4300_mul",
+          "-woff",
+          "649,838,712",
+          "-D_LANGUAGE_C",
+          "-D_FINALROM",
+          "-DF3DEX_GBI",
+          "-D__sgi",
+          "-DNDEBUG",
+          "-O2",
+          "-mips2"
+        ],
+        "compiler_exit": 0,
+        "status": "FAILED_NATIVE",
+        "size": [
+          [
+            0,
+            128
+          ]
+        ],
+        "first_word_difference": 0,
+        "reference_relocation_count": 5,
+        "native_relocation_count": 5,
+        "first_relocation_difference": {
+          "removed": [
+            [
+              16,
+              "R_MIPS_HI16",
+              "func_80216D40_680430"
+            ],
+            [
+              24,
+              "R_MIPS_LO16",
+              "func_80216D40_680430"
+            ],
+            [
+              28,
+              "R_MIPS_26",
+              "func_80034A78_35678"
+            ]
+          ],
+          "added": [
+            [
+              20,
+              "R_MIPS_HI16",
+              "func_80216D40_680430"
+            ],
+            [
+              32,
+              "R_MIPS_LO16",
+              "func_80216D40_680430"
+            ],
+            [
+              36,
+              "R_MIPS_26",
+              "func_80034A78_35678"
+            ]
+          ]
+        },
+        "text_sha256": "ab5a4314defb4499b5869b65bea4edcad69f00d03d08b82c86fe4aa350a07148",
+        "reference_sha256": "3a8ff336d392e4491bf8d1ce7f52ec05459bb89cd64361f64fe62289c541a9c7"
+      }
+    ],
+    "compiler_quirk_outcome": "NO_NEW_COMPILER_FINDING"
+  },
+  {
+    "region": "japan_0",
+    "name": "func_8021958C_682C7C",
+    "pr": 199,
+    "git_blob": "0bcbb91a7040976021f3f23ceefa8af3e4010070",
+    "source_sha256": "34526847f4039a7e425a694dfc890c140bb6bfea9307ad5d97c5faa7ff080eed",
+    "rom_offset": 6827132,
+    "vma": 2149684620,
+    "original_bytes": 144,
+    "code_sha256": "b31a069e86bf58ee40b00c08b46c799661a89a1c7669c9a3a9f3e7cc4eb1913a",
+    "owner": "682300.s",
+    "source": "research/consolidated42_20261124/japan_0/func_8021958C_682C7C.c",
+    "status": "ISOLATED_EXACT",
+    "reference_extent": [
+      [
+        0,
+        144
+      ]
+    ],
+    "relocation_count": 0,
+    "trials": [
+      {
+        "variant": "source",
+        "source_sha256": "34526847f4039a7e425a694dfc890c140bb6bfea9307ad5d97c5faa7ff080eed",
+        "compiler_quirk_outcome": "NO_NEW_COMPILER_FINDING",
+        "ledger_sha256": "7a436ad8aba39e432374e10fb4834d1db3ec8e9cbb9c5fcffb061c855a558362",
+        "flags": [
+          "-c",
+          "-G",
+          "0",
+          "-non_shared",
+          "-Xfullwarn",
+          "-Xcpluscomm",
+          "-Iinclude",
+          "-Ilibultra/include",
+          "-Ilibultra/include/PR",
+          "-Isrc",
+          "-I.",
+          "-Wab,-r4300_mul",
+          "-woff",
+          "649,838,712",
+          "-D_LANGUAGE_C",
+          "-D_FINALROM",
+          "-DF3DEX_GBI",
+          "-D__sgi",
+          "-DNDEBUG",
+          "-O2",
+          "-mips2"
+        ],
+        "compiler_exit": 0,
+        "status": "EXACT",
+        "size": [
+          [
+            0,
+            144
+          ]
+        ],
+        "first_word_difference": null,
+        "reference_relocation_count": 0,
+        "native_relocation_count": 0,
+        "first_relocation_difference": null,
+        "text_sha256": "b31a069e86bf58ee40b00c08b46c799661a89a1c7669c9a3a9f3e7cc4eb1913a",
+        "reference_sha256": "b31a069e86bf58ee40b00c08b46c799661a89a1c7669c9a3a9f3e7cc4eb1913a"
+      },
+      {
+        "variant": "negative",
+        "source_sha256": "de027ec938686d6fc69f927c57dd4b2026ed709b182afbae93b93baf980b41e2",
+        "compiler_quirk_outcome": "NO_NEW_COMPILER_FINDING",
+        "ledger_sha256": "7a436ad8aba39e432374e10fb4834d1db3ec8e9cbb9c5fcffb061c855a558362",
+        "flags": [
+          "-c",
+          "-G",
+          "0",
+          "-non_shared",
+          "-Xfullwarn",
+          "-Xcpluscomm",
+          "-Iinclude",
+          "-Ilibultra/include",
+          "-Ilibultra/include/PR",
+          "-Isrc",
+          "-I.",
+          "-Wab,-r4300_mul",
+          "-woff",
+          "649,838,712",
+          "-D_LANGUAGE_C",
+          "-D_FINALROM",
+          "-DF3DEX_GBI",
+          "-D__sgi",
+          "-DNDEBUG",
+          "-O2",
+          "-mips2"
+        ],
+        "compiler_exit": 0,
+        "status": "FAILED_NATIVE",
+        "size": [
+          [
+            0,
+            156
+          ]
+        ],
+        "first_word_difference": 0,
+        "reference_relocation_count": 0,
+        "native_relocation_count": 0,
+        "first_relocation_difference": null,
+        "text_sha256": "7c482c46ff282c30dfb2b45c3b4eec9f4dfd0db38dddf0623c7d18299e356b7b",
+        "reference_sha256": "b31a069e86bf58ee40b00c08b46c799661a89a1c7669c9a3a9f3e7cc4eb1913a"
+      }
+    ],
+    "compiler_quirk_outcome": "NO_NEW_COMPILER_FINDING"
+  },
+  {
+    "region": "japan_0",
+    "name": "func_8021978C_682E7C",
+    "pr": 199,
+    "git_blob": "b4eeca850f25e8231f28fdca18082b4485ebb6e9",
+    "source_sha256": "5e6457c9a222b3b61c175a704ff925c7828855e18ec63e4df4b00b59368cd921",
+    "rom_offset": 6827644,
+    "vma": 2149685132,
+    "original_bytes": 144,
+    "code_sha256": "b31a069e86bf58ee40b00c08b46c799661a89a1c7669c9a3a9f3e7cc4eb1913a",
+    "owner": "682300.s",
+    "source": "research/consolidated42_20261124/japan_0/func_8021978C_682E7C.c",
+    "status": "ISOLATED_EXACT",
+    "reference_extent": [
+      [
+        0,
+        144
+      ]
+    ],
+    "relocation_count": 0,
+    "trials": [
+      {
+        "variant": "source",
+        "source_sha256": "5e6457c9a222b3b61c175a704ff925c7828855e18ec63e4df4b00b59368cd921",
+        "compiler_quirk_outcome": "NO_NEW_COMPILER_FINDING",
+        "ledger_sha256": "7a436ad8aba39e432374e10fb4834d1db3ec8e9cbb9c5fcffb061c855a558362",
+        "flags": [
+          "-c",
+          "-G",
+          "0",
+          "-non_shared",
+          "-Xfullwarn",
+          "-Xcpluscomm",
+          "-Iinclude",
+          "-Ilibultra/include",
+          "-Ilibultra/include/PR",
+          "-Isrc",
+          "-I.",
+          "-Wab,-r4300_mul",
+          "-woff",
+          "649,838,712",
+          "-D_LANGUAGE_C",
+          "-D_FINALROM",
+          "-DF3DEX_GBI",
+          "-D__sgi",
+          "-DNDEBUG",
+          "-O2",
+          "-mips2"
+        ],
+        "compiler_exit": 0,
+        "status": "EXACT",
+        "size": [
+          [
+            0,
+            144
+          ]
+        ],
+        "first_word_difference": null,
+        "reference_relocation_count": 0,
+        "native_relocation_count": 0,
+        "first_relocation_difference": null,
+        "text_sha256": "b31a069e86bf58ee40b00c08b46c799661a89a1c7669c9a3a9f3e7cc4eb1913a",
+        "reference_sha256": "b31a069e86bf58ee40b00c08b46c799661a89a1c7669c9a3a9f3e7cc4eb1913a"
+      },
+      {
+        "variant": "negative",
+        "source_sha256": "511c213a973950276933657717e9d44d61b553fa80ab07af305bf55536f5b93d",
+        "compiler_quirk_outcome": "NO_NEW_COMPILER_FINDING",
+        "ledger_sha256": "7a436ad8aba39e432374e10fb4834d1db3ec8e9cbb9c5fcffb061c855a558362",
+        "flags": [
+          "-c",
+          "-G",
+          "0",
+          "-non_shared",
+          "-Xfullwarn",
+          "-Xcpluscomm",
+          "-Iinclude",
+          "-Ilibultra/include",
+          "-Ilibultra/include/PR",
+          "-Isrc",
+          "-I.",
+          "-Wab,-r4300_mul",
+          "-woff",
+          "649,838,712",
+          "-D_LANGUAGE_C",
+          "-D_FINALROM",
+          "-DF3DEX_GBI",
+          "-D__sgi",
+          "-DNDEBUG",
+          "-O2",
+          "-mips2"
+        ],
+        "compiler_exit": 0,
+        "status": "FAILED_NATIVE",
+        "size": [
+          [
+            0,
+            156
+          ]
+        ],
+        "first_word_difference": 0,
+        "reference_relocation_count": 0,
+        "native_relocation_count": 0,
+        "first_relocation_difference": null,
+        "text_sha256": "7c482c46ff282c30dfb2b45c3b4eec9f4dfd0db38dddf0623c7d18299e356b7b",
+        "reference_sha256": "b31a069e86bf58ee40b00c08b46c799661a89a1c7669c9a3a9f3e7cc4eb1913a"
+      }
+    ],
+    "compiler_quirk_outcome": "NO_NEW_COMPILER_FINDING"
+  },
+  {
+    "region": "japan_0",
+    "name": "func_8021C438_685B28",
+    "pr": 199,
+    "git_blob": "f7d29c8e576b6c1dc6e9a2f988da6952bd2e426f",
+    "source_sha256": "043922bdf8248a36d1671f8b1e80c53d72d176787997ca8e3ff67062c1c2a890",
+    "rom_offset": 6839080,
+    "vma": 2149696568,
+    "original_bytes": 168,
+    "code_sha256": "4200036c0211f4375e65479007964fc09a6ef2a5b9389ec68009d67616aaac7c",
+    "owner": "685A30.s",
+    "source": "research/consolidated42_20261124/japan_0/func_8021C438_685B28.c",
+    "status": "ISOLATED_EXACT",
+    "reference_extent": [
+      [
+        0,
+        168
+      ]
+    ],
+    "relocation_count": 10,
+    "trials": [
+      {
+        "variant": "source",
+        "source_sha256": "043922bdf8248a36d1671f8b1e80c53d72d176787997ca8e3ff67062c1c2a890",
+        "compiler_quirk_outcome": "NO_NEW_COMPILER_FINDING",
+        "ledger_sha256": "7a436ad8aba39e432374e10fb4834d1db3ec8e9cbb9c5fcffb061c855a558362",
+        "flags": [
+          "-c",
+          "-G",
+          "0",
+          "-non_shared",
+          "-Xfullwarn",
+          "-Xcpluscomm",
+          "-Iinclude",
+          "-Ilibultra/include",
+          "-Ilibultra/include/PR",
+          "-Isrc",
+          "-I.",
+          "-Wab,-r4300_mul",
+          "-woff",
+          "649,838,712",
+          "-D_LANGUAGE_C",
+          "-D_FINALROM",
+          "-DF3DEX_GBI",
+          "-D__sgi",
+          "-DNDEBUG",
+          "-O2",
+          "-mips2"
+        ],
+        "compiler_exit": 0,
+        "status": "EXACT",
+        "size": [
+          [
+            0,
+            168
+          ]
+        ],
+        "first_word_difference": null,
+        "reference_relocation_count": 10,
+        "native_relocation_count": 10,
+        "first_relocation_difference": null,
+        "text_sha256": "5922da5f005329a98a9accce0ef433938670fdae1b8475afef609b836365a979",
+        "reference_sha256": "5922da5f005329a98a9accce0ef433938670fdae1b8475afef609b836365a979"
+      },
+      {
+        "variant": "negative",
+        "source_sha256": "2807374344279d634935bb0000c394f2648fe406e2bca67525cc25983bf8d7f0",
+        "compiler_quirk_outcome": "NO_NEW_COMPILER_FINDING",
+        "ledger_sha256": "7a436ad8aba39e432374e10fb4834d1db3ec8e9cbb9c5fcffb061c855a558362",
+        "flags": [
+          "-c",
+          "-G",
+          "0",
+          "-non_shared",
+          "-Xfullwarn",
+          "-Xcpluscomm",
+          "-Iinclude",
+          "-Ilibultra/include",
+          "-Ilibultra/include/PR",
+          "-Isrc",
+          "-I.",
+          "-Wab,-r4300_mul",
+          "-woff",
+          "649,838,712",
+          "-D_LANGUAGE_C",
+          "-D_FINALROM",
+          "-DF3DEX_GBI",
+          "-D__sgi",
+          "-DNDEBUG",
+          "-O2",
+          "-mips2"
+        ],
+        "compiler_exit": 0,
+        "status": "FAILED_NATIVE",
+        "size": [
+          [
+            0,
+            184
+          ]
+        ],
+        "first_word_difference": 0,
+        "reference_relocation_count": 10,
+        "native_relocation_count": 10,
+        "first_relocation_difference": {
+          "removed": [
+            [
+              44,
+              "R_MIPS_HI16",
+              "D_8022F7F0_698EE0"
+            ],
+            [
+              56,
+              "R_MIPS_LO16",
+              "D_8022F7F0_698EE0"
+            ],
+            [
+              60,
+              "R_MIPS_HI16",
+              "func_080004E8_6B15B8"
+            ]
+          ],
+          "added": [
+            [
+              56,
+              "R_MIPS_HI16",
+              "D_8022F7F0_698EE0"
+            ],
+            [
+              68,
+              "R_MIPS_LO16",
+              "D_8022F7F0_698EE0"
+            ],
+            [
+              72,
+              "R_MIPS_HI16",
+              "func_080004E8_6B15B8"
+            ]
+          ]
+        },
+        "text_sha256": "f9c89742664bf7114d6658fba435598d62e9835a666063f54e4ba1650e8141d8",
+        "reference_sha256": "5922da5f005329a98a9accce0ef433938670fdae1b8475afef609b836365a979"
+      }
+    ],
+    "compiler_quirk_outcome": "NO_NEW_COMPILER_FINDING"
+  },
+  {
+    "region": "japan_0",
+    "name": "func_8021C69C_685D8C",
+    "pr": 199,
+    "git_blob": "691d9ce1aaba4def281c5fbe3aeec35fa73bfbd5",
+    "source_sha256": "9aef160bca6708cd35ea55324d0fbb40d19a26222c451918aab542b43d4c6b09",
+    "rom_offset": 6839692,
+    "vma": 2149697180,
+    "original_bytes": 180,
+    "code_sha256": "1181848ab77cc2db36bf26f21ef08c980016b2e2a7bdfe16d989b31caf8c8144",
+    "owner": "685A30.s",
+    "source": "research/consolidated42_20261124/japan_0/func_8021C69C_685D8C.c",
+    "status": "ISOLATED_EXACT",
+    "reference_extent": [
+      [
+        0,
+        180
+      ]
+    ],
+    "relocation_count": 12,
+    "trials": [
+      {
+        "variant": "source",
+        "source_sha256": "9aef160bca6708cd35ea55324d0fbb40d19a26222c451918aab542b43d4c6b09",
+        "compiler_quirk_outcome": "NO_NEW_COMPILER_FINDING",
+        "ledger_sha256": "7a436ad8aba39e432374e10fb4834d1db3ec8e9cbb9c5fcffb061c855a558362",
+        "flags": [
+          "-c",
+          "-G",
+          "0",
+          "-non_shared",
+          "-Xfullwarn",
+          "-Xcpluscomm",
+          "-Iinclude",
+          "-Ilibultra/include",
+          "-Ilibultra/include/PR",
+          "-Isrc",
+          "-I.",
+          "-Wab,-r4300_mul",
+          "-woff",
+          "649,838,712",
+          "-D_LANGUAGE_C",
+          "-D_FINALROM",
+          "-DF3DEX_GBI",
+          "-D__sgi",
+          "-DNDEBUG",
+          "-O2",
+          "-mips2"
+        ],
+        "compiler_exit": 0,
+        "status": "EXACT",
+        "size": [
+          [
+            0,
+            180
+          ]
+        ],
+        "first_word_difference": null,
+        "reference_relocation_count": 12,
+        "native_relocation_count": 12,
+        "first_relocation_difference": null,
+        "text_sha256": "7359354a0d84e27caff46484c44bfd5d0bfe3be8b7d09462e46e2b3b6100d8fa",
+        "reference_sha256": "7359354a0d84e27caff46484c44bfd5d0bfe3be8b7d09462e46e2b3b6100d8fa"
+      },
+      {
+        "variant": "negative",
+        "source_sha256": "ebe2985a260f523e372bd2ac0a7cd60eeb55ac6c3a47391afa31c71a9f454623",
+        "compiler_quirk_outcome": "NO_NEW_COMPILER_FINDING",
+        "ledger_sha256": "7a436ad8aba39e432374e10fb4834d1db3ec8e9cbb9c5fcffb061c855a558362",
+        "flags": [
+          "-c",
+          "-G",
+          "0",
+          "-non_shared",
+          "-Xfullwarn",
+          "-Xcpluscomm",
+          "-Iinclude",
+          "-Ilibultra/include",
+          "-Ilibultra/include/PR",
+          "-Isrc",
+          "-I.",
+          "-Wab,-r4300_mul",
+          "-woff",
+          "649,838,712",
+          "-D_LANGUAGE_C",
+          "-D_FINALROM",
+          "-DF3DEX_GBI",
+          "-D__sgi",
+          "-DNDEBUG",
+          "-O2",
+          "-mips2"
+        ],
+        "compiler_exit": 0,
+        "status": "FAILED_NATIVE",
+        "size": [
+          [
+            0,
+            196
+          ]
+        ],
+        "first_word_difference": 0,
+        "reference_relocation_count": 12,
+        "native_relocation_count": 12,
+        "first_relocation_difference": {
+          "removed": [
+            [
+              44,
+              "R_MIPS_HI16",
+              "D_8022F804_698EF4"
+            ],
+            [
+              48,
+              "R_MIPS_LO16",
+              "D_8022F804_698EF4"
+            ],
+            [
+              52,
+              "R_MIPS_HI16",
+              "func_08000F74_6B4E74"
+            ]
+          ],
+          "added": [
+            [
+              56,
+              "R_MIPS_HI16",
+              "D_8022F804_698EF4"
+            ],
+            [
+              60,
+              "R_MIPS_LO16",
+              "D_8022F804_698EF4"
+            ],
+            [
+              64,
+              "R_MIPS_HI16",
+              "func_08000F74_6B4E74"
+            ]
+          ]
+        },
+        "text_sha256": "6da7aa17102d7c1b842b9eb600fbdcdead56ddab57450efc3e204c86edb2ca12",
+        "reference_sha256": "7359354a0d84e27caff46484c44bfd5d0bfe3be8b7d09462e46e2b3b6100d8fa"
+      }
+    ],
+    "compiler_quirk_outcome": "NO_NEW_COMPILER_FINDING"
+  }
+]
