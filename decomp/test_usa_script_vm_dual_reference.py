@@ -8,7 +8,7 @@ from decomp.verify import load_manifest,claimed_functions,ROOT
 class VMDualTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        cls.manifest=load_manifest(ROOT/'manifest.json')
+        cls.manifest=load_manifest(ROOT/'results/manifest_2319_before_cright4_20261124.json')
 
     def test_two_disjoint_exact_original_claims(self):
         old=stage.validate_predecessor(self.manifest)

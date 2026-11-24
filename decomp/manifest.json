@@ -1627,5 +1627,8 @@
   },
   "usa_script_vm_dual_reference": {
     "format": "goemon-usa-script-vm-dual-original-reference-v1"
+  },
+  "usa_cright4_promotion": {
+    "format": "goemon-usa-cright4-post2319-v1"
   }
 }

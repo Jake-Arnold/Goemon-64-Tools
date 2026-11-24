@@ -1,5 +1,5 @@
 {
-  "status": "RESEARCH_ONLY_NO_CANONICAL_PROMOTION",
+  "status": "USA_PROMOTION_CANDIDATE_NOT_MERGED_JAPAN_RESEARCH_ONLY",
   "base": "878d8cffdf3baf98a5dfcf4dc6fc5cb5b7ca45d1",
   "source_archive_artifact": 14872623805,
   "upstream": "7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee",
@@ -243,9 +243,9 @@
     "comparator_tests": 7,
     "sanitizer_gates": "PASS"
   },
-  "candidate_canonical_verify": "USA first fresh run: native gate passed, report assembly-list bookkeeping failed; corrected adapter staged locally, no accepted promotion",
-  "candidate_promotion_integrity": "PENDING",
-  "candidate_full_local_ci": "PENDING",
+  "candidate_canonical_verify": "USA PASS exit 0 fresh complete decomp.verify 2323 C, original expanded and retail ROM exact",
+  "candidate_promotion_integrity": "USA PASS exit 0 strict inventory and promotion_integrity",
+  "candidate_full_local_ci": "PENDING corrected complete candidate CI; earlier runs identified historical test projections, no native mismatch",
   "jp2528_replay": "PASS exact pinned canonical predecessor ELF and original ROM; JP6 integrated original ROM/retail/ELF/relocation/global/ownership pass",
   "published_accepted_c": {
     "usa": 2319,

@@ -33,6 +33,8 @@ def audit(root:Path=ROOT)->dict:
         inv=json.loads((root/'results/inventory.json').read_text())
     except (FileNotFoundError,ValueError) as exc:
         return {'status':'FAIL','errors':['Missing/malformed canonical proof/inventory: '+str(exc)]}
+    if manifest.get('usa_cright4_promotion'):
+        return _audit_cright4(root,manifest,proof,inv)
     if manifest.get('usa_script_vm_dual_reference'):
         return _audit_vmdual(root,manifest,proof,inv)
     if manifest.get('usa_script_vm440_promotion'):
@@ -436,6 +438,53 @@ def _audit_vmdual(root,manifest,proof,inv):
         if dated!=p:failures.append('VM dual dated G2 proof mismatch')
     except (FileNotFoundError,ValueError):failures.append('VM dual missing dated G2 proof')
     return {'status':'FAIL' if failures else 'PASS','accepted_C':count,'accepted_original_bytes':size,'remaining_assembly':7376-count-13,'errors':failures,'notice':'Stored dual-reference proof only; fresh G2 and full CI separately required.'}
+
+
+def _audit_cright4(root,manifest,proof,inv):
+    from .verify import load_manifest
+    from . import usa_cright4_promotion as stage
+    errors=[]
+    frozen={
+        'manifest_2319_before_cright4_20261124.json':'91d8d1b7e7192b4e792e6d5cc868227e6d71b7366dc853a510b8b4a821582fd5',
+        'combined_2319_before_cright4_20261124.json':'7e5fa0d4eddf10f6f28b76aa5b16180322b6b69ade91a4f3675b0ce43f25c876',
+        'inventory_2319_before_cright4_20261124.json':'166c0fa060a878845e1dae3252ddc7b2af9c256fac2bd7f1278d6fdd203865e5'}
+    try:
+        for name,h in frozen.items():
+            if hashlib.sha256((root/'results'/name).read_bytes()).hexdigest()!=h:raise ValueError('Historical proof changed: '+name)
+        before=load_manifest(root/'results/manifest_2319_before_cright4_20261124.json')
+        if before!={k:v for k,v in manifest.items() if k!=stage.KEY}:raise ValueError('C-Right4 predecessor manifest changed')
+        oldproof=json.loads((root/'results/combined_2319_before_cright4_20261124.json').read_text())
+        oldinv=json.loads((root/'results/inventory_2319_before_cright4_20261124.json').read_text())
+        errors.extend(_audit_vmdual(root,before,oldproof,oldinv)['errors'])
+        prior=stage.validate_predecessor(manifest)
+    except (ValueError,KeyError,FileNotFoundError) as exc:
+        return {'status':'FAIL','errors':['C-Right4 predecessor disagree: '+str(exc)]}
+    claims=prior+stage.claims();count=len(claims);size=sum(f['size'] for f in claims)
+    c=proof.get('comparison') or {};i=inv.get('summary') or {};p=proof.get(stage.KEY) or {}
+    if proof.get('status')!='matched' or c.get('full_rom_match') is not True or (c.get('matched_functions'),c.get('claimed_functions'),c.get('matched_function_bytes'))!=(count,count,size):errors.append('C-Right4 manifest and full ROM G2 disagree')
+    if (c.get('expected_sha1'),c.get('candidate_sha1'),c.get('rom_size'),inv.get('decompressed_sha1'))!=(ORIGINAL_SHA1,ORIGINAL_SHA1,33554432,ORIGINAL_SHA1):errors.append('C-Right4 original ROM identity mismatch')
+    if (count,size)!=(2323,111736) or (i.get('newly_matching_c'),i.get('current_unmarked_entries'),i.get('remaining_assembly_entries'),i.get('identified_function_entries'),i.get('extra_positive_alias_entries'))!=(count,count+13,7376-count-13,7376,0):errors.append('C-Right4 inventory C count/ownership mismatch')
+    if inv.get('baseline_elf_sha256')!=oldinv.get('baseline_elf_sha256') or inv.get('candidate_elf_sha256')!=stage.NEW_ELF or i.get('function_entry_identity_sha256')!=oldinv['summary']['function_entry_identity_sha256'] or i.get('size_annotation_differences')!=oldinv['summary']['size_annotation_differences']:errors.append('C-Right4 historical ELF identity changed')
+    rows=c.get('functions',[]);oldby={x['name']:x for x in oldproof['comparison']['functions']};newby={x['name']:x for x in rows}
+    expected={(x['name'],x['size'],x['rom_offset'],x.get('vma',x['rom_offset']+0x80000000-0xC00)) for x in claims}
+    try:actual={(x['name'],x['size'],int(x['rom_offset'],16),int(x['guest_address'],16)) for x in rows}
+    except (KeyError,ValueError,TypeError):actual=set()
+    if len(rows)!=count or actual!=expected or any(x.get('matched') is not True or x.get('expected_sha256')!=x.get('candidate_sha256') for x in rows):errors.append('C-Right4 full original function list mismatch')
+    targets=stage.rows('usa');names={f['name'] for f in targets}
+    if set(newby)-set(oldby)!=names or any(newby.get(name)!=row for name,row in oldby.items()):errors.append('C-Right4 earlier function proof changed')
+    oldsources=oldproof['sources_sha256_lf'];sources=proof.get('sources_sha256_lf',{})
+    if any(sources.get(k)!=v for k,v in oldsources.items()) or set(sources)-set(oldsources)!={stage.source_path(f) for f in targets}:errors.append('C-Right4 earlier source proof changed')
+    for f in targets:
+        if newby.get(f['name'],{}).get('expected_sha256')!=f['code_sha256'] or sources.get(stage.source_path(f))!=f['source_sha256'] or f['name'] in proof.get('retained_assembly_functions',[]):errors.append('C-Right4 original source/ownership mismatch '+f['name'])
+    checks={'status':'PASSED_G2_LOCAL','base_c':2319,'accepted_c_after':2323,'added_c':4,'added_original_bytes':728,'accepted_original_bytes_after':111736,'remaining_assembly':5040,'full_rom_match':True,'original_32MiB_ROM_bytes_exact':33554432,'original_rom_sha1':ORIGINAL_SHA1,'retail_rom_exact':True,'original_16MiB_ROM_bytes_exact':16777216,'retail_rom_sha1':stage.RETAIL_SHA,'positive_elf_function_identities_exact':7376,'semantic_relocations_exact':82102,'semantic_relocation_sha256':stage.vmdual.NEW_RELOC,'stable_global_symbols_exact':26714,'predecessor_elf_sha256':stage.vmdual.NEW_ELF,'candidate_elf_sha256':stage.NEW_ELF,'source_manifest_sha256':stage.MANIFEST_SHA,'ownership_exact':True,'new_c_names':sorted(names),'compiler_quirk_outcome':'EXISTING_QUIRK_REPRODUCED'}
+    if any(p.get(k)!=v for k,v in checks.items()):errors.append('C-Right4 ROM/ELF/source/ownership transaction mismatch')
+    fixes=p.get('guarded_metadata_corrections',[])
+    if len(fixes)!=3 or [x.get('symbol') for x in fixes]!=['D_3B03C','D_080019A0_71D420','D_08001710_71D190'] or any(x.get('code_and_relocations_unchanged') is not True for x in fixes[:2]) or fixes[2].get('metadata_byte_offset')!=95641596 or fixes[2].get('pre_sha256')!='63365de21a9f64cbb80439594c5d15d9e9f62840cd1e1021f935e5bd301e16a5' or fixes[2].get('post_sha256')!=stage.NEW_ELF or fixes[0].get('st_info_bytes_changed')!=1 or fixes[0].get('undefined_size')!=0:errors.append('C-Right4 guarded metadata provenance mismatch')
+    try:
+        dated=json.loads((root/'results/usa_cright4_2323_g2_20261124.json').read_text())
+        if dated!=p:errors.append('C-Right4 dated G2 proof mismatch')
+    except (FileNotFoundError,ValueError):errors.append('C-Right4 missing dated G2 proof')
+    return {'status':'FAIL' if errors else 'PASS','accepted_C':count,'accepted_original_bytes':size,'remaining_assembly':7376-count-13,'errors':errors,'notice':'Stored proof only; fresh G2 and full CI separately required.'}
 
 
 def main(argv=None):

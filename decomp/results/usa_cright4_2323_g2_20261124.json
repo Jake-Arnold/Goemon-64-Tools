@@ -1,0 +1,59 @@
+{
+  "status": "PASSED_G2_LOCAL",
+  "base_c": 2319,
+  "accepted_c_after": 2323,
+  "added_c": 4,
+  "added_original_bytes": 728,
+  "accepted_original_bytes_after": 111736,
+  "remaining_assembly": 5040,
+  "full_rom_match": true,
+  "original_32MiB_ROM_bytes_exact": 33554432,
+  "original_rom_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+  "retail_rom_exact": true,
+  "original_16MiB_ROM_bytes_exact": 16777216,
+  "retail_rom_sha1": "df8083a54296b8c151917c5333e1c85f014a2a66",
+  "positive_elf_function_identities_exact": 7376,
+  "semantic_relocations_exact": 82102,
+  "semantic_relocation_sha256": "d5a4088ec689e35bce8f766c400d8ddb8dd2b42662ad30cdf2492ff6d17f8e19",
+  "stable_global_symbols_exact": 26714,
+  "predecessor_elf_sha256": "42a11447a374762135e2bc2e72d185b4efd9e35bee5c91eec071284bfb8bcd1e",
+  "candidate_elf_sha256": "8cc24cf708723517dfdc2efcd4484dc8695961abfaecf0649bee81e7087d1ade",
+  "source_manifest_sha256": "72901ff559c3511062e0c85fb0d1c98800e9d441c7036527a8302bb5e697180e",
+  "guarded_metadata_corrections": [
+    {
+      "symbol": "D_3B03C",
+      "undefined_size": 0,
+      "st_info_bytes_changed": 1,
+      "code_and_relocations_unchanged": true,
+      "source_object_sha256": "400144a1753d47618e453842b90494c43d04ef709208a74a00f3bec8952fda27",
+      "original_provenance_object_sha256": "6ccfb08f0a7242478ecfe12a0fcd3aec76a24f855a928635903a56112a400eb7",
+      "compiler_outcome": "EXISTING_QUIRK_REPRODUCED"
+    },
+    {
+      "symbol": "D_080019A0_71D420",
+      "original_TYPE": "FUNC",
+      "source_split_TYPE": "NOTYPE",
+      "restored_elf_type": "FUNC",
+      "changed_metadata_byte": 95278588,
+      "code_and_relocations_unchanged": true,
+      "sha256_before": "9aee1a9ca2932b5da89b7f59c70440eb3c6b2fbbdef8ab17b8b188107fee4ff1",
+      "sha256_after": "63365de21a9f64cbb80439594c5d15d9e9f62840cd1e1021f935e5bd301e16a5"
+    },
+    {
+      "symbol": "D_08001710_71D190",
+      "metadata_byte_offset": 95641596,
+      "pre_sha256": "63365de21a9f64cbb80439594c5d15d9e9f62840cd1e1021f935e5bd301e16a5",
+      "post_sha256": "8cc24cf708723517dfdc2efcd4484dc8695961abfaecf0649bee81e7087d1ade",
+      "compiler_quirk_outcome": "EXISTING_QUIRK_REPRODUCED"
+    }
+  ],
+  "new_c_names": [
+    "func_8020D2A0_5C8770",
+    "func_8020D6BC_5C8B8C",
+    "func_8020D724_5C8BF4",
+    "func_8020DD78_5C9248"
+  ],
+  "ownership_exact": true,
+  "compiler_quirk_outcome": "EXISTING_QUIRK_REPRODUCED",
+  "gameplay": "NOT_RUN"
+}
