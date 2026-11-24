@@ -35,6 +35,7 @@ _current_load_manifest = load_manifest
 def load_manifest(*args, **kwargs):
     manifest = _current_load_manifest(*args, **kwargs)
     # Isolate historical stage projections from the 2026-11-23 Mini promotions.
+    manifest.pop('usa_consolidated29_promotion', None)
     manifest.pop('overlay_mini_selector_stage', None)
     manifest.pop('overlay_mini10_stage', None)
     manifest.pop('overlay_reconcile108_stage', None)
@@ -1351,6 +1352,9 @@ class DecompVerificationTests(unittest.TestCase):
         if manifest.get('usa_transition_final_promotion') is not None:
             from decomp import transition_final_promotion as tf
             sources.update(tf.source_hashes())
+        if manifest.get('usa_consolidated29_promotion') is not None:
+            from decomp import consolidated_batch_promotion as consolidated
+            sources.update(consolidated.source_hashes())
         self.assertEqual(set(result['sources_sha256_lf']),sources)
         for name in sources:
             patches=[p for p in manifest.get('existing_source_patches', []) if p['source']==name]
