@@ -43,9 +43,10 @@ def runmake(co,r,ld,targets,log,uv="uv",jobs=4):
     with log.open('w') as f:
         subprocess.run(cmd,cwd=co,stdout=f,stderr=subprocess.STDOUT,check=True)
 
-def plan(co,r,selected=None):
+def plan(co,r,selected=None,*,candidates=None):
     rom=original(co,r); ldpath=co/f'.splat/{r}/mnsg.ld';ld=ldpath.read_text()
-    allrows=[c for c in rows(r) if selected is None or c['name'] in selected]
+    allrows=[c for c in (rows(r) if candidates is None else candidates) if selected is None or c['name'] in selected]
+    if any(c['region']!=r for c in allrows):raise ValueError('Wrong regional candidates')
     target={c['name']:c for c in allrows}; owners={}; cache={}; sec=None
     active=[]
     for line in ld.splitlines():
@@ -73,8 +74,8 @@ def plan(co,r,selected=None):
     for name,(own,m) in owners.items():groups[own].append(target[name])
     return rom,ldpath,ld,cache,groups,blocked
 
-def stage(co,r,selected=None):
-    rom,ldpath,ld,cache,groups,blocked=plan(co,r,selected)
+def stage(co,r,selected=None,*,candidates=None):
+    rom,ldpath,ld,cache,groups,blocked=plan(co,r,selected,candidates=candidates)
     out=[];frags=[];parent_records=[];sections=set()
     for i,(own,rs) in enumerate(sorted(groups.items())):
         raw,ms,suffix,section=cache[own];rs.sort(key=lambda c:c['rom_offset']);begin=jp55.word_span(raw[ms[0].start():ms[0].end()])[0]

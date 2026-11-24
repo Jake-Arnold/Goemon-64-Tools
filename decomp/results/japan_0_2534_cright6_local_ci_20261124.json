@@ -1,0 +1,17 @@
+{
+  "status": "PASS_EXIT_0",
+  "command": "CC=\"gcc -no-pie\" python3 -m decomp.local_ci",
+  "base_commit": "02e042d969c382217f4561fffd9cc719523de970",
+  "decomp_tests": 500,
+  "existing_decomp_skips": 3,
+  "verifier_ledger_tests": 351,
+  "comparator_tests": 7,
+  "all_configured_sanitizer_fixtures": "PASS",
+  "canonical_USA_2323_integrity": "PASS",
+  "canonical_JP_2528_predecessor_integrity": "PASS",
+  "candidate_JP_2534_integrity": "PASS",
+  "native_g2_sha256": "d1f99a70a67d0749d9d617d8086608cbbcaab1d0dc9d4d3413a3f14ae7d10eef",
+  "strict_inventory_sha256": "0508b494e2da9e2ca5ac2b67daa2ab9c16e27f2a2d99fa2bf599306fe7c27fa5",
+  "private_ci_log_sha256": "31dedbdc094431878041dab7eb6d81ab147b2e6f3b2b6e071d054c8d9e065cd7",
+  "gameplay": "NOT_RUN"
+}

@@ -412,6 +412,7 @@ def build_steps(host_binary: Path, *, quick: bool = False):
          [sys.executable, "-m", "decomp.promotion_integrity", "--validate"]),
     ])
     steps.append(("Native100 Japan source/G2/inventory validation", [sys.executable, "-m", "decomp.native251_integrity"]))
+    steps.append(("C-Right6 Japan source/G2/inventory validation", [sys.executable, "-m", "decomp.japan_cright6_integrity"]))
     return steps
 
 
