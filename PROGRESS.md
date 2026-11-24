@@ -3802,3 +3802,10 @@ User wrote `0x20` to `0x8015C609` before collecting first battery. After reload 
 - **Tested:** Reviewed the exact remote source and added deterministic unittest coverage. **Tests not executed in this session**: the full authenticated GitHub source checkout is unavailable through the local shell (GitHub DNS resolution fails); the draft remains pending full `python3 -m decomp.local_ci` on a complete checkout. No original-ROM/native G2/gameplay testing claimed.
 - **Remaining:** Review and run full ROM-free CI with the combined current checkout before merging #154. Native C ownership and accepted manifests are unchanged.
 - **Next:** Rebase #154 against merged #149/#150/#153 as needed and repeat the full local CI gate.
+
+## 2026-11-24 — C-Right canonical predecessor follow-up (research only)
+
+
+### Follow-up: both current canonical predecessors replayed
+
+Japan 2528-C predecessor reproduced its pinned ELF SHA-256 08423cd434cbd132e4f5827eb9fedc2e9cf21c5f903577876e509ef0166d094c. All six JP candidates were integrated, with expanded and retail ROM exact, 7376 positive FUNC identities, 80745 canonical relocations, 26393 stable global identities, six newly owned C functions and no regressions. Candidate ELF bac3a17e39eb80c54ab1dfc1a523d060455ab1f91ce0e6e871f242bb77b7b776. USA full verifier ran through its additive C-Right stage and passed native gates, but report generation failed on removal of a name absent from the historical retained-ASM subset. The corrected reporting change is staged locally. The inactive USA stage adapter and pinned source manifest are included; neither accepted regional head nor canonical proof is changed by this checkpoint. Full candidate CI and promotion integrity are still required. Do not merge as a completed promotion.

@@ -215,6 +215,44 @@
     }
   },
   "japan_0": {
+    "reference": "fresh canonical 2528-C",
+    "predecessor_elf_sha256": "08423cd434cbd132e4f5827eb9fedc2e9cf21c5f903577876e509ef0166d094c",
+    "candidate_elf_sha256": "bac3a17e39eb80c54ab1dfc1a523d060455ab1f91ce0e6e871f242bb77b7b776",
+    "expanded_rom_bytes_exact": 33554432,
+    "expanded_sha1": "6f8745fecc3a5e7d4918c7a73353eb0726116ded",
+    "retail_rom_bytes_exact": 16777216,
+    "retail_sha1": "9843ee979b5f6c80f5eda85df0baed9ae7c4e73b",
+    "function_identities_exact": 7376,
+    "semantic_relocations_exact": 80745,
+    "semantic_relocation_sha256": "43a133b21ac2b18d8e1d00f8c4e5718776b001a1f45c54e807dae12165e797c0",
+    "stable_global_identities_exact": 26393,
+    "guarded_metadata_corrections": [
+      "D_3B03C"
+    ],
+    "new_c": 6,
+    "added_original_bytes": 624,
+    "prospective_C": 2534,
+    "prospective_original_bytes": 138028,
+    "prospective_remaining_asm": 4842
+  },
+  "baseline_local_ci": {
+    "exit": 0,
+    "decomp_tests": 489,
+    "skips": 3,
+    "verifier_ledger_tests": 351,
+    "comparator_tests": 7,
+    "sanitizer_gates": "PASS"
+  },
+  "candidate_canonical_verify": "USA first fresh run: native gate passed, report assembly-list bookkeeping failed; corrected adapter staged locally, no accepted promotion",
+  "candidate_promotion_integrity": "PENDING",
+  "candidate_full_local_ci": "PENDING",
+  "jp2528_replay": "PASS exact pinned canonical predecessor ELF and original ROM; JP6 integrated original ROM/retail/ELF/relocation/global/ownership pass",
+  "published_accepted_c": {
+    "usa": 2319,
+    "japan_0": 2528
+  },
+  "source_only_replay_kit_sha256": "ff8f5fd2da70b07fdbea300164cd0a066e0758e3da836f148322712998a51524",
+  "jp_pristine_research": {
     "reference": "pristine all-ASM, NOT JP2528",
     "expanded_rom_bytes_exact": 33554432,
     "expanded_sha1": "6f8745fecc3a5e7d4918c7a73353eb0726116ded",
@@ -229,22 +267,5 @@
     ],
     "new_c": 6,
     "added_original_bytes": 624
-  },
-  "baseline_local_ci": {
-    "exit": 0,
-    "decomp_tests": 489,
-    "skips": 3,
-    "verifier_ledger_tests": 351,
-    "comparator_tests": 7,
-    "sanitizer_gates": "PASS"
-  },
-  "candidate_canonical_verify": "NOT_RUN",
-  "candidate_promotion_integrity": "NOT_RUN",
-  "candidate_full_local_ci": "NOT_RUN",
-  "jp2528_replay": "NOT_RUN",
-  "published_accepted_c": {
-    "usa": 2319,
-    "japan_0": 2528
-  },
-  "source_only_replay_kit_sha256": "ff8f5fd2da70b07fdbea300164cd0a066e0758e3da836f148322712998a51524"
+  }
 }
