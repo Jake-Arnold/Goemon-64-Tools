@@ -20,6 +20,10 @@ A task may remain `BLOCKED` or `RESEARCH_ONLY`. States are NOT interchangeable:
 - `PUBLISHED`: committed status and verification metadata, `PROGRESS.md` updated, remote SHA checked.
 Never update official count, manifest ownership, `results/combined.json` or inventory from any lesser evidence.
 
+## Original translation-unit ownership and consolidation
+
+Follow [the source-layout strategy](../TRANSLATION_UNIT_LAYOUT.md). At target selection, identify both the inferred original owner (with evidence/confidence, or unknown) and the current reconstructed source/object owner. Treat aligned starts, trailing unowned padding, data/rodata boundaries and reciprocal region evidence as corroboration rather than definitive historical proof. Prefer preserving inferred original boundaries in new work; document necessary artificial splits. Never reject an accepted function merely for an artificial split or apply a blanket 16-byte rule to staging objects. Consolidate bounded units separately from new function promotions; reverify every affected sibling, padding, pool, symbol and semantic relocation, then fresh full native G2 and all existing publication gates. Preserve the previous verified layout on failure. Count a layout-only change as zero new matching C.
+
 ## Revised scheduler
 
 Choose each original-address function by live unowned assembly, actual native evidence and real dependencies, not a closed task ID. Prior FAILED_NATIVE/RESEARCH_ONLY investigations can supply research evidence but never a passing native result. Verify source hashes at integration boundaries and record verified C/byte delta, including zero.

@@ -1,3 +1,7 @@
+## 2026-11-24 — original translation-unit layout decision (DOC_ONLY)
+
+- Keep accepted matching functions; do not redo or demote C merely because staging uses artificial source splits. [Original translation-unit layout](TRANSLATION_UNIT_LAYOUT.md) records the 16-byte alignment heuristic, source-level manifest audit and future separate USA/Japan boundary inventory and consolidation workstream. Consolidation is not a new matching-C promotion and requires fresh full native proof if build/source layout changes. No count change; native NOT_RUN.
+
 ## 2026-11-24 — consolidated Japan13 candidate native G2 and strict inventory PASS
 
 - Base `stable/decomp@88c8de3366e1408b2eadd69bcc8d689a2b3d6434`, source archive artifact 14955645548 verified against COMMIT.txt and SHA256SUMS. USA29 was merged in PR #222 with hosted full regression run 45465039299; preserve the published USA 2,354-C manifest, proof and inventory byte-for-byte. Revalidate Japan unchanged canonical 2551-C predecessor source/inventory after that merge.

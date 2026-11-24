@@ -5,7 +5,7 @@ description: "Use when autonomously discovering, native-verifying, and formally 
 
 # Autonomous matching-C decomp
 
-**Base `stable/decomp`, topics `decomp/*`.** Toolkit `stable/toolkit`; `main` and `chatgptweb/decomp` legacy. Read `BRANCHES.md`, Project prompt, `AGENTS.md`, `decomp/CONTINUE.md`, `decomp/plans/EXECUTOR_PROTOCOL.md`, current manifest/proof/inventory and PRs. Fetch live SHA.
+**Base `stable/decomp`, topics `decomp/*`.** Toolkit `stable/toolkit`; `main` and `chatgptweb/decomp` legacy. Read `BRANCHES.md`, Project prompt, `AGENTS.md`, `decomp/CONTINUE.md`, `decomp/TRANSLATION_UNIT_LAYOUT.md`, `decomp/plans/EXECUTOR_PROTOCOL.md`, current manifest/proof/inventory and PRs. Fetch live SHA.
 
 1. Authenticate complete checkout, ROM, upstream and pinned IDO; check region/ROM/VMA/ASM ownership, canonical C and pending PRs.
 2. **Before every native IDO attempt**, read `decomp/COMPILER_QUIRKS.md`; identify relevant verified behaviour. Classify first original/generated mismatch **before variants**; test one-variable bounded workarounds.
