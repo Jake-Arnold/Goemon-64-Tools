@@ -1,0 +1,19 @@
+{
+  "status": "PASS_UNCHANGED_CANONICAL_MANIFESTS_ONLY",
+  "base_commit": "4efacadb87c1d3f14fc082959e280325ccec5185",
+  "command": "CC='gcc -no-pie' python -m decomp.local_ci",
+  "exit_code": 0,
+  "decomp_python_tests": 500,
+  "decomp_skipped": 3,
+  "verifier_ledger_tests": 351,
+  "verifier_skipped": 4,
+  "comparator_tests": 7,
+  "configured_sanitizer_fixtures": "PASS",
+  "usa_accepted": 2323,
+  "japan_accepted": 2534,
+  "new_candidate_canonical_manifest_CI": "NOT_RUN",
+  "new_actual_source_ASan_UBSan_each_compiler": {
+    "usa": 66051,
+    "japan": 70400
+  }
+}

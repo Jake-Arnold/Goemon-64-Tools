@@ -1,3 +1,7 @@
+## 2026-11-24 — transition-state full native G2 research checkpoint
+
+- USA 454C and 17 Japan transition functions (1548 original bytes) pass full independent original-reference ROM, retail ROM, FUNC, stable globals, exact semantic relocation and predecessor-relative readelf inventory comparisons. USA 2324 and Japan 2551 are private research candidates, not accepted counts. Japan relocation delta is exactly 90 synthetic ABS field-offset records (80745 to 80655), USA 4 (82102 to 82098). Prior canonical full local CI passed without manifest changes; final canonical candidate integrity and full local CI still pending. Draft PR #218. See `decomp/research/transition_state_20261124/`.
+
 ## 2026-11-24 — transition-state promotion staging (not accepted)
 
 - Authenticated stable/decomp 4efacadb87c1d3f14fc082959e280325ccec5185, source archive 14906418008 and pinned upstream/IDO. USA 454C full native research replay exact including independent original-assembly offset reference, original 32 MiB/16 MiB ROM, 7376 FUNC identities, 26714 stable globals, 82098 relocations and predecessor-relative strict inventory. Japan 17 candidates / 1432 bytes isolated exact; 4470 alias-free original base expression preserves original symbol provenance. Both host sanitizer suites passed. All canonical ownership remains unchanged pending integrated promotion integrity and full candidate CI. USA 3CF0 unresolved caller interface; Japan 3C90 still nonmatching. See decomp/research/transition_state_20261124/.
