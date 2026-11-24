@@ -1,3 +1,7 @@
+## 2026-11-24 — original translation-unit layout decision (DOC_ONLY)
+
+- Keep accepted matching functions; do not redo or demote C merely because staging uses artificial source splits. [Original translation-unit layout](TRANSLATION_UNIT_LAYOUT.md) records the 16-byte alignment heuristic, source-level manifest audit and future separate USA/Japan boundary inventory and consolidation workstream. Consolidation is not a new matching-C promotion and requires fresh full native proof if build/source layout changes. No count change; native NOT_RUN.
+
 ## 2026-11-24 — consolidated USA29 candidate native G2 and strict inventory PASS
 
 - Verified current CI-policy base `64e5445b5b044cfd1f841b21c23af81f44da5644`, source archive artifact 14952568232. Recovered 29 independently native-matching repository-owned sources across File 18, scheduler/task lifecycle and File 22; 3,372 original bytes. Fresh combined native link of the exact 2325-C predecessor matches 2354 new C / 115,792 bytes / 5,009 ASM, original expanded and retail ROMs, all 7,376 function identities, 26,714 stable globals and 82,080 canonical relocations. Independent assembled references and all 29 negative controls pass, with one guarded original ABS symbol metadata restoration. Strict original-upstream inventory and canonical promotion integrity PASS. No runtime or toolkit work.
