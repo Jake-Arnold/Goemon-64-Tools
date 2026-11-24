@@ -1,0 +1,25 @@
+# C-Right promotion checkpoint — research only
+
+Ten source candidates from #205, #209, #210 and #214, authenticated to live `stable/decomp@878d8cffdf3baf98a5dfcf4dc6fc5cb5b7ca45d1`. Fresh full-flag native IDO reproduces 338/338 instructions and 62/62 per-function named relocations at original VMAs. The #214 filenames were swapped relative to evidence: the store-after-constants source is the actual positive (SHA-256 08da2274…), baseline-labelled file is the negative (ff3cacfd…, 68/73, first +0x3C). Both are preserved here. No new compiler finding.
+
+USA: fresh canonical 2319-C verifier PASS; 4 C / 728 B integrated into that exact predecessor, full expanded and retail ROMs exact; 7376 positive FUNC identities, 82102 semantic relocations and 26714 stable globals exact after guarded one-byte symbol type corrections. Prospective strict inventory 2323 C +13 upstream / 5040 ASM.
+
+JP: 6 C / 624 B integrated in pristine all-ASM original build only; exact expanded/retail ROMs, 7376 FUNC, 80810 pristine relocs and 26393 stable globals. Canonical JP2528 predecessor still needs full replay. A pristine proof is not canonical.
+
+Full baseline local CI exit 0, not candidate CI. Canonical verifier adapter, promotion integrity and candidate full CI NOT_RUN; no canonical manifest, ownership or accepted counts changed. Do not merge this checkpoint as promotion. Preserve prior failed variants as ASM. Full source-only replay ZIP delivered in the originating session (SHA-256 ff8f5fd2da70b07fdbea300164cd0a066e0758e3da836f148322712998a51524); it includes native replay, regional active-owner split/compile/relink, ROM/ELF/global/relocation audit and summary. No ROMs, extracted ASM, ELF objects, game assets or proprietary compiler committed.
+
+
+### Follow-up: both current canonical predecessors replayed
+
+Japan 2528-C predecessor reproduced its pinned ELF SHA-256 08423cd434cbd132e4f5827eb9fedc2e9cf21c5f903577876e509ef0166d094c. All six JP candidates were integrated, with expanded and retail ROM exact, 7376 positive FUNC identities, 80745 canonical relocations, 26393 stable global identities, six newly owned C functions and no regressions. Candidate ELF bac3a17e39eb80c54ab1dfc1a523d060455ab1f91ce0e6e871f242bb77b7b776. USA full verifier ran through its additive C-Right stage and passed native gates, but report generation failed on removal of a name absent from the historical retained-ASM subset. The corrected reporting change is staged locally. The inactive USA stage adapter and pinned source manifest are included; neither accepted regional head nor canonical proof is changed by this checkpoint. Full candidate CI and promotion integrity are still required. Do not merge as a completed promotion.
+
+## 24 November 2026 — USA C-Right4 canonical promotion candidate: fresh G2, strict inventory, integrity PASS; CI/publication pending
+
+- Live authenticated stable/decomp 878d8cffdf3baf98a5dfcf4dc6fc5cb5b7ca45d1. Four USA native matches / 728 original bytes from #209 #210 #214. Fresh full decomp.verify exit 0, 2,323 C / 111,736 original bytes / 5,040 ASM. Original expanded SHA-1 6ea0ed71032ce08fc2745f412d84936382197494 and retail SHA-1 df8083a54296b8c151917c5333e1c85f014a2a66 byte-identical. All 7,376 FUNC, 82,102 canonical semantic relocations, 26,714 stable globals exact; three guarded metadata-only corrections. Strict inventory and promotion_integrity exit 0. Dated G2 and exact frozen predecessor records included. No original instruction or relocation edits. First full verifier native stage passed but report bookkeeping failed; corrected retained-ASM subset handling and reran complete verifier successfully. Historical test projections corrected; full candidate CI not yet certified. Draft PR #216 only, no accepted count changes on stable/decomp.
+- JP2528 canonical predecessor independently rebuilt exactly and six JP C candidates / 624 bytes integrated: 2,534 prospective C, 80,745 canonical relocations, 26,393 globals, exact original expanded and retail ROM. Regional source manifest/inventory/integrity/full CI still required; remains research-only. Official stable counts remain USA2319/JP2528 until merge. No gameplay run. No proprietary inputs/outputs committed.
+
+
+## 24 November 2026 — USA C-Right4 all local promotion gates PASS
+
+- Corrected full candidate `CC="gcc -no-pie" python -m decomp.local_ci` exit 0: 493 decomp tests (three existing skips), 351 verifier/ledger tests, seven comparator tests, all configured actual-source sanitizer fixtures, task registry, USA2323 promotion integrity and unchanged JP2528 native100 integrity. Fresh original-ROM G2 and strict inventory both exit 0. Earlier stale historical test projections fixed against immutable historical manifests; no matching or relocation gate relaxed. CI evidence `decomp/results/usa_cright4_2323_local_ci_20261124.json`. USA 2,323-C ready for reviewed remote PR publication; Japan six matches remain research pending regional manifest, strict inventory, integrity and candidate CI. No game runtime test. No private ROMs, ASM or compiled objects committed.
+

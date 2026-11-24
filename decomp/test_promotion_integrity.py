@@ -14,9 +14,9 @@ class CanonicalPromotionIntegrityTests(unittest.TestCase):
     def test_exact_final_c_claims_and_frozen_original_addresses(self):
         manifest=load_manifest(integrity.ROOT/'manifest.json')
         claims=claimed_functions(manifest)
-        self.assertEqual(len(claims),2319)
-        self.assertEqual(sum(f['size'] for f in claims),111008)
-        self.assertEqual(len({f['name'] for f in claims}),2319)
+        self.assertEqual(len(claims),2323)
+        self.assertEqual(sum(f['size'] for f in claims),111736)
+        self.assertEqual(len({f['name'] for f in claims}),2323)
         self.assertEqual(len(reconcile.fixture()['functions']),108)
         self.assertEqual(reconcile.fixture()['source_ownership_exception'][0]['name'],
                          'func_800108BC_114BC')
@@ -50,7 +50,11 @@ class CanonicalPromotionIntegrityTests(unittest.TestCase):
                               ('results/manifest_2317_before_vmdual_20261123.json',None),
                               ('results/combined_2317_before_vmdual_20261123.json',None),
                               ('results/inventory_2317_before_vmdual_20261123.json',None),
-                              ('results/usa_script_vm_dual_2319_g2_20261123.json',None)]:
+                              ('results/usa_script_vm_dual_2319_g2_20261123.json',None),
+                              ('results/manifest_2319_before_cright4_20261124.json',None),
+                              ('results/combined_2319_before_cright4_20261124.json',None),
+                              ('results/inventory_2319_before_cright4_20261124.json',None),
+                              ('results/usa_cright4_2323_g2_20261124.json',None)]:
             dst=root/path
             src=canonical/path
             if not src.is_file():
@@ -62,10 +66,11 @@ class CanonicalPromotionIntegrityTests(unittest.TestCase):
         audit=integrity.audit()
         self.assertEqual(audit['status'],'PASS',audit['errors'])
         self.assertEqual((audit['accepted_C'],audit['accepted_original_bytes']),
-                         (2319,111008))
+                         (2323,111736))
 
     def test_staged_only_manifest_from_previous_commit_fails_closed(self):
         manifest=json.loads((integrity.ROOT/'manifest.json').read_text())
+        manifest.pop('usa_cright4_promotion')
         manifest.pop('usa_script_vm_dual_reference')
         manifest.pop('usa_script_vm440_promotion')
         manifest.pop('usa_native151_promotion')

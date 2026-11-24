@@ -41,6 +41,7 @@ def load_manifest(*args, **kwargs):
     manifest.pop('overlay_crossregion7_stage', None)
     manifest.pop('overlay_usa_short72_stage', None)
     manifest.pop('usa_script_vm436_promotion', None)
+    manifest.pop('usa_cright4_promotion', None)
     manifest.pop('usa_script_vm_dual_reference', None)
     manifest.pop('usa_script_vm440_promotion', None)
     manifest.pop('usa_native151_promotion', None)
@@ -1339,6 +1340,9 @@ class DecompVerificationTests(unittest.TestCase):
         if manifest.get('usa_script_vm_dual_reference') is not None:
             from decomp import usa_script_vm_dual_reference as vmdual
             sources.update(f['source'] for f in vmdual.TARGETS)
+        if manifest.get('usa_cright4_promotion') is not None:
+            from decomp import usa_cright4_promotion as cright4
+            sources.update(cright4.source_path(f) for f in cright4.rows('usa'))
         self.assertEqual(set(result['sources_sha256_lf']),sources)
         for name in sources:
             patches=[p for p in manifest.get('existing_source_patches', []) if p['source']==name]

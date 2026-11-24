@@ -491,6 +491,13 @@ def claimed_functions(manifest):
 
 
 def _claimed_functions(manifest):
+    if manifest.get('usa_cright4_promotion') is not None:
+        from . import usa_cright4_promotion as cright4
+        before=claimed_functions({k:v for k,v in manifest.items() if k!=cright4.KEY})
+        if (len(before),sum(f['size'] for f in before))!=(2319,111008):
+            return before  # immutable historical views only; load_manifest validates current stage
+        cright4.validate_predecessor(manifest)
+        return before+cright4.claims()
     if manifest.get('usa_script_vm_dual_reference') is not None:
         from . import usa_script_vm_dual_reference as vmdual
         prior={k:v for k,v in manifest.items() if k!=vmdual.KEY}
@@ -1479,6 +1486,7 @@ def load_manifest(path):
     selector_stage_value = manifest.pop('overlay_mini_selector_stage', None)
     opening_new2_stage_value = manifest.pop('overlay_usa_opening_new2_stage', None)
     short72_stage_value = manifest.pop('overlay_usa_short72_stage', None)
+    cright4_stage_value = manifest.pop('usa_cright4_promotion', None)
     vmdual_stage_value = manifest.pop('usa_script_vm_dual_reference', None)
     vm440_stage_value = manifest.pop('usa_script_vm440_promotion', None)
     native151_stage_value = manifest.pop('usa_native151_promotion', None)
@@ -1834,6 +1842,10 @@ def load_manifest(path):
         from . import usa_script_vm_dual_reference as vmdual
         manifest[vmdual.KEY]=vmdual_stage_value
         vmdual.validate_predecessor(manifest)
+    if cright4_stage_value is not None:
+        from . import usa_cright4_promotion as cright4
+        manifest[cright4.KEY]=cright4_stage_value
+        cright4.validate_predecessor(manifest)
     return manifest
 
 
@@ -2691,6 +2703,7 @@ def validate_baseline_cache(checkout, manifest):
 
 def run_build(args,manifest,report):
     short72_stage_value=manifest.pop('overlay_usa_short72_stage',None)
+    cright4_stage_value=manifest.pop('usa_cright4_promotion',None)
     vmdual_stage_value=manifest.pop('usa_script_vm_dual_reference',None)
     vm440_stage_value=manifest.pop('usa_script_vm440_promotion',None)
     native151_stage_value=manifest.pop('usa_native151_promotion',None)
@@ -3802,6 +3815,21 @@ def run_build(args,manifest,report):
             report['retained_assembly_functions'].remove(f['name'])
             report['sources_sha256_lf'][f['source']]=f['source_sha256']
         report[vmdual.KEY]=proof
+    if cright4_stage_value is not None:
+        from . import usa_cright4_promotion as cright4
+        if not result['full_rom_match'] or (result['matched_functions'],result['matched_function_bytes'])!=(2319,111008):
+            raise ValueError('C-Right4 requires exact accepted 2319-C predecessor')
+        manifest[cright4.KEY]=cright4_stage_value
+        cright4.validate_predecessor(manifest,expected)
+        proof=cright4.apply_usa(candidate,baseline,work,uv,args.jobs)
+        for f in cright4.rows('usa'):
+            off=f['rom_offset'];size=f['original_bytes'];fingerprint=digest(expected[off:off+size],'sha256')
+            result['functions'].append({'name':f['name'],'size':size,'guest_address':f'0x{f["vma"]:08X}','rom_offset':f'0x{off:X}','matched':True,'expected_sha256':fingerprint,'candidate_sha256':fingerprint})
+            result['claimed_functions']+=1;result['matched_functions']+=1;result['matched_function_bytes']+=size
+            if f['name'] in report['retained_assembly_functions']:
+                report['retained_assembly_functions'].remove(f['name'])
+            report['sources_sha256_lf'][cright4.source_path(f)]=f['source_sha256']
+        report[cright4.KEY]=proof
     if not result['full_rom_match'] or result['matched_functions']!=result['claimed_functions']:
         raise ValueError('Candidate failed exact matching')
     report['stage']='complete';report['status']='matched'
