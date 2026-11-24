@@ -186,18 +186,20 @@ ownership. Registry entries are planning metadata, not G2 acceptance.
 
 ## Source authority and work procedure
 
+**24 November 2026 — CI migration:** The authoritative ROM-free regression gate is the GitHub Actions job **Decomp ROM-free regression** (`.github/workflows/decomp-ci.yml`), running the complete, unchanged `python3 -m decomp.local_ci` suite (never `--quick`) against the PR merge commit. A green result for the current PR revision and current base is required before merging. Record the run URL and tested SHA; if the base or head changes, refresh the merge-ref result and native proof as applicable. Local execution remains available for diagnosis and task-specific tests, but duplicating the full suite locally is unnecessary once the new job has passed and a decomp-only required status check is active. Until both are verified, retain the existing full local gate. Native IDO, exact original ROM, ELF/relocations and strict inventory remain mandatory independent private proofs; Actions does not receive ROMs or proprietary tools.
+
 1. Confirm `git status --short`, `git branch --show-current`, live remote `chatgptweb/decomp` SHA, pinned original source/ROM/toolchain and regional manifest. Read [AGENTS.md](../AGENTS.md), [executor protocol](plans/EXECUTOR_PROTOCOL.md), [batch pipeline](BATCH_PIPELINE.md), [candidate promotion rules](CANDIDATE_PROMOTION.md) and relevant original-MIPS/ABI/IDO skills. The retired G64-001–100 plan is historical; select actual remaining ASM and independently promising candidates.
 2. Establish original ROM offset, VMA, byte extent, ELF/section/translation-unit owner, ABI, caller/callee evidence and all original relocations. Compile using pinned **SGI IDO 5.3** and the original per-region layout; test authentic C host semantics with ASan/UBSan. An isolated exact function or synthetic test cannot increase the matching-C count.
-3. Stage only unique new functions with all existing accepted C and surrounding original ASM. Require full **32 MiB exact-ROM**, all **7,376 positive-size ELF function identities**, the complete region-specific **82,103 USA / 80,747 Japan semantic relocation multiset**, strict accepted-C/ASM inventory and full local CI. An exact ROM with altered relocation semantics is rejected.
+3. Stage only unique new functions with all existing accepted C and surrounding original ASM. Require full **32 MiB exact-ROM**, all **7,376 positive-size ELF function identities**, the complete region-specific **82,103 USA / 80,747 Japan semantic relocation multiset**, strict accepted-C/ASM inventory and full ROM-free GitHub CI (see rollout fallback above). An exact ROM with altered relocation semantics is rejected.
 4. For any failure, preserve original ASM and a bounded, reproducible mismatch report. Do not massage MIPS bytes, replace missing provenance, infer game behaviour from static C, or claim emulator execution without an actual trace.
-5. Publish only after passing every required gate: implementation, manifest/region adapters, proof/inventory, tests, `decomp/CONTINUE.md` and root `PROGRESS.md` in the same coherent commit. Re-fetch the GitHub commit SHA and source proof before marking publication verified. Do not change `main` or commit ROMs, raw original ASM, game assets, ELFs/objects, toolchain archives, credentials, saves or memory dumps.
+5. Open the topic PR with the completed private native proof, then merge only after every required gate passes: implementation, manifest/region adapters, proof/inventory, tests, `decomp/CONTINUE.md` and root `PROGRESS.md` in the same coherent commit. Re-fetch the GitHub commit SHA and source proof before marking publication verified. Do not change `main` or commit ROMs, raw original ASM, game assets, ELFs/objects, toolchain archives, credentials, saves or memory dumps.
 
 ## Reproducible local commands
 
 Run inside a complete, authenticated Linux checkout. Verify tool arguments against `--help`; paths below are placeholders, not assumptions about another machine:
 
 ```bash
-python3 -m decomp.local_ci               # ROM-free Python + actual-C host sanitizers
+python3 -m decomp.local_ci               # optional local reproduction of the full Actions suite
 python3 -m decomp.verify \
   --upstream /path/to/pinned-mnsg \
   --workdir /path/to/NEW-verify-workdir \

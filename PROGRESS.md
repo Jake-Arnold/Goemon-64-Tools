@@ -1,3 +1,9 @@
+## 2026-11-24 — migrate ROM-free decomp regression to GitHub Actions
+
+- Source base `stable/decomp@7236882f49b9c8325eac5c16ecc860087f821a35`. Add a decomp-only PR/push workflow on Ubuntu 24.04 using the existing complete 66-stage `decomp.local_ci` entry point with `CC='gcc -no-pie'`, ASan and UBSan enabled; no `--quick`, test deletions, ROM/toolchain uploads, secrets, native proof changes or canonical count changes.
+- Update operational policy to require a successful current PR merge-ref regression run and retain full local CI until the hosted run and decomp-only required check are verified. Local suite remains a diagnostic option after activation. Original ROM/ELF/relocation and strict inventory proof remain independent.
+- Validation at authoring: reviewed live pinned source, existing CI orchestrator and routing policy; shell GitHub DNS unavailable, so connector Git tree publication used. Hosted regression NOT RUN at authoring; require successful first workflow run before activation. No native IDO attempt (NOT_RUN). Next: inspect the PR checks and configure a separate stable/decomp-only required status check, retaining the existing shared branch-routing ruleset.
+
 ## 2026-11-24 — USA transition state 22/22, final 3CF0 full native gates PASS
 
 - Exact base `stable/decomp@bd11874060a88dcac218550013796a82b802a89b`; original pinned IDO and upstream. USA `func_800030F0_3CF0` +568 bytes; full candidate 2,325 C / 112,420 bytes / 5,038 ASM. USA transition unit 22/22. Japan 2,551 C / 4,825 ASM unchanged, last 3C90 85/111 and retained ASM.

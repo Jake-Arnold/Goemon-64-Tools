@@ -1,0 +1,40 @@
+name: Decomp CI
+
+on:
+  pull_request:
+    branches: [stable/decomp]
+    types: [opened, reopened, synchronize, edited, ready_for_review]
+  push:
+    branches: [stable/decomp]
+
+permissions:
+  contents: read
+
+jobs:
+  regression:
+    name: Decomp ROM-free regression
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    env:
+      CC: gcc -no-pie
+      ASAN_OPTIONS: detect_leaks=1:halt_on_error=1
+      UBSAN_OPTIONS: halt_on_error=1
+    steps:
+      - name: Check out the exact workflow commit
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          persist-credentials: false
+      - name: Prepare ROM-free host environment
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          python3 --version
+          gcc --version
+          python3 -m venv "$RUNNER_TEMP/goemon-ci-venv"
+          "$RUNNER_TEMP/goemon-ci-venv/bin/python" -m pip install -r requirements.txt
+      - name: Run complete regression suite (including sanitizers)
+        shell: bash
+        run: |
+          set -euo pipefail
+          "$RUNNER_TEMP/goemon-ci-venv/bin/python" -m decomp.local_ci

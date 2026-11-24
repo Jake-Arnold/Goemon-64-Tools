@@ -28,7 +28,7 @@ Use current unconverted assembly ownership, original function offsets/VMAs, call
 1. Check branch HEAD, [CONTINUE.md](CONTINUE.md), accepted sources and the region's latest G2 ledger.
 2. Check original assembly/source ownership and deduplicate against accepted functions before attempting new C.
 3. Use the original pinned SGI IDO 5.3 and original-address compiler/linker evidence, including the complete relevant source translation unit and relocations.
-4. Only promote after full exact original-ROM, function-identity, complete semantic relocation, strict inventory and full local CI acceptance. Record both regional totals independently.
+4. Only promote after full exact original-ROM, function-identity, complete semantic relocation, strict inventory and full ROM-free GitHub CI acceptance (see `AGENTS.md` for rollout fallback). Record both regional totals independently.
 5. Publish to `stable/decomp` only; re-fetch remote source and proof SHA before marking `PASSED_G2`.
 
 ## Core references
@@ -44,7 +44,7 @@ Use current unconverted assembly ownership, original function offsets/VMAs, call
 
 A full-G2 promotion requires the original authenticated regional ROM, pinned upstream `7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee`, IDO 5.3 and the regional original-address build. Host tests and isolated IDO matches alone do not establish matching C. Keep ROMs, original assembly dumps, compiler binaries, linked ELF/object files and save data out of Git.
 
-`python3 -m decomp.local_ci` runs the ROM-free regressions; **it does not substitute** for a fresh full-ROM G2 verification. Follow [CONTINUE.md](CONTINUE.md) for region-specific staging and actual verification commands.
+The **Decomp ROM-free regression** GitHub Actions job runs the complete `python3 -m decomp.local_ci` suite on PRs against `stable/decomp`. The same command remains available locally for diagnosis; **it does not substitute** for a fresh full-ROM G2 verification. Follow [CONTINUE.md](CONTINUE.md) for region-specific staging and actual verification commands.
 
 ## Preserved history
 
