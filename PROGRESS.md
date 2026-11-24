@@ -1,3 +1,7 @@
+## 2026-11-24 — Japan 3C90 upstream return pattern (RESEARCH_ONLY)
+
+Reference `klorfmorf/mnsg@30457e7d66051114507eb0373c0990e2b235898f:src/sys/step.c`. Native JP case returns and while-break recover 91/111 (prior 85/111), 444-byte extent, 200-byte exact suffix and 35/36 independent numeric-reference relocations. Do-wrapper negative control identical. No-argument shared byte source reproduces 15/16 countdown/increment words (only final branch displacement differs) but has 448-byte extent and 45/111 aligned match. Seven variants pass 70,400 host semantic cases each under GCC and Clang sanitizers. Independent original donor 3658 shares 15/16 countdown/increment words. NO_NEW_COMPILER_FINDING. Full native G2 and canonical CI NOT_RUN; retain original ASM and accepted counts. See `decomp/research/jp_transition_3c90_upstream_20261124/`. No upstream history import or USA prototype promotion.
+
 ## 2026-11-24 — USA transition state 22/22, final 3CF0 full native gates PASS
 
 - Exact base `stable/decomp@bd11874060a88dcac218550013796a82b802a89b`; original pinned IDO and upstream. USA `func_800030F0_3CF0` +568 bytes; full candidate 2,325 C / 112,420 bytes / 5,038 ASM. USA transition unit 22/22. Japan 2,551 C / 4,825 ASM unchanged, last 3C90 85/111 and retained ASM.
