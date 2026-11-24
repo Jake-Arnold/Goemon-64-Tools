@@ -439,6 +439,7 @@ def build_steps(host_binary: Path, *, quick: bool = False):
             ('USA final transition exact-source ASan/UBSan regression',[str(binary)]),
         ])
     steps.append(('Transition Japan source/G2/inventory validation',[sys.executable,'-m','decomp.transition_promotion']))
+    steps.append(('Consolidated Japan source/G2/inventory validation',[sys.executable,'-m','decomp.japan_consolidated13_promotion']))
     return steps
 
 

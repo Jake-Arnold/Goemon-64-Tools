@@ -14,3 +14,9 @@ python3 -m decomp.consolidated_batch_promotion --checkout "$USA2325" --pristine 
 ```
 
 For a fresh full canonical native run from the pinned upstream, run `python3 -m decomp.verify` with the original retail ROM, new workdir and report, and the canonical manifest; consult `BRANCHES.md`, `AGENTS.md` and `decomp/CONTINUE.md`. No original game assets, ROMs, generated ASM, native objects or proprietary compiler are included.
+
+## Japan consolidated 13 original-C promotion
+
+PR #199 repository-owned source candidates only. Authenticated Japan-0 2551-C native predecessor, exact original expanded and retail ROMs, 7,376 original function identities, 26,393 stable globals, 80,655 semantic relocations, 13 exact source bodies (2,136 bytes, 107 named relocations) and 13 rejected altered-source controls. No ELF metadata corrections. The complete strict inventory is 2,564 C / 141,596 original bytes / 4,812 ASM. The USA promotion #222 does not change the Japan predecessor inputs. Candidate proof and strict inventory are recorded under `decomp/results/japan_0_2564_consolidated13_*`.
+
+Replay from a freshly rebuilt authenticated Japan2551 predecessor and pristine original Japan checkout: `python3 -m decomp.japan_consolidated13_promotion --checkout "$JP2551" --pristine "$JP_ORIGINAL" --work "$NEW_PRIVATE_WORK" --uv "$UV" --jobs 6`. Full ROM-free hosted regression remains required on the exact merge ref. No ROMs, binaries, generated assembly, or proprietary tools are included.
