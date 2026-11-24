@@ -13,7 +13,7 @@ class LocalCITests(unittest.TestCase):
     def test_default_runs_python_validation_then_host_sanitizers(self):
         with tempfile.TemporaryDirectory() as directory:
             steps = local_ci.build_steps(Path(directory) / "host")
-        self.assertEqual(len(steps), 59)
+        self.assertEqual(len(steps), 64)
         self.assertEqual(steps[21][0], 'USA short72 actual 48B timer-C ASan/UBSan build')
         self.assertEqual(steps[22][0], 'USA short72 original-C 4096-pair ASan/UBSan cases')
         self.assertIn('-fsanitize=address,undefined', steps[21][1])
@@ -108,8 +108,8 @@ class LocalCITests(unittest.TestCase):
     def test_quick_runs_all_python_gates_without_native_compile(self):
         with tempfile.TemporaryDirectory() as directory:
             steps = local_ci.build_steps(Path(directory) / "host", quick=True)
-        self.assertEqual(len(steps), 8)
-        self.assertEqual(steps[-2][1][-2:], ["-m", "decomp.native251_integrity"])
+        self.assertEqual(len(steps), 9)
+        self.assertEqual(steps[-3][1][-2:], ["-m", "decomp.native251_integrity"])
         self.assertTrue(all("cc" not in step[0].lower() for step in steps))
 
     @patch.object(local_ci.subprocess, "run")
@@ -122,7 +122,7 @@ class LocalCITests(unittest.TestCase):
     def test_success_is_not_stealth_full_rom_proof(self, run):
         run.return_value = subprocess.CompletedProcess([], 0)
         self.assertEqual(local_ci.main(["--quick"]), 0)
-        self.assertEqual(run.call_count, 8)
+        self.assertEqual(run.call_count, 9)
 
     @patch.object(local_ci.subprocess, "run", side_effect=FileNotFoundError("compiler missing"))
     def test_missing_executable_fails(self, run):

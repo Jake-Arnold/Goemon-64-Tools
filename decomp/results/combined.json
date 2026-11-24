@@ -1,16 +1,17 @@
 {
   "format": "goemon-matching-build-result-v1",
-  "started_utc": "2026-11-24T08:50:20.852366+00:00",
+  "started_utc": "2026-11-24T11:45:33.478740+00:00",
   "status": "matched",
   "upstream_commit": "7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee",
   "retail_sha1": "df8083a54296b8c151917c5333e1c85f014a2a66",
-  "verifier_source_sha256_lf": "84023d4a3b83f1e646299e4c7d6fe1d4f1a92805f14da093b6c3180c660dafaf",
+  "verifier_source_sha256_lf": "984ac1bcf54a69fbc32327662ab8a4cf2007592127a05f59fdc527d8c41fa2f2",
   "tool_versions": {
-    "uv": "offline archived Python 3.12 dependency launcher (not uv)",
+    "uv": "offline uv adapter (pinned supplied Python 3.12)",
     "gcc": "gcc (Debian 14.2.0-19) 14.2.0",
     "assembler": "GNU assembler (GNU Binutils for Ubuntu) 2.45.90.20260125"
   },
-  "baseline_cache_used": true,
+  "stage": "complete",
+  "baseline_cache_used": false,
   "baseline_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
   "baseline_provenance": {
     "format": "goemon-baseline-cache-v1",
@@ -20,7 +21,6 @@
     "compiler_sha256": "8ca550d30c1fef7c14b1470a1ef93cc6d415a507c6e18c04a7bfeaf8016a7b89",
     "dependency_lock_sha256": "a8892580fba36495b3de64de202ad5482e14319748019109d9633c1290be2bf9"
   },
-  "stage": "complete",
   "overlay_file11_nop_aliases": {
     "removed_spurious_func_aliases": [
       "func_801DD6D8_5995E8",
@@ -2974,9 +2974,9 @@
     "expected_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
     "candidate_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
     "rom_size": 33554432,
-    "matched_functions": 2323,
-    "claimed_functions": 2323,
-    "matched_function_bytes": 111736,
+    "matched_functions": 2324,
+    "claimed_functions": 2324,
+    "matched_function_bytes": 111852,
     "functions": [
       {
         "name": "func_80023DF0_249F0",
@@ -24276,6 +24276,15 @@
         "matched": true,
         "expected_sha256": "61f4cb27c86dd73509054589e8483b5acb90639c5194e66b42171f8e7e8f2173",
         "candidate_sha256": "61f4cb27c86dd73509054589e8483b5acb90639c5194e66b42171f8e7e8f2173"
+      },
+      {
+        "name": "func_8000394C_454C",
+        "size": 116,
+        "guest_address": "0x8000394C",
+        "rom_offset": "0x454C",
+        "matched": true,
+        "expected_sha256": "1cc9c4dd44c8e502915ab8c38af2bf9b79e7c79401a30749d73d8d447f638109",
+        "candidate_sha256": "1cc9c4dd44c8e502915ab8c38af2bf9b79e7c79401a30749d73d8d447f638109"
       }
     ]
   },
@@ -24323,7 +24332,6 @@
     "func_80006274_6E74",
     "func_80006298_6E98",
     "func_800030F0_3CF0",
-    "func_8000394C_454C",
     "func_80036388_36F88",
     "func_800363F4_36FF4",
     "func_80036448_37048",
@@ -25991,7 +25999,9 @@
     "research/cright_promotion_checkpoint_20261124/usa/func_8020D2A0_5C8770.c": "17803dccf2a3119d21ab7ef0ccf7eb7f0bd3876a4eb286556bf09470d4c55697",
     "research/cright_promotion_checkpoint_20261124/usa/func_8020D6BC_5C8B8C.c": "2801ec6b97a1084a2e2a43c889a65c700c054c7691c208dfeaeff153195d6427",
     "research/cright_promotion_checkpoint_20261124/usa/func_8020D724_5C8BF4.c": "08da2274111ae48009ce285843ca564a855c394bfc05a183c98b8d319ad0af27",
-    "research/cright_promotion_checkpoint_20261124/usa/func_8020DD78_5C9248.c": "c0c131ab2fa9cfc6e6c4e78a33da24eded85a0df7113423d6b054c424520b499"
+    "research/cright_promotion_checkpoint_20261124/usa/func_8020DD78_5C9248.c": "c0c131ab2fa9cfc6e6c4e78a33da24eded85a0df7113423d6b054c424520b499",
+    "research/transition_state_20261124/usa/454c.c": "609a5ba602914b8ad14af2cd7516f6716a6b8461f9152925f22b93e06423ad7f",
+    "research/transition_state_20261124/usa/transition.h": "9bbe57788cc6866b4d713e4b5f0f8cb07641d117a4d3e21cc8be4eee3df0cc74"
   },
   "overlay_file43_stage": {
     "ownership": {
@@ -63786,7 +63796,7 @@
       "source_sha256": "fe68d28efacebd0cc72d7892152ae3684ecc48515e32e7cc4d7ac8e25e02dbab",
       "mixed_unit_sha256": "13266e90f8320fba00d33e8281b3f5b766cb159854964ddcd5a9f0c735049273",
       "compiler_quirk_outcome": "NO_NEW_COMPILER_FINDING",
-      "ledger_sha256": "0d96f21c456cf58a887286dea392a3a2388f8400c5e16cc1de336563d5a3754a"
+      "ledger_sha256": "6c4667083dee44754e0f73d18a3bb116806fe532a380b21daaaae84c04c8de18"
     },
     "abs_metadata_fixes": [
       {
@@ -64120,7 +64130,7 @@
     },
     "ownership_exact": true,
     "compiler_quirk_outcome": "EXISTING_QUIRK_REPRODUCED",
-    "ledger_sha256": "0d96f21c456cf58a887286dea392a3a2388f8400c5e16cc1de336563d5a3754a",
+    "ledger_sha256": "6c4667083dee44754e0f73d18a3bb116806fe532a380b21daaaae84c04c8de18",
     "gameplay": "NOT_RUN"
   },
   "usa_script_vm_dual_reference": {
@@ -64254,5 +64264,77 @@
     "compiler_quirk_outcome": "EXISTING_QUIRK_REPRODUCED",
     "gameplay": "NOT_RUN"
   },
-  "ended_utc": "2026-11-24T08:55:14.492416+00:00"
+  "ended_utc": "2026-11-24T11:52:00.252911+00:00",
+  "usa_transition1_promotion": {
+    "status": "PASSED_G2_LOCAL",
+    "base_commit": "4efacadb87c1d3f14fc082959e280325ccec5185",
+    "region": "usa",
+    "target": "func_8000394C_454C",
+    "original_bytes": 116,
+    "whole_unit_bytes": 2256,
+    "prior_elf_sha256": "8cc24cf708723517dfdc2efcd4484dc8695961abfaecf0649bee81e7087d1ade",
+    "shadow_elf_sha256": "9297864ab77cce310ca022d6f2efe8d99543962d731e250c059004eb30f12983",
+    "candidate_elf_sha256": "efd759f4bf2e7024d695a15998427ab8696a5016c85e5c48c967df8db0d21c7f",
+    "source_sha256": "609a5ba602914b8ad14af2cd7516f6716a6b8461f9152925f22b93e06423ad7f",
+    "header_sha256": "9bbe57788cc6866b4d713e4b5f0f8cb07641d117a4d3e21cc8be4eee3df0cc74",
+    "expanded_rom_bytes": 33554432,
+    "expanded_rom_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+    "retail_rom_bytes": 16777216,
+    "retail_rom_sha1": "df8083a54296b8c151917c5333e1c85f014a2a66",
+    "positive_function_identities": 7376,
+    "stable_globals": 26714,
+    "prior_relocations": 82102,
+    "native_relocations": 82098,
+    "native_relocation_sha256": "9a8e95185c44f31cf2d4ea5f798f41b4b7a4bb120a1871d86a48d47fcce3a198",
+    "independent_shadow_exact": true,
+    "removed_original_abs_offset_relocations": [
+      [
+        ".rel.main",
+        2147498388,
+        "R_MIPS_HI16",
+        241110,
+        "D_3ADD6"
+      ],
+      [
+        ".rel.main",
+        2147498392,
+        "R_MIPS_HI16",
+        241110,
+        "D_3ADD6"
+      ],
+      [
+        ".rel.main",
+        2147498400,
+        "R_MIPS_LO16",
+        241110,
+        "D_3ADD6"
+      ],
+      [
+        ".rel.main",
+        2147498412,
+        "R_MIPS_LO16",
+        241110,
+        "D_3ADD6"
+      ]
+    ],
+    "new_c_names": [
+      "func_8000394C_454C"
+    ],
+    "compiler_outcome": "EXISTING_QUIRK_REPRODUCED",
+    "strict_predecessor_inventory": {
+      "identified_function_entries": 7376,
+      "upstream_unmarked_entries": 2336,
+      "newly_matching_c": 1,
+      "current_unmarked_entries": 2337,
+      "remaining_assembly_entries": 5039,
+      "baseline_zero_sized_function_labels_ignored": 830,
+      "candidate_zero_sized_function_labels_ignored": 830,
+      "extra_positive_alias_entries": 0,
+      "size_annotation_differences": [],
+      "function_entry_identity_sha256": "4875cd876203aa2c1f9a6131ed69c6ec70f0cccb108d497d10caa923f3842798"
+    },
+    "prior_names_sha256": "8d6437a3038a92beac78951b4ae2096a1d01285840a542e105182043334018c3",
+    "source_manifest_sha256": "2900fb0760cc11927c4c51e21291ffe2b8bd9c39c9b411e894d6438c0725869e",
+    "gameplay": "NOT_RUN"
+  }
 }

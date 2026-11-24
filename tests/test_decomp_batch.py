@@ -216,8 +216,8 @@ class PublishedBatchEvidenceTests(unittest.TestCase):
         self.assertEqual(current['status'],'matched')
         self.assertTrue(current['comparison']['full_rom_match'])
         # Live canonical original-address matching C, including eleven Mini C promotions.
-        self.assertEqual(current['comparison']['matched_functions'],2323)
-        self.assertEqual(current['comparison']['matched_function_bytes'],111736)
+        self.assertEqual(current['comparison']['matched_functions'],2324)
+        self.assertEqual(current['comparison']['matched_function_bytes'],111852)
         preserved1723=json.loads((ROOT/'results/combined_1723_pre_isolated233_20261120.json').read_text())
         self.assertEqual((preserved1723['comparison']['matched_functions'],
                           preserved1723['comparison']['matched_function_bytes']), (1723,69344))

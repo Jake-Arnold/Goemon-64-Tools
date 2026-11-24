@@ -192,6 +192,7 @@ def native_claim_count(manifest):
 class DecompVerificationTests(unittest.TestCase):
     def test_file43_stage_definition_is_explicit_and_fail_closed(self):
         manifest=load_manifest(ROOT/'decomp/manifest.json')
+        manifest.pop('usa_transition1_promotion', None)  # frozen historical projection
         manifest.pop('usa_script_vm436_promotion', None)  # frozen 1964-C projection
         # This assertion belongs to the frozen 1,964-C original G2 stage.
         # Removing later stages here does not relax live 2,092-C verification.
@@ -1343,6 +1344,9 @@ class DecompVerificationTests(unittest.TestCase):
         if manifest.get('usa_cright4_promotion') is not None:
             from decomp import usa_cright4_promotion as cright4
             sources.update(cright4.source_path(f) for f in cright4.rows('usa'))
+        if manifest.get('usa_transition1_promotion') is not None:
+            sources.update({'research/transition_state_20261124/usa/454c.c',
+                            'research/transition_state_20261124/usa/transition.h'})
         self.assertEqual(set(result['sources_sha256_lf']),sources)
         for name in sources:
             patches=[p for p in manifest.get('existing_source_patches', []) if p['source']==name]

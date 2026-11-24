@@ -22,6 +22,7 @@ class Crossregion7StageTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.current=load_manifest(ROOT/'manifest.json')
+        cls.current.pop('usa_transition1_promotion',None)
         cls.current.pop('usa_cright4_promotion',None)  # Preserve USA2079 checkpoint
         cls.current.pop('usa_script_vm_dual_reference',None)  # Preserve USA2079 checkpoint
         cls.current.pop('usa_script_vm440_promotion',None)  # Preserve USA2079 checkpoint

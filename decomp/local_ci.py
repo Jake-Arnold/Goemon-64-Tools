@@ -413,6 +413,22 @@ def build_steps(host_binary: Path, *, quick: bool = False):
     ])
     steps.append(("Native100 Japan source/G2/inventory validation", [sys.executable, "-m", "decomp.native251_integrity"]))
     steps.append(("C-Right6 Japan source/G2/inventory validation", [sys.executable, "-m", "decomp.japan_cright6_integrity"]))
+    if not quick:
+        batch=ROOT/'decomp/research/transition_state_20261124'
+        compiler=shlex.split(os.environ.get('CC','cc'))
+        for region,sources in (
+            ('usa',[batch/'usa/454c.c',batch/'usa/3cf0_selector.c',batch/'usa/host/test_transition.c']),
+            ('japan',[batch/'japan/host/test_jp_transition_baseexpr.c']),
+        ):
+            binary=host_binary.with_name('transition-'+region+'-host')
+            steps.extend([
+                ('Transition '+region+' actual-source ASan/UBSan build',compiler+[
+                    '-std=c99','-O1','-g','-fsanitize=address,undefined','-fno-sanitize-recover=all',
+                    '-fno-omit-frame-pointer','-no-pie','-I'+str(batch/region/'host'),
+                    '-I'+str(batch/region),*[str(p) for p in sources],'-o',str(binary)]),
+                ('Transition '+region+' actual-source ASan/UBSan regression',[str(binary)]),
+            ])
+    steps.append(('Transition Japan source/G2/inventory validation',[sys.executable,'-m','decomp.transition_promotion']))
     return steps
 
 
