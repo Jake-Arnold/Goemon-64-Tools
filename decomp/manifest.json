@@ -1633,5 +1633,8 @@
   },
   "usa_transition1_promotion": {
     "format": "goemon-transition-state-original-g2-v1"
+  },
+  "usa_transition_final_promotion": {
+    "format": "goemon-transition-final-usa-original-g2-v1"
   }
 }

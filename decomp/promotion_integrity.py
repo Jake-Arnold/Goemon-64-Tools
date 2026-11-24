@@ -33,6 +33,9 @@ def audit(root:Path=ROOT)->dict:
         inv=json.loads((root/'results/inventory.json').read_text())
     except (FileNotFoundError,ValueError) as exc:
         return {'status':'FAIL','errors':['Missing/malformed canonical proof/inventory: '+str(exc)]}
+    if manifest.get('usa_transition_final_promotion'):
+        from . import transition_final_promotion as tf
+        return tf.audit(root,manifest,proof,inv)
     if manifest.get('usa_transition1_promotion'):
         from . import transition_promotion as tr
         return tr.audit_usa(root,manifest,proof,inv)

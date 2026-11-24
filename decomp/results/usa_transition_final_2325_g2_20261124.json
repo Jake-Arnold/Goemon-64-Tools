@@ -1,0 +1,69 @@
+{
+  "status": "PASSED_G2_LOCAL",
+  "base_commit": "bd11874060a88dcac218550013796a82b802a89b",
+  "target": "func_800030F0_3CF0",
+  "source_sha256": "a632e01c1edd79e99fb8f12eb9cc9bc793863ca5df1d7fbce5ceaab5f2bc6a0f",
+  "whole_source_sha256": "f9aa77062e4a1897d2c3f4d90b9448cd3ef115a5e0063735615980d248dbfd11",
+  "header_sha256": "9bbe57788cc6866b4d713e4b5f0f8cb07641d117a4d3e21cc8be4eee3df0cc74",
+  "original_bytes": 568,
+  "whole_unit_bytes": 2256,
+  "pool_bytes": 20,
+  "unit_text_relocations": 125,
+  "pool_relocations": 5,
+  "prior_elf_sha256": "efd759f4bf2e7024d695a15998427ab8696a5016c85e5c48c967df8db0d21c7f",
+  "native_elf_sha256": "bb2691558d9c65b6443aaa60d26154286d52ffcaf4f84ed0cfe3d1db6cbf082b",
+  "shadow_elf_sha256": "63fadb96b7a65499bfc17adc581037aa37e3449beb66cfbc211ace52ddee4918",
+  "expanded_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+  "retail_sha1": "df8083a54296b8c151917c5333e1c85f014a2a66",
+  "expanded_bytes": 33554432,
+  "retail_bytes": 16777216,
+  "function_identities": 7376,
+  "stable_globals": 26714,
+  "prior_relocations": 82098,
+  "native_relocations": 82080,
+  "relocation_sha256": "4355f0fb9f6fa47bc6c301ac91b93c97682abb205df57db5052d31fa665a7722",
+  "relocation_delta_sha256": "7e83d0f92485f5757f0050979766d2475896fe83ac4bb2497cc8101d45806205",
+  "inventory": {
+    "identified_function_entries": 7376,
+    "upstream_unmarked_entries": 13,
+    "newly_matching_c": 2325,
+    "current_unmarked_entries": 2338,
+    "remaining_assembly_entries": 5038,
+    "baseline_zero_sized_function_labels_ignored": 0,
+    "candidate_zero_sized_function_labels_ignored": 825,
+    "extra_positive_alias_entries": 0,
+    "upstream_unmarked_names": [
+      "func_8000A480_B080",
+      "func_80013940_14540",
+      "func_80013AC4_146C4",
+      "func_80013C0C_1480C",
+      "func_80013C70_14870",
+      "func_800141C4_14DC4",
+      "func_8001481C_1541C",
+      "func_80014840_15440",
+      "func_800148C0_154C0",
+      "func_80014C00_15800",
+      "func_80014C20_15820",
+      "func_80029E58_2AA58",
+      "func_8002A168_2AD68"
+    ],
+    "size_annotation_differences": [
+      {
+        "name": "func_8003F6E8_402E8",
+        "baseline_size": 48,
+        "candidate_size": 56
+      }
+    ],
+    "function_entry_identity_sha256": "01f41037ac83f6e18e80c83489a18b870e4fef907c67d20a345871c7c34fe787"
+  },
+  "assembly_caller_contract": {
+    "table_entry_rom": 365892,
+    "jalr_rom": 11424,
+    "sole_symbol_reference": true,
+    "incoming_a0_overwritten": true,
+    "live_c_callers_or_declarations": 0,
+    "historical_c_prototype": "UNKNOWN"
+  },
+  "compiler_outcome": "EXISTING_QUIRK_REPRODUCED",
+  "gameplay": "NOT_RUN"
+}

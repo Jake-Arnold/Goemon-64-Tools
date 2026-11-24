@@ -1,0 +1,27 @@
+{
+  "status": "PASS",
+  "base_commit": "bd11874060a88dcac218550013796a82b802a89b",
+  "candidate_USA": 2325,
+  "candidate_Japan": 2551,
+  "native_verifier_exit": 0,
+  "strict_inventory_exit": 0,
+  "promotion_integrity": "PASS",
+  "local_ci_exit": 0,
+  "local_ci_command": "CC='gcc -no-pie' python -m decomp.local_ci",
+  "local_ci_steps": 66,
+  "python_test_suites": [
+    508,
+    351,
+    7
+  ],
+  "expected_skips": 3,
+  "host_semantic_cases_USA_each_GCC_Clang": 66051,
+  "host_semantic_cases_Japan_each_GCC_Clang": 70400,
+  "fresh_native_report_sha256": "e2e6f8fd91d4ef07f8cd185d12b871e5ed8d195ebc7fda3eac117b9bf017714a",
+  "fresh_strict_inventory_sha256": "36e591a3a65da7336eccf9c47c7a15ad05710fbbb34dc9edfd6ec591b27b859e",
+  "ci_log_sha256": "d3f4a64ecf86a807fafeac96e925caa6c8639c6888076927ec6e47ab6ba7a319",
+  "canonical_comparison_and_source_hashes_identical_to_fresh_report": true,
+  "canonical_inventory_identical_to_fresh_inventory": true,
+  "gameplay": "NOT_RUN",
+  "japan_3c90": "RETAIN_ASM_85_OF_111"
+}

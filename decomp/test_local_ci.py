@@ -13,7 +13,7 @@ class LocalCITests(unittest.TestCase):
     def test_default_runs_python_validation_then_host_sanitizers(self):
         with tempfile.TemporaryDirectory() as directory:
             steps = local_ci.build_steps(Path(directory) / "host")
-        self.assertEqual(len(steps), 64)
+        self.assertEqual(len(steps), 66)
         self.assertEqual(steps[21][0], 'USA short72 actual 48B timer-C ASan/UBSan build')
         self.assertEqual(steps[22][0], 'USA short72 original-C 4096-pair ASan/UBSan cases')
         self.assertIn('-fsanitize=address,undefined', steps[21][1])
@@ -61,6 +61,8 @@ class LocalCITests(unittest.TestCase):
         self.assertEqual(steps[56][1][-2:], ["decomp.promotion_integrity", "--validate"])
         self.assertEqual(steps[57][1][-2:], ["-m", "decomp.native251_integrity"])
         self.assertEqual(steps[58][1][-2:], ["-m", "decomp.japan_cright6_integrity"])
+        self.assertTrue(any(name=="USA final transition exact-source ASan/UBSan regression" for name,_ in steps))
+        self.assertTrue(any(name=="USA final transition exact-source ASan/UBSan build" and any(p.endswith("arg_s32_add.c") for p in argv) for name,argv in steps))
 
         self.assertTrue(any(path.endswith("test_actual109.c") for path in steps[11][1]))
         self.assertEqual(sum(path.endswith(".c") and "usa_wide109_promotion_20261118/sources" in path for path in steps[11][1]), 68)
