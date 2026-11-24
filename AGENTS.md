@@ -52,7 +52,7 @@ only authoritative guest-data address source for actual UI reads/writes.
 patch that file or initiate game-memory writes. Synchronisation of research
 metadata into the toolkit is **not automated by this change** and always
 requires a separate reviewed metadata-only toolkit PR. Decomp acceptance,
-original-ROM G2, and full local CI remain independent.
+original-ROM G2, and the full ROM-free regression gate remain independent.
 
 ## Mandatory reciprocal USA ↔ Japan guest-memory discovery
 
@@ -98,9 +98,11 @@ historical evidence and must not be treated as current instructions/counts.
 
 Use narrow repo-local skills in [.agents/skills/](.agents/skills/README.md). Use `python3 -m decomp.skill_context --status` for the published canonical proof/inventory snapshot; it does not build a ROM. Historical G64 execution records remain research evidence, not an active 100-task scheduler.
 
-## Local decomp CI (no GitHub Actions)
+## ROM-free decomp CI (GitHub Actions)
 
-Use `python3 -m decomp.local_ci` from any directory in the checkout for the ROM-free local decomp regression gate. It runs both decomp Python suites, cross-validates canonical proof and inventory, and runs a GCC/Clang-compatible ASan/UBSan display-emitter host regression. `python3 -m decomp.local_ci --quick` skips the C sanitizer fixture when diagnosing Python-only failures; it is not the full local gate. These commands require no `.github/workflows`, Docker, GitHub Actions, or proprietary ROM. **Do not use a workflow-based Local CI runner for this repository.** Run additional task-specific host/sanitizer checks as necessary and record actual outcomes. This local gate is **not** original-address native IDO equality or a fresh full-ROM G2; those remain mandatory and separate for production C promotions.
+The authoritative ROM-free regression gate is the GitHub Actions job **Decomp ROM-free regression** (`.github/workflows/decomp-ci.yml`), running the complete, unchanged `python3 -m decomp.local_ci` suite (never `--quick`) against the PR merge commit. A green result for the current PR revision and current base is required before merging. Record the run URL and tested SHA; if the base or head changes, refresh the merge-ref result and native proof as applicable. Local execution remains available for diagnosis and task-specific tests, but duplicating the full suite locally is unnecessary once the new job has passed and a decomp-only required status check is active. Until both are verified, retain the existing full local gate. Native IDO, exact original ROM, ELF/relocations and strict inventory remain mandatory independent private proofs; Actions does not receive ROMs or proprietary tools.
+
+For local diagnosis, use `python3 -m decomp.local_ci` from a complete checkout; `--quick` runs only the Python checks and cannot satisfy the full regression gate. Run additional task-specific host/sanitizer tests as necessary and record actual results.
 
 ## Decomp target selection (current)
 
@@ -119,8 +121,8 @@ An agent must not publish a Git commit or claim `PUBLISHED_REMOTE_VERIFIED` usin
 
 1. Fetch live `stable/decomp` HEAD and compare every candidate identity `(region, original ROM offset, VMA, original code size)` against **the entire current canonical function ownership graph** and all pending research manifests. Deduplicate by original ROM address and range, not filename or previous staged count. Record exclusions and source/byte hashes.
 2. Pin the exact parent commit and predecessor canonical manifest, proof and inventory hashes. If HEAD moves or new accepted C overlaps, **abort and rebase/reverify**. Never use stale local C counts as an acceptance basis; no history rewriting or force-push.
-3. After original IDO, complete 32 MiB ROM, all ELF identities and semantic relocations pass, run strict inventory and **full** `python3 -m decomp.local_ci`; it now includes `python3 -m decomp.promotion_integrity --validate`. This compares **both names and bytes** of every canonical C claim against the complete ROM proof and strict inventory, refusing any unpromoted staged result.
+3. After original IDO, complete 32 MiB ROM, all ELF identities and semantic relocations pass, run strict inventory, then require the **full** ROM-free regression job on the exact PR revision (see the CI policy above); the unchanged suite includes `python3 -m decomp.promotion_integrity --validate`. This compares **both names and bytes** of every canonical C claim against the complete ROM proof and strict inventory, refusing any unpromoted staged result.
 4. Publish **one complete promotion commit** on `stable/decomp` containing native sources/adapter, canonical `decomp/manifest.json`, `decomp/results/combined.json`, `decomp/results/inventory.json`, dated G2/inventory evidence, tests, `PROGRESS.md`, and `decomp/CONTINUE.md`. Preserve previous canonical proofs separately. If any required file is absent, the work stays `RESEARCH_ONLY`; do not claim a new official count.
 5. Use a GitHub atomic tree/commit + expected-HEAD lease (`update_ref(expected_sha=<pinned-base>)`) and **re-fetch** the remote manifest/proof/inventory. A report of success requires the remote count to equal the locally verified count and all CI gates to be documented. Follow-up agents must read that authoritative HEAD first.
 
-Implementation/source: `decomp/promotion_integrity.py`, `decomp/test_promotion_integrity.py`, and the frozen `decomp.usa_canonical_reconcile108` stage. Local CI is a ROM-free consistency check; it **does not replace** native/whole-ROM verification.
+Implementation/source: `decomp/promotion_integrity.py`, `decomp/test_promotion_integrity.py`, and the frozen `decomp.usa_canonical_reconcile108` stage. GitHub ROM-free CI is a consistency and regression check; it **does not replace** native/whole-ROM verification.

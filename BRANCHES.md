@@ -16,7 +16,7 @@
 3. Start from the correct `stable/*` ref, verify `git status --short`, `git branch --show-current`, `git fetch origin`, and live commit SHA. Refuse to push when base moved; revalidate proof/test gates. Never force-push shared branches.
 4. Make a short-lived `toolkit/*` or `decomp/*` topic branch and target only its corresponding stable branch. Use PRs; merge verified changes, then delete the **reviewed** topic branch. A former branch name is never a valid destination merely because it appears in old docs.
 5. **Never merge full toolkit and decomp histories into each other.** Transfer reviewed address discoveries through the existing metadata-only import workflow; changing runtime memory writes requires toolkit-specific review. Decomp native proof is independent.
-6. Toolkit: follow the toolkit regression/live verification policy. Decomp: follow `decomp/CONTINUE.md`, the autonomous skill, and exact original-ROM/ELF/relocation/inventory/full-local-CI gates. Research findings, staged proof and native promotion have distinct statuses.
+6. Toolkit: follow the toolkit regression/live verification policy. Decomp: follow `decomp/CONTINUE.md`, the autonomous skill, and exact original-ROM/ELF/relocation/inventory and full ROM-free GitHub CI gates (see `AGENTS.md` for the rollout fallback). Research findings, staged proof and native promotion have distinct statuses.
 7. Include `PROGRESS.md` in the same commit as changes; preserve historical results accurately and report exactly which checks ran.
 
 ### Clone / worktrees
