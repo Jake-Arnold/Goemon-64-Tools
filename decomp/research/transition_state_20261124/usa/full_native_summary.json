@@ -1,0 +1,60 @@
+{
+  "status": "FULL_ROM_EXACT_RESEARCH_NOT_PROMOTED",
+  "base_commit": "4efacadb87c1d3f14fc082959e280325ccec5185",
+  "target": "func_8000394C_454C",
+  "original_bytes": 116,
+  "whole_unit_bytes": 2256,
+  "whole_unit_numeric_reference_relocations": 143,
+  "prior_elf_sha256": "8cc24cf708723517dfdc2efcd4484dc8695961abfaecf0649bee81e7087d1ade",
+  "shadow_elf_sha256": "9297864ab77cce310ca022d6f2efe8d99543962d731e250c059004eb30f12983",
+  "candidate_elf_sha256": "efd759f4bf2e7024d695a15998427ab8696a5016c85e5c48c967df8db0d21c7f",
+  "source_sha256": "609a5ba602914b8ad14af2cd7516f6716a6b8461f9152925f22b93e06423ad7f",
+  "header_sha256": "9bbe57788cc6866b4d713e4b5f0f8cb07641d117a4d3e21cc8be4eee3df0cc74",
+  "expanded_rom_bytes": 33554432,
+  "expanded_rom_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+  "retail_rom_bytes": 16777216,
+  "retail_rom_sha1": "df8083a54296b8c151917c5333e1c85f014a2a66",
+  "positive_function_identities": 7376,
+  "stable_globals": 26714,
+  "prior_relocations": 82102,
+  "native_relocations": 82098,
+  "native_relocation_sha256": "9a8e95185c44f31cf2d4ea5f798f41b4b7a4bb120a1871d86a48d47fcce3a198",
+  "independent_shadow_exact": true,
+  "removed_original_abs_offset_relocations": [
+    [
+      ".rel.main",
+      2147498388,
+      "R_MIPS_HI16",
+      241110,
+      "D_3ADD6"
+    ],
+    [
+      ".rel.main",
+      2147498392,
+      "R_MIPS_HI16",
+      241110,
+      "D_3ADD6"
+    ],
+    [
+      ".rel.main",
+      2147498400,
+      "R_MIPS_LO16",
+      241110,
+      "D_3ADD6"
+    ],
+    [
+      ".rel.main",
+      2147498412,
+      "R_MIPS_LO16",
+      241110,
+      "D_3ADD6"
+    ]
+  ],
+  "strict_inventory": {
+    "prior_unmarked": 2336,
+    "new_unmarked": 1,
+    "remaining_assembly": 5039
+  },
+  "full_canonical_CI": "NOT_RUN",
+  "compiler_outcome": "EXISTING_QUIRK_REPRODUCED"
+}

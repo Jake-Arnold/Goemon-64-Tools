@@ -1,3 +1,7 @@
+## 2026-11-24 — transition-state promotion staging (not accepted)
+
+- Authenticated stable/decomp 4efacadb87c1d3f14fc082959e280325ccec5185, source archive 14906418008 and pinned upstream/IDO. USA 454C full native research replay exact including independent original-assembly offset reference, original 32 MiB/16 MiB ROM, 7376 FUNC identities, 26714 stable globals, 82098 relocations and predecessor-relative strict inventory. Japan 17 candidates / 1432 bytes isolated exact; 4470 alias-free original base expression preserves original symbol provenance. Both host sanitizer suites passed. All canonical ownership remains unchanged pending integrated promotion integrity and full candidate CI. USA 3CF0 unresolved caller interface; Japan 3C90 still nonmatching. See decomp/research/transition_state_20261124/.
+
 ## 24 November 2026 — Japan C-Right6 promotion candidate: fresh native G2, strict inventory and full CI PASS
 
 - Live authenticated `stable/decomp@02e042d969c382217f4561fffd9cc719523de970`, exact source archive, original pinned upstream `7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee` and original IDO 5.3. Rebuilt historical Japanese stages to exact JP2528 predecessor ELF `08423cd434cbd132e4f5827eb9fedc2e9cf21c5f903577876e509ef0166d094c`. Native100 reference layout initially mismatched the original owner filenames; independently regenerated original upstream Splat layout from the authenticated ROM, restarted all 100 native target objects from the unchanged linked JP2428 predecessor, and repeated the full gates. No comparison was weakened.
