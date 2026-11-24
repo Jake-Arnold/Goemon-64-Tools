@@ -5,9 +5,7 @@ description: "Use when autonomously discovering, native-verifying, and formally 
 
 # Autonomous matching-C decomp
 
-**Base `stable/decomp`, topics `decomp/*`.** Toolkit `stable/toolkit`; `main` and `chatgptweb/decomp` legacy. Read `BRANCHES.md`, Project prompt, `AGENTS.md`, `decomp/CONTINUE.md`, `decomp/plans/EXECUTOR_PROTOCOL.md`, current manifest/proof/inventory and PRs. Fetch live SHA.
-
-Read [the source-layout strategy](../../../decomp/TRANSLATION_UNIT_LAYOUT.md) for original versus reconstructed ownership. Prefer evidenced original unit boundaries where practical; keep accepted C intact, record artificial splits, and require full fresh native proof for bounded layout consolidation. Alignment is a heuristic, not historical proof; layout-only work does not increase matching-C counts.
+**Base `stable/decomp`, topics `decomp/*`.** Toolkit `stable/toolkit`; `main` and `chatgptweb/decomp` legacy. Read `BRANCHES.md`, Project prompt, `AGENTS.md`, `decomp/CONTINUE.md`, `decomp/TRANSLATION_UNIT_LAYOUT.md`, `decomp/plans/EXECUTOR_PROTOCOL.md`, current manifest/proof/inventory and PRs. Fetch live SHA.
 
 1. Authenticate complete checkout, ROM, upstream and pinned IDO; check region/ROM/VMA/ASM ownership, canonical C and pending PRs.
 2. **Before every native IDO attempt**, read `decomp/COMPILER_QUIRKS.md`; identify relevant verified behaviour. Classify first original/generated mismatch **before variants**; test one-variable bounded workarounds.

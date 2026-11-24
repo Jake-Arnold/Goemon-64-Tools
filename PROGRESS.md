@@ -1,3 +1,7 @@
+## 2026-11-24 — correct autonomous skill discovery length (DOC_ONLY)
+
+- PR #224 hosted run 45469378045 failed only the observed outer skill-discovery test: 2,542 characters exceeded the strict <2,200 limit (515 tests, one failure, three skips). Restore the original compact coordinator and add the source-layout document to its mandatory reading list (2174 characters; existing required substrings and unchanged test verified). Full guidance remains in AGENTS.md, executor protocol and TRANSLATION_UNIT_LAYOUT.md. No test relaxation, source/build or proof/count change; native NOT_RUN. Fresh full hosted regression required before merge.
+
 ## 2026-11-24 — make translation-unit layout guidance mandatory (DOC_ONLY)
 
 - Refresh PR #224 on current stable/decomp `ce9b33fcc7752cf1a1aaffb48d9c525bef378421` (Japan13 promotion preserved). Add concise binding decomp guidance in AGENTS.md, the executor protocol and autonomous skill; keep detailed evidence in TRANSLATION_UNIT_LAYOUT.md. Prefer inferred original units for new work; do not move accepted C without fresh full native proof. Separate layout consolidation from matching-C promotion; preserve prior ownership on failure. No code, build, manifest, proof or count changes. Native NOT_RUN; document-only connector tree, required hosted regression pending.
