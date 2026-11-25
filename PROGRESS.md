@@ -1,3 +1,9 @@
+## 25 November 2026 - retire obsolete address catalogue bootstrap (v0.11.81)
+
+- Remove `.github/workflows/address-catalogue-bootstrap.yml`: its fixed `toolkit/address-catalogue-20261117` push target is historical and the scheduled metadata-only PR workflow supersedes it. Preserve the active sync workflow byte-for-byte, all catalogue generation scripts and data, and legacy branch history. Correct the active address workflow documentation to `stable/toolkit` and `stable/decomp`.
+- Base `be170989734ca7eca36b72681dce086f86bb2171` verified against the exact source tree `e5e0b703fdf9d79f1b9a6b5c14aece1ef1ce924b` after PR #237. All six remaining workflow YAML files parse; schedule, manual dispatch and canonical source/target routing verified. Registry `--check` passes (620 fields, 442 readable, zero conflicts); 29 focused registry, metadata-sync and new-address tests pass. Two additional consolidation assertions fail identically on base and candidate (historical 549-record expectation and non-SHA provenance); not changed in this workflow-only PR. No native gameplay or Windows runtime tests performed locally.
+- No version bump: no user-facing changes. Require actual hosted branch routing and any triggered checks before merge; verify remote tree and stable workflow publication afterward.
+
 ## 25 November 2026 - rename toolkit process-memory backends (v0.11.81)
 
 - Move the four unchanged `autosplitter/` modules into `practice/backends/`; migrate all active Python imports and CI paths. Preserve historical documentation and Git history. No change to guest addresses, write permissions, process attachment algorithms or user-facing version.
