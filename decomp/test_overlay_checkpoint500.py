@@ -33,7 +33,7 @@ class Checkpoint500(unittest.TestCase):
         self.assertEqual(source, (native.ROOT/'research/archived_116_20261119/checkpoint500/func_80033D10_34910.c').read_bytes())
 
     def test_claim_is_unique_and_after_1617(self):
-        m=load_manifest(Path(__file__).resolve().parent/'manifest.json')
+        m=load_manifest(Path(__file__).resolve().parent/'results/manifest_2354_before_batch302.json')
         # Historical checkpoint projection: post2090 functions were not yet accepted.
         m.pop('overlay_usa_opening_new2_stage',None)
         m.pop('overlay_rediscovery5_stage',None)

@@ -12,7 +12,7 @@ from decomp import verify
 class ThreeExtra187StageTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        cls.manifest = verify.load_manifest(stage.ROOT / "manifest.json")
+        cls.manifest = verify.load_manifest(stage.ROOT / "results/manifest_2354_before_batch302.json")
         # This test deliberately reconstructs a predecessor C stage.
         cls.manifest.pop('overlay_usa_opening_new2_stage',None)
         cls.manifest.pop('overlay_usa_short72_stage',None)

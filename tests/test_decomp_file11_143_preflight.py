@@ -17,7 +17,7 @@ from decomp.verify import load_manifest
 class File11143PreflightTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        cls.manifest = load_manifest(mod.ROOT / 'manifest.json')
+        cls.manifest = load_manifest(mod.ROOT / 'results/manifest_2354_before_batch302.json')
         # This test deliberately reconstructs a predecessor C stage.
         cls.manifest.pop('overlay_usa_opening_new2_stage',None)
         cls.manifest.pop('overlay_usa_short72_stage',None)

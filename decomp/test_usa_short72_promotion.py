@@ -15,7 +15,7 @@ class TestShort72(unittest.TestCase):
         self.assertEqual(len(set(f['name'] for f in fs)),72)
         self.assertTrue(all(hashlib.sha256((stage.SOURCE/(f['source']+'.c')).read_bytes()).hexdigest()==f['source_sha256'] for f in fs))
     def test_accepted_predecessor_no_overlap(self):
-        manifest=load_manifest(stage.ROOT/'manifest.json')
+        manifest=load_manifest(stage.ROOT/'results/manifest_2165_before_native151_20261123.json')
         manifest.pop('usa_script_vm_dual_reference',None)
         manifest.pop('usa_script_vm440_promotion',None)
         manifest.pop('usa_native151_promotion',None)
@@ -26,14 +26,14 @@ class TestShort72(unittest.TestCase):
         self.assertFalse({f['name'] for f in previous} & {f['name'] for f in s['functions']})
     def test_final_claims_complete(self):
         claims=claimed_functions(load_manifest(stage.ROOT/'manifest.json'))
-        self.assertEqual((len(claims),sum(f['size'] for f in claims)),(2354,115792))
+        self.assertEqual((len(claims),sum(f['size'] for f in claims)),(2556,144092))
     def test_modified_fixture_rejected(self):
         orig=stage.FIXTURE
         self.assertTrue(orig.is_file())
         with mock.patch.object(stage,'FIXTURE',stage.SOURCE/'short72-source-does-not-exist.json'):
             with self.assertRaises(FileNotFoundError):stage.fixture()
     def test_duplicate_original_address_rejected(self):
-        manifest=load_manifest(stage.ROOT/'manifest.json')
+        manifest=load_manifest(stage.ROOT/'results/manifest_2165_before_native151_20261123.json')
         manifest.pop('usa_script_vm_dual_reference',None)
         manifest.pop('usa_script_vm440_promotion',None)
         manifest.pop('usa_native151_promotion',None)

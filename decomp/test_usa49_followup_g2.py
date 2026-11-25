@@ -34,7 +34,7 @@ class TestUSA49ResearchSourceGuards(unittest.TestCase):
         # This test checks overlap as it existed before this research was
         # canonically reconciled. The full current 2072-C accepted set is
         # guarded separately by promotion_integrity.
-        manifest=verify.load_manifest(verify.ROOT/'manifest.json')
+        manifest=verify.load_manifest(verify.ROOT/'results/manifest_2354_before_batch302.json')
         # Historical checkpoint projection: post2090 functions were not yet accepted.
         manifest.pop('overlay_usa_opening_new2_stage',None)
         manifest.pop('overlay_usa_short72_stage',None)

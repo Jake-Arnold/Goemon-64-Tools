@@ -33,6 +33,8 @@ ROOT=Path(__file__).resolve().parents[1]
 # current production G2 evidence test below explicitly uses the live manifest.
 _current_load_manifest = load_manifest
 def load_manifest(*args, **kwargs):
+    if args and Path(args[0]).resolve() == (ROOT/'decomp/manifest.json').resolve():
+        args = (ROOT/'decomp/results/manifest_2354_before_batch302.json', *args[1:])
     manifest = _current_load_manifest(*args, **kwargs)
     # Isolate historical stage projections from the 2026-11-23 Mini promotions.
     manifest.pop('usa_consolidated29_promotion', None)
@@ -1355,6 +1357,9 @@ class DecompVerificationTests(unittest.TestCase):
         if manifest.get('usa_consolidated29_promotion') is not None:
             from decomp import consolidated_batch_promotion as consolidated
             sources.update(consolidated.source_hashes())
+        if manifest.get('usa_batch302_promotion') is not None:
+            from decomp import batch302_promotion as batch302
+            sources.update(batch302.source_hashes())
         self.assertEqual(set(result['sources_sha256_lf']),sources)
         for name in sources:
             patches=[p for p in manifest.get('existing_source_patches', []) if p['source']==name]

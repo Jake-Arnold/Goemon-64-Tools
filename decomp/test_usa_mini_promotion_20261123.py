@@ -26,14 +26,14 @@ class TestUSAMiniPromotion20261123(unittest.TestCase):
     def test_current_manifest_preserves_mini_and_new2_distinct_claims(self):
         manifest=verify.load_manifest(verify.ROOT/'manifest.json')
         claimed=verify.claimed_functions(manifest)
-        self.assertEqual(len(claimed),2354)
-        self.assertEqual(sum(x['size'] for x in claimed),115792)
-        self.assertEqual(len({f['name'] for f in claimed}),2354)
+        self.assertEqual(len(claimed),2556)
+        self.assertEqual(sum(x['size'] for x in claimed),144092)
+        self.assertEqual(len({f['name'] for f in claimed}),2556)
         ranges=sorted((f['rom_offset'],f['rom_offset']+f['size']) for f in claimed)
         self.assertTrue(all(x[1]<=y[0] for x,y in zip(ranges,ranges[1:])))
 
     def test_stage_identity_required(self):
-        manifest=verify.load_manifest(verify.ROOT/'manifest.json')
+        manifest=verify.load_manifest(verify.ROOT/'results/manifest_2165_before_native151_20261123.json')
         manifest.pop('usa_script_vm_dual_reference',None)
         manifest.pop('usa_script_vm440_promotion',None)
         manifest.pop('usa_native151_promotion',None)
@@ -46,7 +46,7 @@ class TestUSAMiniPromotion20261123(unittest.TestCase):
         with self.assertRaises(ValueError):ten.validate_predecessor({k:v for k,v in changed.items() if k!='overlay_mini_selector_stage'})
 
     def test_old_stage_rejected_and_manifest_drift_rejected(self):
-        manifest=verify.load_manifest(verify.ROOT/'manifest.json')
+        manifest=verify.load_manifest(verify.ROOT/'results/manifest_2165_before_native151_20261123.json')
         manifest.pop('usa_script_vm_dual_reference',None)
         manifest.pop('usa_script_vm440_promotion',None)
         manifest.pop('usa_native151_promotion',None)

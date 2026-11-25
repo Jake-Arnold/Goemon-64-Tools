@@ -32,7 +32,7 @@ class Archive22Gates(unittest.TestCase):
         new_names={f['name'] for f in self.archive}
         self.assertEqual(len(new_names),22)
         self.assertFalse(old_names & new_names)
-        m=load_manifest(ROOT/'decomp/manifest.json');m.pop('overlay_reconcile108_stage',None)
+        m=load_manifest(ROOT/'decomp/results/manifest_2354_before_batch302.json');m.pop('overlay_reconcile108_stage',None)
         # This test deliberately reconstructs a predecessor C stage.
         m.pop('overlay_usa_opening_new2_stage',None)
         m.pop('overlay_usa_short72_stage',None)
