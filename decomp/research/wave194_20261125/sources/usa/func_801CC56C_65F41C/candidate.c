@@ -1,0 +1,5 @@
+typedef signed char s8; typedef unsigned char u8; typedef signed short s16; typedef unsigned short u16; typedef signed int s32; typedef unsigned int u32; typedef signed long long s64; typedef unsigned long long u64; typedef float f32; typedef double f64; typedef s32 M2C_UNK; typedef s8 M2C_UNK8; typedef s16 M2C_UNK16; typedef s32 M2C_UNK32; typedef s64 M2C_UNK64;
+#define M2C_FIELD(expr,type_ptr,offset) (*(type_ptr)((s8 *)(expr)+(offset)))
+#define NULL ((void*)0)
+typedef struct { u8 pad_0[36]; s32 f_24; s32 f_28; s32 f_2C; s32 f_30; s32 f_34; s32 f_38; s32 f_3C; } Recovered_temp_v0;
+void func_801CC56C_65F41C(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5) {  Recovered_temp_v0 *temp_v0; temp_v0 = arg0 + 0x5C; if (arg0 != 0) { temp_v0->f_38 = 0x100; temp_v0->f_3C = -4; temp_v0->f_24 = arg1; temp_v0->f_28 = arg2; temp_v0->f_2C = arg3; temp_v0->f_30 = arg4; temp_v0->f_34 = arg5; } } 

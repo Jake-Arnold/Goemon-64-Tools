@@ -491,6 +491,9 @@ def claimed_functions(manifest):
 
 
 def _claimed_functions(manifest):
+    if manifest.get("usa_wave194_promotion") is not None:
+        from . import wave194_promotion as wave194
+        return wave194.predecessor(manifest)+wave194.claims()
     if manifest.get("usa_batch302_promotion") is not None:
         from . import batch302_promotion as batch302
         before=batch302.predecessor(manifest)
@@ -1511,6 +1514,7 @@ def load_manifest(path):
     selector_stage_value = manifest.pop('overlay_mini_selector_stage', None)
     opening_new2_stage_value = manifest.pop('overlay_usa_opening_new2_stage', None)
     short72_stage_value = manifest.pop('overlay_usa_short72_stage', None)
+    wave194_value = manifest.pop('usa_wave194_promotion', None)
     batch302_value = manifest.pop('usa_batch302_promotion', None)
     consolidated_value = manifest.pop('usa_consolidated29_promotion', None)
     transition_final_value = manifest.pop('usa_transition_final_promotion', None)
@@ -1891,6 +1895,10 @@ def load_manifest(path):
         from . import batch302_promotion as batch302
         manifest[batch302.KEY]=batch302_value
         batch302.predecessor(manifest)
+    if wave194_value is not None:
+        from . import wave194_promotion as wave194
+        manifest[wave194.KEY]=wave194_value
+        wave194.predecessor(manifest)
     return manifest
 
 
@@ -2764,6 +2772,7 @@ def apply_transition_stage(candidate,baseline,work,uv,jobs,manifest,report,expec
 
 
 def run_build(args,manifest,report):
+    wave194_value=manifest.pop('usa_wave194_promotion',None)
     batch302_value=manifest.pop('usa_batch302_promotion',None)
     consolidated_value=manifest.pop('usa_consolidated29_promotion',None)
     transition_final_value=manifest.pop('usa_transition_final_promotion',None)
@@ -3912,6 +3921,10 @@ def run_build(args,manifest,report):
         from . import batch302_promotion as batch302
         manifest[batch302.KEY]=batch302_value
         batch302.apply(candidate,baseline,work,uv,args.jobs,manifest,report,expected)
+    if wave194_value is not None:
+        from . import wave194_promotion as wave194
+        manifest[wave194.KEY]=wave194_value
+        wave194.apply(candidate,baseline,work,uv,args.jobs,manifest,report,expected)
     if not result['full_rom_match'] or result['matched_functions']!=result['claimed_functions']:
         raise ValueError('Candidate failed exact matching')
     report['stage']='complete';report['status']='matched'

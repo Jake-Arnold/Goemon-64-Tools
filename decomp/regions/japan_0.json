@@ -1234,5 +1234,19 @@
     "source_manifest": "decomp/regions/japan_0_2664_batch302.json",
     "proof": "decomp/results/japan_0_batch302_g2_20261125.json",
     "inventory": "decomp/results/japan_0_2664_batch302_inventory_20261125.json"
+  },
+  "wave194_promotion": {
+    "format": "goemon-wave194-original-ido-v1",
+    "status": "PASSED_G2_LOCAL",
+    "base_original_C": 2664,
+    "new_original_C": 93,
+    "accepted_original_C": 2757,
+    "accepted_original_bytes": 167420,
+    "asm_remaining": 4619,
+    "canonical_semantic_relocations": 80654,
+    "full_original_elf_identities": 7376,
+    "source_manifest": "decomp/regions/japan_0_2757_wave194.json",
+    "proof": "decomp/results/japan_0_wave194_g2_20261125.json",
+    "inventory": "decomp/results/japan_0_2757_wave194_inventory_20261125.json"
   }
 }
