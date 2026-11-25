@@ -85,6 +85,59 @@ class JapanRawFreezeUITests(unittest.TestCase):
         app.watch_context_menu.invoke(2)
         self.assertIsNone(app.value_freezes.get(0x80161EEF))
 
+    def test_auto_attachment_supports_all_japan_freeze_entry_points(self):
+        app = self.app
+        # Auto retains the selector value; jp_backend contains the actual
+        # backend resolved by the successful Japanese attachment.
+        app.connection_target.set('auto')
+        for backend in ('project64', 'mupen64plus', 'recomp'):
+            with self.subTest(backend=backend), patch.object(app, '_ensure_freeze_worker'):
+                app.jp_backend = backend
+                app.stop_all_freezes()
+                self._right_click()
+                self.assertEqual(app.watch_context_menu.entrycget(2, 'state'), 'normal')
+                app.watch_context_menu.invoke(2)
+                lock = app.value_freezes.get(self.watch.addr)
+                self.assertIsNotNone(lock, app.freeze_status.get())
+                self.assertEqual(lock.value, b'\x01')
+                self.assertTrue(app._freeze_worker_connection()[2])
+                app.stop_all_freezes()
+                app.watch_tree.selection_set(self.watch.name)
+                app.freeze_selected_watch()
+                self.assertEqual(app.value_freezes.get(self.watch.addr).value, b'\x01')
+                app.stop_all_freezes()
+                app.raw_address.set(f'{self.watch.addr:08X}')
+                app.raw_width.set('1')
+                app.raw_value.set('02')
+                app.freeze_raw_value()
+                self.assertEqual(app.value_freezes.get(self.watch.addr).value, b'\x02')
+                app.stop_all_freezes()
+
+    def test_auto_does_not_bypass_japanese_freeze_access_guards(self):
+        app = self.app
+        app.connection_target.set('auto')
+        for attr, invalid in (('jp_rdram', None), ('game_pid', None),
+                              ('_connecting', True), ('jp_backend', 'unknown')):
+            with self.subTest(attr=attr), patch.object(app, attr, invalid):
+                with self.assertRaisesRegex(RuntimeError, 'Connect to Japanese RAM'):
+                    app.require_freeze_access(raw=True)
+        app.connection_target.set('mupen64plus')  # Actual attachment is Project64.
+        with self.assertRaisesRegex(RuntimeError, 'Connect to Japanese RAM'):
+            app.require_freeze_access(raw=True)
+        app.connection_target.set('auto')
+        with patch.object(app.args, 'read_only', True):
+            with self.assertRaises(PermissionError):
+                app.require_freeze_access(raw=True)
+        with patch.object(app.args, 'enable_hex_edit', False):
+            with self.assertRaises(PermissionError):
+                app.require_freeze_access(raw=True)
+        with patch.dict(app.jp_rdram.values, {(JAPAN_DEBUG_LOADING, 4): b'\x00\x00\x00\x01'}):
+            with self.assertRaisesRegex(ValueError, 'stable Japanese gameplay'):
+                app.require_freeze_access(raw=True)
+        with self.assertRaises(PermissionError):
+            app.require_freeze_access(raw=False)
+        self.assertFalse(app.value_freezes.active())
+
     def test_japan_freeze_refused_in_readonly_and_stops_on_region_switch(self):
         app=self.app
         self._right_click()
