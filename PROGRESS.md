@@ -1,3 +1,8 @@
+## 25 November 2026 - refresh metadata-only PR #215 (v0.11.84)
+
+- Regenerate the pending address import from verified stable/decomp `11f76ecc7234a6f91047b538c179ce564fa7c5f9` on current stable/toolkit `b6ce1234904ccd608474a29aa39053f42b45cf79`. Two independently instruction-traced regional system-pointer slots remain research-only, no automatic dereference or write; the countdown width discrepancy remains disputed/non-readable. No source or writer transfer, no version bump.
+- Import reported two additions and one disputed record; generated registry 622 fields, 442 readable, zero reconciliation conflicts. 26 registry/import and 11 Xvfb catalogue tests passed; regeneration check and whitespace passed. One initially requested test module does not exist; reran the actual applicable suites. No live emulator tests. Verified source archives 15031689190 and 15031871479 and checksums. Retain original PR head as a parent; no force push. Require current hosted checks before merge.
+
 ## 25 November 2026 - fix Japanese freeze activation after Auto attachment (v0.11.84)
 
 - `require_freeze_access(raw=True)` incorrectly required the backend selector to equal the detected Japanese backend, rejecting `auto` despite the existing context menu, hex editor and other Japanese controls accepting Auto. Accept `auto` or the actual attached backend, while retaining the attached reader/PID, supported backend, pending connection, read-only, hex-edit and stable-gameplay guards. No changes to writers, addresses, lock/session identity, USA-only resource/task features or the 10 ms worker.
