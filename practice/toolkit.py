@@ -409,32 +409,6 @@ class Toolkit(DialogueRegionMixin, DialogueMixin, UpdaterMixin, ReportsMixin, Ja
         # Only verified Japanese native-save operations are enabled.
         self.refresh_named_native_checkpoints()
 
-        # Read-only diagnostics coexist with direct mapped Japanese unlock edits.
-        jp_card = ttk.LabelFrame(right, text=' Japanese guest RAM (recomp / emulators) ', padding=10)
-        self.jp_card = jp_card
-        # Retired Dashboard duplicate: fixed-address RAM inspection and
-        # editing live in the shared USA/Japan Live Memory tab. Keep its
-        # backing widgets alive to avoid changing runtime attachment code.
-        ttk.Label(jp_card, text='Verify Japan-0 ROM; select recomp, project64 (Windows or Wine/Linux) or mupen64plus, '
-                  'then Connect. Only raw N64 bytes are exposed; USA pointers, '
-                  'USA checkpoints and USA RAM editors remain disabled. '
-                  'Mapped Japanese unlocks write directly in the shared Unlocks tab.',
-                  style='CardMuted.TLabel', wraplength=420).pack(anchor='w', pady=(0, 7))
-        jp_inputs = ttk.Frame(jp_card)
-        jp_inputs.pack(fill='x')
-        self.jp_read_address = tk.StringVar(value='0x80000450')
-        self.jp_read_length = tk.StringVar(value='16')
-        ttk.Label(jp_inputs, text='Address').pack(side='left')
-        ttk.Entry(jp_inputs, textvariable=self.jp_read_address, width=15).pack(side='left', padx=5)
-        ttk.Label(jp_inputs, text='Bytes').pack(side='left')
-        ttk.Entry(jp_inputs, textvariable=self.jp_read_length, width=5).pack(side='left', padx=5)
-        self.jp_read_button = ttk.Button(jp_inputs, text='Read', command=self.read_japan_rdram)
-        self.jp_read_button.pack(side='left', padx=5)
-        self.jp_read_button.state(['disabled'])
-        self.jp_read_result = tk.StringVar(value='Japanese guest RAM is not connected.')
-        ttk.Label(jp_card, textvariable=self.jp_read_result,
-                  style='CardMuted.TLabel', wraplength=420).pack(anchor='w', pady=(7, 0))
-
         # Retain existing logical checkpoint code/data but hide its incomplete
         # snapshot controls so the dashboard presents only native full states.
         checkpoints = ttk.LabelFrame(right, text=' Legacy logical checkpoints ', padding=10)
@@ -766,26 +740,8 @@ class Toolkit(DialogueRegionMixin, DialogueMixin, UpdaterMixin, ReportsMixin, Ja
             self.reset_state_probes()
         if hasattr(self, 'value_search_tab'):
             self.invalidate_value_search_connection()
-        if getattr(self, 'jp_read_button', None):
-            self.jp_read_button.state(['disabled'])
-            self.jp_read_result.set('Japanese guest RAM is not connected.')
         if hasattr(self, 'jp_capture_spawn_btn'):
             self.jp_capture_spawn_btn.state(['disabled'])
-
-    def read_japan_rdram(self):
-        """Read raw guest bytes without invoking any USA live-memory parser."""
-        if self.active_version.key != 'japan' or self.jp_rdram is None:
-            self.jp_read_result.set('Japanese guest RAM is not connected.')
-            return
-        try:
-            address = int(self.jp_read_address.get().strip(), 0)
-            length = int(self.jp_read_length.get().strip(), 0)
-            if not 1 <= length <= 64:
-                raise ValueError('Read length must be between 1 and 64 bytes')
-            guest = self.jp_rdram.read_guest(address, length)
-            self.jp_read_result.set(f'0x{address:08X}: {guest.hex(" ").upper()}')
-        except (ValueError, OSError, PermissionError) as exc:
-            self.jp_read_result.set(f'RDRAM read rejected: {exc}')
 
     def on_game_version_changed(self, _event=None):
         """A version selection never remaps the existing USA RDRAM handle."""
@@ -2012,11 +1968,7 @@ class Toolkit(DialogueRegionMixin, DialogueMixin, UpdaterMixin, ReportsMixin, Ja
             self.toggle_connection_advanced(True)
             self.jp_base_row.pack(
                 fill='x', pady=(0, 7), after=self.connection_backend_selector)
-            self.jp_read_button.state(['disabled'])
             self.jp_capture_spawn_btn.state(['disabled'])
-            self.jp_read_result.set(
-                'Select a Japan-code-matching RAM base above, then reconnect. '
-                'A match alone does not prove the copy is actively changing.')
             self.status.set(
                 f'Found {len(choices)} candidate RAM buffers in Japanese {target} PID {pid}. '
                 'Choose a base from the dropdown and reconnect.')
@@ -2026,7 +1978,6 @@ class Toolkit(DialogueRegionMixin, DialogueMixin, UpdaterMixin, ReportsMixin, Ja
                 self.process, self.jp_rdram, self.game_pid = process, reader, pid
                 self.jp_backend = target
                 self.mem = self.current = None
-            self.jp_read_button.state(['!disabled'])
             self.jp_capture_spawn_btn.state(['!disabled'])
             # Only a successful Auto attachment can arm live restart tracking.
             self._jp_reconnect_enabled = self.connection_target.get() == 'auto'
@@ -2041,8 +1992,6 @@ class Toolkit(DialogueRegionMixin, DialogueMixin, UpdaterMixin, ReportsMixin, Ja
                     # the same binary; no automatic monitoring without proof.
                     pass
             size_mb = getattr(reader, 'rdram_size', 0x800000) // 0x100000
-            self.jp_read_result.set(
-                f'Japan-0 verified {size_mb} MiB RDRAM at 0x{base:X}; {endian}.')
 
             self.refresh_japan_fields(force=True)
             self.last_inspect_at=0.0
@@ -2067,7 +2016,6 @@ class Toolkit(DialogueRegionMixin, DialogueMixin, UpdaterMixin, ReportsMixin, Ja
                 self.process = self.mem = self.current = self.jp_rdram = None
                 self.game_pid = None
                 self.jp_backend = None
-                self.jp_read_button.state(['disabled'])
                 self.jp_capture_spawn_btn.state(['disabled'])
             self.pos_text.set('X: —    Y: —    Z: —')
             self.speed_text.set('Speed: —')

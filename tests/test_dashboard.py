@@ -6,7 +6,7 @@ import time
 import unittest
 from argparse import Namespace
 from types import SimpleNamespace
-from unittest.mock import patch
+from unittest.mock import Mock, patch
 
 from practice.inspector import Watch
 from practice.theme import PALETTE
@@ -193,7 +193,7 @@ class DashboardSmokeTests(unittest.TestCase):
         self.assertFalse(app.connection_advanced_visible)
         self.assertEqual(app.connection_advanced_frame.winfo_manager(), '')
         self.assertEqual(app.named_native_frame.winfo_manager(), '')
-        self.assertEqual(app.jp_card.winfo_manager(), '')
+        self.assertFalse(hasattr(app, 'jp_card'))
         self.assertEqual(app.jp_base_row.winfo_manager(), '')
         self.assertFalse(app.named_native_expanded)
         self.assertFalse(hasattr(app, 'version_selector'))
@@ -226,7 +226,7 @@ class DashboardSmokeTests(unittest.TestCase):
             self.assertEqual(app.named_native_frame.winfo_manager(), '')
             self.assertEqual(app.region_label.get(),
                              'Japan' if expected == 'japan' else 'USA')
-            self.assertEqual(app.jp_card.winfo_manager(), '')
+            self.assertFalse(hasattr(app, 'jp_card'))
             self.assertEqual(app.jp_base_row.winfo_manager(), '')
             self.assertEqual(app.version_heading.get(), original_heading)
             self.assertEqual(app.scene_character.current(), 3)
@@ -361,22 +361,63 @@ class DashboardSmokeTests(unittest.TestCase):
         self.assertNotIn('Windows only', app.status.get())
         self.assertIsNone(app.jp_rdram)
 
-    def test_linux_dashboard_does_not_label_project64_windows_only(self):
-        # Static text must describe the implemented Wine/Linux connection.
+    def test_retired_raw_ram_card_has_no_widgets_or_callback(self):
         app = self.toolkit
-        labels = []
-        def inspect(widget):
-            try:
-                value = widget.cget('text')
-            except tk.TclError:
-                value = ''
-            if isinstance(value, str):
-                labels.append(value)
-            for child in widget.winfo_children():
-                inspect(child)
-        inspect(app.jp_card)
-        self.assertTrue(any('Wine/Linux' in s for s in labels))
-        self.assertFalse(any('project64 (Windows)' in s for s in labels))
+        for attr in ('jp_card', 'jp_read_address', 'jp_read_length',
+                     'jp_read_button', 'jp_read_result', 'read_japan_rdram'):
+            self.assertFalse(hasattr(app, attr), attr)
+
+    def test_japan_attach_results_without_retired_ram_card(self):
+        app = self.toolkit
+        app.game_version_choice.set(VERSIONS['japan'].label)
+        app.on_game_version_changed()
+        app.connection_target.set('project64')
+        def deliver(result):
+            app._connecting = True
+            app._connect_queue.put(result)
+            app._poll_connect_results()
+            self.assertFalse(app._connecting)
+            self.assertNotIn('disabled', app.connect_button.state())
+
+        deliver(('japan-ambiguous', 123, 'project64',
+                 [(0x10000000, 'big'), (0x20000000, 'wordswapped')]))
+        self.assertEqual(len(app.jp_candidates), 2)
+        self.assertTrue(app.jp_base_row.winfo_manager())
+        self.assertIn('disabled', app.jp_capture_spawn_btn.state())
+        self.assertIn('candidate RAM buffers', app.status.get())
+        self.assertIsNone(app.jp_rdram)
+
+        # Read-only synthetic reader: the real Debugger memory viewer must
+        # still show Japanese bytes, without a USA reader or hidden widgets.
+        process = Mock()
+        reader = SimpleNamespace(rdram_size=0x800000,
+                                 read_guest=lambda address, length: bytes(range(length)))
+        with patch.object(app, 'refresh_japan_fields'), \
+             patch.object(app, 'refresh_inspector'), \
+             patch.object(app, 'refresh_unlocks'), \
+             patch.object(app, 'refresh_story_progress'), \
+             patch.object(app, 'select_story_edit'):
+            deliver(('japan-ok', 123, 'project64', process, reader,
+                     0x10000000, 'big'))
+        self.assertIs(app.jp_rdram, reader)
+        self.assertIsNone(app.mem)
+        self.assertIn('Attached to Japan-0', app.status.get())
+        self.assertNotIn('disabled', app.jp_capture_spawn_btn.state())
+        app.debug_memory_addr.set('0x80000450')
+        app.debug_refresh_memory()
+        self.assertEqual(len(app.debug_memory_tree.get_children()), 16)
+        self.assertEqual(app.debug_memory_tree.set('80000450', 'bytes'),
+                         '00 01 02 03 04 05 06 07 08 09 0A 0B 0C 0D 0E 0F')
+        self.assertIn('PID 123', app.debug_status.get())
+
+        app._disconnect_for_version_change()
+        process.close.assert_called_once()
+        self.assertIsNone(app.jp_rdram)
+        self.assertIn('disabled', app.jp_capture_spawn_btn.state())
+        deliver(('error', 'synthetic failure'))
+        self.assertIsNone(app.jp_rdram)
+        self.assertIn('Connection failed: synthetic failure', app.status.get())
+        self.assertIn('disabled', app.jp_capture_spawn_btn.state())
 
     def test_japan_project64_windows_selection_and_wrong_backend_guard(self):
         app = self.toolkit
