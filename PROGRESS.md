@@ -1,3 +1,13 @@
+## 25 November 2026 - PR #235 frame timer lifecycle regression fix (v0.11.85)
+
+- Full regression on first refreshed head `78f98da6e4e61cf7858399672bdc2057a38abdfa` exposed root/child Tk callback ownership mismatch: initial frame drain was scheduled on a child page, but existing shutdown cancels callbacks through the root. This caused 32 GUI teardown errors and four downstream failures. Schedule initial drain on the root, matching subsequent drains; add explicit root-cancel/destroy regression. All 85 affected GUI/controller tests pass after fix. First full synthetic run 578 passed, 10 skipped; Windows packaging/report and branch routing passed, both first-head hosted Linux jobs failed. New head must rerun all checks before merge. No native timing verification.
+
+## 25 November 2026 - refresh experimental Project64 frame control PR #235 (v0.11.85)
+
+- Reconcile PR #235 with current stable/toolkit after metadata PR #215; preserve its six original added files byte-for-byte. Integrate the experimental Debugger frame-control page, token-authenticated localhost companion and bounded P1 controller-poll or manually selected execution-hook intervals. Controller polls are not confirmed logic frames; no verified update PC, native timing proof, new guest address or ROM patch. Preserve read-only mode and all existing toolkit safeguards.
+- Resolve version/README/PROGRESS and Windows release workflow against v0.11.84, bump to v0.11.85, require the companion JS in packaged resources, and include frame regression tests in both platform runners. Add GUI read-only command/export regression; keep legacy debugger/region tests.
+- Verified source archive 15033650468 and exact base tree `08eb0c2f49d5dc197f06465509c133c158c0a28e` at `7bc1c50165ed448afa6a12fa49bff87099993681`. Local Xvfb/synthetic frame, Node API mock, debugger, dashboard, packaging and registry/import tests: 71 passed; version tests: 3 passed; address catalogue check (622 fields, 442 readable, zero conflicts), whitespace and compilation checks passed. The initial added GUI test lacked a stub argument; corrected fixture and reran. No actual Project64/Wine/Windows runtime tests. Retain old PR head via merge parent; no force push. Require hosted checks before merge.
+
 ## 25 November 2026 - refresh metadata-only PR #215 (v0.11.84)
 
 - Regenerate the pending address import from verified stable/decomp `11f76ecc7234a6f91047b538c179ce564fa7c5f9` on current stable/toolkit `b6ce1234904ccd608474a29aa39053f42b45cf79`. Two independently instruction-traced regional system-pointer slots remain research-only, no automatic dereference or write; the countdown width discrepancy remains disputed/non-readable. No source or writer transfer, no version bump.

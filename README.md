@@ -1,6 +1,10 @@
-# Goemon Speedrun Tools v0.11.84 — PJ64-style Debugger and Research Metadata
+# Goemon Speedrun Tools v0.11.85 — Experimental Project64 Frame Control
 
 > **Repository branch policy (23 November 2026):** Toolkit development uses `stable/toolkit` → `toolkit/<topic>` → PR to `stable/toolkit`. Decomp work uses `stable/decomp` → `decomp/<topic>` → PR to `stable/decomp`. `main` and `chatgptweb/decomp` are legacy names, not new baselines. Read [BRANCHES.md](BRANCHES.md). Never merge the entire branches together.
+
+## v0.11.85 — experimental Project64 frame control
+
+Debugger → Frame control (PJ64) exports an authenticated localhost script, pauses at controller-poll boundaries, and schedules P1 button/stick input for bounded steps. An optional manually verified execution PC enables update-interval research. Controller polls are not confirmed game frames. See [setup and limits](docs/PJ64_FRAME_CONTROL.md).
 
 ## v0.11.81 — guest-RAM debugger, scripted tracing and reviewed metadata sync
 
