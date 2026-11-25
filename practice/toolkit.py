@@ -1950,7 +1950,9 @@ class Toolkit(DialogueRegionMixin, DialogueMixin, UpdaterMixin, ReportsMixin, Ja
                     pass
             size_mb = getattr(reader, 'rdram_size', 0x800000) // 0x100000
 
-            self.refresh_japan_fields(force=True)
+            # Enable the shared Scene Browser controls without sampling the
+            # retired comparison panel. Explicit baseline/compare remains available.
+            self.refresh_japan_party_controls()
             self.last_inspect_at=0.0
             self.refresh_inspector({})
             self.refresh_unlocks(force=True)
@@ -2064,13 +2066,10 @@ class Toolkit(DialogueRegionMixin, DialogueMixin, UpdaterMixin, ReportsMixin, Ja
             if force or now - getattr(self, '_visible_story_last_poll', 0) >= 0.8:
                 self._visible_story_last_poll = now
                 self.refresh_story_progress()
-        elif panel == 'dashboard':
-            self.refresh_checkpoint_diff(force=force)
         elif panel == 'scene':
             self.refresh_scene_banner(force=force)
-        if (self.active_version.key == 'japan'
-                and panel in ('dashboard', 'scene')):
-            self.refresh_japan_party_controls()
+            if self.active_version.key == 'japan':
+                self.refresh_japan_party_controls()
 
     def _on_main_tab_changed(self, _event=None):
         """Sample the selected tab once after navigation, never hidden tabs."""
@@ -2280,10 +2279,6 @@ class Toolkit(DialogueRegionMixin, DialogueMixin, UpdaterMixin, ReportsMixin, Ja
             self.checkpoints.append(cp)
             save_checkpoint_file(CHECKPOINTS_FILE,self.checkpoints)
             self.logical_checkpoint_selection = len(self.checkpoints)-1
-            self.refresh_checkpoint_options()
-            if hasattr(self, "diff_cp"):
-                self.diff_cp.current(len(self.checkpoints)-1)
-            self.refresh_checkpoint_diff(force=True)
             self.status.set("Captured logical checkpoint: XYZ, rotation, health, lives, Ryo, inventory and progression. This is not a savestate.")
         except Exception as e:
             messagebox.showerror("Checkpoint capture blocked",str(e))
@@ -2297,7 +2292,6 @@ class Toolkit(DialogueRegionMixin, DialogueMixin, UpdaterMixin, ReportsMixin, Ja
         self.status.set(f"Restored logical checkpoint: {p['name']} | "
                         f"{summary['health']}/{summary['max_health']} HP, "
                         f"{summary['ryo']} Ryo, {summary['lives']} lives. Verify in-game.")
-        self.refresh_checkpoint_diff(force=True)
 
     def _release_native_key(self):
         release=self.native_key_release
