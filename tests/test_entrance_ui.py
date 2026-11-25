@@ -67,7 +67,7 @@ class EntranceUITests(unittest.TestCase):
 
     def test_legacy_debug_handler_is_menu_only_never_arms_spawn(self):
         from practice.scene_controls import PENDING_MAP_ADDR
-        from autosplitter.memory import PLAYER_OBJECT_PTR_ADDR, PLAYER_TASK_PTR_ADDR
+        from practice.backends.memory import PLAYER_OBJECT_PTR_ADDR, PLAYER_TASK_PTR_ADDR
         before = self.app.mem.read_guest(PENDING_MAP_ADDR, 12)
         self.app.scene_list.selection_clear(0, 'end')
         self.app.mem.write_guest(PLAYER_OBJECT_PTR_ADDR, bytes(4))

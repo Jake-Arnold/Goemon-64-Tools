@@ -5,7 +5,7 @@ import subprocess
 import sys
 import unittest
 
-from autosplitter.linux_process import LinuxProcess
+from practice.backends.linux_process import LinuxProcess
 
 
 class LinuxProcessTests(unittest.TestCase):

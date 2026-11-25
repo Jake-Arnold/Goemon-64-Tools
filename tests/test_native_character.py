@@ -6,7 +6,7 @@ from practice.native_character import (
     PARTY_OFFSET, CHARACTER_TASK_OFFSET, ready_for_scene_character, ready_for_scene_spawn, scene_character_unlocked,
 )
 from practice.checkpoints import GAMEDATA_ADDR, MAP_ADDR
-from autosplitter.memory import CHARACTER_ID_ADDR
+from practice.backends.memory import CHARACTER_ID_ADDR
 
 class TestNativeCharacter(unittest.TestCase):
     def sample(self):

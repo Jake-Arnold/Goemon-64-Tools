@@ -4,7 +4,7 @@ The tests do not prove that a live Impact boss-fight will tear down safely.
 """
 import unittest
 
-from autosplitter.memory import (
+from practice.backends.memory import (
     PLAYER_OBJECT_PTR_ADDR, PLAYER_TASK_PTR_ADDR, CHARACTER_ID_ADDR,
     LOADING_FLAG_ADDR,
 )

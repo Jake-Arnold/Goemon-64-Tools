@@ -1,3 +1,10 @@
+## 25 November 2026 - rename toolkit process-memory backends (v0.11.81)
+
+- Move the four unchanged `autosplitter/` modules into `practice/backends/`; migrate all active Python imports and CI paths. Preserve historical documentation and Git history. No change to guest addresses, write permissions, process attachment algorithms or user-facing version.
+- Recover the valid memory/process tests from obsolete `tests/test_tools.py` as `tests/test_memory_backends.py`; retire three tests for the already-removed split engine. Repair the checkpoint UI fixture import and stale WindowsProcess mocks to use HostProcess. Add backend tests to both OS regression runners and a packaging path contract.
+- Verified the SHA-pinned source archive and exact Git tree at `a804d45f166b187bbe5d15f0eee42d16ebfb092d`. Local Linux regression: 534 synthetic tests (9 skips), 230 Tk tests passed; additional focused backend/checkpoint/default tests: 32 (2 skips), packaging/version tests: 9, cross-area Tk tests: 14 passed. Python compilation, launcher help, address catalogue sync and diff whitespace checks passed.
+- Native emulator/gameplay and Windows executable testing are not established by local tests. Require hosted toolkit checks before merge; keep stable/decomp and historical refs unchanged.
+
 ## 23 November 2026 - publish SHA-pinned Goemon source artifacts
 
 - Publish tracked source on stable pushes and allow manual refresh so Project sessions can download it through the GitHub connector.

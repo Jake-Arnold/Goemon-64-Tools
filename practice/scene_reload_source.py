@@ -55,7 +55,7 @@ def require_reload_source(context, *, region, explicit_character=None):
 
 def read_usa_reload_source(ram):
     """Read the six independently mapped original-USA static globals."""
-    from autosplitter.memory import CHARACTER_ID_ADDR, LOADING_FLAG_ADDR
+    from practice.backends.memory import CHARACTER_ID_ADDR, LOADING_FLAG_ADDR
     from practice.checkpoints import STATE_ADDR, MAP_ADDR, SUBMODE_ADDR, EXIT_ADDR
     return (
         ram.u8(STATE_ADDR), ram.u16(MAP_ADDR),

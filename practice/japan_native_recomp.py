@@ -12,7 +12,7 @@ closed rather than interpreting an unverified buffer as the game.
 """
 from __future__ import annotations
 
-from autosplitter.process_discovery import find_pid
+from practice.backends.process_discovery import find_pid
 from practice.japanese_debug_warp import (
     JAPAN_DEBUG_ENGINE_MODE, JAPAN_DEBUG_SCENE, JAPAN_DEBUG_CHARACTER,
 )

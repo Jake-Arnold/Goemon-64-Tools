@@ -5,7 +5,7 @@ and route engine. The shared RDRAM reader remains production code.
 """
 import unittest
 import struct
-from autosplitter.memory import (
+from practice.backends.memory import (
     Rdram, SYS_POINTER_ADDR, SYS_EXPECTED_PTR, PLAYER_OBJECT_PTR_ADDR,
     PLAYER_TASK_PTR_ADDR, CHARACTER_ID_ADDR, LOADING_FLAG_ADDR,
 )

@@ -38,7 +38,7 @@ class TestExperimentalGUI(unittest.TestCase):
 
     def test_character_staged_before_reload_no_c_down_and_verified_on_entry(self):
         from practice.checkpoints import MAP_ADDR
-        from autosplitter.memory import CHARACTER_ID_ADDR
+        from practice.backends.memory import CHARACTER_ID_ADDR
         self.app.scene_character.current(3)  # Sasuke in shared Keep/0/1/2/3 selector
         self.app.scene_options=[(353,'Test destination')]
         self.app.scene_list.insert('end','Test destination')
@@ -62,7 +62,7 @@ class TestExperimentalGUI(unittest.TestCase):
 
     def test_wrong_spawn_character_is_reported_without_postload_input(self):
         from practice.checkpoints import MAP_ADDR
-        from autosplitter.memory import CHARACTER_ID_ADDR
+        from practice.backends.memory import CHARACTER_ID_ADDR
         self.app.scene_character.current(4)  # Yae in shared Keep/0/1/2/3 selector
         self.app.scene_options=[(353,'Test destination')]
         self.app.scene_list.insert('end','Test destination')
@@ -85,7 +85,7 @@ class TestExperimentalGUI(unittest.TestCase):
     def test_scene_banner_is_same_for_both_regions_without_player_pointer(self):
         from practice.game_versions import VERSIONS
         from practice.checkpoints import MAP_ADDR
-        from autosplitter.memory import PLAYER_OBJECT_PTR_ADDR, PLAYER_TASK_PTR_ADDR
+        from practice.backends.memory import PLAYER_OBJECT_PTR_ADDR, PLAYER_TASK_PTR_ADDR
         from tests.test_unlocks import FakeRAM
         self.ram.write_guest(MAP_ADDR, (0x161).to_bytes(2, 'big'))
         self.ram.write_guest(PLAYER_OBJECT_PTR_ADDR, bytes(4))
@@ -126,7 +126,7 @@ class TestExperimentalGUI(unittest.TestCase):
 
     def test_impact_no_player_doubleclick_stages_reload(self):
         from practice.checkpoints import SUBMODE_ADDR
-        from autosplitter.memory import (
+        from practice.backends.memory import (
             PLAYER_OBJECT_PTR_ADDR, PLAYER_TASK_PTR_ADDR)
         self.ram.write_guest(SUBMODE_ADDR, bytes([4]))
         self.ram.write_guest(PLAYER_OBJECT_PTR_ADDR, bytes(4))

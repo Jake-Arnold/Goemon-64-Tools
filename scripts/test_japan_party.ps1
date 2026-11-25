@@ -37,6 +37,8 @@ function Invoke-PythonTest {
 }
 
 $backendTests = @(
+    'tests.test_memory_backends',
+    'tests.test_linux_process',
     'tests.test_japanese_fields',
     'tests.test_japanese_scene_probes',
     'tests.test_japanese_party_unlock',
