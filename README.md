@@ -1147,7 +1147,7 @@ Japan-0 can now use the exact-ROM-verified memory attachment with **Project64.ex
 
 Dashboard contains **Connection** and **Logical checkpoints** side by side at its default 1220×790 window size, keeping both panels visible without scrolling. At narrower widths, the cards stack vertically and the scrollbar remains available. Scene Browser and Live Memory are separate dedicated tabs; the dashboard no longer duplicates their tables.
 
-The rebuilt-recomp **Game speed** UI has been removed. Standalone speed research and preparation code remains in the repository but is not part of the toolkit interface.
+The rebuilt-recomp **Game speed** UI has been removed. The standalone speed research and preparation code is archived in [Git history](https://github.com/Jake-Arnold/Goemon-64-Tools/tree/a9054c7211728f84173d0fc0e8bcd54d606b6f07/speed); it is no longer in the active toolkit tree.
 
 **Event sessions** has two internal tabs: **Event flag sessions** for repeated 100-byte USA saved-event experiments or a user-selected 100-byte Japanese *research window* (not a known JP saved bank), and **Advanced RAM comparison** for the former State discovery A/B/C probes (including wide scope and no-player contexts). The redundant **Saved / shadow** UI has been removed.
 
@@ -1187,7 +1187,7 @@ Windows; launch with `--read-only` to disable game writes and automated input.
 
 ## Experimental native Linux toolkit
 
-The Python/Tk toolkit has an experimental native Linux process-memory backend, a native-game launch control, existing-PID connection with optional OS authorization, write-enabled practice controls by default, original-ROM-researched script diagnostics, **X11-only verified-target key injection**, and a **Linux speed channel for separately rebuilt patched hosts**. See [Linux setup and limitations](docs/LINUX_TOOLKIT.md). This is not a claim of Wayland input support, stock-recomp speed control or live gameplay verification.
+The Python/Tk toolkit has an experimental native Linux process-memory backend, a native-game launch control, existing-PID connection with optional OS authorization, write-enabled practice controls by default, original-ROM-researched script diagnostics, and **X11-only verified-target key injection**. See [Linux setup and limitations](docs/LINUX_TOOLKIT.md). This is not a claim of Wayland input support, stock-recomp speed control or live gameplay verification.
 
 The four normal Plasma locations share one advice event. Story progress now
 includes all 39 bits checked or set by its traced advice path. Your two forced
@@ -1204,7 +1204,7 @@ entry now includes the user’s first-conversation observation. See
 
 ## Archived speed-control research
 
-The previous Dashboard speed controls were removed because they required a separately rebuilt recomp. Source preparation and experimental standalone speed-control modules remain for reference; see [speed research](docs/SPEED_CONTROL_RESEARCH.md).
+The previous Dashboard speed controls were removed because they required a separately rebuilt recomp. Source preparation, experimental standalone speed-control modules and their tests are preserved at the [last pre-retirement commit](https://github.com/Jake-Arnold/Goemon-64-Tools/tree/a9054c7211728f84173d0fc0e8bcd54d606b6f07/speed). See [historical speed research](docs/SPEED_CONTROL_RESEARCH.md). The current toolkit does not control host-clock speed.
 
 ## Connect without a player
 

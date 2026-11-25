@@ -1,12 +1,18 @@
 """Verify rebuilt-recomp speed controls are no longer part of the toolkit UI.
 
-Standalone speed research modules remain available without a live GUI entry.
+Historical standalone speed modules are preserved in Git history.
 """
+from pathlib import Path
 import tkinter as tk
 import unittest
 from practice.toolkit import Toolkit, parse_args
 
 class LiveSpeedUITests(unittest.TestCase):
+    def test_retired_speed_sources_not_in_active_tree(self):
+        root = Path(__file__).resolve().parents[1]
+        self.assertFalse((root / "speed").exists())
+        self.assertFalse((root / "practice" / "live_speed_ui.py").exists())
+
     def test_speed_ui_removed_without_disabling_pid_connection(self):
         try:
             root=tk.Tk()

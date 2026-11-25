@@ -1,5 +1,7 @@
 # Game speed control research
 
+> **Historical archive — retired 25 November 2026.** This report preserves the original experiment, not current toolkit instructions. The Dashboard speed UI, standalone runtime patches, launcher and associated tests were removed from the active toolkit tree. The complete original sources and tests remain at [commit `a9054c7`](https://github.com/Jake-Arnold/Goemon-64-Tools/tree/a9054c7211728f84173d0fc0e8bcd54d606b6f07); [speed subsystem](https://github.com/Jake-Arnold/Goemon-64-Tools/tree/a9054c7211728f84173d0fc0e8bcd54d606b6f07/speed). The current velocity display and original-game movement research are unaffected.
+
 Date: 2026-11-03. The toolkit has an experimental live multiplier for a separately
 built compatible recomp. The stock recomp and Project64 are not changed.
 Host-clock and UI/channel checks passed; actual gameplay, audio and cutscene
