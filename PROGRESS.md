@@ -1,3 +1,7 @@
+## 25 November 2026 — Ebi Slide action 0x0D / 0x8E / 0x8F follow-up (RESEARCH_ONLY)
+
+- At authenticated live 3669a15a807c77249e85cd177ef2704d5560e5d1, checked action table wrappers and paired 248-byte action-0x8F entry already accepted. Entry case task+0x60==1 does not directly reset movement parameters; shared animation helper controls completion, 0x8F clears context+0x86 only on success. Newly isolated-exact JP 801E905C (220 B, 55/55 words, 6/6 named relocs, raw object addends and FUNC identity exact), ported from live USA donor; negative rejected. 801FA744/801F5734 near match 84/89 and 89/99, exact extents and eight relocation sites each. 0x0D handlers regain original frame but remain 16 bytes oversized. 24 native variants independently replayed; ZIP with full sources and replay supplied. See [research](decomp/research/ebi_slide_actions_20261125/README.md). Reciprocal code metadata and compiler ledger updated. No new canonical counts, full native G2/inventory/integrity/gameplay NOT_RUN, current full archive unavailable; no toolkit changes. Exact slide causal sequence remains provisional.
+
 ## 2026-11-25 — Japan dispatcher JP2843 native integration candidate
 
 - Authenticated stable/decomp `11f76ecc7234a6f91047b538c179ce564fa7c5f9`, archive 15031871479 and original pinned JP upstream/IDO5.3; complete historical native replay reproduces canonical JP2842 ELF. Initial missing prefixed readelf corrected with documented host readelf.
