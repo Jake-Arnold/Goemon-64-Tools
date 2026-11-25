@@ -1,0 +1,314 @@
+{
+  "status": "RESEARCH_ONLY",
+  "base_commit": "ad5c02dbba2a82ac37e94184c5aa82d53bb5561f",
+  "source_archive": 15020042724,
+  "upstream": "7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee",
+  "region": "japan_0",
+  "original_rom_sha1": "6f8745fecc3a5e7d4918c7a73353eb0726116ded",
+  "retail_rom_sha1": "9843ee979b5f6c80f5eda85df0baed9ae7c4e73b",
+  "compiler_sha256": "76d796c9591c9f5504949f85b29c32a6039a663791afe2f36f34ca18425b64d0",
+  "ledger_sha256": "9c8b955140aabc824c36b2da9d55232896ddd52a4a20a705f0d4baedc03d5063",
+  "flags": [
+    "-c",
+    "-G",
+    "0",
+    "-non_shared",
+    "-Xfullwarn",
+    "-Xcpluscomm",
+    "-Iinclude",
+    "-Ilibultra/include",
+    "-Ilibultra/include/PR",
+    "-Isrc",
+    "-I.",
+    "-Wab,-r4300_mul",
+    "-woff",
+    "649,838,712",
+    "-D_LANGUAGE_C",
+    "-D_FINALROM",
+    "-DF3DEX_GBI",
+    "-D__sgi",
+    "-DNDEBUG",
+    "-O2",
+    "-mips2"
+  ],
+  "source_blobs": {
+    "func_80001FE0_2BE0_control.c": "72471cebe80f979bc0dfda1db6fee10184f8917a",
+    "func_80001FE0_2BE0_local_index.c": "802740440c47f91adcd135608c0ec326e0781e98",
+    "func_80001FE0_2BE0_outer_struct.c": "1771837bd667c42f2065c5b463a7757c9384ac9f",
+    "func_80001FE0_2BE0_outer_union.c": "22534f634d03fab07ae598a853d748f19ff7872e",
+    "func_80002D84_3984_byte_grouped.c": "b0c990da8dc016d8d90e4e3137d872d1c11a99e0",
+    "func_80002D84_3984_byte_local.c": "84f690fe82b35eed9579f236ff8183ead2746d36",
+    "func_80002D84_3984_byte_mask.c": "13bb4a7a2fdffc0ada59a690145cd0c0ce5ded8c",
+    "func_80002D84_3984_control.c": "8c5ff48bac37c0afb7bb0a8a8784daea9521428d",
+    "func_80002D84_3984_ptr_byte.c": "d4b69b0d4a98879e0028bceaf275b538339bfbca",
+    "func_80002D84_3984_ptr_local.c": "82a6d14738ba283a63680a4fbfe81b01aaa31203",
+    "func_80002E10_3A10_base_union.c": "32ebdabde1817835f3adb5d059b2826dca56a4b2",
+    "func_80002E10_3A10_conditional_nested.c": "b460a4151d44ada953e0051956eb7ebb3873f413",
+    "func_80002E10_3A10_control.c": "fc484c1144ee9a5ec73aedabd721d85b87d1d799",
+    "func_80002E10_3A10_raw_base.c": "f710440dcfce97429fbe63ec6629ef04768204cb",
+    "func_80002E10_3A10_raw_ptr.c": "c1e4bb605644c188ee9f3a70aadf4a0a030d0d8d",
+    "func_80002E10_3A10_volatile_fields.c": "c6dd11b22362523743a05878cdbf327693c7db6d",
+    "func_80003090_3C90_control.c": "304f13ae538feb68f17dfffc25fac431fad98873",
+    "func_80003090_3C90_countdown_int.c": "1eaf4b89797257cdb561409a01d908f8e0cd6872",
+    "func_80003090_3C90_formal_reload.c": "e1f034188e8eb985473d43b2864b1881427a8811",
+    "func_80003090_3C90_local_byte.c": "3f22d0e7109b697f388805c4e87359ccdcd42587",
+    "func_80003090_3C90_local_int.c": "fe6485c10dc9694f774a684f9fec7e283e5d8606",
+    "func_80003090_3C90_local_pointer.c": "964ff19e9b0d59ff2b88c19c113096131d509d4b",
+    "jp_transition.h": "7111f347a1edfdd04070afbbf691ac043b3c42ba"
+  },
+  "variants": [
+    {
+      "variant": "2BE0_control",
+      "matching_words": 28,
+      "total_words": 30,
+      "generated_size": 120,
+      "first_mismatch": 0,
+      "matching_relocations": 4,
+      "reference_relocations": 4,
+      "compiler_outcome": "NO_NEW_COMPILER_FINDING"
+    },
+    {
+      "variant": "2BE0_local_index",
+      "matching_words": 22,
+      "total_words": 30,
+      "generated_size": 120,
+      "first_mismatch": 8,
+      "matching_relocations": 4,
+      "reference_relocations": 4,
+      "compiler_outcome": "NO_NEW_COMPILER_FINDING"
+    },
+    {
+      "variant": "2BE0_outer_struct",
+      "matching_words": 30,
+      "total_words": 30,
+      "generated_size": 120,
+      "first_mismatch": null,
+      "matching_relocations": 4,
+      "reference_relocations": 4,
+      "compiler_outcome": "NEW_REPRODUCIBLE_QUIRK"
+    },
+    {
+      "variant": "2BE0_outer_union",
+      "matching_words": 30,
+      "total_words": 30,
+      "generated_size": 120,
+      "first_mismatch": null,
+      "matching_relocations": 4,
+      "reference_relocations": 4,
+      "compiler_outcome": "NEW_REPRODUCIBLE_QUIRK"
+    },
+    {
+      "variant": "3984_byte_grouped",
+      "matching_words": 15,
+      "total_words": 35,
+      "generated_size": 140,
+      "first_mismatch": 0,
+      "matching_relocations": 8,
+      "reference_relocations": 9,
+      "compiler_outcome": "NO_NEW_COMPILER_FINDING"
+    },
+    {
+      "variant": "3984_byte_local",
+      "matching_words": 15,
+      "total_words": 35,
+      "generated_size": 140,
+      "first_mismatch": 0,
+      "matching_relocations": 8,
+      "reference_relocations": 9,
+      "compiler_outcome": "NO_NEW_COMPILER_FINDING"
+    },
+    {
+      "variant": "3984_byte_mask",
+      "matching_words": 11,
+      "total_words": 35,
+      "generated_size": 140,
+      "first_mismatch": 0,
+      "matching_relocations": 8,
+      "reference_relocations": 9,
+      "compiler_outcome": "NO_NEW_COMPILER_FINDING"
+    },
+    {
+      "variant": "3984_control",
+      "matching_words": 1,
+      "total_words": 35,
+      "generated_size": 144,
+      "first_mismatch": 0,
+      "matching_relocations": 2,
+      "reference_relocations": 9,
+      "compiler_outcome": "NO_NEW_COMPILER_FINDING"
+    },
+    {
+      "variant": "3984_ptr_byte",
+      "matching_words": 2,
+      "total_words": 35,
+      "generated_size": 124,
+      "first_mismatch": 0,
+      "matching_relocations": 3,
+      "reference_relocations": 9,
+      "compiler_outcome": "NO_NEW_COMPILER_FINDING"
+    },
+    {
+      "variant": "3984_ptr_local",
+      "matching_words": 2,
+      "total_words": 35,
+      "generated_size": 124,
+      "first_mismatch": 0,
+      "matching_relocations": 3,
+      "reference_relocations": 9,
+      "compiler_outcome": "NO_NEW_COMPILER_FINDING"
+    },
+    {
+      "variant": "3A10_base_union",
+      "matching_words": 15,
+      "total_words": 35,
+      "generated_size": 140,
+      "first_mismatch": 0,
+      "matching_relocations": 8,
+      "reference_relocations": 9,
+      "compiler_outcome": "NO_NEW_COMPILER_FINDING"
+    },
+    {
+      "variant": "3A10_conditional_nested",
+      "matching_words": 15,
+      "total_words": 35,
+      "generated_size": 140,
+      "first_mismatch": 0,
+      "matching_relocations": 8,
+      "reference_relocations": 9,
+      "compiler_outcome": "NO_NEW_COMPILER_FINDING"
+    },
+    {
+      "variant": "3A10_control",
+      "matching_words": 15,
+      "total_words": 35,
+      "generated_size": 140,
+      "first_mismatch": 0,
+      "matching_relocations": 8,
+      "reference_relocations": 9,
+      "compiler_outcome": "NO_NEW_COMPILER_FINDING"
+    },
+    {
+      "variant": "3A10_raw_base",
+      "matching_words": 0,
+      "total_words": 35,
+      "generated_size": 124,
+      "first_mismatch": 0,
+      "matching_relocations": 2,
+      "reference_relocations": 9,
+      "compiler_outcome": "NO_NEW_COMPILER_FINDING"
+    },
+    {
+      "variant": "3A10_raw_ptr",
+      "matching_words": 2,
+      "total_words": 35,
+      "generated_size": 124,
+      "first_mismatch": 0,
+      "matching_relocations": 3,
+      "reference_relocations": 9,
+      "compiler_outcome": "NO_NEW_COMPILER_FINDING"
+    },
+    {
+      "variant": "3A10_volatile_fields",
+      "matching_words": 15,
+      "total_words": 35,
+      "generated_size": 140,
+      "first_mismatch": 0,
+      "matching_relocations": 8,
+      "reference_relocations": 9,
+      "compiler_outcome": "NO_NEW_COMPILER_FINDING"
+    },
+    {
+      "variant": "3C90_control",
+      "matching_words": 108,
+      "total_words": 111,
+      "generated_size": 444,
+      "first_mismatch": 124,
+      "matching_relocations": 36,
+      "reference_relocations": 36,
+      "compiler_outcome": "EXISTING_QUIRK_REPRODUCED"
+    },
+    {
+      "variant": "3C90_countdown_int",
+      "matching_words": 86,
+      "total_words": 111,
+      "generated_size": 444,
+      "first_mismatch": 0,
+      "matching_relocations": 35,
+      "reference_relocations": 36,
+      "compiler_outcome": "NO_NEW_COMPILER_FINDING"
+    },
+    {
+      "variant": "3C90_formal_reload",
+      "matching_words": 86,
+      "total_words": 111,
+      "generated_size": 444,
+      "first_mismatch": 0,
+      "matching_relocations": 35,
+      "reference_relocations": 36,
+      "compiler_outcome": "NO_NEW_COMPILER_FINDING"
+    },
+    {
+      "variant": "3C90_local_byte",
+      "matching_words": 86,
+      "total_words": 111,
+      "generated_size": 444,
+      "first_mismatch": 0,
+      "matching_relocations": 35,
+      "reference_relocations": 36,
+      "compiler_outcome": "NO_NEW_COMPILER_FINDING"
+    },
+    {
+      "variant": "3C90_local_int",
+      "matching_words": 86,
+      "total_words": 111,
+      "generated_size": 444,
+      "first_mismatch": 0,
+      "matching_relocations": 35,
+      "reference_relocations": 36,
+      "compiler_outcome": "NO_NEW_COMPILER_FINDING"
+    },
+    {
+      "variant": "3C90_local_pointer",
+      "matching_words": 94,
+      "total_words": 111,
+      "generated_size": 444,
+      "first_mismatch": 0,
+      "matching_relocations": 36,
+      "reference_relocations": 36,
+      "compiler_outcome": "NO_NEW_COMPILER_FINDING"
+    }
+  ],
+  "positive_linked_sha256": "b9fb4d42ce7d73da6bf609ad97073c0309c52d0f40cd0ae14a391e215bba7f4a",
+  "best_3c90_linked_sha256": "7f3231dfb73690360a39db09eaed41700551356a3307b6d41a44867e1c6ae814",
+  "owner": {
+    "bytes": 6416,
+    "exact_functions": 38,
+    "reference_relocs": 623,
+    "matching_relocs": 623,
+    "named_reference_relocs": 625,
+    "independent_numeric_delta": [
+      [
+        72,
+        "R_MIPS_HI16",
+        "D_3ADD4"
+      ],
+      [
+        80,
+        "R_MIPS_LO16",
+        "D_3ADD4"
+      ]
+    ],
+    "original_text_sha256": "fc2b0bb19c757aecd44b15b33380632d39b7c572298713fad33a5e399605a560",
+    "scope": "one new C plus 37 ASM siblings; original inferred text owner only"
+  },
+  "host": {
+    "builds": 44,
+    "cases": 1696032,
+    "asan_ubsan": "PASS",
+    "valid_dispatch_selector": "0–17"
+  },
+  "full_candidate_G2": "NOT_RUN",
+  "full_candidate_CI": "NOT_RUN",
+  "canonical_delta": 0,
+  "source_kit_sha256": "5cb25907d1aed579499bcaab9bd2afb36bac23a1b86f36e7424bc8d6d861aec2"
+}
