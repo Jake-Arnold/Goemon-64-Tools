@@ -1,0 +1,532 @@
+{
+  "status": "RESEARCH_ONLY",
+  "base_commit": "160587eb162d957128c8c7dac62439ae5efc3942",
+  "source_archive": 14956254355,
+  "prior_pr": 234,
+  "pinned_upstream": "7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee",
+  "region": "japan_0",
+  "target": "func_80003090_3C90",
+  "rom_offset": "0x3C90",
+  "vma": "0x80003090",
+  "original_size": 444,
+  "original_sha256": "9789900b399b81b8f2c54f7743460dea262050303c5930a61c90140116eece2c",
+  "original_rom_sha1": "6f8745fecc3a5e7d4918c7a73353eb0726116ded",
+  "retail_sha1": "9843ee979b5f6c80f5eda85df0baed9ae7c4e73b",
+  "compiler_sha256": "76d796c9591c9f5504949f85b29c32a6039a663791afe2f36f34ca18425b64d0",
+  "ledger_sha256": "98f1cc2b72b1eeb5ac48fbd60e7df7d29913811a91456b66b8ab3b49a5813eee",
+  "flags": [
+    "-c",
+    "-G",
+    "0",
+    "-non_shared",
+    "-Xfullwarn",
+    "-Xcpluscomm",
+    "-Iinclude",
+    "-Ilibultra/include",
+    "-Ilibultra/include/PR",
+    "-Isrc",
+    "-I.",
+    "-Wab,-r4300_mul",
+    "-woff",
+    "649,838,712",
+    "-D_LANGUAGE_C",
+    "-D_FINALROM",
+    "-DF3DEX_GBI",
+    "-D__sgi",
+    "-DNDEBUG",
+    "-O2",
+    "-mips2"
+  ],
+  "trace_flags": [
+    "-v",
+    "-Wc,-d",
+    "-c",
+    "-G",
+    "0",
+    "-non_shared",
+    "-Xfullwarn",
+    "-Xcpluscomm",
+    "-Iinclude",
+    "-Ilibultra/include",
+    "-Ilibultra/include/PR",
+    "-Isrc",
+    "-I.",
+    "-Wab,-r4300_mul",
+    "-woff",
+    "649,838,712",
+    "-D_LANGUAGE_C",
+    "-D_FINALROM",
+    "-DF3DEX_GBI",
+    "-D__sgi",
+    "-DNDEBUG",
+    "-O2",
+    "-mips2"
+  ],
+  "variants": [
+    {
+      "source": "source/func_80003090_3C90_baseline.c",
+      "source_git_blob": "ccf146c3a8ba505b2a13744b4871b9f237491be1",
+      "source_sha256": "bfdbb7eba0d17460d96caad72a203ab466878d2f6b1aa4289ae82e1b2f52ca90",
+      "linked_sha256": "10c5bea111acc4c26eac958b2e0e194f4604f3e6b5f8b6383c0ca85aa638da34",
+      "trace_linked_sha256": "10c5bea111acc4c26eac958b2e0e194f4604f3e6b5f8b6383c0ca85aa638da34",
+      "generated_size": 444,
+      "matching_words": 94,
+      "total_words": 111,
+      "relocations_matching": 36,
+      "reference_relocations": 36,
+      "first_mismatch": 188,
+      "first_original_word": "3c080004",
+      "first_generated_word": "3c020004",
+      "first_mismatch_class": "BRANCH_OR_REGISTER_SCHEDULING",
+      "optimized_build_pointer_register": 3,
+      "state_byte_load_registers": [
+        {
+          "destination": 4,
+          "base": 3
+        },
+        {
+          "destination": 15,
+          "base": 3
+        },
+        {
+          "destination": 2,
+          "base": 3
+        }
+      ],
+      "first_arm_codegen_mask_destinations": [],
+      "final_andi_instruction_count": 1,
+      "shared_mismatch_generated_word": "00431021",
+      "trace_and_normal_linked_equal": true,
+      "trace_and_normal_relocations_equal": true,
+      "compiler_outcome": "NO_NEW_COMPILER_FINDING",
+      "host_cases_each_compiler": 131072,
+      "host_GCC_ASan_UBSan": "PASS",
+      "host_Clang_ASan_UBSan": "PASS"
+    },
+    {
+      "source": "source/func_80003090_3C90_direct_control.c",
+      "source_git_blob": "51bbf20de8b94c3bae252bccfc5ea7b2369b7a60",
+      "source_sha256": "0ca0519b6891cdc58c71347003ad392d62020dc2e2f3b866738e6017e33c3ea7",
+      "linked_sha256": "9275baf0a700b8a2c84e73cfde0e34f7fd2f7a3bf9f46f8fce6207d14fb4b8da",
+      "trace_linked_sha256": "9275baf0a700b8a2c84e73cfde0e34f7fd2f7a3bf9f46f8fce6207d14fb4b8da",
+      "generated_size": 444,
+      "matching_words": 88,
+      "total_words": 111,
+      "relocations_matching": 35,
+      "reference_relocations": 36,
+      "first_mismatch": 0,
+      "first_original_word": "3c038016",
+      "first_generated_word": "3c028016",
+      "first_mismatch_class": "ABI_OR_REGISTER_SCHEDULING",
+      "optimized_build_pointer_register": 2,
+      "state_byte_load_registers": [
+        {
+          "destination": 4,
+          "base": 2
+        },
+        {
+          "destination": 15,
+          "base": 2
+        },
+        {
+          "destination": 8,
+          "base": 2
+        }
+      ],
+      "first_arm_codegen_mask_destinations": [],
+      "final_andi_instruction_count": 1,
+      "shared_mismatch_generated_word": "01024021",
+      "trace_and_normal_linked_equal": true,
+      "trace_and_normal_relocations_equal": true,
+      "compiler_outcome": "NO_NEW_COMPILER_FINDING",
+      "host_cases_each_compiler": 131072,
+      "host_GCC_ASan_UBSan": "PASS",
+      "host_Clang_ASan_UBSan": "PASS"
+    },
+    {
+      "source": "source/func_80003090_3C90_direct_shared_inner_assign.c",
+      "source_git_blob": "03e22a6035cdc5525f6bfac907d6fb8157eb6c8c",
+      "source_sha256": "bb567eddb51631ef26ef5ba1c6eecf7d07d8aa738575127c7c1f6bcc5b41fc4f",
+      "linked_sha256": "0358b25984e318838a14473fd7815a72f57730906ee9288d42bc6a7f73f508b0",
+      "trace_linked_sha256": "0358b25984e318838a14473fd7815a72f57730906ee9288d42bc6a7f73f508b0",
+      "generated_size": 444,
+      "matching_words": 91,
+      "total_words": 111,
+      "relocations_matching": 35,
+      "reference_relocations": 36,
+      "first_mismatch": 0,
+      "first_original_word": "3c038016",
+      "first_generated_word": "3c028016",
+      "first_mismatch_class": "ABI_OR_REGISTER_SCHEDULING",
+      "optimized_build_pointer_register": 2,
+      "state_byte_load_registers": [
+        {
+          "destination": 4,
+          "base": 2
+        },
+        {
+          "destination": 15,
+          "base": 2
+        },
+        {
+          "destination": 8,
+          "base": 2
+        }
+      ],
+      "first_arm_codegen_mask_destinations": [],
+      "final_andi_instruction_count": 1,
+      "shared_mismatch_generated_word": "01024021",
+      "trace_and_normal_linked_equal": true,
+      "trace_and_normal_relocations_equal": true,
+      "compiler_outcome": "NO_NEW_COMPILER_FINDING",
+      "host_cases_each_compiler": 131072,
+      "host_GCC_ASan_UBSan": "PASS",
+      "host_Clang_ASan_UBSan": "PASS"
+    },
+    {
+      "source": "source/func_80003090_3C90_direct_shared_inner_masked.c",
+      "source_git_blob": "ff46f1cbb865fc99b0cdb25ef3f14b091f968bcb",
+      "source_sha256": "12e62c136f0b1fa83c7401c8c43ee1b8b77678827aa6a518b4f3624af8fb7569",
+      "linked_sha256": "a6946d5a40b81ab1bccb614f635d5f718540b9b0b5d20dd58298ad17508a3211",
+      "trace_linked_sha256": "a6946d5a40b81ab1bccb614f635d5f718540b9b0b5d20dd58298ad17508a3211",
+      "generated_size": 444,
+      "matching_words": 87,
+      "total_words": 111,
+      "relocations_matching": 35,
+      "reference_relocations": 36,
+      "first_mismatch": 0,
+      "first_original_word": "3c038016",
+      "first_generated_word": "3c028016",
+      "first_mismatch_class": "ABI_OR_REGISTER_SCHEDULING",
+      "optimized_build_pointer_register": 2,
+      "state_byte_load_registers": [
+        {
+          "destination": 4,
+          "base": 2
+        },
+        {
+          "destination": 15,
+          "base": 2
+        },
+        {
+          "destination": 8,
+          "base": 2
+        }
+      ],
+      "first_arm_codegen_mask_destinations": [],
+      "final_andi_instruction_count": 1,
+      "shared_mismatch_generated_word": "01024021",
+      "trace_and_normal_linked_equal": true,
+      "trace_and_normal_relocations_equal": true,
+      "compiler_outcome": "NO_NEW_COMPILER_FINDING",
+      "host_cases_each_compiler": 131072,
+      "host_GCC_ASan_UBSan": "PASS",
+      "host_Clang_ASan_UBSan": "PASS"
+    },
+    {
+      "source": "source/func_80003090_3C90_first_explicit.c",
+      "source_git_blob": "de5f97a35687fd6534ee5fc26a9938be3333ddee",
+      "source_sha256": "ea1e3ebde9529ff0aea89392c0fe76b3661be3fb68e02ec16a05a346f0eb9afa",
+      "linked_sha256": "a235a7e764fc3f6d1f27a2f35ab0818fc5f5c7846acceb81be3125bcfd71370a",
+      "trace_linked_sha256": "a235a7e764fc3f6d1f27a2f35ab0818fc5f5c7846acceb81be3125bcfd71370a",
+      "generated_size": 444,
+      "matching_words": 87,
+      "total_words": 111,
+      "relocations_matching": 36,
+      "reference_relocations": 36,
+      "first_mismatch": 44,
+      "first_original_word": "24190003",
+      "first_generated_word": "24180003",
+      "first_mismatch_class": "BRANCH_OR_REGISTER_SCHEDULING",
+      "optimized_build_pointer_register": 3,
+      "state_byte_load_registers": [
+        {
+          "destination": 4,
+          "base": 3
+        },
+        {
+          "destination": 2,
+          "base": 3
+        },
+        {
+          "destination": 25,
+          "base": 3
+        }
+      ],
+      "first_arm_codegen_mask_destinations": [],
+      "final_andi_instruction_count": 1,
+      "shared_mismatch_generated_word": "0323c821",
+      "trace_and_normal_linked_equal": true,
+      "trace_and_normal_relocations_equal": true,
+      "compiler_outcome": "NO_NEW_COMPILER_FINDING",
+      "host_cases_each_compiler": 131072,
+      "host_GCC_ASan_UBSan": "PASS",
+      "host_Clang_ASan_UBSan": "PASS"
+    },
+    {
+      "source": "source/func_80003090_3C90_first_explicit_masked.c",
+      "source_git_blob": "62dc6813902e0a4559b9823397c8a6853929dd50",
+      "source_sha256": "b701b0aaecfc209b904d859d8979598778313f8869c38e92d138a8afc06a35d1",
+      "linked_sha256": "93965d9ab524c4f3fed88a4a2c49ce436db5061e3e3b4cafb692582e7ab6ca8a",
+      "trace_linked_sha256": "93965d9ab524c4f3fed88a4a2c49ce436db5061e3e3b4cafb692582e7ab6ca8a",
+      "generated_size": 444,
+      "matching_words": 87,
+      "total_words": 111,
+      "relocations_matching": 36,
+      "reference_relocations": 36,
+      "first_mismatch": 44,
+      "first_original_word": "24190003",
+      "first_generated_word": "24080003",
+      "first_mismatch_class": "BRANCH_OR_REGISTER_SCHEDULING",
+      "optimized_build_pointer_register": 3,
+      "state_byte_load_registers": [
+        {
+          "destination": 4,
+          "base": 3
+        },
+        {
+          "destination": 2,
+          "base": 3
+        },
+        {
+          "destination": 9,
+          "base": 3
+        }
+      ],
+      "first_arm_codegen_mask_destinations": [
+        15,
+        24
+      ],
+      "final_andi_instruction_count": 1,
+      "shared_mismatch_generated_word": "01234821",
+      "trace_and_normal_linked_equal": true,
+      "trace_and_normal_relocations_equal": true,
+      "compiler_outcome": "EXISTING_QUIRK_REPRODUCED",
+      "host_cases_each_compiler": 131072,
+      "host_GCC_ASan_UBSan": "PASS",
+      "host_Clang_ASan_UBSan": "PASS"
+    },
+    {
+      "source": "source/func_80003090_3C90_first_explicit_truncate_sum.c",
+      "source_git_blob": "a67e5cdaf3f7f1c0d29a0edc9c4e993e67d80aa3",
+      "source_sha256": "9fd290dbd44d2ce3ec705d239dbbc804b1236f5285bca77b437777d039c9d966",
+      "linked_sha256": "a235a7e764fc3f6d1f27a2f35ab0818fc5f5c7846acceb81be3125bcfd71370a",
+      "trace_linked_sha256": "a235a7e764fc3f6d1f27a2f35ab0818fc5f5c7846acceb81be3125bcfd71370a",
+      "generated_size": 444,
+      "matching_words": 87,
+      "total_words": 111,
+      "relocations_matching": 36,
+      "reference_relocations": 36,
+      "first_mismatch": 44,
+      "first_original_word": "24190003",
+      "first_generated_word": "24180003",
+      "first_mismatch_class": "BRANCH_OR_REGISTER_SCHEDULING",
+      "optimized_build_pointer_register": 3,
+      "state_byte_load_registers": [
+        {
+          "destination": 4,
+          "base": 3
+        },
+        {
+          "destination": 2,
+          "base": 3
+        },
+        {
+          "destination": 25,
+          "base": 3
+        }
+      ],
+      "first_arm_codegen_mask_destinations": [],
+      "final_andi_instruction_count": 1,
+      "shared_mismatch_generated_word": "0323c821",
+      "trace_and_normal_linked_equal": true,
+      "trace_and_normal_relocations_equal": true,
+      "compiler_outcome": "NO_NEW_COMPILER_FINDING",
+      "host_cases_each_compiler": 131072,
+      "host_GCC_ASan_UBSan": "PASS",
+      "host_Clang_ASan_UBSan": "PASS"
+    },
+    {
+      "source": "source/func_80003090_3C90_first_explicit_widen16.c",
+      "source_git_blob": "0844a184074feb19c47595f4921949f3bed593df",
+      "source_sha256": "4896eed6af33b7b7d1a0f5f2df39c5423ce99c67ccd04163814b8f5578f0abc6",
+      "linked_sha256": "a235a7e764fc3f6d1f27a2f35ab0818fc5f5c7846acceb81be3125bcfd71370a",
+      "trace_linked_sha256": "a235a7e764fc3f6d1f27a2f35ab0818fc5f5c7846acceb81be3125bcfd71370a",
+      "generated_size": 444,
+      "matching_words": 87,
+      "total_words": 111,
+      "relocations_matching": 36,
+      "reference_relocations": 36,
+      "first_mismatch": 44,
+      "first_original_word": "24190003",
+      "first_generated_word": "24180003",
+      "first_mismatch_class": "BRANCH_OR_REGISTER_SCHEDULING",
+      "optimized_build_pointer_register": 3,
+      "state_byte_load_registers": [
+        {
+          "destination": 4,
+          "base": 3
+        },
+        {
+          "destination": 2,
+          "base": 3
+        },
+        {
+          "destination": 25,
+          "base": 3
+        }
+      ],
+      "first_arm_codegen_mask_destinations": [],
+      "final_andi_instruction_count": 1,
+      "shared_mismatch_generated_word": "0323c821",
+      "trace_and_normal_linked_equal": true,
+      "trace_and_normal_relocations_equal": true,
+      "compiler_outcome": "NO_NEW_COMPILER_FINDING",
+      "host_cases_each_compiler": 131072,
+      "host_GCC_ASan_UBSan": "PASS",
+      "host_Clang_ASan_UBSan": "PASS"
+    },
+    {
+      "source": "source/func_80003090_3C90_first_explicit_widen8.c",
+      "source_git_blob": "d42d12eee707e99b38bc169df6f8eee50d20acc4",
+      "source_sha256": "d7be7ab8437de7b252490f797d928a6cf978e7e8a8615abd63645d24bbce6008",
+      "linked_sha256": "a235a7e764fc3f6d1f27a2f35ab0818fc5f5c7846acceb81be3125bcfd71370a",
+      "trace_linked_sha256": "a235a7e764fc3f6d1f27a2f35ab0818fc5f5c7846acceb81be3125bcfd71370a",
+      "generated_size": 444,
+      "matching_words": 87,
+      "total_words": 111,
+      "relocations_matching": 36,
+      "reference_relocations": 36,
+      "first_mismatch": 44,
+      "first_original_word": "24190003",
+      "first_generated_word": "24180003",
+      "first_mismatch_class": "BRANCH_OR_REGISTER_SCHEDULING",
+      "optimized_build_pointer_register": 3,
+      "state_byte_load_registers": [
+        {
+          "destination": 4,
+          "base": 3
+        },
+        {
+          "destination": 2,
+          "base": 3
+        },
+        {
+          "destination": 25,
+          "base": 3
+        }
+      ],
+      "first_arm_codegen_mask_destinations": [],
+      "final_andi_instruction_count": 1,
+      "shared_mismatch_generated_word": "0323c821",
+      "trace_and_normal_linked_equal": true,
+      "trace_and_normal_relocations_equal": true,
+      "compiler_outcome": "NO_NEW_COMPILER_FINDING",
+      "host_cases_each_compiler": 131072,
+      "host_GCC_ASan_UBSan": "PASS",
+      "host_Clang_ASan_UBSan": "PASS"
+    }
+  ],
+  "uopt_diagnostics": [
+    {
+      "level": 4,
+      "flags": [
+        "-Wo,-zdbug:4",
+        "-c",
+        "-G",
+        "0",
+        "-non_shared",
+        "-Xfullwarn",
+        "-Xcpluscomm",
+        "-Iinclude",
+        "-Ilibultra/include",
+        "-Ilibultra/include/PR",
+        "-Isrc",
+        "-I.",
+        "-Wab,-r4300_mul",
+        "-woff",
+        "649,838,712",
+        "-D_LANGUAGE_C",
+        "-D_FINALROM",
+        "-DF3DEX_GBI",
+        "-D__sgi",
+        "-DNDEBUG",
+        "-O2",
+        "-mips2"
+      ],
+      "exit_code": 6,
+      "wrapper_ecvt_assertion": true,
+      "object_exists": false,
+      "compiler_outcome": "NO_NEW_COMPILER_FINDING"
+    },
+    {
+      "level": 5,
+      "flags": [
+        "-Wo,-zdbug:5",
+        "-c",
+        "-G",
+        "0",
+        "-non_shared",
+        "-Xfullwarn",
+        "-Xcpluscomm",
+        "-Iinclude",
+        "-Ilibultra/include",
+        "-Ilibultra/include/PR",
+        "-Isrc",
+        "-I.",
+        "-Wab,-r4300_mul",
+        "-woff",
+        "649,838,712",
+        "-D_LANGUAGE_C",
+        "-D_FINALROM",
+        "-DF3DEX_GBI",
+        "-D__sgi",
+        "-DNDEBUG",
+        "-O2",
+        "-mips2"
+      ],
+      "exit_code": 6,
+      "wrapper_ecvt_assertion": true,
+      "object_exists": false,
+      "compiler_outcome": "NO_NEW_COMPILER_FINDING"
+    },
+    {
+      "level": 6,
+      "flags": [
+        "-Wo,-zdbug:6",
+        "-c",
+        "-G",
+        "0",
+        "-non_shared",
+        "-Xfullwarn",
+        "-Xcpluscomm",
+        "-Iinclude",
+        "-Ilibultra/include",
+        "-Ilibultra/include/PR",
+        "-Isrc",
+        "-I.",
+        "-Wab,-r4300_mul",
+        "-woff",
+        "649,838,712",
+        "-D_LANGUAGE_C",
+        "-D_FINALROM",
+        "-DF3DEX_GBI",
+        "-D__sgi",
+        "-DNDEBUG",
+        "-O2",
+        "-mips2"
+      ],
+      "exit_code": 6,
+      "wrapper_ecvt_assertion": true,
+      "object_exists": false,
+      "compiler_outcome": "NO_NEW_COMPILER_FINDING"
+    }
+  ],
+  "host_total": 2359296,
+  "canonical_delta": 0,
+  "mixed_owner": "NOT_RUN",
+  "full_candidate_G2": "NOT_RUN",
+  "full_candidate_CI": "NOT_RUN",
+  "source_kit_sha256": "3051ea32af5ff44a041419137bc1eedc467260d4003b7b8a40dc29ba4430e64b",
+  "trace_script_sha256": "cd2ad4a0f8200a864d8ad71a5a41185ce03c5e02e53be33222ea701d2a9fbcbe"
+}
