@@ -3,7 +3,7 @@ from __future__ import annotations
 import argparse
 import json
 from pathlib import Path
-from decomp.plasma_conditions import extract
+from research.rom.plasma_conditions import extract
 from practice.rom_flag_trace import analyze_rom
 
 
