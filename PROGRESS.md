@@ -1,3 +1,9 @@
+## 25 November 2026 - retire standalone recomp speed subsystem (v0.11.81)
+
+- Remove the 13-file `speed/` directory, unused `practice/live_speed_ui.py` and six standalone speed/runtime tests from the active toolkit. Preserve the full original experiment at Git commit `a9054c7211728f84173d0fc0e8bcd54d606b6f07` and retain the historical research report with an explicit retirement notice. Update README and Linux setup instructions. Retain original player velocity/movement features, all process-memory and game-state code, and the separate decomp branch unchanged.
+- Retain and extend `tests/test_live_speed_ui.py` to assert retired source absence and continued PID attachment; include it in both OS GUI regression runners. No active source consumers of the deleted package found. No user-facing version increment because the interface was already removed.
+- Authenticated source archive 15004799036, checksum and exact base tree `c6e6fce217aa0310c4d3e00d265a3ae7e2f093d3` verified. Local focused Tk/dashboard/experimental-controls/packaging/version suite: 46 passed. Full synthetic phase: 525 passed, 9 skipped; local full GUI phase interrupted by execution timeout, not a pass. Python compilation, address catalogue check (620 fields, zero conflicts), and whitespace checks passed. Require actual hosted checks before merge; no live emulator or Windows runtime verification performed.
+
 ## 25 November 2026 - retire obsolete address catalogue bootstrap (v0.11.81)
 
 - Remove `.github/workflows/address-catalogue-bootstrap.yml`: its fixed `toolkit/address-catalogue-20261117` push target is historical and the scheduled metadata-only PR workflow supersedes it. Preserve the active sync workflow byte-for-byte, all catalogue generation scripts and data, and legacy branch history. Correct the active address workflow documentation to `stable/toolkit` and `stable/decomp`.
