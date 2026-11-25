@@ -1,4 +1,6 @@
-# Goemon Speedrun Tools v0.11.85 — Experimental Project64 Frame Control
+# Goemon Speedrun Tools v0.11.86 — Experimental Frame Inspector
+
+The Project64 frame-control panel captures a baseline and each stepped boundary with chosen typed watches, exports CSV/JSON and compares saved traces. See [setup and limits](docs/PJ64_FRAME_CONTROL.md).
 
 > **Repository branch policy (23 November 2026):** Toolkit development uses `stable/toolkit` → `toolkit/<topic>` → PR to `stable/toolkit`. Decomp work uses `stable/decomp` → `decomp/<topic>` → PR to `stable/decomp`. `main` and `chatgptweb/decomp` are legacy names, not new baselines. Read [BRANCHES.md](BRANCHES.md). Never merge the entire branches together.
 

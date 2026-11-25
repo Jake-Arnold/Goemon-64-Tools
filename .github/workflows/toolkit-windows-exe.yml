@@ -54,7 +54,7 @@ jobs:
           if ($process.ExitCode -ne 0) { throw 'Packaged command-line startup failed' }
       - uses: actions/upload-artifact@v4
         with:
-          name: GoemonSpeedrunTools-v0.11.85-windows-x64
+          name: GoemonSpeedrunTools-v0.11.86-windows-x64
           path: dist/GoemonSpeedrunTools.exe
           if-no-files-found: error
           retention-days: 30
@@ -69,7 +69,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/download-artifact@v4
         with:
-          name: GoemonSpeedrunTools-v0.11.85-windows-x64
+          name: GoemonSpeedrunTools-v0.11.86-windows-x64
           path: release
       - name: Publish tested executable to GitHub Releases
         env:
@@ -78,7 +78,7 @@ jobs:
           set -euo pipefail
           test -s release/GoemonSpeedrunTools.exe
           VERSION=$(python3 -c 'from practice.version import VERSION; print(VERSION)')
-          if [[ "$VERSION" != "0.11.85" ]]; then
+          if [[ "$VERSION" != "0.11.86" ]]; then
             echo "Unexpected toolkit version: $VERSION"
             exit 1
           fi
@@ -88,7 +88,7 @@ jobs:
             exit 0
           fi
           cat > "$RUNNER_TEMP/goemon-release-notes.md" <<'NOTES'
-          Windows x64 standalone executable for Goemon Practice Toolkit v0.11.85.
+          Windows x64 standalone executable for Goemon Practice Toolkit v0.11.86.
 
           - Includes USA/Japan toolkit, research-aware address catalogue and numeric entrance atlas.
           - Adds guest-RAM hex viewer, guarded edits, static MIPS disassembly, byte search, change watches and read-only scripted tracing.
