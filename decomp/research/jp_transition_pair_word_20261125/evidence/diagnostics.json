@@ -1,0 +1,333 @@
+[
+  {
+    "variant": "func_80002D84_3984_control",
+    "diagnostic_linked_sha256": "5a37ffde8864e7d67432158ff7313600883185076b854f4be90a5da1559c9a0d",
+    "diagnostic_relocations_exact": true,
+    "emitted_memory_arithmetic_ops": [
+      "emit_ra: zla xr4      229376",
+      "emit_rab: zlbu xr2       11734 xr4",
+      "emit_rab: zlh xr14       11702 xr4",
+      "emit_ra: zla xr2      196608",
+      "emit_rab: zsh xr15       44470 xr2",
+      "emit_rri: zaddu xr24 xr3           1",
+      "emit_rab: zsb xr24       44502 xr2",
+      "emit_ra: zla xr2      196608",
+      "emit_rab: zsb xr8       44502 xr2"
+    ]
+  },
+  {
+    "variant": "func_80002D84_3984_named_fields",
+    "diagnostic_linked_sha256": "8021e9765c393b7f140fda008064753be4e488c5f828fdf55bdcb74f1472f84b",
+    "diagnostic_relocations_exact": true,
+    "emitted_memory_arithmetic_ops": [
+      "emit_ra: zla xr4      196608",
+      "emit_rab: zlbu xr2       44502 xr4",
+      "emit_rab: zlh xr14       44470 xr4",
+      "emit_rab: zsh xr15       44470 xr4",
+      "emit_rri: zaddu xr24 xr3           1",
+      "emit_rab: zsb xr24       44502 xr4",
+      "emit_ra: zla xr4      196608",
+      "emit_rab: zsb xr8       44502 xr4"
+    ]
+  },
+  {
+    "variant": "func_80002D84_3984_named_increment",
+    "diagnostic_linked_sha256": "51fa8b180b7afd850521099fbe3d9cce09d242f9ccb1620bd93e13d31edc96f3",
+    "diagnostic_relocations_exact": true,
+    "emitted_memory_arithmetic_ops": [
+      "emit_ra: zla xr4      196608",
+      "emit_rab: zlbu xr3       44502 xr4",
+      "emit_rri: zand xr2 xr3         255",
+      "emit_rab: zlh xr14       44470 xr4",
+      "emit_rab: zsh xr15       44470 xr4",
+      "emit_rri: zaddu xr24 xr3           1",
+      "emit_rab: zsb xr24       44502 xr4",
+      "emit_ra: zla xr4      196608",
+      "emit_rab: zsb xr8       44502 xr4"
+    ]
+  },
+  {
+    "variant": "func_80002D84_3984_named_mask",
+    "diagnostic_linked_sha256": "c3cfd7f0608e53be27de758a0f7e5b20e3e5eced68bbe4244d583102931c2f27",
+    "diagnostic_relocations_exact": true,
+    "emitted_memory_arithmetic_ops": [
+      "emit_ra: zla xr4      196608",
+      "emit_rab: zlbu xr2       44502 xr4",
+      "emit_rab: zlh xr14       44470 xr4",
+      "emit_rab: zsh xr15       44470 xr4",
+      "emit_rri: zand xr24 xr3         255",
+      "emit_rri: zaddu xr25 xr24           1",
+      "emit_rab: zsb xr25       44502 xr4",
+      "emit_ra: zla xr4      196608",
+      "emit_rab: zsb xr9       44502 xr4"
+    ]
+  },
+  {
+    "variant": "func_80002D84_3984_named_raw_half",
+    "diagnostic_linked_sha256": "9d18b36295d94d31e34c0f0bb5418c8b893b3f61479ca084e027ba56ba1f1c9c",
+    "diagnostic_relocations_exact": true,
+    "emitted_memory_arithmetic_ops": [
+      "emit_ra: zla xr4      196608",
+      "emit_rab: zlbu xr2       44502 xr4",
+      "emit_ra: zla xr2      229376",
+      "emit_rab: zlh xr14       11702 xr2",
+      "emit_rab: zsh xr15       11702 xr2",
+      "emit_rri: zaddu xr24 xr3           1",
+      "emit_rab: zsb xr24       44502 xr4",
+      "emit_ra: zla xr4      196608",
+      "emit_rab: zsb xr8       44502 xr4"
+    ]
+  },
+  {
+    "variant": "func_80002D84_3984_named_word",
+    "diagnostic_linked_sha256": "4b9dfe37b441670fe222bdb4e65553bd7a1c21cd4de99d2ed2b8dca3d5673639",
+    "diagnostic_relocations_exact": true,
+    "emitted_memory_arithmetic_ops": [
+      "emit_ra: zla xr3      196608",
+      "emit_rab: zlbu xr2       44502 xr3",
+      "emit_rab: zlh xr14       44470 xr3",
+      "emit_rab: zsh xr15       44470 xr3",
+      "emit_rri: zaddu xr24 xr2           1",
+      "emit_rab: zsb xr24       44502 xr3",
+      "emit_ra: zla xr3      196608",
+      "emit_rab: zsb xr8       44502 xr3"
+    ]
+  },
+  {
+    "variant": "func_80002E10_3A10_control",
+    "diagnostic_linked_sha256": "3f7338b2162feca806d030eee4026b80304372915cf149751fa012bfc6d86aca",
+    "diagnostic_relocations_exact": true,
+    "emitted_memory_arithmetic_ops": [
+      "emit_ra: zla xr4      229376",
+      "emit_rab: zlbu xr2       11734 xr4",
+      "emit_rab: zlh xr14       11702 xr4",
+      "emit_ra: zla xr2      196608",
+      "emit_rab: zsh xr15       44470 xr2",
+      "emit_rri: zaddu xr24 xr3           1",
+      "emit_rab: zsb xr24       44502 xr2",
+      "emit_ra: zla xr2      196608",
+      "emit_rab: zsb xr8       44502 xr2"
+    ]
+  },
+  {
+    "variant": "func_80002E10_3A10_named_fields",
+    "diagnostic_linked_sha256": "7189b915e60646f02300811a995c4c638fce7c9dbd0284e7d3b9eb6a091728a4",
+    "diagnostic_relocations_exact": true,
+    "emitted_memory_arithmetic_ops": [
+      "emit_ra: zla xr4      196608",
+      "emit_rab: zlbu xr2       44502 xr4",
+      "emit_rab: zlh xr14       44470 xr4",
+      "emit_rab: zsh xr15       44470 xr4",
+      "emit_rri: zaddu xr24 xr3           1",
+      "emit_rab: zsb xr24       44502 xr4",
+      "emit_ra: zla xr4      196608",
+      "emit_rab: zsb xr8       44502 xr4"
+    ]
+  },
+  {
+    "variant": "func_80002E10_3A10_named_word",
+    "diagnostic_linked_sha256": "f1d0dc27426b6136372b032f682a37bd249fd44a54dec6417012aa6a9165f88c",
+    "diagnostic_relocations_exact": true,
+    "emitted_memory_arithmetic_ops": [
+      "emit_ra: zla xr3      196608",
+      "emit_rab: zlbu xr2       44502 xr3",
+      "emit_rab: zlh xr14       44470 xr3",
+      "emit_rab: zsh xr15       44470 xr3",
+      "emit_rri: zaddu xr24 xr2           1",
+      "emit_rab: zsb xr24       44502 xr3",
+      "emit_ra: zla xr3      196608",
+      "emit_rab: zsb xr8       44502 xr3"
+    ]
+  },
+  {
+    "variant": "func_80003090_3C90_control",
+    "diagnostic_linked_sha256": "7f3231dfb73690360a39db09eaed41700551356a3307b6d41a44867e1c6ae814",
+    "diagnostic_relocations_exact": true,
+    "emitted_memory_arithmetic_ops": [
+      "emit_rab: zlbu xr4      241110 xr3",
+      "emit_ra: zla xr5           0",
+      "emit_rri: zaddu xr2 xr2          -1",
+      "emit_rri: zand xr14 xr2         255",
+      "emit_rab: zlbu xr2      241110 xr3",
+      "emit_rri: zand xr15 xr2         255",
+      "emit_rri: zaddu xr24 xr15           1",
+      "emit_rab: zsb xr24      241110 xr3",
+      "emit_rab: zsh xr25      241140 xr3",
+      "emit_ra: zla xr4           0",
+      "emit_rab: zlbu xr8      241110 xr3",
+      "emit_rri: zaddu xr9 xr8           1",
+      "emit_rab: zsb xr9      241110 xr3",
+      "emit_ra: zlbu xr2      241109",
+      "emit_rab: zsh xr10      241140 xr11",
+      "emit_ra: zsb xr0      241109",
+      "emit_ra: zla xr4           0",
+      "emit_rab: zsh xr12      241140 xr13",
+      "emit_ra: zsb xr0      241109",
+      "emit_ra: zla xr4           0",
+      "emit_ra: zsh xr14      241176"
+    ]
+  },
+  {
+    "variant": "func_80003090_3C90_count_s16",
+    "diagnostic_linked_sha256": "9275baf0a700b8a2c84e73cfde0e34f7fd2f7a3bf9f46f8fce6207d14fb4b8da",
+    "diagnostic_relocations_exact": true,
+    "emitted_memory_arithmetic_ops": [
+      "emit_rab: zlbu xr4      241110 xr2",
+      "emit_ra: zla xr5           0",
+      "emit_rri: zaddu xr2 xr2          -1",
+      "emit_rri: zand xr14 xr2         255",
+      "emit_rab: zlbu xr15      241110 xr2",
+      "emit_rri: zaddu xr24 xr15           1",
+      "emit_rab: zsb xr24      241110 xr2",
+      "emit_rab: zsh xr25      241140 xr2",
+      "emit_ra: zla xr4           0",
+      "emit_rab: zlbu xr8      241110 xr2",
+      "emit_rri: zaddu xr9 xr8           1",
+      "emit_rab: zsb xr9      241110 xr2",
+      "emit_ra: zlbu xr2      241109",
+      "emit_rab: zsh xr10      241140 xr11",
+      "emit_ra: zsb xr0      241109",
+      "emit_ra: zla xr4           0",
+      "emit_rab: zsh xr12      241140 xr13",
+      "emit_ra: zsb xr0      241109",
+      "emit_ra: zla xr4           0",
+      "emit_ra: zsh xr14      241176"
+    ]
+  },
+  {
+    "variant": "func_80003090_3C90_count_s32",
+    "diagnostic_linked_sha256": "9275baf0a700b8a2c84e73cfde0e34f7fd2f7a3bf9f46f8fce6207d14fb4b8da",
+    "diagnostic_relocations_exact": true,
+    "emitted_memory_arithmetic_ops": [
+      "emit_rab: zlbu xr4      241110 xr2",
+      "emit_ra: zla xr5           0",
+      "emit_rri: zaddu xr2 xr2          -1",
+      "emit_rri: zand xr14 xr2         255",
+      "emit_rab: zlbu xr15      241110 xr2",
+      "emit_rri: zaddu xr24 xr15           1",
+      "emit_rab: zsb xr24      241110 xr2",
+      "emit_rab: zsh xr25      241140 xr2",
+      "emit_ra: zla xr4           0",
+      "emit_rab: zlbu xr8      241110 xr2",
+      "emit_rri: zaddu xr9 xr8           1",
+      "emit_rab: zsb xr9      241110 xr2",
+      "emit_ra: zlbu xr2      241109",
+      "emit_rab: zsh xr10      241140 xr11",
+      "emit_ra: zsb xr0      241109",
+      "emit_ra: zla xr4           0",
+      "emit_rab: zsh xr12      241140 xr13",
+      "emit_ra: zsb xr0      241109",
+      "emit_ra: zla xr4           0",
+      "emit_ra: zsh xr14      241176"
+    ]
+  },
+  {
+    "variant": "func_80003090_3C90_count_u16",
+    "diagnostic_linked_sha256": "5410979aa696787a73d380bfa6ebe9fed8cc8a9d06887989f372b0828f2c6d3f",
+    "diagnostic_relocations_exact": true,
+    "emitted_memory_arithmetic_ops": [
+      "emit_rab: zlbu xr4      241110 xr2",
+      "emit_ra: zla xr5           0",
+      "emit_rri: zaddu xr3 xr2          -1",
+      "emit_rri: zand xr14 xr3         255",
+      "emit_rab: zlbu xr15      241110 xr2",
+      "emit_rri: zaddu xr24 xr15           1",
+      "emit_rab: zsb xr24      241110 xr2",
+      "emit_rab: zsh xr25      241140 xr2",
+      "emit_ra: zla xr4           0",
+      "emit_rab: zlbu xr8      241110 xr2",
+      "emit_rri: zaddu xr9 xr8           1",
+      "emit_rab: zsb xr9      241110 xr2",
+      "emit_ra: zlbu xr2      241109",
+      "emit_rab: zsh xr10      241140 xr11",
+      "emit_ra: zsb xr0      241109",
+      "emit_ra: zla xr4           0",
+      "emit_rab: zsh xr12      241140 xr13",
+      "emit_ra: zsb xr0      241109",
+      "emit_ra: zla xr4           0",
+      "emit_ra: zsh xr14      241176"
+    ]
+  },
+  {
+    "variant": "func_80003090_3C90_count_u32",
+    "diagnostic_linked_sha256": "9275baf0a700b8a2c84e73cfde0e34f7fd2f7a3bf9f46f8fce6207d14fb4b8da",
+    "diagnostic_relocations_exact": true,
+    "emitted_memory_arithmetic_ops": [
+      "emit_rab: zlbu xr4      241110 xr2",
+      "emit_ra: zla xr5           0",
+      "emit_rri: zaddu xr2 xr2          -1",
+      "emit_rri: zand xr14 xr2         255",
+      "emit_rab: zlbu xr15      241110 xr2",
+      "emit_rri: zaddu xr24 xr15           1",
+      "emit_rab: zsb xr24      241110 xr2",
+      "emit_rab: zsh xr25      241140 xr2",
+      "emit_ra: zla xr4           0",
+      "emit_rab: zlbu xr8      241110 xr2",
+      "emit_rri: zaddu xr9 xr8           1",
+      "emit_rab: zsb xr9      241110 xr2",
+      "emit_ra: zlbu xr2      241109",
+      "emit_rab: zsh xr10      241140 xr11",
+      "emit_ra: zsb xr0      241109",
+      "emit_ra: zla xr4           0",
+      "emit_rab: zsh xr12      241140 xr13",
+      "emit_ra: zsb xr0      241109",
+      "emit_ra: zla xr4           0",
+      "emit_ra: zsh xr14      241176"
+    ]
+  },
+  {
+    "variant": "func_80003090_3C90_count_u32_masked",
+    "diagnostic_linked_sha256": "7f3231dfb73690360a39db09eaed41700551356a3307b6d41a44867e1c6ae814",
+    "diagnostic_relocations_exact": true,
+    "emitted_memory_arithmetic_ops": [
+      "emit_rab: zlbu xr4      241110 xr3",
+      "emit_ra: zla xr5           0",
+      "emit_rri: zaddu xr2 xr2          -1",
+      "emit_rri: zand xr14 xr2         255",
+      "emit_rab: zlbu xr2      241110 xr3",
+      "emit_rri: zand xr15 xr2         255",
+      "emit_rri: zaddu xr24 xr15           1",
+      "emit_rab: zsb xr24      241110 xr3",
+      "emit_rab: zsh xr25      241140 xr3",
+      "emit_ra: zla xr4           0",
+      "emit_rab: zlbu xr8      241110 xr3",
+      "emit_rri: zaddu xr9 xr8           1",
+      "emit_rab: zsb xr9      241110 xr3",
+      "emit_ra: zlbu xr2      241109",
+      "emit_rab: zsh xr10      241140 xr11",
+      "emit_ra: zsb xr0      241109",
+      "emit_ra: zla xr4           0",
+      "emit_rab: zsh xr12      241140 xr13",
+      "emit_ra: zsb xr0      241109",
+      "emit_ra: zla xr4           0",
+      "emit_ra: zsh xr14      241176"
+    ]
+  },
+  {
+    "variant": "func_80003090_3C90_direct_control",
+    "diagnostic_linked_sha256": "9275baf0a700b8a2c84e73cfde0e34f7fd2f7a3bf9f46f8fce6207d14fb4b8da",
+    "diagnostic_relocations_exact": true,
+    "emitted_memory_arithmetic_ops": [
+      "emit_rab: zlbu xr4      241110 xr2",
+      "emit_ra: zla xr5           0",
+      "emit_rri: zaddu xr2 xr2          -1",
+      "emit_rri: zand xr14 xr2         255",
+      "emit_rab: zlbu xr15      241110 xr2",
+      "emit_rri: zaddu xr24 xr15           1",
+      "emit_rab: zsb xr24      241110 xr2",
+      "emit_rab: zsh xr25      241140 xr2",
+      "emit_ra: zla xr4           0",
+      "emit_rab: zlbu xr8      241110 xr2",
+      "emit_rri: zaddu xr9 xr8           1",
+      "emit_rab: zsb xr9      241110 xr2",
+      "emit_ra: zlbu xr2      241109",
+      "emit_rab: zsh xr10      241140 xr11",
+      "emit_ra: zsb xr0      241109",
+      "emit_ra: zla xr4           0",
+      "emit_rab: zsh xr12      241140 xr13",
+      "emit_ra: zsb xr0      241109",
+      "emit_ra: zla xr4           0",
+      "emit_ra: zsh xr14      241176"
+    ]
+  }
+]

@@ -1,3 +1,8 @@
+## 25 November 2026 — Japan transition pair native exact / countdown-width research (RESEARCH_ONLY)
+
+- Base `stable/decomp@3669a15a807c77249e85cd177ef2704d5560e5d1`, authenticated source archive 15066045901. Post-merge JP2843 regression 45706409273 successful. Pinned original JP ROM and IDO verified. Two 140-byte original functions (`func_80002D84_3984`, `func_80002E10_3A10`) now 35/35 words and 9/9 named relocations each, via true named fields plus `s32` rather than `u8` local. Independent original text-owner link 6,416/6,416 bytes, 38/38 positive FUNC identities, 625/625 named relocations, no alias/patch. Positive and negative source hashes, flags and diagnostics retained in `decomp/research/jp_transition_pair_word_20261125/`. Compiler ledger updated.
+- 3C90 countdown-width budget exhausted: direct 88/111 unchanged for s16/s32/u32, u16 15/111; masked u32 unchanged 108/111, 36/36 relocations. No first-mismatch advance. 16 ordinary and 16 diagnostic builds, 32 GCC/Clang sanitizer builds and 1,927,168 actual-source fixtures PASS. Canonical stored JP2843 integrity PASS. No new full canonical ROM G2, candidate CI or gameplay test. Canonical accepted counts unchanged JP2843/USA2939; +2 candidates / +280 original bytes not yet accepted. Next: fresh JP2843 full predecessor and strict G2 promotion of both functions.
+
 ## 2026-11-25 — Japan dispatcher JP2843 native integration candidate
 
 - Authenticated stable/decomp `11f76ecc7234a6f91047b538c179ce564fa7c5f9`, archive 15031871479 and original pinned JP upstream/IDO5.3; complete historical native replay reproduces canonical JP2842 ELF. Initial missing prefixed readelf corrected with documented host readelf.
