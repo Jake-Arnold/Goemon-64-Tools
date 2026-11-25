@@ -324,17 +324,9 @@ class InspectorMixin(EntranceMixin, AddressCatalogueUI):
             if found is None:
                 self.inspector_status.set('Select a Japanese custom watch first.')
                 return
-            updated = [item for item in self.jp_custom_watches if item != found]
-            try:
-                save_watches(self.jp_watch_path, updated)
-            except (OSError, ValueError) as exc:
-                self.inspector_status.set(f'Japan watch removal failed: {exc}')
+            if not self.remove_japan_custom_watch(found.name):
+                self.inspector_status.set(self.jp_custom_watch_status.get())
                 return
-            self.jp_custom_watches = updated
-            if self.jp_fields_tree.exists(self._jp_custom_iid(found)):
-                self.jp_fields_tree.delete(self._jp_custom_iid(found))
-            self._jp_reset_comparison()
-            self.refresh_japan_fields(force=True)
             self.refresh_inspector({})
             self.inspector_status.set(f'Removed Japan-only watch: {found.name}')
             return

@@ -41,13 +41,10 @@ class JapanCustomWatchesTest(unittest.TestCase):
         ram = FakeRam({(0x80161DCC, 4): bytes.fromhex('00000002')})
         ram.base, ram.endian = 0x10000000, 'wordswapped'
         host.game_pid, host.jp_rdram = 101, ram
-        host.jp_watch_name.set('Active character candidate')
-        host.jp_watch_address.set('0x80161DCC')
-        host.jp_watch_type.set('u32')
-        self.assertTrue(host.add_japan_custom_watch())
-        iid = 'jp_user_active character candidate'
-        self.assertEqual(host.jp_fields_tree.set(iid, 'value'), '2')
-        self.assertEqual(host.jp_fields_tree.set(iid, 'raw'), '0x00000002')
+        self.assertTrue(host.add_japan_custom_watch('Active character candidate', '0x80161DCC', 'u32'))
+        key = 'custom:active character candidate'
+        self.assertEqual(host._jp_last_readings[key].value, '2')
+        self.assertEqual(host._jp_last_readings[key].raw, '0x00000002')
         self.assertEqual(len(host.jp_custom_watches), 1)
         self.assertIn('read-only', host.jp_custom_watch_status.get())
         self.assertTrue(host.jp_watch_path.exists())
@@ -58,32 +55,25 @@ class JapanCustomWatchesTest(unittest.TestCase):
         host.compare_japan_baseline()
         self.assertIn('custom:active character candidate',
                       {change[0] for change in host._jp_last_changes})
-        self.assertIn('CHANGED:', host.jp_fields_tree.set(iid, 'status'))
-
-        host.jp_fields_tree.selection_set(iid)
-        self.assertTrue(host.remove_japan_custom_watch())
-        self.assertFalse(host.jp_fields_tree.exists(iid))
+        self.assertIn((key, '0x00000002', '0x00000003'), host._jp_last_changes)
+        self.assertTrue(host.remove_japan_custom_watch('Active character candidate'))
+        self.assertNotIn(key, host._jp_last_readings)
         self.assertEqual(host.jp_custom_watches, [])
         self.assertIsNone(host._jp_baseline)
 
     def test_disallow_duplicate_bad_bounds_and_usa_mode_mutation(self):
         host = self.host
-        host.jp_watch_name.set('Candidate')
-        host.jp_watch_address.set('0x807FFFFF')
-        host.jp_watch_type.set('u32')
-        self.assertFalse(host.add_japan_custom_watch())
+        self.assertFalse(host.add_japan_custom_watch('Candidate', '0x807FFFFF', 'u32'))
         self.assertEqual(len(host.jp_custom_watches), 0)
-
-        host.jp_watch_address.set('0x80161DCC')
-        self.assertTrue(host.add_japan_custom_watch())
-        self.assertFalse(host.add_japan_custom_watch())
+        self.assertTrue(host.add_japan_custom_watch('Candidate', '0x80161DCC', 'u32'))
+        self.assertFalse(host.add_japan_custom_watch('Candidate', '0x80161DCC', 'u32'))
         self.assertEqual(len(host.jp_custom_watches), 1)
+
         original = host.jp_watch_path.read_bytes()
         host.active_version.key = 'usa'
-        host.jp_watch_name.set('Should not be saved')
-        self.assertFalse(host.add_japan_custom_watch())
+        self.assertFalse(host.add_japan_custom_watch('Should not be saved', '0x80161DCC', 'u32'))
         self.assertEqual(host.jp_watch_path.read_bytes(), original)
-        self.assertFalse(host.remove_japan_custom_watch())
+        self.assertFalse(host.remove_japan_custom_watch("Candidate"))
 
 
 class JapanValueSearchUiTest(unittest.TestCase):
@@ -97,8 +87,6 @@ class JapanValueSearchUiTest(unittest.TestCase):
         self.app = FakeToolkit(self.root)
         self.app.active_version = SimpleNamespace(key='japan')
         self.app.jp_rdram = BossMemory()
-        self.app.jp_fields_tab = ttk.Frame(self.app.notebook)
-        self.app.notebook.add(self.app.jp_fields_tab, text='Japan Live')
         self.app.jp_custom_watch_status = tk.StringVar(value='')
         self.app.promoted = []
         def add_japan_watch(addr, kind):
@@ -128,7 +116,7 @@ class JapanValueSearchUiTest(unittest.TestCase):
         app.value_search_tree.selection_set('0x80000018')
         app.watch_value_search_candidate()
         self.assertEqual(app.promoted, [('0x80000018', 'u16')])
-        self.assertEqual(app.notebook.select(), str(app.jp_fields_tab))
+        self.assertEqual(app.notebook.select(), str(app.live_memory_tab))
         self.assertIsNone(app.added_watch)
         self.assertFalse(hasattr(app.jp_rdram, 'write_guest'))
 

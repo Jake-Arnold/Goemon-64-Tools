@@ -312,7 +312,7 @@ class DashboardSmokeTests(unittest.TestCase):
         self.assertNotIn('disabled', app.event_region_entry.state())
         self.assertIn('Japan-0', app.event_region_note.get())
         self.assertEqual(app.event_region_start.get(), '0x80161DF8')
-        self.assertEqual(app.notebook.tab(app.jp_fields_tab, 'state'), 'hidden')
+        self.assertFalse(hasattr(app, 'jp_fields_tab'))
         self.assertNotEqual(app.jp_scene_position_frame.winfo_manager(), '')
         self.assertFalse(hasattr(app, 'verify_rom_button'))
         # Auto PID/backend discovery is now the default for Japan. The

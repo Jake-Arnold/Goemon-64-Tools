@@ -53,8 +53,8 @@ class JapanRecompWriteUITests(unittest.TestCase):
         sasuke = next(item for item in UNLOCKS if item.label == 'Sasuke in party')
         self.assertNotIn(
             'disabled', app.unlock_row_widgets[sasuke.address][1][1].state())
-        self.assertNotIn('disabled', app.jp_position_apply_button.state())
-        self.assertNotIn('disabled', app.jp_debug_menu_button.state())
+        self.assertNotIn('disabled', app.jp_scene_position_apply_button.state())
+        self.assertTrue(app.jp_debug_controls_enabled)
         self.assertNotIn('disabled', app.raw_write_btn.state())
         self.assertNotIn('disabled', app.freeze_raw_button.state())
         self.assertTrue(app._freeze_worker_connection()[2])
@@ -77,16 +77,16 @@ class JapanRecompWriteUITests(unittest.TestCase):
         app.refresh_japan_party_controls()
         self.assertFalse(app._japan_unlock_controls_ready())
         self.assertIn('disabled', app.unlock_all_button.state())
-        self.assertIn('disabled', app.jp_position_apply_button.state())
-        self.assertIn('disabled', app.jp_debug_menu_button.state())
+        self.assertIn('disabled', app.jp_scene_position_apply_button.state())
+        self.assertFalse(app.jp_debug_controls_enabled)
         self.assertFalse(app._freeze_worker_connection()[2])
         app.args.read_only = False
         app.connection_target.set('mupen64plus')
         app.refresh_unlocks(force=True)
         app.refresh_japan_party_controls()
         self.assertIn('disabled', app.unlock_all_button.state())
-        self.assertIn('disabled', app.jp_position_apply_button.state())
-        self.assertIn('disabled', app.jp_debug_menu_button.state())
+        self.assertIn('disabled', app.jp_scene_position_apply_button.state())
+        self.assertFalse(app.jp_debug_controls_enabled)
 
     def test_native_recomp_story_progress_inventory_editor_enabled(self):
         app = self.app

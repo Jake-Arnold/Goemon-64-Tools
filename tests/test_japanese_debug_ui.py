@@ -8,11 +8,8 @@ from tests.test_japanese_fields import FakeRam
 class JapaneseDebugMenuTkTests(JapanTkSmokeTest):
     def test_native_menu_disabled_by_default_and_scene_index_is_hint(self):
         host = self.host
-        self.assertIn('disabled', host.jp_debug_menu_button.state())
-        host.jp_research_tabs.select(1)
-        self.assertEqual(
-            host.jp_research_tabs.tab(host.jp_research_tabs.select(), 'text'),
-            'Scene warp')
+        self.assertFalse(host.jp_debug_controls_enabled)
+        self.assertFalse(hasattr(host, 'jp_research_tabs'))
         self.assertEqual(host.selected_japan_debug_scene(), 0x161)
         host.show_japan_debug_target()
         self.assertIn('MACHI / stage index 3', host.jp_debug_result.get())
@@ -33,23 +30,23 @@ class JapaneseDebugMenuTkTests(JapanTkSmokeTest):
         host.jp_backend = 'project64'
         host.connection_target = SimpleNamespace(get=lambda: 'project64')
         host.refresh_japan_debug_controls()
-        self.assertIn('disabled', host.jp_debug_menu_button.state())
+        self.assertFalse(host.jp_debug_controls_enabled)
         host.verified_rom_path = 'verified-japan-rom.n64'
         host.args.enable_japan_debug_menu_writes = False
         host.connection_target = SimpleNamespace(get=lambda: 'auto')
         host.refresh_japan_debug_controls()
-        self.assertNotIn('disabled', host.jp_debug_menu_button.state())
+        self.assertTrue(host.jp_debug_controls_enabled)
         host.args.read_only = True
         host.refresh_japan_debug_controls()
-        self.assertIn('disabled', host.jp_debug_menu_button.state())
+        self.assertFalse(host.jp_debug_controls_enabled)
         host.args.read_only = False
         host.connection_target = SimpleNamespace(get=lambda: 'mupen64plus')
         host.refresh_japan_debug_controls()
-        self.assertIn('disabled', host.jp_debug_menu_button.state())
+        self.assertFalse(host.jp_debug_controls_enabled)
         host.connection_target = SimpleNamespace(get=lambda: 'project64')
         host.jp_rdram = None
         host.refresh_japan_debug_controls()
-        self.assertIn('disabled', host.jp_debug_menu_button.state())
+        self.assertFalse(host.jp_debug_controls_enabled)
 
 
 if __name__ == '__main__':

@@ -23,7 +23,9 @@ class Host(JapaneseFieldsUi):
         self.scene_list = SimpleNamespace(curselection=lambda: ())
         self.notebook = ttk.Notebook(root)
         self.notebook.pack(fill='both', expand=True)
-        self.build_japanese_fields_tab(self.notebook)
+        self.scene_tab = ttk.Frame(self.notebook)
+        self.notebook.add(self.scene_tab, text="Scene Browser")
+        self.initialize_japanese_controls()
 
     # This minimal UI host deliberately has no Toolkit memory-write backend.
     # The real app binds these callbacks to Toolkit methods; smoke tests
@@ -59,20 +61,23 @@ class JapanTkSmokeTest(unittest.TestCase):
             self.root.destroy()
 
     def test_all_japan_fields_are_present(self):
-        tree = self.host.jp_fields_tree
-        self.assertEqual(sum(len(tree.get_children(x)) for x in tree.get_children('')),
-                         len(JAPAN_FIELDS) + len(JAPAN_SCENE_PROBES))
-        self.assertEqual(tree.set('jp_field_ryo', 'value'), '—')
-        self.assertIn('Japan Live', self.host.notebook.tab(self.host.jp_fields_tab, 'text'))
+        host = self.host
+        for attr in ('jp_fields_tab', 'jp_fields_tree', 'jp_research_tabs',
+                     'jp_position_apply_button', 'jp_debug_menu_button'):
+            self.assertFalse(hasattr(host, attr), attr)
+        host.jp_rdram = FakeRam()
+        host.refresh_japan_fields(force=True)
+        self.assertEqual(set(host._jp_last_readings),
+                         {f.key for f in JAPAN_FIELDS + JAPAN_SCENE_PROBES})
 
     def test_refresh_and_disconnect_clears_without_writer(self):
         host = self.host
         host.jp_rdram = FakeRam({(0x80161DDA, 2): bytes.fromhex('04D2')})
         host.refresh_japan_fields(force=True)
-        self.assertEqual(host.jp_fields_tree.set('jp_field_ryo', 'value'), '1234')
+        self.assertEqual(host._jp_last_readings['ryo'].value, '1234')
         self.assertIn('58 Japanese', host.jp_fields_caption.get())
         host.clear_japan_field_values()
-        self.assertEqual(host.jp_fields_tree.set('jp_field_ryo', 'value'), '—')
+        self.assertEqual(host._jp_last_readings, {})
 
     def test_usa_selection_cannot_read_japan_fields(self):
         host = self.host

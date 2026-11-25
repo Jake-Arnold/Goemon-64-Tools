@@ -474,7 +474,7 @@ class Toolkit(DialogueRegionMixin, DialogueMixin, UpdaterMixin, ReportsMixin, Ja
                        self.discovery_tabs.select(page)).pack(side="right")
         self.build_unlock_tabs(notebook)
         self.build_story_progress_tab(notebook)
-        self.build_japanese_fields_tab(notebook)
+        self.initialize_japanese_controls()
         self.build_reports_tab(notebook)
         self.build_dialogue_tab(notebook)
         self.status.trace_add(
@@ -549,14 +549,7 @@ class Toolkit(DialogueRegionMixin, DialogueMixin, UpdaterMixin, ReportsMixin, Ja
         # player/task checkpoint support, NOT whether Japan can read RAM.
         enabled = version.logical_checkpoint_supported
         region_active = version.guest_memory_read_supported
-        if self.notebook.select() == str(self.jp_fields_tab):
-            self.notebook.select(self.live_memory_tab)
         for tab in self.notebook.tabs()[1:]:
-            if tab == str(self.jp_fields_tab):
-                # Historical JP probes still supply model/backend state, but
-                # the second Live Memory page is no longer user-visible.
-                self.notebook.tab(tab, state='hidden')
-                continue
             self.notebook.tab(
                 tab, state='normal' if region_active else 'disabled')
         # The same visible scene browser and inspector follow the active ROM;
