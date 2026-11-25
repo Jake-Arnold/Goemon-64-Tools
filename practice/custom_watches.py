@@ -95,6 +95,61 @@ def save_watches(path: Path, entries):
     temp.replace(path)
 
 
+def regional_watches(owner, region):
+    """Resolve the explicit region's list without any address translation."""
+    if region == 'japan':
+        return owner.jp_custom_watches
+    if region == 'usa':
+        return owner.custom_watches
+    raise ValueError('Select USA or Japan before editing watches')
+
+
+def save_regional_watches(owner, region, entries, *, usa_path=None):
+    """Validate and persist before replacing in-memory regional definitions."""
+    if getattr(getattr(owner, 'active_version', None), 'key', 'usa') != region:
+        raise ValueError('Game region changed; retry the watch operation')
+    regional_watches(owner, region)  # Reject unknown regions before saving.
+    path = owner.jp_watch_path if region == 'japan' else usa_path
+    if path is None:
+        raise ValueError('USA watch storage path is required')
+    save_watches(path, entries)
+    if region == 'japan':
+        owner.jp_custom_watches = entries
+        owner._jp_reset_comparison()
+        owner.refresh_japan_fields(force=True)
+    else:
+        owner.custom_watches = entries
+
+
+def add_regional_watch(owner, region, name, address, kind, *, usa_path=None):
+    watch = make_watch(name, address, kind)
+    updated = append_watch(regional_watches(owner, region), watch)
+    save_regional_watches(owner, region, updated, usa_path=usa_path)
+    return watch
+
+
+def remove_regional_watch(owner, region, row_id, *, usa_path=None):
+    entries = regional_watches(owner, region)
+    watch = next((item for item in entries if item.row_name == row_id), None)
+    if watch is None:
+        raise ValueError('Select a custom watch first')
+    save_regional_watches(owner, region, [item for item in entries if item != watch],
+                          usa_path=usa_path)
+    return watch
+
+
+def rename_regional_watch(owner, region, row_id, name, *, usa_path=None):
+    entries = regional_watches(owner, region)
+    watch = next((item for item in entries if item.row_name == row_id), None)
+    if watch is None:
+        raise ValueError('Custom watch is no longer available')
+    renamed = make_watch(name, watch.address, watch.kind)
+    if renamed != watch:
+        updated = [renamed if item == watch else item for item in entries]
+        save_regional_watches(owner, region, updated, usa_path=usa_path)
+    return renamed
+
+
 def read_watch(ram, spec):
     try:
         data = ram.read_guest(spec.address, spec.width)
