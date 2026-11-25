@@ -1,0 +1,45 @@
+{
+  "format": "goemon-accepted-semantic-atlas-summary-v1",
+  "source_commit": "ad5c02dbba2a82ac37e94184c5aa82d53bb5561f",
+  "source_archive": 15020042724,
+  "status": "RESEARCH_ONLY",
+  "native_attempt": "NOT_RUN",
+  "gameplay": "NOT_RUN",
+  "zip_sha256": "7b10abe7999cfefd044d43cb292748245b6fea545b29b50366a8368be35ae5f9",
+  "regions": {
+    "usa": {
+      "entries": 2952,
+      "reconstructed_extents": 2939,
+      "original_bytes": 192312,
+      "stored_digest_matches": 2939,
+      "documented_static_role": 87,
+      "registration_family": 374,
+      "low_level_behavior": 115,
+      "existing_symbol": 40,
+      "known_callee_only": 641,
+      "overlay_context_only": 666,
+      "unresolved": 1029,
+      "known_callee_callers": 1054,
+      "bank_c_callers": 59
+    },
+    "japan_0": {
+      "entries": 2842,
+      "reconstructed_extents": 2842,
+      "original_bytes": 178040,
+      "stored_digest_matches": 2517,
+      "documented_static_role": 38,
+      "registration_family": 374,
+      "low_level_behavior": 119,
+      "existing_symbol": 31,
+      "known_callee_only": 625,
+      "overlay_context_only": 644,
+      "unresolved": 1011,
+      "known_callee_callers": 1018,
+      "bank_c_callers": 55
+    }
+  },
+  "unique_exact_pairs": 216,
+  "accepted_C_delta": 0,
+  "scope": "accepted C only; all remaining ASM unclassified",
+  "tests": "two deterministic runs byte-identical; canonical counts/bytes, unique regional names, 432 reciprocal exact-peer rows verified"
+}
