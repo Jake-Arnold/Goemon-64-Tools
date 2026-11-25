@@ -1,0 +1,80 @@
+{
+  "status": "ISOLATED_EXACT_RESEARCH_ONLY",
+  "base_commit": "3669a15a807c77249e85cd177ef2704d5560e5d1",
+  "prior_head": "596d3b24dce234e4778fe7e5001179988d00e1ec",
+  "compiler_sha256": "76d796c9591c9f5504949f85b29c32a6039a663791afe2f36f34ca18425b64d0",
+  "flags": "-c -O2 -mips2 -G 0 -non_shared -Xfullwarn -Xcpluscomm -Wab,-r4300_mul -woff 649,838,712 -D_LANGUAGE_C -D_FINALROM -DF3DEX_GBI -D__sgi -DNDEBUG -Iinclude -Ilibultra/include -Ilibultra/include/PR -Isrc -I.",
+  "native_new_variants": 54,
+  "prior_baseline_controls": 4,
+  "replayed": 58,
+  "results": [
+    {
+      "symbol": "func_801E8610_5A45E0",
+      "region": "japan_0",
+      "original_bytes": 956,
+      "matching_words": 239,
+      "original_words": 239,
+      "relocs": 42,
+      "exact": true,
+      "raw_object_exact": true,
+      "source_sha256": "3eb63f97d6bd8f0761ff5f1dea9a08144345319144e94850cd8f736987ccacef",
+      "original_sha256": "512f13f1fbec5f8d32e877e528bbcecbe7085f48fd333f775bdafcdc3fd6dcbf",
+      "negative_sha256": "951e3c9f57724d01c017d3c294bd6902089131e3276a3c90519909468609ac7a",
+      "negative_first_difference": [
+        772,
+        "02002025",
+        "00c02825"
+      ],
+      "negative_words": 237
+    },
+    {
+      "symbol": "func_801E3400_59F310",
+      "region": "usa",
+      "original_bytes": 848,
+      "matching_words": 212,
+      "original_words": 212,
+      "relocs": 39,
+      "exact": true,
+      "raw_object_exact": true,
+      "source_sha256": "5a0dd3ad80699cac9d695153a0c6c564f18ef3f79d88ddae5012e6ef5c37ae4b",
+      "original_sha256": "76403008a82bc0639866f2a46092d6fdf808218ca59afa3da4da9acd60c00390",
+      "negative_sha256": "1fe4547f6300c5c4fe3e0dd7013b389a7f0a159eb815ba6837144f9e2349940d",
+      "negative_first_difference": [
+        664,
+        "02002025",
+        "00c02825"
+      ],
+      "negative_words": 210
+    },
+    {
+      "symbol": "func_801FA744_5B6714",
+      "matching_words": 84,
+      "original_words": 89,
+      "original_bytes": 356,
+      "relocs": 8,
+      "exact": false,
+      "first_difference": [
+        64,
+        "94640030",
+        "94620030"
+      ]
+    },
+    {
+      "symbol": "func_801F5734_5B1644",
+      "matching_words": 89,
+      "original_words": 99,
+      "original_bytes": 396,
+      "relocs": 8,
+      "exact": false,
+      "first_difference": [
+        96,
+        "8e02005c",
+        "8e03005c"
+      ]
+    }
+  ],
+  "kit_sha256": "9b2afac1cb1cfe98f98f319f753926f92700d68225cad5ae9584b782ad2700cd",
+  "full_g2": "NOT_RUN",
+  "gameplay": "NOT_RUN",
+  "accepted_delta": 0
+}

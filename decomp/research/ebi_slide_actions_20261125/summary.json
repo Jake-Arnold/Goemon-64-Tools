@@ -1,0 +1,84 @@
+{
+  "status": "ISOLATED_EXACT_RESEARCH_ONLY",
+  "base_commit": "3669a15a807c77249e85cd177ef2704d5560e5d1",
+  "upstream_commit": "7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee",
+  "compiler_sha256": "76d796c9591c9f5504949f85b29c32a6039a663791afe2f36f34ca18425b64d0",
+  "flags": "-c -O2 -mips2 -G 0 -non_shared -Xfullwarn -Xcpluscomm -Wab,-r4300_mul -woff 649,838,712 -D_LANGUAGE_C -D_FINALROM -DF3DEX_GBI -D__sgi -DNDEBUG -Iinclude -Ilibultra/include -Ilibultra/include/PR -Isrc -I.",
+  "positive": {
+    "symbol": "func_801E905C_5A502C",
+    "region": "japan_0",
+    "bytes": 220,
+    "words": 55,
+    "relocations": 6,
+    "source_sha256": "5157a61117d8ab4f108f00557ee03828efe86fc0c0682ba5e166c1a00ff86724",
+    "original_sha256": "3a088ff55b9749b35409042fbe130a199e01ac43343c1eef5ab4bde65b5a647b",
+    "negative_sha256": "4614cbbbc80f6cece9be154f97181863204a33f0f556ee043e08fb9ab234e3b3",
+    "negative_first_difference": [
+      104,
+      "3c014020",
+      "3c01401c"
+    ],
+    "negative_matching_words": 54,
+    "raw_text_and_named_relocations_exact": true,
+    "compiler_outcome": "NO_NEW_COMPILER_FINDING"
+  },
+  "failed_native": [
+    {
+      "symbol": "func_801FA744_5B6714",
+      "matching_words": 84,
+      "original_words": 89,
+      "candidate_bytes": 356,
+      "original_bytes": 356,
+      "relocations_exact": true,
+      "first_difference": [
+        64,
+        "94640030",
+        "94620030"
+      ]
+    },
+    {
+      "symbol": "func_801F5734_5B1644",
+      "matching_words": 89,
+      "original_words": 99,
+      "candidate_bytes": 396,
+      "original_bytes": 396,
+      "relocations_exact": true,
+      "first_difference": [
+        96,
+        "8e02005c",
+        "8e04005c"
+      ]
+    },
+    {
+      "symbol": "func_801E8610_5A45E0",
+      "matching_words": 164,
+      "original_words": 239,
+      "candidate_bytes": 972,
+      "original_bytes": 956,
+      "relocations_exact": false,
+      "first_difference": [
+        184,
+        "24060000",
+        "00003025"
+      ]
+    },
+    {
+      "symbol": "func_801E3400_59F310",
+      "matching_words": 137,
+      "original_words": 212,
+      "candidate_bytes": 864,
+      "original_bytes": 848,
+      "relocations_exact": false,
+      "first_difference": [
+        176,
+        "100000a3",
+        "100000a7"
+      ]
+    }
+  ],
+  "variants_replayed": 24,
+  "accepted_delta": 0,
+  "full_g2": "NOT_RUN",
+  "gameplay": "NOT_RUN",
+  "kit_sha256": "b9e0ad427c396548e5da83405c5d29590a4055ad5bf072371633834efe60f1ba"
+}
