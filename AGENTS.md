@@ -15,7 +15,7 @@ Read [BRANCHES.md](BRANCHES.md) first, classify the work, fetch the live target 
 3. Maintain or expand Python and portable C tests. Execute appropriate tests before commits; distinguish mock-RAM tests from in-game verification.
 4. Treat N64 scene loading, game state, map pointers and character pointers as unsafe until the engine's native transition path is understood. Do not enable raw warp shortcuts based only on apparent map-ID changes.
 5. Do not commit ROMs, copyrighted game assets, saves, per-user routes, diagnostics containing personal information, credentials, or raw game memory dumps. Respect `.gitignore`.
-6. Preserve existing Python module organisation, autosplitter code and portable C prototypes unless a change explicitly requires restructuring.
+6. Preserve existing Python module organisation, process-memory backends in `practice/backends/` and portable C prototypes unless a change explicitly requires restructuring.
 7. Read the live toolkit version from `practice/version.py`; historical release numbers are not branch-routing authority. Older v0.9.x instructions are historical. Scene-warp code and ROM-derived entrance data exist, but live USA/Japanese native gameplay tests must be distinguished from synthetic memory tests; do not claim unverified behaviour has passed.
 
 ## Mandatory USA ↔ Japan memory-data crosswalk for all agents

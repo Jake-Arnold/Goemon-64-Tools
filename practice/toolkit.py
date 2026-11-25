@@ -22,8 +22,8 @@ import struct
 from tkinter import ttk, messagebox, filedialog
 import sys
 
-from autosplitter.process_discovery import find_pid
-from autosplitter.memory import HostProcess, Rdram, discover_rdram
+from practice.backends.process_discovery import find_pid
+from practice.backends.memory import HostProcess, Rdram, discover_rdram
 from practice.checkpoints import (capture_checkpoint, restore_checkpoint,
                                   load_checkpoint_file, save_checkpoint_file)
 from practice.native_checkpoints import (

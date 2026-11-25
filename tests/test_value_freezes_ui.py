@@ -91,7 +91,7 @@ class ValueFreezeUITests(unittest.TestCase):
 
 
     def test_enemy_pass_through_toggle_tracks_relative_target(self):
-        from autosplitter.memory import PLAYER_TASK_PTR_ADDR
+        from practice.backends.memory import PLAYER_TASK_PTR_ADDR
         app=self.app
         address=app.mem.u32(PLAYER_TASK_PTR_ADDR)+0x30
         app.enemy_pass_through.set(True)

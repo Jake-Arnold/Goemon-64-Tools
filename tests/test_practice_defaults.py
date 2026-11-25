@@ -3,7 +3,7 @@ import tkinter as tk
 import unittest
 from unittest.mock import patch
 
-from autosplitter.memory import WindowsProcess
+from practice.backends.memory import WindowsProcess
 from practice.toolkit import Toolkit, parse_args, PRACTICE_OPTIONS
 from practice.unlocks import UNLOCKS
 from tests.test_checkpoint import TestCheckpoint

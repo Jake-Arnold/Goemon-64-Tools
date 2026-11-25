@@ -10,7 +10,7 @@ from pathlib import Path
 
 from practice.game_versions import identify_rom
 from practice.entrances import canonical_rom
-from autosplitter.memory import RDRAM_SIZE, Rdram, readable_spans
+from practice.backends.memory import RDRAM_SIZE, Rdram, readable_spans
 
 # Japanese main executable: ROM 0x1050 maps to guest RAM 0x450.
 # See klorfmorf/mnsg/config/japan_0/splat.yaml; this is not a USA live-field mapping.

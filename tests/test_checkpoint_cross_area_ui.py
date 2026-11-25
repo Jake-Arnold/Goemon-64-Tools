@@ -9,7 +9,7 @@ from unittest.mock import patch
 from practice.checkpoints import MAP_ADDR, LIVE_ADDR, STATE_ADDR, capture_checkpoint
 from practice.toolkit import Toolkit
 from tests.test_checkpoint import TestCheckpoint
-from tests.test_tools import BASE, write_u8, write_u32
+from tests.test_checkpoint import BASE, write_u8, write_u32
 
 
 class CrossAreaRestoreTests(unittest.TestCase):
@@ -135,7 +135,7 @@ class CrossAreaRestoreTests(unittest.TestCase):
             self.assertTrue(release.wait(2))
             return BASE,'wordswapped'
         with (patch('practice.toolkit.find_pid',return_value=1234),
-              patch('practice.toolkit.WindowsProcess',return_value=proc),
+              patch('practice.toolkit.HostProcess',return_value=proc),
               patch('practice.toolkit.discover_rdram',side_effect=slow_scan)):
             before=time.monotonic()
             self.app.connect()
@@ -154,7 +154,7 @@ class CrossAreaRestoreTests(unittest.TestCase):
         proc=TestCheckpoint().sample()[0];proc.close=lambda:None
         write_u32(proc,0x801FC60C,0);write_u32(proc,0x801FC604,0);write_u8(proc,STATE_ADDR,6)
         with (patch('practice.toolkit.find_pid',return_value=1234),
-              patch('practice.toolkit.WindowsProcess',return_value=proc),
+              patch('practice.toolkit.HostProcess',return_value=proc),
               patch('practice.toolkit.discover_rdram',return_value=(BASE,'wordswapped'))):
             self.app._connect_worker((None,None,'auto',False,'recomp'))
         result=self.app._connect_queue.get_nowait()
@@ -169,7 +169,7 @@ class CrossAreaRestoreTests(unittest.TestCase):
         proc=TestCheckpoint().sample()[0]
         proc.close=lambda:None
         with (patch('practice.toolkit.find_pid',return_value=1234) as select,
-              patch('practice.toolkit.WindowsProcess',return_value=proc) as opened,
+              patch('practice.toolkit.HostProcess',return_value=proc) as opened,
               patch('practice.toolkit.discover_rdram',return_value=(BASE,'wordswapped'))):
             self.app._connect_worker((None,None,'auto',False,'project64'))
         select.assert_called_once_with('project64')
