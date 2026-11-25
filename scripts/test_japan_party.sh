@@ -44,6 +44,7 @@ esac
   tests.test_japan_auto_attach \
   tests.test_japan_fast_attach \
   tests.test_pj64_debugger \
+  tests.test_pj64_frame_control \
   tests.test_scripted_trace \
   tests.test_new_address_research \
   tests.test_japan_pid_restart_watch \

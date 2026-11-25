@@ -20,7 +20,10 @@ from practice.region_session import active_session
 from practice.scripted_trace_ui import ScriptedTraceUiMixin
 
 
-class PJ64DebuggerMixin(ScriptedTraceUiMixin):
+from practice.pj64_frame_ui import PJ64FrameUiMixin
+
+
+class PJ64DebuggerMixin(ScriptedTraceUiMixin, PJ64FrameUiMixin):
     def build_pj64_debugger_tab(self, notebook):
         self.debug_session = DebuggerSession()
         self.debug_last_refresh = 0.0
@@ -41,6 +44,7 @@ class PJ64DebuggerMixin(ScriptedTraceUiMixin):
         self._build_debug_watch_page(pages)
         self._build_scripted_trace_page(pages)
         self._build_debug_cpu_page(pages)
+        self._build_pj64_frame_page(pages)
 
     def _build_debug_memory_page(self, pages):
         page = ttk.Frame(pages, padding=6)

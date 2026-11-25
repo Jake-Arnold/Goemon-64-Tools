@@ -1,3 +1,9 @@
+## 25 November 2026 — v0.11.82 experimental Project64 frame control
+
+- Add Debugger → Frame control (PJ64), export a token-authenticated localhost JavaScript companion, schedule P1 N64 input and advance bounded controller-poll or user-configured execution-hook intervals. No ROM patch or newly promoted guest address.
+- Controller polls are not confirmed game frames. Optional execution PC requires independent live validation; the tool reports missing polls and clears pending input on reset or timeout. No native or live Project64 timing proof.
+- Validation: targeted Python version/frame tests, Node.js API mock and existing debugger Tk smoke. Next: validate one-step input consumption and identify a once-per-update boundary separately in USA and Japan with real Project64.
+
 ## 23 November 2026 - publish SHA-pinned Goemon source artifacts
 
 - Publish tracked source on stable pushes and allow manual refresh so Project sessions can download it through the GitHub connector.
