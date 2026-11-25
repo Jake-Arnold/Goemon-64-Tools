@@ -6,10 +6,10 @@ from decomp import batch302_promotion as b, verify, promotion_integrity
 
 class Batch302Tests(unittest.TestCase):
     def test_complete_canonical_claims(self):
-        m=verify.load_manifest(b.ROOT/'manifest.json');old=b.predecessor(m);claims=verify.claimed_functions(m)
+        m=verify.load_manifest(b.ROOT/'results/manifest_2556_before_wave194.json');old=b.predecessor(m);claims=verify.claimed_functions(m)
         self.assertEqual(claims,old+b.claims())
         self.assertEqual((len(claims),sum(x['size'] for x in claims)),(2556,144092))
-        self.assertEqual(promotion_integrity.audit()['status'],'PASS')
+        self.assertEqual(b.audit_usa(b.ROOT,m,b.read(b.ROOT/'results/combined_2556_before_wave194.json'),b.read(b.ROOT/'results/inventory_2556_before_wave194.json'))['status'],'PASS')
         self.assertEqual(b.validate_jp()['accepted_C'],2664)
 
     def test_negative_controls_reject_native_proof_forgery(self):
@@ -30,11 +30,11 @@ class Batch302Tests(unittest.TestCase):
         with self.assertRaises(ValueError):b.validate_native('usa',p)
 
     def test_predecessor_and_source_drift_rejected(self):
-        m=verify.load_manifest(b.ROOT/'manifest.json');m[b.KEY]['format']='unreviewed'
+        m=verify.load_manifest(b.ROOT/'results/manifest_2556_before_wave194.json');m[b.KEY]['format']='unreviewed'
         with self.assertRaises(ValueError):b.predecessor(m)
         with patch.dict(b.REGIONS['usa'],{'manifest':'0'*64}):
             with self.assertRaises(ValueError):b.rows('usa')
 
     def test_canonical_inventory_tamper_rejected(self):
-        m=verify.load_manifest(b.ROOT/'manifest.json');p=b.read(b.ROOT/'results/combined.json');i=b.read(b.ROOT/'results/inventory.json');i['summary']['newly_matching_c']+=1
+        m=verify.load_manifest(b.ROOT/'results/manifest_2556_before_wave194.json');p=b.read(b.ROOT/'results/combined_2556_before_wave194.json');i=b.read(b.ROOT/'results/inventory_2556_before_wave194.json');i['summary']['newly_matching_c']+=1
         self.assertEqual(b.audit_usa(b.ROOT,m,p,i)['status'],'FAIL')
