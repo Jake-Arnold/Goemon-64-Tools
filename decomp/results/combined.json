@@ -4,7 +4,7 @@
   "status": "matched",
   "upstream_commit": "7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee",
   "retail_sha1": "df8083a54296b8c151917c5333e1c85f014a2a66",
-  "verifier_source_sha256_lf": "796759a99ae5a5a7babe80e7ab095bc219bc12efa762c40740c73fcda0f1a839",
+  "verifier_source_sha256_lf": "52ab90ff5a8f0d99bf822a6373a972977db8eca23a035141c5a641279dcb4c41",
   "tool_versions": {
     "uv": "uv 0.10.0",
     "gcc": "gcc (Debian 14.2.0-19) 14.2.0",

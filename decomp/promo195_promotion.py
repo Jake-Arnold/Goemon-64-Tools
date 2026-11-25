@@ -83,13 +83,13 @@ def apply(co,base,work,uv,jobs,m,report,rom):
     predecessor(m,rom=rom);c=report['comparison'];need(c['full_rom_match'] and (c['matched_functions'],c['matched_function_bytes'])==(2939,192312),'fresh USA predecessor report');project(run_native('usa',co,base,Path(work)/'promo195',uv,jobs),report)
 
 def documents(p,root=ROOT):
-    out=frozen('combined',root);project(p,out,root);i=frozen('inventory',root);i['candidate_elf_sha256']=REGIONS['usa']['elf'];i['summary'].update(newly_matching_c=3039,current_unmarked_entries=3052,remaining_assembly_entries=4324);return out,i
+    out=frozen('combined',root);project(p,out,root);out['verifier_source_sha256_lf']=sha((root/'verify.py').read_bytes());i=frozen('inventory',root);i['candidate_elf_sha256']=REGIONS['usa']['elf'];i['summary'].update(newly_matching_c=3039,current_unmarked_entries=3052,remaining_assembly_entries=4324);return out,i
 
 def audit_usa(root,m,p,i):
     try:
         need(previous.audit_usa(root,frozen('manifest',root),frozen('combined',root),frozen('inventory',root))['status']=='PASS','historical USA2939 integrity');predecessor(m,root)
         stage=read(proof_path('usa',root));need(p[KEY]==stage,'canonical/dated proof drift');expected,ei=documents(stage,root)
-        need(p['status']=='matched' and all(p[k]==expected[k] for k in ('comparison','sources_sha256_lf','retained_assembly_functions',KEY)),'canonical proof ownership/ROM drift');need(i==ei,'strict inventory drift')
+        need(p['status']=='matched' and all(p[k]==expected[k] for k in ('comparison','sources_sha256_lf','retained_assembly_functions','verifier_source_sha256_lf',KEY)),'canonical proof ownership/ROM drift');need(i==ei,'strict inventory drift')
         return {'status':'PASS','accepted_C':3039,'accepted_original_bytes':205920,'remaining_assembly':4324,'errors':[]}
     except (KeyError,ValueError,TypeError,FileNotFoundError) as exc:return {'status':'FAIL','errors':[str(exc)]}
 
