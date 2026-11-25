@@ -1,0 +1,19 @@
+{
+  "format": "goemon-jp-dispatcher-original-ido-v1",
+  "region": "japan_0",
+  "base_c": 2842,
+  "matching_c": 2843,
+  "assembly_remaining": 4533,
+  "original_C_instruction_bytes": 178160,
+  "functions": [
+    {
+      "name": "func_80001FE0_2BE0",
+      "rom_offset": 11232,
+      "vma": 2147491808,
+      "size": 120,
+      "source": "research/jp_dispatcher_20261125/candidate.c",
+      "source_sha256": "726d1a127d44f9141217260104e2587f01174cdc78c4981a6164d8b8f3d96b3a",
+      "original_sha256": "b9fb4d42ce7d73da6bf609ad97073c0309c52d0f40cd0ae14a391e215bba7f4a"
+    }
+  ]
+}
