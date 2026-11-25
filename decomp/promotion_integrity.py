@@ -33,6 +33,9 @@ def audit(root:Path=ROOT)->dict:
         inv=json.loads((root/'results/inventory.json').read_text())
     except (FileNotFoundError,ValueError) as exc:
         return {'status':'FAIL','errors':['Missing/malformed canonical proof/inventory: '+str(exc)]}
+    if manifest.get('usa_batch302_promotion'):
+        from . import batch302_promotion as batch302
+        return batch302.audit_usa(root,manifest,proof,inv)
     if manifest.get('usa_consolidated29_promotion'):
         from . import consolidated_batch_promotion as batch
         return batch.audit(root,manifest,proof,inv)

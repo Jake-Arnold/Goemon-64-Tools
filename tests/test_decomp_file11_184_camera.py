@@ -9,7 +9,7 @@ from decomp import file11_183_stage as prior, file11_184_stage as stage
 
 class Camera184StageTests(unittest.TestCase):
     def manifest(self):
-        result = json.loads((stage.ROOT/'manifest.json').read_text())
+        result = json.loads((stage.ROOT/'results/manifest_2354_before_batch302.json').read_text())
         # This test deliberately reconstructs a predecessor C stage.
         result.pop('overlay_usa_opening_new2_stage',None)
         result.pop('overlay_usa_short72_stage',None)

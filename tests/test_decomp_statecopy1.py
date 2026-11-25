@@ -16,7 +16,7 @@ class Statecopy1Tests(unittest.TestCase):
         prior=json.loads((adapter.ROOT/'results/combined_1500_20261119.json').read_text())
         self.assertEqual(prior['comparison']['matched_functions'],1500)
         self.assertNotIn(function['name'],{f['name'] for f in prior['comparison']['functions']})
-        current=load_manifest(adapter.ROOT/'manifest.json')
+        current=load_manifest(adapter.ROOT/'results/manifest_2354_before_batch302.json')
         # This test deliberately reconstructs a predecessor C stage.
         current.pop('overlay_usa_opening_new2_stage',None)
         current.pop('overlay_usa_short72_stage',None)

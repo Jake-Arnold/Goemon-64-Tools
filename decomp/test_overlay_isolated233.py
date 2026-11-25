@@ -20,7 +20,7 @@ ROOT = Path(__file__).resolve().parent
 class Isolated233PromotionTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        cls.manifest = load_manifest(ROOT/'manifest.json')
+        cls.manifest = load_manifest(ROOT/'results/manifest_2354_before_batch302.json')
         # Historical checkpoint projection: post2090 functions were not yet accepted.
         cls.manifest.pop('overlay_usa_opening_new2_stage',None)
         cls.manifest.pop('overlay_usa_short72_stage',None)

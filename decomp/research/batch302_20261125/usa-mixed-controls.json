@@ -1,0 +1,42 @@
+[
+  {
+    "name": "func_8000A130_AD30",
+    "native_exact": true,
+    "negative_rejected": true,
+    "outcome": "NO_NEW_COMPILER_FINDING",
+    "source_sha256": "f9c6858b2935cb181e9a8c5164ddbd820b5bffe6e2fce69f14af59505f26741f",
+    "negative_sha256": "6968ff242efc0ef7fc66a88eef924d89bdfa243b12aef406ef5d8765ba6b8551"
+  },
+  {
+    "name": "func_80023394_23F94",
+    "native_exact": true,
+    "negative_rejected": true,
+    "outcome": "NO_NEW_COMPILER_FINDING",
+    "source_sha256": "7050afc16a2bfb51e7b0d9d3d18353b29ce4637432c6ae52b1d5ebc0109eaf9e",
+    "negative_sha256": "ff85dc64eb9e292830bf9267e38309e92baeebad7e894bf30554a031d9aa355a"
+  },
+  {
+    "name": "func_80023480_24080",
+    "native_exact": true,
+    "negative_rejected": true,
+    "outcome": "NO_NEW_COMPILER_FINDING",
+    "source_sha256": "3c02ac3d51ab3ffffbcaf1c3621e2319ad6769b8f850dc34979d843c3f69c344",
+    "negative_sha256": "c3a80032a595e2fe1ed62bcf04b75ef923e660d7483571f1cf05eff867fc293c"
+  },
+  {
+    "name": "func_800234D8_240D8",
+    "native_exact": true,
+    "negative_rejected": true,
+    "outcome": "NO_NEW_COMPILER_FINDING",
+    "source_sha256": "9d23476b843291a5183545232ea890a4f542ecfcc33c2bf6c3febbd0264e5cdc",
+    "negative_sha256": "4dfaff719685189e8f85ad065394cdb57357b991cfdb650f7f96e08d8f677c10"
+  },
+  {
+    "name": "func_80023610_24210",
+    "native_exact": true,
+    "negative_rejected": true,
+    "outcome": "NO_NEW_COMPILER_FINDING",
+    "source_sha256": "a0f730ff75538fbd05980ba3c35046d5cd99b2a2a1fcc7b3aa7e34c01e10fc88",
+    "negative_sha256": "7b0a7fe32c3cbab1831049a0a5c088f627dd7dba0f57834ca6669f576f0fd81b"
+  }
+]

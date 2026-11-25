@@ -53,7 +53,7 @@ class Wide132ContractTest(unittest.TestCase):
                 self.assertEqual(hashlib.sha256(archive.extractfile(member).read()).hexdigest(),expected[member.name])
 
     def test_current_claims_total_and_non_overlap(self):
-        path=Path(__file__).with_name('manifest.json')
+        path=Path(__file__).parent/'results/manifest_2354_before_batch302.json'
         doc=load_manifest(path)
         # Historical checkpoint projection: post2090 functions were not yet accepted.
         doc.pop('overlay_usa_opening_new2_stage',None)

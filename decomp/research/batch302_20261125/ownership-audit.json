@@ -1,0 +1,20 @@
+{
+  "usa": {
+    "candidates": 202,
+    "canonical_names": 2367,
+    "canonical_range_count": 2367,
+    "conflicts": [],
+    "source_and_negative_hashes_checked": 202,
+    "original_code_hashes_checked": 202,
+    "additional_canonical_ranges_checked": 13
+  },
+  "japan_0": {
+    "candidates": 100,
+    "canonical_names": 2564,
+    "canonical_range_count": 2564,
+    "conflicts": [],
+    "source_and_negative_hashes_checked": 100,
+    "original_code_hashes_checked": 100,
+    "additional_canonical_ranges_checked": 2
+  }
+}

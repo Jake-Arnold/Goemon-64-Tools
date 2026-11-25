@@ -44,7 +44,12 @@ def documents(p,root=ROOT):
     validate_proof(p,root);fs=rows(root);prior=sorted(prior_names(root));ns=sorted(f['name'] for f in fs);rr=[{'name':f['name'],'rom_offset':f['rom_offset'],'vma':f['vma'],'size':f['original_bytes'],'source':f['source'],'source_sha256':f['source_sha256'],'original_sha256':f['code_sha256']} for f in fs]
     return {'format':FORMAT,'region':'japan_0','base_c':2551,'matching_c':2564,'assembly_remaining':4812,'original_C_instruction_bytes':141596,'functions':rr},{'format':FORMAT,'region':'japan_0','base_c':2551,'matching_c_after':2564,'remaining_assembly':4812,'accepted_original_C_bytes':141596,'original_positive_elf_count':7376,'independent_original_semantic_relocations':80655,'candidate_semantic_relocations':80655,'same_independent_original_semantic_relocations':True,'full_original_G2':True,'predecessor_elf_sha256':PRE,'candidate_elf_sha256':NEW,'previous_C_names':prior,'new_C_names':ns,'strict_readelf_summary':p['strict_inventory'],'new_C_functions':rr}
 def validate(root=ROOT):
-    need(transition.validate_jp(root)['accepted_C']==2551,'historical JP2551 integrity');m=read(root/'regions/japan_0.json');need(m.pop(KEY,None)==head(),'regional master head mismatch');need(sha((json.dumps(m,indent=2)+'\n').encode())==PRIOR_MASTER_SHA,'regional predecessor drift');p=read(root/'results'/PROOF);r,i=documents(p,root);need(r==read(root/'regions'/REG) and i==read(root/'results'/INV),'regional source/inventory mismatch');return {'status':'PASS','accepted_C':2564,'remaining_assembly':4812,'accepted_original_bytes':141596}
+    need(transition.validate_jp(root)['accepted_C']==2551,'historical JP2551 integrity');m=read(root/'regions/japan_0.json');
+    if 'batch302_promotion' in m:
+        from . import batch302_promotion as successor
+        need({k:v for k,v in m.items() if k!=successor.JP_KEY}==successor.frozen('japan_0_2564_before_batch302.json',root),'JP2564 frozen predecessor mismatch')
+        m=successor.frozen('japan_0_2564_before_batch302.json',root)
+    need(m.pop(KEY,None)==head(),'regional master head mismatch');need(sha((json.dumps(m,indent=2)+'\n').encode())==PRIOR_MASTER_SHA,'regional predecessor drift');p=read(root/'results'/PROOF);r,i=documents(p,root);need(r==read(root/'regions'/REG) and i==read(root/'results'/INV),'regional source/inventory mismatch');return {'status':'PASS','accepted_C':2564,'remaining_assembly':4812,'accepted_original_bytes':141596}
 
 def run(co,base,w,uv='uv',jobs=4):
     co,base,w=map(Path,(co,base,w));w.mkdir(parents=True,exist_ok=False);bd=co/'build/japan_0';elf=bd/'mnsg.elf';prior=w/'prior.elf';rom=stage.original(co,'japan_0');fs=rows(rom=rom)

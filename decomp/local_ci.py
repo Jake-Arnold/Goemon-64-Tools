@@ -440,6 +440,7 @@ def build_steps(host_binary: Path, *, quick: bool = False):
         ])
     steps.append(('Transition Japan source/G2/inventory validation',[sys.executable,'-m','decomp.transition_promotion']))
     steps.append(('Consolidated Japan source/G2/inventory validation',[sys.executable,'-m','decomp.japan_consolidated13_promotion']))
+    steps.append(('Batch302 Japan source/G2/inventory validation',[sys.executable,'-m','decomp.batch302_promotion']))
     return steps
 
 

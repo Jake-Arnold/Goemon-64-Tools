@@ -24,7 +24,7 @@ def load_manifest(*args, **kwargs):
 
 class Tiny9NativePromotionTests(unittest.TestCase):
     def setUp(self):
-        self.manifest=load_manifest(Path(__file__).with_name('manifest.json'))
+        self.manifest=load_manifest(Path(__file__).parent/'results/manifest_2354_before_batch302.json')
         # Historical checkpoint projection: post2090 functions were not yet accepted.
         self.manifest.pop('overlay_usa_opening_new2_stage',None)
         self.fixture=overlay_tiny9.load_fixture()

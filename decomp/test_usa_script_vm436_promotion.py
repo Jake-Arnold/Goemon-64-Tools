@@ -13,7 +13,7 @@ ROOT = Path(__file__).resolve().parent
 class TestVM436Promotion(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        cls.m = load_manifest(ROOT / 'manifest.json')
+        cls.m = load_manifest(ROOT / 'results/manifest_2354_before_batch302.json')
         cls.m.pop('usa_script_vm_dual_reference',None)
         cls.m.pop('usa_script_vm440_promotion',None)
         cls.m.pop('usa_native151_promotion',None)

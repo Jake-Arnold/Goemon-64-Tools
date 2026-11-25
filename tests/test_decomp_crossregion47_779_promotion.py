@@ -8,7 +8,7 @@ ROOT=Path(__file__).resolve().parents[1]
 class UsaCrossRegion47PromotionTests(unittest.TestCase):
  @classmethod
  def setUpClass(cls):
-  cls.manifest=load_manifest(ROOT/'decomp/manifest.json')
+  cls.manifest=load_manifest(ROOT/'decomp/results/manifest_2354_before_batch302.json')
   # Earlier C stage, not a current canonical 2092 view.
   cls.manifest.pop('overlay_usa_opening_new2_stage',None)
   cls.manifest.pop('overlay_usa_short72_stage',None)

@@ -52,7 +52,7 @@ class Archive61PromotionTests(unittest.TestCase):
         self.assertTrue(any('.text.archive61' in str(value) for value in native.stage_linker.__code__.co_consts))
 
     def test_complete_production_claims_no_duplicate(self):
-        m=load_manifest(native.ROOT/'manifest.json')
+        m=load_manifest(native.ROOT/'results/manifest_2354_before_batch302.json')
         # Historical checkpoint projection: post2090 functions were not yet accepted.
         m.pop('overlay_usa_opening_new2_stage',None)
         functions=claimed_functions({k:v for k,v in m.items() if k not in ('overlay_checkpoint500_stage','overlay_rediscovery5_stage')})

@@ -40,7 +40,7 @@ class Archive33Acceptance(unittest.TestCase):
         self.assertTrue(self.current['comparison']['full_rom_match'])
         self.assertEqual(self.current['comparison']['candidate_sha1'],'6ea0ed71032ce08fc2745f412d84936382197494')
         self.assertEqual({f['name'] for f in self.current['comparison']['functions']},oldnames|newnames)
-        m=load_manifest(ROOT/'decomp/manifest.json')
+        m=load_manifest(ROOT/'decomp/results/manifest_2354_before_batch302.json')
         # This test deliberately reconstructs a predecessor C stage.
         m.pop('overlay_usa_opening_new2_stage',None)
         m.pop('overlay_usa_short72_stage',None)

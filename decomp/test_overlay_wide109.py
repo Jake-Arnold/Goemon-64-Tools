@@ -33,7 +33,7 @@ class Wide109PromotionTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.fixture=wide.load_fixture()
-        cls.manifest=load_manifest(Path(__file__).with_name('manifest.json'))
+        cls.manifest=load_manifest(Path(__file__).parent/'results/manifest_2354_before_batch302.json')
         # Historical checkpoint projection: post2090 functions were not yet accepted.
         cls.manifest.pop('overlay_usa_opening_new2_stage',None)
 
