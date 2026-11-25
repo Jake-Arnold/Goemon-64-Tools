@@ -1,0 +1,16 @@
+gcc func_80003090_3C90_direct.c 131072 actual-source fixture cases PASS
+gcc func_80003090_3C90_direct_mask.c 131072 actual-source fixture cases PASS
+gcc func_80003090_3C90_explicit.c 131072 actual-source fixture cases PASS
+gcc func_80003090_3C90_explicit_mask.c 131072 actual-source fixture cases PASS
+gcc func_80003808_4408_direct.c 131072 actual-source fixture cases PASS
+gcc func_80003808_4408_direct_mask.c 131072 actual-source fixture cases PASS
+gcc func_80003808_4408_explicit.c 131072 actual-source fixture cases PASS
+gcc func_80003808_4408_explicit_mask.c 131072 actual-source fixture cases PASS
+clang func_80003090_3C90_direct.c 131072 actual-source fixture cases PASS
+clang func_80003090_3C90_direct_mask.c 131072 actual-source fixture cases PASS
+clang func_80003090_3C90_explicit.c 131072 actual-source fixture cases PASS
+clang func_80003090_3C90_explicit_mask.c 131072 actual-source fixture cases PASS
+clang func_80003808_4408_direct.c 131072 actual-source fixture cases PASS
+clang func_80003808_4408_direct_mask.c 131072 actual-source fixture cases PASS
+clang func_80003808_4408_explicit.c 131072 actual-source fixture cases PASS
+clang func_80003808_4408_explicit_mask.c 131072 actual-source fixture cases PASS

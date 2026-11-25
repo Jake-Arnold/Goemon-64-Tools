@@ -443,6 +443,7 @@ def build_steps(host_binary: Path, *, quick: bool = False):
     steps.append(('Batch302 Japan source/G2/inventory validation',[sys.executable,'-m','decomp.batch302_promotion']))
     steps.append(('Wave194 Japan source/G2/inventory validation',[sys.executable,'-m','decomp.wave194_promotion']))
     steps.append(('Promo367 Japan source/G2/inventory validation',[sys.executable,'-m','decomp.promo367_promotion']))
+    steps.append(('Dispatcher Japan source/G2/inventory validation',[sys.executable,'-m','decomp.japan_dispatcher_promotion']))
     return steps
 
 
