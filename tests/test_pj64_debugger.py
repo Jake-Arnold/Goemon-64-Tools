@@ -110,7 +110,7 @@ class DebuggerUiSmokeTests(unittest.TestCase):
             app = Stub(); app.root = root; app.args = Namespace(read_only=True, enable_hex_edit=False)
             app.notebook = ttk.Notebook(root)
             app.build_pj64_debugger_tab(app.notebook)
-            self.assertIn('Frame control (PJ64)', [app.debug_pages.tab(t, 'text') for t in app.debug_pages.tabs()])
+            self.assertIn('Frame Inspector (PJ64)', [app.debug_pages.tab(t, 'text') for t in app.debug_pages.tabs()])
             self.assertTrue(all('disabled' in b.state() for b in app.frame_controls))
             with patch('practice.pj64_frame_ui.request') as request, patch('practice.pj64_frame_ui.filedialog.asksaveasfilename') as dialog:
                 app._frame_request('pause'); app._frame_export()
@@ -120,6 +120,35 @@ class DebuggerUiSmokeTests(unittest.TestCase):
             for callback in root.tk.call('after', 'info'):
                 root.after_cancel(callback)
         finally: root.destroy()
+
+    def test_frame_inspector_trace_and_comparison(self):
+        import tkinter as tk
+        from tkinter import ttk
+        from argparse import Namespace
+        from unittest.mock import patch
+        from practice.pj64_frame_ui import PJ64FrameUiMixin
+        try: root=tk.Tk()
+        except tk.TclError as exc:self.skipTest(str(exc))
+        try:
+            class Stub(PJ64FrameUiMixin):pass
+            app=Stub();app.root=root;app.args=Namespace(read_only=False)
+            app._build_pj64_frame_page(ttk.Notebook(root))
+            def row(step,phase,word):return dict(step=step,phase=phase,input=None,polls=1,words=[word])
+            status=dict(region='usa',mode='execution-hook',pc=0x80001000,watches=[dict(name='action',kind='u16',address=0x80002000)],trap=None,hit=None,error='',epoch=1,generation=1,batchGeneration=1,pending=False,ready=True,valid=True,count=0,polls=0,trace=[])
+            app.frame_last=status
+            app._frame_toggle_record();self.assertTrue(app.frame_recording)
+            end=dict(status,generation=2,batchGeneration=2,count=1,trace=[row(0,'baseline',0x000D0000),row(1,'update',0x008F0000)])
+            app.frame_results.put((end,None));app._frame_drain()
+            self.assertEqual(len(app.frame_capture['trace']),2)
+            items=app.frame_table.get_children();self.assertEqual(len(items),2)
+            self.assertIn('changed',app.frame_table.item(items[1],'tags'))
+            app.frame_reference=dict(end,trace=[row(0,'baseline',0x000D0000),row(1,'update',0x00000000)])
+            app._frame_render_trace(app.frame_capture)
+            items=app.frame_table.get_children();self.assertIn('different',app.frame_table.item(items[1],'tags'))
+            self.assertIn('first difference at relative row 1',app.frame_comparison.get())
+            app._frame_stop_record();self.assertFalse(app.frame_recording)
+            for callback in root.tk.call('after','info'):root.after_cancel(callback)
+        finally:root.destroy()
 
     def test_tab_uses_existing_rdram_and_clears_stale_session(self):
         import tkinter as tk
