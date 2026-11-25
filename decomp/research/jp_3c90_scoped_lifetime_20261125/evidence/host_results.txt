@@ -1,0 +1,14 @@
+gcc func_80003090_3C90_block_countdown_direct.c 131072 actual-source fixture cases PASS
+gcc func_80003090_3C90_both_block_pointer.c 131072 actual-source fixture cases PASS
+gcc func_80003090_3C90_control.c 131072 actual-source fixture cases PASS
+gcc func_80003090_3C90_direct_control.c 131072 actual-source fixture cases PASS
+gcc func_80003090_3C90_first_block_pointer.c 131072 actual-source fixture cases PASS
+gcc func_80003090_3C90_first_register_pointer.c 131072 actual-source fixture cases PASS
+gcc func_80003090_3C90_second_block_pointer.c 131072 actual-source fixture cases PASS
+clang func_80003090_3C90_block_countdown_direct.c 131072 actual-source fixture cases PASS
+clang func_80003090_3C90_both_block_pointer.c 131072 actual-source fixture cases PASS
+clang func_80003090_3C90_control.c 131072 actual-source fixture cases PASS
+clang func_80003090_3C90_direct_control.c 131072 actual-source fixture cases PASS
+clang func_80003090_3C90_first_block_pointer.c 131072 actual-source fixture cases PASS
+clang func_80003090_3C90_first_register_pointer.c 131072 actual-source fixture cases PASS
+clang func_80003090_3C90_second_block_pointer.c 131072 actual-source fixture cases PASS

@@ -1,0 +1,251 @@
+[
+  {
+    "variant": "func_80003090_3C90_block_countdown_direct",
+    "diagnostic_linked_sha256": "9275baf0a700b8a2c84e73cfde0e34f7fd2f7a3bf9f46f8fce6207d14fb4b8da",
+    "diagnostic_relocations_exact": true,
+    "byte_load_dest_base": [
+      [
+        4,
+        2
+      ],
+      [
+        15,
+        2
+      ],
+      [
+        8,
+        2
+      ]
+    ],
+    "mask255_dest_src": [
+      [
+        14,
+        2
+      ]
+    ],
+    "increment_dest_src": [
+      [
+        24,
+        15
+      ],
+      [
+        9,
+        8
+      ]
+    ]
+  },
+  {
+    "variant": "func_80003090_3C90_both_block_pointer",
+    "diagnostic_linked_sha256": "9275baf0a700b8a2c84e73cfde0e34f7fd2f7a3bf9f46f8fce6207d14fb4b8da",
+    "diagnostic_relocations_exact": true,
+    "byte_load_dest_base": [
+      [
+        4,
+        2
+      ],
+      [
+        15,
+        2
+      ],
+      [
+        8,
+        2
+      ]
+    ],
+    "mask255_dest_src": [
+      [
+        14,
+        2
+      ]
+    ],
+    "increment_dest_src": [
+      [
+        24,
+        15
+      ],
+      [
+        9,
+        8
+      ]
+    ]
+  },
+  {
+    "variant": "func_80003090_3C90_control",
+    "diagnostic_linked_sha256": "7f3231dfb73690360a39db09eaed41700551356a3307b6d41a44867e1c6ae814",
+    "diagnostic_relocations_exact": true,
+    "byte_load_dest_base": [
+      [
+        4,
+        3
+      ],
+      [
+        2,
+        3
+      ],
+      [
+        8,
+        3
+      ]
+    ],
+    "mask255_dest_src": [
+      [
+        14,
+        2
+      ],
+      [
+        15,
+        2
+      ]
+    ],
+    "increment_dest_src": [
+      [
+        24,
+        15
+      ],
+      [
+        9,
+        8
+      ]
+    ]
+  },
+  {
+    "variant": "func_80003090_3C90_direct_control",
+    "diagnostic_linked_sha256": "9275baf0a700b8a2c84e73cfde0e34f7fd2f7a3bf9f46f8fce6207d14fb4b8da",
+    "diagnostic_relocations_exact": true,
+    "byte_load_dest_base": [
+      [
+        4,
+        2
+      ],
+      [
+        15,
+        2
+      ],
+      [
+        8,
+        2
+      ]
+    ],
+    "mask255_dest_src": [
+      [
+        14,
+        2
+      ]
+    ],
+    "increment_dest_src": [
+      [
+        24,
+        15
+      ],
+      [
+        9,
+        8
+      ]
+    ]
+  },
+  {
+    "variant": "func_80003090_3C90_first_block_pointer",
+    "diagnostic_linked_sha256": "9275baf0a700b8a2c84e73cfde0e34f7fd2f7a3bf9f46f8fce6207d14fb4b8da",
+    "diagnostic_relocations_exact": true,
+    "byte_load_dest_base": [
+      [
+        4,
+        2
+      ],
+      [
+        15,
+        2
+      ],
+      [
+        8,
+        2
+      ]
+    ],
+    "mask255_dest_src": [
+      [
+        14,
+        2
+      ]
+    ],
+    "increment_dest_src": [
+      [
+        24,
+        15
+      ],
+      [
+        9,
+        8
+      ]
+    ]
+  },
+  {
+    "variant": "func_80003090_3C90_first_register_pointer",
+    "diagnostic_linked_sha256": "9275baf0a700b8a2c84e73cfde0e34f7fd2f7a3bf9f46f8fce6207d14fb4b8da",
+    "diagnostic_relocations_exact": true,
+    "byte_load_dest_base": [
+      [
+        4,
+        2
+      ],
+      [
+        15,
+        2
+      ],
+      [
+        8,
+        2
+      ]
+    ],
+    "mask255_dest_src": [
+      [
+        14,
+        2
+      ]
+    ],
+    "increment_dest_src": [
+      [
+        24,
+        15
+      ],
+      [
+        9,
+        8
+      ]
+    ]
+  },
+  {
+    "variant": "func_80003090_3C90_second_block_pointer",
+    "diagnostic_linked_sha256": "9275baf0a700b8a2c84e73cfde0e34f7fd2f7a3bf9f46f8fce6207d14fb4b8da",
+    "diagnostic_relocations_exact": true,
+    "byte_load_dest_base": [
+      [
+        4,
+        2
+      ],
+      [
+        15,
+        2
+      ],
+      [
+        8,
+        2
+      ]
+    ],
+    "mask255_dest_src": [
+      [
+        14,
+        2
+      ]
+    ],
+    "increment_dest_src": [
+      [
+        24,
+        15
+      ],
+      [
+        9,
+        8
+      ]
+    ]
+  }
+]
