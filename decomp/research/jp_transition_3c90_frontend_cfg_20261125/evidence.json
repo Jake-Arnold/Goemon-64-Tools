@@ -1,0 +1,457 @@
+{
+  "status": "RESEARCH_ONLY",
+  "measurement_base": "160587eb162d957128c8c7dac62439ae5efc3942",
+  "source_archive": 14956254355,
+  "publication_base": "3d7f793af4b616cb4fa72ee180a663e62431d614",
+  "publication_archive": 15006755369,
+  "revalidated_native_replays": 7,
+  "decomp_tree_unchanged": true,
+  "prior_pr": 240,
+  "pinned_upstream": "7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee",
+  "region": "japan_0",
+  "target": "func_80003090_3C90",
+  "rom_offset": "0x3C90",
+  "vma": "0x80003090",
+  "original_size": 444,
+  "original_sha256": "9789900b399b81b8f2c54f7743460dea262050303c5930a61c90140116eece2c",
+  "original_rom_sha1": "6f8745fecc3a5e7d4918c7a73353eb0726116ded",
+  "retail_sha1": "9843ee979b5f6c80f5eda85df0baed9ae7c4e73b",
+  "compiler_sha256": "76d796c9591c9f5504949f85b29c32a6039a663791afe2f36f34ca18425b64d0",
+  "ledger_sha256": "98f1cc2b72b1eeb5ac48fbd60e7df7d29913811a91456b66b8ab3b49a5813eee",
+  "flags": [
+    "-c",
+    "-G",
+    "0",
+    "-non_shared",
+    "-Xfullwarn",
+    "-Xcpluscomm",
+    "-Iinclude",
+    "-Ilibultra/include",
+    "-Ilibultra/include/PR",
+    "-Isrc",
+    "-I.",
+    "-Wab,-r4300_mul",
+    "-woff",
+    "649,838,712",
+    "-D_LANGUAGE_C",
+    "-D_FINALROM",
+    "-DF3DEX_GBI",
+    "-D__sgi",
+    "-DNDEBUG",
+    "-O2",
+    "-mips2"
+  ],
+  "trace_flags": [
+    "-v",
+    "-Wc,-d",
+    "-c",
+    "-G",
+    "0",
+    "-non_shared",
+    "-Xfullwarn",
+    "-Xcpluscomm",
+    "-Iinclude",
+    "-Ilibultra/include",
+    "-Ilibultra/include/PR",
+    "-Isrc",
+    "-I.",
+    "-Wab,-r4300_mul",
+    "-woff",
+    "649,838,712",
+    "-D_LANGUAGE_C",
+    "-D_FINALROM",
+    "-DF3DEX_GBI",
+    "-D__sgi",
+    "-DNDEBUG",
+    "-O2",
+    "-mips2"
+  ],
+  "variants": [
+    {
+      "source": "source/func_80003090_3C90_baseline.c",
+      "source_git_blob": "ccf146c3a8ba505b2a13744b4871b9f237491be1",
+      "source_sha256": "bfdbb7eba0d17460d96caad72a203ab466878d2f6b1aa4289ae82e1b2f52ca90",
+      "linked_sha256": "10c5bea111acc4c26eac958b2e0e194f4604f3e6b5f8b6383c0ca85aa638da34",
+      "generated_size": 444,
+      "matching_words": 94,
+      "total_words": 111,
+      "relocations_matching": 36,
+      "reference_relocations": 36,
+      "first_mismatch": 188,
+      "first_original_word": "3c080004",
+      "first_generated_word": "3c020004",
+      "first_mismatch_class": "REGISTER_OR_SCHEDULING",
+      "countdown_words_matching": 16,
+      "optimized_build_pointer_register": 3,
+      "state_byte_load_registers": [
+        {
+          "destination": 4,
+          "base": 3
+        },
+        {
+          "destination": 15,
+          "base": 3
+        },
+        {
+          "destination": 2,
+          "base": 3
+        }
+      ],
+      "shared_mismatch_generated_word": "00431021",
+      "postopt_tree_control_counts": {
+        "lab": 13,
+        "tjp": 7,
+        "fjp": 1,
+        "ujp": 12,
+        "ret": 0
+      },
+      "emission_count": 64,
+      "emission_sha256": "e3bff1e229b42e440dcbb7f913b4bad31d3397dae5c7199198613ca259e6647a",
+      "trace_and_normal_linked_equal": true,
+      "trace_and_normal_relocations_equal": true,
+      "stock_stage_replay_equal": true,
+      "stock_stage_relocations_equal": true,
+      "rebased_native_metrics_equal": true,
+      "stage_bytes": {
+        "frontend.B": 2976,
+        "optimized.O": 2984,
+        "codegen.G": 2176
+      },
+      "compiler_outcome": "NO_NEW_COMPILER_FINDING",
+      "host_cases_each_compiler": 131072,
+      "host_GCC_ASan_UBSan": "PASS",
+      "host_Clang_ASan_UBSan": "PASS"
+    },
+    {
+      "source": "source/func_80003090_3C90_direct_control.c",
+      "source_git_blob": "51bbf20de8b94c3bae252bccfc5ea7b2369b7a60",
+      "source_sha256": "0ca0519b6891cdc58c71347003ad392d62020dc2e2f3b866738e6017e33c3ea7",
+      "linked_sha256": "9275baf0a700b8a2c84e73cfde0e34f7fd2f7a3bf9f46f8fce6207d14fb4b8da",
+      "generated_size": 444,
+      "matching_words": 88,
+      "total_words": 111,
+      "relocations_matching": 35,
+      "reference_relocations": 36,
+      "first_mismatch": 0,
+      "first_original_word": "3c038016",
+      "first_generated_word": "3c028016",
+      "first_mismatch_class": "REGISTER_OR_SCHEDULING",
+      "countdown_words_matching": 7,
+      "optimized_build_pointer_register": 2,
+      "state_byte_load_registers": [
+        {
+          "destination": 4,
+          "base": 2
+        },
+        {
+          "destination": 15,
+          "base": 2
+        },
+        {
+          "destination": 8,
+          "base": 2
+        }
+      ],
+      "shared_mismatch_generated_word": "01024021",
+      "postopt_tree_control_counts": {
+        "lab": 13,
+        "tjp": 7,
+        "fjp": 1,
+        "ujp": 12,
+        "ret": 0
+      },
+      "emission_count": 64,
+      "emission_sha256": "2f7987d75c6f3a5c86d22494da2ccd026e27c6efb07d3c5ec619ae40e6347bc8",
+      "trace_and_normal_linked_equal": true,
+      "trace_and_normal_relocations_equal": true,
+      "stock_stage_replay_equal": true,
+      "stock_stage_relocations_equal": true,
+      "rebased_native_metrics_equal": true,
+      "stage_bytes": {
+        "frontend.B": 2880,
+        "optimized.O": 2912,
+        "codegen.G": 2160
+      },
+      "compiler_outcome": "NO_NEW_COMPILER_FINDING",
+      "host_cases_each_compiler": 131072,
+      "host_GCC_ASan_UBSan": "PASS",
+      "host_Clang_ASan_UBSan": "PASS"
+    },
+    {
+      "source": "source/func_80003090_3C90_inner_if.c",
+      "source_git_blob": "afcee942b5e897465b20afb69c9990009b300484",
+      "source_sha256": "0743e720295e85a750105f623a4a22dc4f53690842cc9251b0d755c5f041095a",
+      "linked_sha256": "3ad7154c7f146dcae5c16b86d1c7a58ebbe98fe2c9bc6d62261a1185f4a2d636",
+      "generated_size": 436,
+      "matching_words": 35,
+      "total_words": 111,
+      "relocations_matching": 14,
+      "reference_relocations": 36,
+      "first_mismatch": 0,
+      "first_original_word": "3c038016",
+      "first_generated_word": "3c028016",
+      "first_mismatch_class": "REGISTER_OR_SCHEDULING",
+      "countdown_words_matching": 6,
+      "optimized_build_pointer_register": 2,
+      "state_byte_load_registers": [
+        {
+          "destination": 4,
+          "base": 2
+        },
+        {
+          "destination": 15,
+          "base": 2
+        },
+        {
+          "destination": 8,
+          "base": 2
+        }
+      ],
+      "shared_mismatch_generated_word": "01024021",
+      "postopt_tree_control_counts": {
+        "lab": 12,
+        "tjp": 3,
+        "fjp": 5,
+        "ujp": 11,
+        "ret": 0
+      },
+      "emission_count": 64,
+      "emission_sha256": "7a7effeba7dd2e0483ede5977fad0ca832038cc565ae63b41801402cc61cefa1",
+      "trace_and_normal_linked_equal": true,
+      "trace_and_normal_relocations_equal": true,
+      "stock_stage_replay_equal": true,
+      "stock_stage_relocations_equal": true,
+      "rebased_native_metrics_equal": true,
+      "stage_bytes": {
+        "frontend.B": 2976,
+        "optimized.O": 2984,
+        "codegen.G": 2272
+      },
+      "compiler_outcome": "NO_NEW_COMPILER_FINDING",
+      "host_cases_each_compiler": 131072,
+      "host_GCC_ASan_UBSan": "PASS",
+      "host_Clang_ASan_UBSan": "PASS"
+    },
+    {
+      "source": "source/func_80003090_3C90_outer_if.c",
+      "source_git_blob": "23a45c3881b1671e92d955bb89dec48812f64aa4",
+      "source_sha256": "e59967927f8d2f4cbcc8df7605e5843f4ecf728269c3beab02846ecf056a93b9",
+      "linked_sha256": "aa2ef866dfe5fc756e4c7330ce6501de3942071fbc867313babbabb30f446f82",
+      "generated_size": 436,
+      "matching_words": 6,
+      "total_words": 111,
+      "relocations_matching": 2,
+      "reference_relocations": 36,
+      "first_mismatch": 0,
+      "first_original_word": "3c038016",
+      "first_generated_word": "3c028016",
+      "first_mismatch_class": "REGISTER_OR_SCHEDULING",
+      "countdown_words_matching": 0,
+      "optimized_build_pointer_register": 2,
+      "state_byte_load_registers": [
+        {
+          "destination": 4,
+          "base": 2
+        },
+        {
+          "destination": 15,
+          "base": 2
+        },
+        {
+          "destination": 8,
+          "base": 2
+        }
+      ],
+      "shared_mismatch_generated_word": "10000037",
+      "postopt_tree_control_counts": {
+        "lab": 12,
+        "tjp": 4,
+        "fjp": 4,
+        "ujp": 11,
+        "ret": 0
+      },
+      "emission_count": 63,
+      "emission_sha256": "4587f63d5d1bbe0c9044cfec9b60db31a1907a5f684ca7bc5c081e32cc21f818",
+      "trace_and_normal_linked_equal": true,
+      "trace_and_normal_relocations_equal": true,
+      "stock_stage_replay_equal": true,
+      "stock_stage_relocations_equal": true,
+      "rebased_native_metrics_equal": true,
+      "stage_bytes": {
+        "frontend.B": 2856,
+        "optimized.O": 2920,
+        "codegen.G": 2208
+      },
+      "compiler_outcome": "NO_NEW_COMPILER_FINDING",
+      "host_cases_each_compiler": 131072,
+      "host_GCC_ASan_UBSan": "PASS",
+      "host_Clang_ASan_UBSan": "PASS"
+    },
+    {
+      "source": "source/func_80003090_3C90_shared_breaks.c",
+      "source_git_blob": "1a3bb71dbbeae5eef2c50b9f3e248ae5587bac75",
+      "source_sha256": "75a8af9dfc131fe46323a5b4e5962c389f360922c29f2d67f79665a656b1b162",
+      "linked_sha256": "9bc4354ebad593137b6c210ffe79a212016d13ca879af142d267aa252a73e6d5",
+      "generated_size": 444,
+      "matching_words": 82,
+      "total_words": 111,
+      "relocations_matching": 34,
+      "reference_relocations": 36,
+      "first_mismatch": 0,
+      "first_original_word": "3c038016",
+      "first_generated_word": "3c028016",
+      "first_mismatch_class": "REGISTER_OR_SCHEDULING",
+      "countdown_words_matching": 1,
+      "optimized_build_pointer_register": 2,
+      "state_byte_load_registers": [
+        {
+          "destination": 4,
+          "base": 2
+        },
+        {
+          "destination": 8,
+          "base": 2
+        }
+      ],
+      "shared_mismatch_generated_word": "01024021",
+      "postopt_tree_control_counts": {
+        "lab": 12,
+        "tjp": 7,
+        "fjp": 1,
+        "ujp": 9,
+        "ret": 0
+      },
+      "emission_count": 65,
+      "emission_sha256": "6fd9f435955a9b15cd4b0a0431e48123edc061b007a1f3a125d2463f75f09264",
+      "trace_and_normal_linked_equal": true,
+      "trace_and_normal_relocations_equal": true,
+      "stock_stage_replay_equal": true,
+      "stock_stage_relocations_equal": true,
+      "rebased_native_metrics_equal": true,
+      "stage_bytes": {
+        "frontend.B": 2880,
+        "optimized.O": 2856,
+        "codegen.G": 2176
+      },
+      "compiler_outcome": "NO_NEW_COMPILER_FINDING",
+      "host_cases_each_compiler": 131072,
+      "host_GCC_ASan_UBSan": "PASS",
+      "host_Clang_ASan_UBSan": "PASS"
+    },
+    {
+      "source": "source/func_80003090_3C90_shared_exit.c",
+      "source_git_blob": "400886d8b116ab119e799eb0f02614694beffe7e",
+      "source_sha256": "86a6caa6b161b39b33eae9707de1a3c8428fb3c463964facad42d3f94200a5a8",
+      "linked_sha256": "9bc4354ebad593137b6c210ffe79a212016d13ca879af142d267aa252a73e6d5",
+      "generated_size": 444,
+      "matching_words": 82,
+      "total_words": 111,
+      "relocations_matching": 34,
+      "reference_relocations": 36,
+      "first_mismatch": 0,
+      "first_original_word": "3c038016",
+      "first_generated_word": "3c028016",
+      "first_mismatch_class": "REGISTER_OR_SCHEDULING",
+      "countdown_words_matching": 1,
+      "optimized_build_pointer_register": 2,
+      "state_byte_load_registers": [
+        {
+          "destination": 4,
+          "base": 2
+        },
+        {
+          "destination": 8,
+          "base": 2
+        }
+      ],
+      "shared_mismatch_generated_word": "01024021",
+      "postopt_tree_control_counts": {
+        "lab": 12,
+        "tjp": 7,
+        "fjp": 1,
+        "ujp": 10,
+        "ret": 0
+      },
+      "emission_count": 65,
+      "emission_sha256": "6fd9f435955a9b15cd4b0a0431e48123edc061b007a1f3a125d2463f75f09264",
+      "trace_and_normal_linked_equal": true,
+      "trace_and_normal_relocations_equal": true,
+      "stock_stage_replay_equal": true,
+      "stock_stage_relocations_equal": true,
+      "rebased_native_metrics_equal": true,
+      "stage_bytes": {
+        "frontend.B": 2920,
+        "optimized.O": 2864,
+        "codegen.G": 2144
+      },
+      "compiler_outcome": "NO_NEW_COMPILER_FINDING",
+      "host_cases_each_compiler": 131072,
+      "host_GCC_ASan_UBSan": "PASS",
+      "host_Clang_ASan_UBSan": "PASS"
+    },
+    {
+      "source": "source/func_80003090_3C90_split_exits.c",
+      "source_git_blob": "9f312a182175b2ad4b7ba3603b73eb4eb38411e8",
+      "source_sha256": "f541812863bba56a1bf4f35a1e0753a3909f3bb85dd8ed3da905e7dcd3fd2df8",
+      "linked_sha256": "9bc4354ebad593137b6c210ffe79a212016d13ca879af142d267aa252a73e6d5",
+      "generated_size": 444,
+      "matching_words": 82,
+      "total_words": 111,
+      "relocations_matching": 34,
+      "reference_relocations": 36,
+      "first_mismatch": 0,
+      "first_original_word": "3c038016",
+      "first_generated_word": "3c028016",
+      "first_mismatch_class": "REGISTER_OR_SCHEDULING",
+      "countdown_words_matching": 1,
+      "optimized_build_pointer_register": 2,
+      "state_byte_load_registers": [
+        {
+          "destination": 4,
+          "base": 2
+        },
+        {
+          "destination": 8,
+          "base": 2
+        }
+      ],
+      "shared_mismatch_generated_word": "01024021",
+      "postopt_tree_control_counts": {
+        "lab": 14,
+        "tjp": 7,
+        "fjp": 1,
+        "ujp": 11,
+        "ret": 0
+      },
+      "emission_count": 65,
+      "emission_sha256": "6fd9f435955a9b15cd4b0a0431e48123edc061b007a1f3a125d2463f75f09264",
+      "trace_and_normal_linked_equal": true,
+      "trace_and_normal_relocations_equal": true,
+      "stock_stage_replay_equal": true,
+      "stock_stage_relocations_equal": true,
+      "rebased_native_metrics_equal": true,
+      "stage_bytes": {
+        "frontend.B": 2944,
+        "optimized.O": 2920,
+        "codegen.G": 2160
+      },
+      "compiler_outcome": "NO_NEW_COMPILER_FINDING",
+      "host_cases_each_compiler": 131072,
+      "host_GCC_ASan_UBSan": "PASS",
+      "host_Clang_ASan_UBSan": "PASS"
+    }
+  ],
+  "host_total": 1835008,
+  "canonical_counts": {
+    "usa_before": 2354,
+    "usa_after": 2354,
+    "jp_before": 2564,
+    "jp_after": 2564
+  },
+  "mixed_owner": "NOT_RUN",
+  "full_candidate_G2": "NOT_RUN",
+  "full_candidate_CI": "NOT_RUN",
+  "source_kit_sha256": "3f1515f1bdf331df5b59167c6ecb86f3bdae7086e51c12f454e1748bb435d267",
+  "capture_frontend_sha256": "0c91cdc94dc2acb26b7a395c60f368a3cd90d5e4472e111435b5baad91d4218a",
+  "trace_script_sha256": "eb789af3b4a99c6bcd0bc1bdc18b7d5787236f61e2816ff595651ca4a8cccd88"
+}
