@@ -1,0 +1,11 @@
+{
+  "status": "RESEARCH_ONLY",
+  "text_bytes": 6416,
+  "original_text_sha256": "fc2b0bb19c757aecd44b15b33380632d39b7c572298713fad33a5e399605a560",
+  "all_text_exact": true,
+  "all_38_function_identities_exact": true,
+  "reference_relocations": 625,
+  "candidate_relocations": 625,
+  "reference_relocation_multiset_exact": true,
+  "scope": "Two new C functions plus 36 original ASM siblings; original inferred text owner only, not current canonical mixed source layout, data/rodata or full ROM."
+}
