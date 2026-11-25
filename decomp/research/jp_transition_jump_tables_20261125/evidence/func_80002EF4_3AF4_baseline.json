@@ -1,0 +1,116 @@
+{
+  "region": "japan_0",
+  "target": "func_80002EF4_3AF4",
+  "rom_offset": "0x3af4",
+  "vma": "0x80002ef4",
+  "size": 412,
+  "generated_size": 412,
+  "source_sha256": "95fa8851087ac28b2cffa35c8b6f52a9f186bac90980552473365268d1f1d103",
+  "original_sha256": "132d0cb773e481a83c27200932e35a6c0b3495a8610744c6f1c29e38f2fe3890",
+  "linked_sha256": "132d0cb773e481a83c27200932e35a6c0b3495a8610744c6f1c29e38f2fe3890",
+  "matching_words": 103,
+  "total_words": 103,
+  "first_mismatch": null,
+  "first_original_word": null,
+  "first_generated_word": null,
+  "text_exact": true,
+  "table_offset": "0x80e78",
+  "table_extent": 24,
+  "native_pool_extent": 32,
+  "table_exact": true,
+  "pool_tail_zero": true,
+  "table_sha256": "a28abda34e5253221a4ab1171fa116f99d4bf35fc1427081fb4b0e59e629c0ce",
+  "original_table_sha256": "a28abda34e5253221a4ab1171fa116f99d4bf35fc1427081fb4b0e59e629c0ce",
+  "named_text_relocs": 44,
+  "numeric_text_relocs": 34,
+  "native_text_relocs": 34,
+  "text_relocation_type_offset_identity_equal": true,
+  "semantic_text_relocs_equal": true,
+  "table_relocation_type_offset_identity_equal": true,
+  "semantic_table_relocs_equal": true,
+  "reference_table_relocs": 5,
+  "native_table_relocs": 5,
+  "raw_reference_table_relocs": [
+    [
+      0,
+      "R_MIPS_32",
+      ".L80002F30_3B30"
+    ],
+    [
+      4,
+      "R_MIPS_32",
+      ".L80002F58_3B58"
+    ],
+    [
+      8,
+      "R_MIPS_32",
+      ".L80002FD4_3BD4"
+    ],
+    [
+      12,
+      "R_MIPS_32",
+      ".L80003000_3C00"
+    ],
+    [
+      16,
+      "R_MIPS_32",
+      ".L80003010_3C10"
+    ]
+  ],
+  "raw_native_table_relocs": [
+    [
+      0,
+      "R_MIPS_32",
+      ".text"
+    ],
+    [
+      4,
+      "R_MIPS_32",
+      ".text"
+    ],
+    [
+      8,
+      "R_MIPS_32",
+      ".text"
+    ],
+    [
+      12,
+      "R_MIPS_32",
+      ".text"
+    ],
+    [
+      16,
+      "R_MIPS_32",
+      ".text"
+    ]
+  ],
+  "reference_only_text": [],
+  "native_only_text": [],
+  "flags": [
+    "-c",
+    "-G",
+    "0",
+    "-non_shared",
+    "-Xfullwarn",
+    "-Xcpluscomm",
+    "-Iinclude",
+    "-Ilibultra/include",
+    "-Ilibultra/include/PR",
+    "-Isrc",
+    "-I.",
+    "-Wab,-r4300_mul",
+    "-woff",
+    "649,838,712",
+    "-D_LANGUAGE_C",
+    "-D_FINALROM",
+    "-DF3DEX_GBI",
+    "-D__sgi",
+    "-DNDEBUG",
+    "-O2",
+    "-mips2"
+  ],
+  "ledger_sha256": "3334338e458e5d04f91e613249ecec1ee857acb450821409ef33784c1a7c6f46",
+  "compiler_sha256": "76d796c9591c9f5504949f85b29c32a6039a663791afe2f36f34ca18425b64d0",
+  "compiler_outcome": "NO_NEW_COMPILER_FINDING",
+  "first_mismatch_class": "NONE"
+}

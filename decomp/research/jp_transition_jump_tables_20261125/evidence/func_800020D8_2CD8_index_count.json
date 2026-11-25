@@ -1,0 +1,138 @@
+{
+  "region": "japan_0",
+  "target": "func_800020D8_2CD8",
+  "rom_offset": "0x2cd8",
+  "vma": "0x800020d8",
+  "size": 564,
+  "generated_size": 564,
+  "source_sha256": "9474d18e88dea95dfafdafe062566c3afec9c614aed94315b5a1189b88ad07ab",
+  "original_sha256": "56f33a5d513e8c7aa8fdeea74bb319b2b67188769ff3b657432ba840970901ac",
+  "linked_sha256": "1dd4829e4a0da4ce03c34ac71a9fc2115544c2fdeba2f08b3c792885ffbd1a5b",
+  "matching_words": 112,
+  "total_words": 141,
+  "first_mismatch": 76,
+  "first_original_word": "3403ffff",
+  "first_generated_word": "3402ffff",
+  "text_exact": false,
+  "table_offset": "0x80e34",
+  "table_extent": 20,
+  "native_pool_extent": 32,
+  "table_exact": true,
+  "pool_tail_zero": true,
+  "table_sha256": "ac5fac82b04b2aee31c6e0f2522fdfd11c4121378d3a980738b0f3efa3c8823b",
+  "original_table_sha256": "ac5fac82b04b2aee31c6e0f2522fdfd11c4121378d3a980738b0f3efa3c8823b",
+  "named_text_relocs": 45,
+  "numeric_text_relocs": 41,
+  "native_text_relocs": 41,
+  "text_relocation_type_offset_identity_equal": false,
+  "semantic_text_relocs_equal": false,
+  "table_relocation_type_offset_identity_equal": true,
+  "semantic_table_relocs_equal": true,
+  "reference_table_relocs": 5,
+  "native_table_relocs": 5,
+  "raw_reference_table_relocs": [
+    [
+      0,
+      "R_MIPS_32",
+      ".L80002114_2D14"
+    ],
+    [
+      4,
+      "R_MIPS_32",
+      ".L8000215C_2D5C"
+    ],
+    [
+      8,
+      "R_MIPS_32",
+      ".L800021E4_2DE4"
+    ],
+    [
+      12,
+      "R_MIPS_32",
+      ".L80002228_2E28"
+    ],
+    [
+      16,
+      "R_MIPS_32",
+      ".L800022F4_2EF4"
+    ]
+  ],
+  "raw_native_table_relocs": [
+    [
+      0,
+      "R_MIPS_32",
+      ".text"
+    ],
+    [
+      4,
+      "R_MIPS_32",
+      ".text"
+    ],
+    [
+      8,
+      "R_MIPS_32",
+      ".text"
+    ],
+    [
+      12,
+      "R_MIPS_32",
+      ".text"
+    ],
+    [
+      16,
+      "R_MIPS_32",
+      ".text"
+    ]
+  ],
+  "reference_only_text": [
+    [
+      100,
+      "R_MIPS_HI16",
+      "g_system"
+    ],
+    [
+      104,
+      "R_MIPS_LO16",
+      "g_system"
+    ]
+  ],
+  "native_only_text": [
+    [
+      84,
+      "R_MIPS_HI16",
+      "g_system"
+    ],
+    [
+      88,
+      "R_MIPS_LO16",
+      "g_system"
+    ]
+  ],
+  "flags": [
+    "-c",
+    "-G",
+    "0",
+    "-non_shared",
+    "-Xfullwarn",
+    "-Xcpluscomm",
+    "-Iinclude",
+    "-Ilibultra/include",
+    "-Ilibultra/include/PR",
+    "-Isrc",
+    "-I.",
+    "-Wab,-r4300_mul",
+    "-woff",
+    "649,838,712",
+    "-D_LANGUAGE_C",
+    "-D_FINALROM",
+    "-DF3DEX_GBI",
+    "-D__sgi",
+    "-DNDEBUG",
+    "-O2",
+    "-mips2"
+  ],
+  "ledger_sha256": "3334338e458e5d04f91e613249ecec1ee857acb450821409ef33784c1a7c6f46",
+  "compiler_sha256": "76d796c9591c9f5504949f85b29c32a6039a663791afe2f36f34ca18425b64d0",
+  "compiler_outcome": "NO_NEW_COMPILER_FINDING",
+  "first_mismatch_class": "REGISTER_ALLOCATION_OR_SCHEDULING"
+}

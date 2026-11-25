@@ -1,0 +1,17 @@
+{
+  "status": "RESEARCH_ONLY",
+  "base_commit": "3669a15a807c77249e85cd177ef2704d5560e5d1",
+  "source_archive": 15066045901,
+  "native_replays": 16,
+  "host_builds": 4,
+  "host_cases": 262144,
+  "new_exact_functions": [
+    "func_80002EF4_3AF4"
+  ],
+  "new_exact_bytes": 412,
+  "canonical_delta": 0,
+  "canonical_jp": 2843,
+  "canonical_usa": 2939,
+  "full_candidate_g2": "NOT_RUN",
+  "candidate_ci": "NOT_RUN"
+}

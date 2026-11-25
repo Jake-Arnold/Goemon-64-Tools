@@ -1,0 +1,428 @@
+{
+  "region": "japan_0",
+  "target": "func_800024B8_30B8",
+  "rom_offset": "0x30b8",
+  "vma": "0x800024b8",
+  "size": 512,
+  "generated_size": 508,
+  "source_sha256": "53d16dc6203005df6f3fe4f55dfb4c9c95c8a010bc5947b90f76c1a455e9cf6d",
+  "original_sha256": "66e70d0290360800b2d687c4ac77328396d1a348ee7dadd84c6fcb575e6e7a9a",
+  "linked_sha256": "430f34afe1fde110a28cd1108b120398c44af06d901470a3f2418146ab6453da",
+  "matching_words": 20,
+  "total_words": 128,
+  "first_mismatch": 0,
+  "first_original_word": "3c04800c",
+  "first_generated_word": "3c03800c",
+  "text_exact": false,
+  "table_offset": "0x80e48",
+  "table_extent": 24,
+  "native_pool_extent": 32,
+  "table_exact": false,
+  "pool_tail_zero": true,
+  "table_sha256": "e7281e7fd406fafb1385cf8cef1e0e2f6b6d30c6cdde3445579b73a5db667baf",
+  "original_table_sha256": "01048aa2404750e14bf946bc3ab20c88ea04c60c60db991a0439b131f6e1b6b5",
+  "named_text_relocs": 57,
+  "numeric_text_relocs": 39,
+  "native_text_relocs": 39,
+  "text_relocation_type_offset_identity_equal": false,
+  "semantic_text_relocs_equal": false,
+  "table_relocation_type_offset_identity_equal": true,
+  "semantic_table_relocs_equal": false,
+  "reference_table_relocs": 6,
+  "native_table_relocs": 6,
+  "raw_reference_table_relocs": [
+    [
+      0,
+      "R_MIPS_32",
+      ".L800024F0_30F0"
+    ],
+    [
+      4,
+      "R_MIPS_32",
+      ".L80002558_3158"
+    ],
+    [
+      8,
+      "R_MIPS_32",
+      ".L800025B0_31B0"
+    ],
+    [
+      12,
+      "R_MIPS_32",
+      ".L80002600_3200"
+    ],
+    [
+      16,
+      "R_MIPS_32",
+      ".L80002648_3248"
+    ],
+    [
+      20,
+      "R_MIPS_32",
+      ".L80002658_3258"
+    ]
+  ],
+  "raw_native_table_relocs": [
+    [
+      0,
+      "R_MIPS_32",
+      ".text"
+    ],
+    [
+      4,
+      "R_MIPS_32",
+      ".text"
+    ],
+    [
+      8,
+      "R_MIPS_32",
+      ".text"
+    ],
+    [
+      12,
+      "R_MIPS_32",
+      ".text"
+    ],
+    [
+      16,
+      "R_MIPS_32",
+      ".text"
+    ],
+    [
+      20,
+      "R_MIPS_32",
+      ".text"
+    ]
+  ],
+  "reference_only_text": [
+    [
+      104,
+      "R_MIPS_HI16",
+      "g_system_ptr"
+    ],
+    [
+      124,
+      "R_MIPS_LO16",
+      "g_system_ptr"
+    ],
+    [
+      160,
+      "R_MIPS_26",
+      "func_80003760_4360"
+    ],
+    [
+      168,
+      "R_MIPS_26",
+      "func_801D0DF0"
+    ],
+    [
+      176,
+      "R_MIPS_HI16",
+      "g_system_ptr"
+    ],
+    [
+      180,
+      "R_MIPS_LO16",
+      "g_system_ptr"
+    ],
+    [
+      200,
+      "R_MIPS_26",
+      "func_80036624_37224"
+    ],
+    [
+      188,
+      "R_MIPS_HI16",
+      "D_80072E08_73A08"
+    ],
+    [
+      204,
+      "R_MIPS_LO16",
+      "D_80072E08_73A08"
+    ],
+    [
+      208,
+      "R_MIPS_HI16",
+      "g_system_ptr"
+    ],
+    [
+      212,
+      "R_MIPS_LO16",
+      "g_system_ptr"
+    ],
+    [
+      248,
+      "R_MIPS_HI16",
+      "g_system_ptr"
+    ],
+    [
+      252,
+      "R_MIPS_LO16",
+      "g_system_ptr"
+    ],
+    [
+      264,
+      "R_MIPS_26",
+      "func_800343A4_34FA4"
+    ],
+    [
+      276,
+      "R_MIPS_26",
+      "func_800364B0_370B0"
+    ],
+    [
+      272,
+      "R_MIPS_HI16",
+      "D_80072E08_73A08"
+    ],
+    [
+      280,
+      "R_MIPS_LO16",
+      "D_80072E08_73A08"
+    ],
+    [
+      288,
+      "R_MIPS_HI16",
+      "g_system_ptr"
+    ],
+    [
+      292,
+      "R_MIPS_LO16",
+      "g_system_ptr"
+    ],
+    [
+      328,
+      "R_MIPS_HI16",
+      "g_system_ptr"
+    ],
+    [
+      332,
+      "R_MIPS_LO16",
+      "g_system_ptr"
+    ],
+    [
+      384,
+      "R_MIPS_26",
+      "func_80003808_4408"
+    ],
+    [
+      400,
+      "R_MIPS_26",
+      "func_80003870_4470"
+    ],
+    [
+      416,
+      "R_MIPS_HI16",
+      "D_80054B58_55758"
+    ],
+    [
+      420,
+      "R_MIPS_LO16",
+      "D_80054B58_55758"
+    ],
+    [
+      436,
+      "R_MIPS_26",
+      "func_80003760_4360"
+    ],
+    [
+      444,
+      "R_MIPS_HI16",
+      "g_system"
+    ],
+    [
+      448,
+      "R_MIPS_LO16",
+      "g_system"
+    ],
+    [
+      472,
+      "R_MIPS_26",
+      "func_8000364C_424C"
+    ],
+    [
+      488,
+      "R_MIPS_26",
+      "func_8000364C_424C"
+    ]
+  ],
+  "native_only_text": [
+    [
+      116,
+      "R_MIPS_HI16",
+      "g_system_ptr"
+    ],
+    [
+      120,
+      "R_MIPS_LO16",
+      "g_system_ptr"
+    ],
+    [
+      156,
+      "R_MIPS_26",
+      "func_80003760_4360"
+    ],
+    [
+      164,
+      "R_MIPS_26",
+      "func_801D0DF0"
+    ],
+    [
+      172,
+      "R_MIPS_HI16",
+      "g_system_ptr"
+    ],
+    [
+      176,
+      "R_MIPS_LO16",
+      "g_system_ptr"
+    ],
+    [
+      184,
+      "R_MIPS_HI16",
+      "D_80072E08_73A08"
+    ],
+    [
+      200,
+      "R_MIPS_LO16",
+      "D_80072E08_73A08"
+    ],
+    [
+      196,
+      "R_MIPS_26",
+      "func_80036624_37224"
+    ],
+    [
+      204,
+      "R_MIPS_HI16",
+      "g_system_ptr"
+    ],
+    [
+      208,
+      "R_MIPS_LO16",
+      "g_system_ptr"
+    ],
+    [
+      244,
+      "R_MIPS_HI16",
+      "g_system_ptr"
+    ],
+    [
+      248,
+      "R_MIPS_LO16",
+      "g_system_ptr"
+    ],
+    [
+      260,
+      "R_MIPS_26",
+      "func_800343A4_34FA4"
+    ],
+    [
+      268,
+      "R_MIPS_HI16",
+      "D_80072E08_73A08"
+    ],
+    [
+      276,
+      "R_MIPS_LO16",
+      "D_80072E08_73A08"
+    ],
+    [
+      272,
+      "R_MIPS_26",
+      "func_800364B0_370B0"
+    ],
+    [
+      284,
+      "R_MIPS_HI16",
+      "g_system_ptr"
+    ],
+    [
+      288,
+      "R_MIPS_LO16",
+      "g_system_ptr"
+    ],
+    [
+      324,
+      "R_MIPS_HI16",
+      "g_system_ptr"
+    ],
+    [
+      328,
+      "R_MIPS_LO16",
+      "g_system_ptr"
+    ],
+    [
+      380,
+      "R_MIPS_26",
+      "func_80003808_4408"
+    ],
+    [
+      396,
+      "R_MIPS_26",
+      "func_80003870_4470"
+    ],
+    [
+      412,
+      "R_MIPS_HI16",
+      "D_80054B58_55758"
+    ],
+    [
+      416,
+      "R_MIPS_LO16",
+      "D_80054B58_55758"
+    ],
+    [
+      432,
+      "R_MIPS_26",
+      "func_80003760_4360"
+    ],
+    [
+      440,
+      "R_MIPS_HI16",
+      "g_system"
+    ],
+    [
+      444,
+      "R_MIPS_LO16",
+      "g_system"
+    ],
+    [
+      468,
+      "R_MIPS_26",
+      "func_8000364C_424C"
+    ],
+    [
+      484,
+      "R_MIPS_26",
+      "func_8000364C_424C"
+    ]
+  ],
+  "flags": [
+    "-c",
+    "-G",
+    "0",
+    "-non_shared",
+    "-Xfullwarn",
+    "-Xcpluscomm",
+    "-Iinclude",
+    "-Ilibultra/include",
+    "-Ilibultra/include/PR",
+    "-Isrc",
+    "-I.",
+    "-Wab,-r4300_mul",
+    "-woff",
+    "649,838,712",
+    "-D_LANGUAGE_C",
+    "-D_FINALROM",
+    "-DF3DEX_GBI",
+    "-D__sgi",
+    "-DNDEBUG",
+    "-O2",
+    "-mips2"
+  ],
+  "ledger_sha256": "3334338e458e5d04f91e613249ecec1ee857acb450821409ef33784c1a7c6f46",
+  "compiler_sha256": "76d796c9591c9f5504949f85b29c32a6039a663791afe2f36f34ca18425b64d0",
+  "compiler_outcome": "NO_NEW_COMPILER_FINDING",
+  "first_mismatch_class": "REGISTER_ALLOCATION_OR_SCHEDULING"
+}

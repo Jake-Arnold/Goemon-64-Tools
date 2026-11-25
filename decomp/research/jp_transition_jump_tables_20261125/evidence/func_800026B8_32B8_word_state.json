@@ -1,0 +1,388 @@
+{
+  "region": "japan_0",
+  "target": "func_800026B8_32B8",
+  "rom_offset": "0x32b8",
+  "vma": "0x800026b8",
+  "size": 544,
+  "generated_size": 552,
+  "source_sha256": "06b9a40723a0d790d90a9c97d9b19cb39c5b1d2539ebca2432980faac90fe1d6",
+  "original_sha256": "b97b9468e640021005fb9093966cfaaea19da6f833d26314f2b0de66a21f177d",
+  "linked_sha256": "0f1dc06f88758bc242b78c5fdf08ac903f9b34cf8c9b33bb5ad265092bb69780",
+  "matching_words": 25,
+  "total_words": 136,
+  "first_mismatch": 8,
+  "first_original_word": "8cc30000",
+  "first_generated_word": "8cc20000",
+  "text_exact": false,
+  "table_offset": "0x80e60",
+  "table_extent": 24,
+  "native_pool_extent": 32,
+  "table_exact": false,
+  "pool_tail_zero": true,
+  "table_sha256": "c40ddbfd758497a6e434f8a351eda2517656004faac5f653017960e1b6d222b1",
+  "original_table_sha256": "b8521723fec7bf02ed3e3daa0d2aea2c0f5fa843d01aac83fac1d86ebd5b595f",
+  "named_text_relocs": 54,
+  "numeric_text_relocs": 40,
+  "native_text_relocs": 40,
+  "text_relocation_type_offset_identity_equal": false,
+  "semantic_text_relocs_equal": false,
+  "table_relocation_type_offset_identity_equal": true,
+  "semantic_table_relocs_equal": false,
+  "reference_table_relocs": 6,
+  "native_table_relocs": 6,
+  "raw_reference_table_relocs": [
+    [
+      0,
+      "R_MIPS_32",
+      ".L800026FC_32FC"
+    ],
+    [
+      4,
+      "R_MIPS_32",
+      ".L80002774_3374"
+    ],
+    [
+      8,
+      "R_MIPS_32",
+      ".L80002788_3388"
+    ],
+    [
+      12,
+      "R_MIPS_32",
+      ".L800027E0_33E0"
+    ],
+    [
+      16,
+      "R_MIPS_32",
+      ".L800027F0_33F0"
+    ],
+    [
+      20,
+      "R_MIPS_32",
+      ".L80002800_3400"
+    ]
+  ],
+  "raw_native_table_relocs": [
+    [
+      0,
+      "R_MIPS_32",
+      ".text"
+    ],
+    [
+      4,
+      "R_MIPS_32",
+      ".text"
+    ],
+    [
+      8,
+      "R_MIPS_32",
+      ".text"
+    ],
+    [
+      12,
+      "R_MIPS_32",
+      ".text"
+    ],
+    [
+      16,
+      "R_MIPS_32",
+      ".text"
+    ],
+    [
+      20,
+      "R_MIPS_32",
+      ".text"
+    ]
+  ],
+  "reference_only_text": [
+    [
+      168,
+      "R_MIPS_HI16",
+      "g_system_ptr"
+    ],
+    [
+      172,
+      "R_MIPS_LO16",
+      "g_system_ptr"
+    ],
+    [
+      212,
+      "R_MIPS_HI16",
+      "g_system"
+    ],
+    [
+      224,
+      "R_MIPS_LO16",
+      "g_system"
+    ],
+    [
+      248,
+      "R_MIPS_26",
+      "func_800344FC_350FC"
+    ],
+    [
+      236,
+      "R_MIPS_HI16",
+      "D_80212090"
+    ],
+    [
+      252,
+      "R_MIPS_LO16",
+      "D_80212090"
+    ],
+    [
+      256,
+      "R_MIPS_HI16",
+      "g_system_ptr"
+    ],
+    [
+      260,
+      "R_MIPS_LO16",
+      "g_system_ptr"
+    ],
+    [
+      296,
+      "R_MIPS_26",
+      "func_80003808_4408"
+    ],
+    [
+      312,
+      "R_MIPS_26",
+      "func_80003870_4470"
+    ],
+    [
+      352,
+      "R_MIPS_HI16",
+      "g_system"
+    ],
+    [
+      356,
+      "R_MIPS_LO16",
+      "g_system"
+    ],
+    [
+      380,
+      "R_MIPS_26",
+      "func_80003760_4360"
+    ],
+    [
+      388,
+      "R_MIPS_HI16",
+      "g_system"
+    ],
+    [
+      392,
+      "R_MIPS_LO16",
+      "g_system"
+    ],
+    [
+      444,
+      "R_MIPS_26",
+      "func_8000364C_424C"
+    ],
+    [
+      452,
+      "R_MIPS_HI16",
+      "g_system"
+    ],
+    [
+      460,
+      "R_MIPS_LO16",
+      "g_system"
+    ],
+    [
+      464,
+      "R_MIPS_26",
+      "func_8000364C_424C"
+    ],
+    [
+      472,
+      "R_MIPS_HI16",
+      "g_system"
+    ],
+    [
+      476,
+      "R_MIPS_LO16",
+      "g_system"
+    ],
+    [
+      492,
+      "R_MIPS_26",
+      "func_8000364C_424C"
+    ],
+    [
+      500,
+      "R_MIPS_HI16",
+      "g_system"
+    ],
+    [
+      504,
+      "R_MIPS_LO16",
+      "g_system"
+    ],
+    [
+      520,
+      "R_MIPS_26",
+      "func_8000364C_424C"
+    ]
+  ],
+  "native_only_text": [
+    [
+      156,
+      "R_MIPS_HI16",
+      "g_system_ptr"
+    ],
+    [
+      160,
+      "R_MIPS_LO16",
+      "g_system_ptr"
+    ],
+    [
+      220,
+      "R_MIPS_HI16",
+      "g_system"
+    ],
+    [
+      232,
+      "R_MIPS_LO16",
+      "g_system"
+    ],
+    [
+      244,
+      "R_MIPS_HI16",
+      "D_80212090"
+    ],
+    [
+      260,
+      "R_MIPS_LO16",
+      "D_80212090"
+    ],
+    [
+      256,
+      "R_MIPS_26",
+      "func_800344FC_350FC"
+    ],
+    [
+      264,
+      "R_MIPS_HI16",
+      "g_system_ptr"
+    ],
+    [
+      268,
+      "R_MIPS_LO16",
+      "g_system_ptr"
+    ],
+    [
+      304,
+      "R_MIPS_26",
+      "func_80003808_4408"
+    ],
+    [
+      320,
+      "R_MIPS_26",
+      "func_80003870_4470"
+    ],
+    [
+      360,
+      "R_MIPS_HI16",
+      "g_system"
+    ],
+    [
+      364,
+      "R_MIPS_LO16",
+      "g_system"
+    ],
+    [
+      388,
+      "R_MIPS_26",
+      "func_80003760_4360"
+    ],
+    [
+      396,
+      "R_MIPS_HI16",
+      "g_system"
+    ],
+    [
+      400,
+      "R_MIPS_LO16",
+      "g_system"
+    ],
+    [
+      452,
+      "R_MIPS_26",
+      "func_8000364C_424C"
+    ],
+    [
+      460,
+      "R_MIPS_HI16",
+      "g_system"
+    ],
+    [
+      468,
+      "R_MIPS_LO16",
+      "g_system"
+    ],
+    [
+      472,
+      "R_MIPS_26",
+      "func_8000364C_424C"
+    ],
+    [
+      480,
+      "R_MIPS_HI16",
+      "g_system"
+    ],
+    [
+      484,
+      "R_MIPS_LO16",
+      "g_system"
+    ],
+    [
+      500,
+      "R_MIPS_26",
+      "func_8000364C_424C"
+    ],
+    [
+      508,
+      "R_MIPS_HI16",
+      "g_system"
+    ],
+    [
+      512,
+      "R_MIPS_LO16",
+      "g_system"
+    ],
+    [
+      528,
+      "R_MIPS_26",
+      "func_8000364C_424C"
+    ]
+  ],
+  "flags": [
+    "-c",
+    "-G",
+    "0",
+    "-non_shared",
+    "-Xfullwarn",
+    "-Xcpluscomm",
+    "-Iinclude",
+    "-Ilibultra/include",
+    "-Ilibultra/include/PR",
+    "-Isrc",
+    "-I.",
+    "-Wab,-r4300_mul",
+    "-woff",
+    "649,838,712",
+    "-D_LANGUAGE_C",
+    "-D_FINALROM",
+    "-DF3DEX_GBI",
+    "-D__sgi",
+    "-DNDEBUG",
+    "-O2",
+    "-mips2"
+  ],
+  "ledger_sha256": "3334338e458e5d04f91e613249ecec1ee857acb450821409ef33784c1a7c6f46",
+  "compiler_sha256": "76d796c9591c9f5504949f85b29c32a6039a663791afe2f36f34ca18425b64d0",
+  "compiler_outcome": "NO_NEW_COMPILER_FINDING",
+  "first_mismatch_class": "REGISTER_ALLOCATION_OR_SCHEDULING"
+}
