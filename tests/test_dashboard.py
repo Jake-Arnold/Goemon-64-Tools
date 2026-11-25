@@ -54,10 +54,10 @@ class DashboardSmokeTests(unittest.TestCase):
         self.assertFalse(hasattr(app, 'quick_watch_tree'))
         self.assertFalse(hasattr(app, 'speed_launch_button'))
         self.assertTrue(app.connect_button.winfo_exists())
-        self.assertTrue(app.restore_state_btn.winfo_exists())
-        self.assertTrue(app.cancel_restore_btn.winfo_exists())
-        self.assertTrue(app.capture_state_btn.winfo_exists())
-        self.assertTrue(app.checkpoint_name.winfo_exists())
+        for attr in ('restore_state_btn', 'cancel_restore_btn', 'capture_state_btn',
+                     'checkpoint_name', 'checkpoints_box', 'legacy_checkpoint_card'):
+            self.assertFalse(hasattr(app, attr), attr)
+        self.assertEqual(app.logical_checkpoint_selection, -1)
         self.assertFalse(hasattr(app,'bookmarks_box'))
         self.assertFalse(hasattr(app,'teleport_btn'))
         self.assertFalse(hasattr(app,'bookmark_name'))
@@ -103,7 +103,7 @@ class DashboardSmokeTests(unittest.TestCase):
             app.dashboard_connection_column.winfo_height(),
             app.dashboard_canvas.winfo_height(),
         )
-        self.assertTrue(app.checkpoints_box.winfo_exists())
+        self.assertFalse(hasattr(app, "checkpoints_box"))
 
     def test_dashboard_stacks_when_narrow_and_recovers_on_resize(self):
         app = self.toolkit
@@ -116,7 +116,7 @@ class DashboardSmokeTests(unittest.TestCase):
         self.assertTrue(app.dashboard_wide)
         self.assertEqual(int(app.dashboard_checkpoints_column.grid_info()['row']), 0)
         self.assertEqual(int(app.dashboard_checkpoints_column.grid_info()['column']), 1)
-        self.assertTrue(app.checkpoints_box.winfo_exists())
+        self.assertFalse(hasattr(app, "checkpoints_box"))
 
     def test_combined_selector_labels_full_and_legacy_position_without_misrepresentation(self):
         from tests.test_checkpoint import TestCheckpoint
@@ -146,7 +146,7 @@ class DashboardSmokeTests(unittest.TestCase):
         app = self.toolkit
         self.assertTrue(app.native_save_btn.winfo_exists())
         self.assertTrue(app.native_load_btn.winfo_exists())
-        self.assertEqual(app.legacy_checkpoint_card.winfo_manager(), '')
+        self.assertFalse(hasattr(app, 'legacy_checkpoint_card'))
         self.assertEqual(app.savestate_slot_box.get(), '0')
 
     def test_native_savestate_sends_emulator_command(self):

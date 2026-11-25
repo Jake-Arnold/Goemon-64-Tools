@@ -252,7 +252,7 @@ class EntranceUITests(unittest.TestCase):
     def test_scene_request_blocks_overlapping_checkpoint_restore(self):
         from practice.checkpoints import capture_checkpoint
         checkpoint=capture_checkpoint(self.app.mem,'Before reload')
-        self.app.checkpoints=[checkpoint];self.app.checkpoints_box['values']=['Before reload'];self.app.checkpoints_box.current(0)
+        self.app.checkpoints=[checkpoint];self.app.logical_checkpoint_selection=0
         with patch('practice.ui_extension.messagebox.askyesno',side_effect=AssertionError('No confirmation expected')):self.app.try_reload_warp()
         # An unexpected failure to stage the USA warp must fail fast rather
         # than display a hidden Tk modal under Xvfb and hang the whole suite.
