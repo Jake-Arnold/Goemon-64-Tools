@@ -19,8 +19,9 @@ from practice.experimental_controls import stage_reload_trial
 from practice.entrance_ui import EntranceMixin
 from practice.scene_placement import SpawnPlacement
 from practice.paths import practice_data_dir, diagnostics_dir
-from practice.custom_watches import (CustomWatch, FORMATS, make_watch, append_watch,
-                                     load_watches, save_watches, read_watch)
+from practice.custom_watches import (FORMATS, load_watches, read_watch,
+                                     regional_watches, add_regional_watch,
+                                     remove_regional_watch, rename_regional_watch)
 from practice.watch_names import load_watch_names, save_watch_names, validate_watch_label
 from practice.theme import PALETTE
 from practice.native_character import press_native_debug_accept, ready_for_scene_spawn
@@ -288,6 +289,7 @@ class InspectorMixin(EntranceMixin, AddressCatalogueUI):
                     self.user_watch_address.get(),
                     self.user_watch_type.get(),
                     label=self.user_watch_name.get()):
+                self.last_inspect_at=0.0
                 self.refresh_inspector({})
                 self.inspector_status.set(
                     'Japan-only typed custom watch saved; read-only.')
@@ -295,11 +297,9 @@ class InspectorMixin(EntranceMixin, AddressCatalogueUI):
                 self.inspector_status.set(self.jp_custom_watch_status.get())
             return
         try:
-            spec=make_watch(self.user_watch_name.get(),self.user_watch_address.get(),
-                            self.user_watch_type.get())
-            updated=append_watch(self.custom_watches,spec)
-            save_watches(CUSTOM_WATCHES_PATH,updated)
-            self.custom_watches=updated
+            spec=add_regional_watch(self, 'usa', self.user_watch_name.get(),
+                                    self.user_watch_address.get(), self.user_watch_type.get(),
+                                    usa_path=CUSTOM_WATCHES_PATH)
             self.inspector_status.set(f'Added {spec.row_name} at 0x{spec.address:08X} ({spec.kind}).')
             self.filter_text.set('')
             if self.mem:
@@ -327,6 +327,8 @@ class InspectorMixin(EntranceMixin, AddressCatalogueUI):
             if not self.remove_japan_custom_watch(found.name):
                 self.inspector_status.set(self.jp_custom_watch_status.get())
                 return
+            self.watch_previous.pop(found.row_name,None)
+            self.last_inspect_at=0.0
             self.refresh_inspector({})
             self.inspector_status.set(f'Removed Japan-only watch: {found.name}')
             return
@@ -336,13 +338,11 @@ class InspectorMixin(EntranceMixin, AddressCatalogueUI):
         if selected is None:
             self.inspector_status.set('Select a Custom: row before removing it.')
             return
-        updated=[spec for spec in self.custom_watches if spec.row_name!=selected]
         try:
-            save_watches(CUSTOM_WATCHES_PATH,updated)
-        except OSError as exc:
+            remove_regional_watch(self, 'usa', selected, usa_path=CUSTOM_WATCHES_PATH)
+        except (OSError, ValueError) as exc:
             self.inspector_status.set(f'Remove watch failed: {exc}')
             return
-        self.custom_watches=updated
         self.watch_rows=[w for w in self.watch_rows if w.name != selected]
         self.watch_previous.pop(selected,None)
         if self.mem:
@@ -412,7 +412,8 @@ class InspectorMixin(EntranceMixin, AddressCatalogueUI):
         if watch is None:
             self.inspector_status.set('This Live Memory field is no longer available.')
             return
-        spec=next((s for s in self.custom_watches if s.row_name==row_id),None)
+        region=self.active_version.key
+        spec=next((s for s in regional_watches(self, region) if s.row_name==row_id),None)
         previous=self.display_watch_name(row_id)
         proposed=simpledialog.askstring(
             'Rename Live Memory field',
@@ -422,14 +423,14 @@ class InspectorMixin(EntranceMixin, AddressCatalogueUI):
         if proposed is None:
             return
         try:
+            if self.active_version.key != region:
+                raise ValueError('Game region changed; retry the rename')
             if spec is not None:
-                renamed=make_watch(proposed,spec.address,spec.kind)
+                renamed=rename_regional_watch(self, region, row_id, proposed,
+                                              usa_path=CUSTOM_WATCHES_PATH)
                 new_id=renamed.row_name
                 if new_id==row_id:
                     return
-                changed=[renamed if s.row_name==row_id else s for s in self.custom_watches]
-                save_watches(CUSTOM_WATCHES_PATH,changed)
-                self.custom_watches=changed
                 self.watch_rows=[replace(w,name=new_id) if w.name==row_id else w for w in self.watch_rows]
                 if row_id in self.watch_previous:
                     self.watch_previous[new_id]=self.watch_previous.pop(row_id)

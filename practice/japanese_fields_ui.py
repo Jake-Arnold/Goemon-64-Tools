@@ -11,8 +11,8 @@ from practice.japanese_scene_probes import (
     read_japan_scene_probes, compare_guest_readings,
 )
 from practice.scenes import SCENES
-from practice.custom_watches import (make_watch,
-    append_watch, load_watches, save_watches, read_watch)
+from practice.custom_watches import (add_regional_watch, remove_regional_watch,
+    load_watches, read_watch)
 from practice.paths import practice_data_dir
 from practice.japanese_position import (
     JAPAN_OEDO_SOUTH_ENTRANCE, read_japan_position,
@@ -109,15 +109,10 @@ class JapaneseFieldsUi:
             self.jp_custom_watch_status.set('Japanese watch editing requires Japan mode.')
             return False
         try:
-            watch = make_watch(name, address, kind)
-            updated = append_watch(self.jp_custom_watches, watch)
-            save_watches(self.jp_watch_path, updated)
+            watch = add_regional_watch(self, 'japan', name, address, kind)
         except (OSError, ValueError, TypeError) as exc:
             self.jp_custom_watch_status.set(f'Cannot add Japanese watch: {exc}')
             return False
-        self.jp_custom_watches = updated
-        self._jp_reset_comparison()
-        self.refresh_japan_fields(force=True)
         self.jp_custom_watch_status.set(
             f'Added read-only Japanese candidate: {watch.name} '
             f'(0x{watch.address:08X}, {watch.kind}).')
@@ -134,15 +129,11 @@ class JapaneseFieldsUi:
         if watch is None:
             self.jp_custom_watch_status.set('Only custom Japanese watches can be removed.')
             return False
-        updated = [w for w in self.jp_custom_watches if w != watch]
         try:
-            save_watches(self.jp_watch_path, updated)
+            remove_regional_watch(self, 'japan', watch.row_name)
         except (OSError, ValueError) as exc:
             self.jp_custom_watch_status.set(f'Cannot remove Japanese watch: {exc}')
             return False
-        self.jp_custom_watches = updated
-        self._jp_reset_comparison()
-        self.refresh_japan_fields(force=True)
         self.jp_custom_watch_status.set(f'Removed Japanese watch: {watch.name}')
         return True
 

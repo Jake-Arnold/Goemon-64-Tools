@@ -31,6 +31,7 @@ esac
 
 "${PYTHON}" -m unittest \
   tests.test_memory_backends \
+  tests.test_custom_watches \
   tests.test_linux_process \
   tests.test_japanese_fields \
   tests.test_japanese_scene_probes \
@@ -141,6 +142,7 @@ if command -v xvfb-run >/dev/null 2>&1; then
     tests.test_value_freezes_ui \
     tests.test_story_progress_ui \
     tests.test_dashboard \
+    tests.test_custom_watches_ui \
     tests.test_checkpoint_cross_area_ui \
     tests.test_practice_defaults \
     tests.test_live_speed_ui \
@@ -180,6 +182,7 @@ elif [[ -n "${DISPLAY:-}" ]]; then
     tests.test_value_freezes_ui \
     tests.test_story_progress_ui \
     tests.test_dashboard \
+    tests.test_custom_watches_ui \
     tests.test_checkpoint_cross_area_ui \
     tests.test_practice_defaults \
     tests.test_live_speed_ui \

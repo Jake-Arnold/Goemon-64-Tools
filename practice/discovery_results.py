@@ -16,7 +16,7 @@ import tkinter as tk
 from tkinter import ttk
 
 from practice.custom_watches import (
-    FORMATS, append_watch, make_watch, save_watches,
+    FORMATS, append_watch, make_watch, regional_watches, save_regional_watches,
 )
 from practice.value_search import GUEST_BASE
 
@@ -158,7 +158,7 @@ def add_research_watches(owner, candidates, *, label):
                 owner.add_custom_watch()
         return len(specs), 0
 
-    next_watches = list(existing)
+    next_watches = list(regional_watches(owner, region))
     added = []
     duplicates = 0
     for spec in specs:
@@ -170,16 +170,9 @@ def add_research_watches(owner, candidates, *, label):
         added.append(spec)
     if not added:
         return 0, duplicates
-    if region == "japan":
-        path = owner.jp_watch_path
-    else:
-        from practice.ui_extension import CUSTOM_WATCHES_PATH
-        path = CUSTOM_WATCHES_PATH
-    save_watches(path, next_watches)
-    setattr(owner, attr, next_watches)
-    if region == "japan":
-        owner._jp_reset_comparison()
-        owner.refresh_japan_fields(force=True)
+    from practice.ui_extension import CUSTOM_WATCHES_PATH
+    save_regional_watches(owner, region, next_watches,
+                          usa_path=CUSTOM_WATCHES_PATH)
     if hasattr(owner, "refresh_inspector"):
         owner.last_inspect_at = 0.0
         owner.refresh_inspector(
