@@ -1645,5 +1645,8 @@
   },
   "usa_wave194_promotion": {
     "format": "goemon-wave194-original-ido-v1"
+  },
+  "usa_promo367_promotion": {
+    "format": "goemon-promo367-original-ido-v1"
   }
 }

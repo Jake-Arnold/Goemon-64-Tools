@@ -1,0 +1,18 @@
+#include "m2c_types.h"
+extern char func_80024038_24C38;
+extern char func_8003521C_35E1C;
+extern M2C_UNK func_0800868C_6BB92C;
+
+void func_08008624_6BB8C4(void *arg0, M2C_UNK arg1) {
+volatile unsigned int goemon_negative_control = 1;
+
+    s32 temp_v0;
+
+    temp_v0 = M2C_FIELD(arg0, u16 *, 0x8A);
+    M2C_FIELD(arg0, u16 *, 0x8A) = (u16) (temp_v0 - 1);
+    if (temp_v0 == 0) {
+        ((M2C_UNK(*)())&func_80024038_24C38)(0x12F, arg0);
+        M2C_FIELD(arg0, u16 *, 0x8A) = 0x78U;
+        ((M2C_UNK(*)())&func_8003521C_35E1C)(&func_0800868C_6BB92C, arg0);
+    }
+}
