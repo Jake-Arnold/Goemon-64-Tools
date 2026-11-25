@@ -48,7 +48,7 @@ class PJ64FrameUiMixin:
         if getattr(self.args,'read_only',False):
             for b in self.frame_controls:b.state(['disabled'])
             self.frame_status.set('Frame control disabled in read-only mode.')
-        page.after(100,self._frame_drain)
+        self.root.after(100,self._frame_drain)
 
     def _frame_export(self):
         if getattr(self.args,'read_only',False): return

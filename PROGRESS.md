@@ -1,3 +1,7 @@
+## 25 November 2026 - PR #235 frame timer lifecycle regression fix (v0.11.85)
+
+- Full regression on first refreshed head `78f98da6e4e61cf7858399672bdc2057a38abdfa` exposed root/child Tk callback ownership mismatch: initial frame drain was scheduled on a child page, but existing shutdown cancels callbacks through the root. This caused 32 GUI teardown errors and four downstream failures. Schedule initial drain on the root, matching subsequent drains; add explicit root-cancel/destroy regression. All 85 affected GUI/controller tests pass after fix. First full synthetic run 578 passed, 10 skipped; Windows packaging/report and branch routing passed, both first-head hosted Linux jobs failed. New head must rerun all checks before merge. No native timing verification.
+
 ## 25 November 2026 - refresh experimental Project64 frame control PR #235 (v0.11.85)
 
 - Reconcile PR #235 with current stable/toolkit after metadata PR #215; preserve its six original added files byte-for-byte. Integrate the experimental Debugger frame-control page, token-authenticated localhost companion and bounded P1 controller-poll or manually selected execution-hook intervals. Controller polls are not confirmed logic frames; no verified update PC, native timing proof, new guest address or ROM patch. Preserve read-only mode and all existing toolkit safeguards.

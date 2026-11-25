@@ -116,6 +116,9 @@ class DebuggerUiSmokeTests(unittest.TestCase):
                 app._frame_request('pause'); app._frame_export()
                 request.assert_not_called(); dialog.assert_not_called()
             self.assertIn('read-only', app.frame_status.get())
+            # Existing shutdown cancels root-owned callbacks before destroying widgets.
+            for callback in root.tk.call('after', 'info'):
+                root.after_cancel(callback)
         finally: root.destroy()
 
     def test_tab_uses_existing_rdram_and_clears_stale_session(self):
