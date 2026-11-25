@@ -26,6 +26,8 @@ The historical metadata-sync branches are superseded by this consolidated update
 
 ## Run the practice toolkit from `stable/toolkit` (Windows and Linux)
 
+The matching-C snapshot formerly under `decomp/` is archived at [the last toolkit commit containing it](https://github.com/Jake-Arnold/Goemon-64-Tools/blob/dae81a70fc6e4adf22f76846d202253d3f201b2d/decomp/README.md). For current decompilation use [stable/decomp](https://github.com/Jake-Arnold/Goemon-64-Tools/blob/stable/decomp/decomp/README.md). Retained read-only Plasma and pickup research lives in `research/rom/`.
+
 **Use the `stable/toolkit` branch for the runnable practice toolkit.** The
 `stable/decomp` branch is a separate matching-C development workspace;
 its launcher and toolkit files may be older than the live `stable/toolkit` release. These
@@ -769,7 +771,7 @@ All tests use simulated RAM and headless Tk; original-game behaviour remains to 
 
 **Refresh Address Catalogue** retrieves the full canonical registry JSON from the official repository via a bounded, schema-validated read-only worker, caches it offline with timestamp/upstream revision, and overlays descriptive updates. Remote records cannot change any built-in writer's target, permissions or bit mask. The running toolkit can discover newly imported descriptions without a Python software update.
 
-New discoveries are recorded in [practice/data/address_discoveries_v1.json](practice/data/address_discoveries_v1.json), or in the separate decomp [`decomp/address_discoveries_v1.json`](decomp/address_discoveries_v1.json) research branch. [Reproducible sync and schema documentation](docs/ADDRESS_CATALOGUE_WORKFLOW.md) explains how the scheduled GitHub workflow opens **metadata-only** import PRs rather than merging decomp code. Run `python3 -m scripts.sync_address_catalogue --check` to fail CI when sources/manifests are not reconciled.
+New discoveries are recorded in [practice/data/address_discoveries_v1.json](practice/data/address_discoveries_v1.json), or in the separate decomp [`decomp/address_discoveries_v1.json`](https://github.com/Jake-Arnold/Goemon-64-Tools/blob/stable/decomp/decomp/address_discoveries_v1.json) research branch. [Reproducible sync and schema documentation](docs/ADDRESS_CATALOGUE_WORKFLOW.md) explains how the scheduled GitHub workflow opens **metadata-only** import PRs rather than merging decomp code. Run `python3 -m scripts.sync_address_catalogue --check` to fail CI when sources/manifests are not reconciled.
 
 This is registry, synthetic memory and Tk testing. New candidates are not automatically promoted to gameplay-verified fields; code VMAs and dynamic pointer targets are never casually dereferenced or written.
 
@@ -1322,17 +1324,17 @@ a rebuild to include the new panel.
 
 # Matching C reconstruction
 
-The [decompilation track](decomp/README.md) now includes **74 matching functions / 5,564 function bytes**
+The [decompilation track](https://github.com/Jake-Arnold/Goemon-64-Tools/blob/dae81a70fc6e4adf22f76846d202253d3f201b2d/decomp/README.md) now includes **74 matching functions / 5,564 function bytes**
 across flag-bank, system/byte-memory, save/resource and VM helper, assignment, resource and control routines.
 The VM unit intentionally retains 20 unresolved functions as assembly; its host
 comparator model is not counted as matching C. Most of the game remains unreconstructed.
 Fresh baseline and C-replacement builds both match the complete
 original decompressed US ROM byte-for-byte. Reproducible verification, synthetic
 C tests and per-function result metadata are included; game data stays local.
-The [whole-build inventory](decomp/INVENTORY.md) identifies 7,376 function entries:
+The [whole-build inventory](https://github.com/Jake-Arnold/Goemon-64-Tools/blob/dae81a70fc6e4adf22f76846d202253d3f201b2d/decomp/INVENTORY.md) identifies 7,376 function entries:
 87 matching C entries including 13 already upstream, and 7,289 still in assembly.
 The count includes SDK/runtime code and is not proof of complete function discovery.
-The [batch pipeline](decomp/BATCH_PIPELINE.md) now automates draft generation,
+The [batch pipeline](https://github.com/Jake-Arnold/Goemon-64-Tools/blob/dae81a70fc6e4adf22f76846d202253d3f201b2d/decomp/BATCH_PIPELINE.md) now automates draft generation,
 parallel byte probes and bounded search, with cached baseline verification for
 reviewed batches. Probe candidates are excluded from the verified count.
 This remains a partial decompilation, not a new release.

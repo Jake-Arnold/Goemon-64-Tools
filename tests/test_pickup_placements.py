@@ -1,6 +1,6 @@
 import struct
 import unittest
-from decomp.pickup_placements import room_pickups,extract
+from research.rom.pickup_placements import room_pickups,extract
 from practice.story_progress import FLAGS,PLACEMENT_PICKUPS
 
 
@@ -67,7 +67,7 @@ class PickupPlacementTests(unittest.TestCase):
         from pathlib import Path
         from collections import Counter
         from practice.story_progress import DOLL_PLACEMENT_FLAGS
-        report=json.loads((Path(__file__).resolve().parents[1]/'decomp/results/fortune_doll_placements.json').read_text())
+        report=json.loads((Path(__file__).resolve().parents[1]/'research/rom/results/fortune_doll_placements.json').read_text())
         rows=report['pickups'];counts=Counter(r['flag_id'] for r in rows)
         self.assertEqual(len(rows),44);self.assertEqual(len(counts),43)
         self.assertEqual(sum(r['actor_id']==0x88 for r in rows),39)
@@ -83,7 +83,7 @@ class PickupPlacementTests(unittest.TestCase):
     def test_complete_doll_flag_catalog_distinguishes_native_rewards(self):
         import json
         from pathlib import Path
-        r=json.loads((Path(__file__).resolve().parents[1]/'decomp/results/fortune_doll_catalog.json').read_text())
+        r=json.loads((Path(__file__).resolve().parents[1]/'research/rom/results/fortune_doll_catalog.json').read_text())
         entries=r['entries'];flags={x['flag_id'] for x in entries}
         self.assertEqual(len(entries),45);self.assertEqual(len(flags),45)
         self.assertEqual(flags,set(range(0xCA,0xF7)))

@@ -8,7 +8,7 @@ Project: Goemon 64 speedrunning/practice toolkit (Windows Python and portable C 
 **Decomp base / PR target: `stable/decomp`; only `decomp/<topic>` feature branches.**
 `main` and `chatgptweb/decomp` are legacy refs and are **not** new work destinations. Git forbids simultaneously using a bare `toolkit` with `toolkit/*`, or a bare `decomp` with `decomp/*`. Never infer the workstream from GitHub's default branch, an old ZIP, a dated report or a prior chat.
 
-Read [BRANCHES.md](BRANCHES.md) first, classify the work, fetch the live target and inspect open PRs, check the branch/HEAD, then use a correctly named topic PR. Preserve legacy PR/research, never force-push, never merge toolkit/decomp histories wholesale, and require the appropriate tests plus `PROGRESS.md` in the change commit. If an older paragraph below contradicts this section, this section controls. Decomp files in this toolkit checkout are historical snapshots; switch to `stable/decomp` before reading its `decomp/CONTINUE.md`, manifest or accepting native proof.
+Read [BRANCHES.md](BRANCHES.md) first, classify the work, fetch the live target and inspect open PRs, check the branch/HEAD, then use a correctly named topic PR. Preserve legacy PR/research, never force-push, never merge toolkit/decomp histories wholesale, and require the appropriate tests plus `PROGRESS.md` in the change commit. If an older paragraph below contradicts this section, this section controls. The historical matching-C snapshot has been removed from the toolkit checkout. Use `stable/decomp` for native proof; `research/rom/` contains only retained toolkit research utilities and evidence.
 
 1. For **every change**, update root `PROGRESS.md` with date, summary, reason, tests, limitations and next step. Include `PROGRESS.md` in the same Git commit as implementation changes.
 2. Push each completed commit to the connected GitHub repository `Jake-Arnold/Goemon-64-Tools`; check the remote commit SHA and report truthfully. If credentials/network/repository access are unavailable, provide the local commit or patch and explicitly say that the push did not occur. Do not simulate a push.
@@ -97,7 +97,7 @@ For Project sessions with shell DNS failures, use the **Goemon source archive** 
 
 ## Decomp continuation
 
-For native matching-C work, start with [decomp/CONTINUE.md](decomp/CONTINUE.md).
+For native matching-C work, start with [decomp/CONTINUE.md](https://github.com/Jake-Arnold/Goemon-64-Tools/blob/stable/decomp/decomp/CONTINUE.md).
 It is the operational runbook; older checkpoints and result reports retain
 historical evidence and must not be treated as current instructions/counts.
 

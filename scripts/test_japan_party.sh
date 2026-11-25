@@ -59,6 +59,7 @@ esac
   tests.test_region_views \
   tests.test_story_progress \
   tests.test_plasma_conditions \
+  tests.test_pickup_placements \
   tests.test_japan_story_progress \
   tests.test_native_checkpoints \
   tests.test_region_unlocks \

@@ -1,3 +1,8 @@
+## 25 November 2026 - remove historical matching-C snapshot from toolkit (v0.11.81)
+
+- Remove the obsolete 111-file `decomp/` snapshot from the active toolkit: archive 103 snapshot files and seven historical matching-C tests in Git history at `dae81a70fc6e4adf22f76846d202253d3f201b2d`; relocate eight retained files (three ROM research analyzers and five unchanged metadata reports) to `research/rom/`. Preserve all Plasma/pickup regression assertions, update imports, run both research suites in the Linux and Windows regression runners, and route active documentation to the correct stable branch or pinned historical evidence. No cross-branch source transfer, runtime changes, registry changes or version bump.
+- Authenticated source archive 15005107993, checksum and exact base tree `8adc61fd1286caf7f8007b0ac23087c18ae3984d` verified. Local focused Plasma, pickup, story progress, address registry and metadata sync suite: 60 passed; address catalogue check: 620 fields, 442 readable, zero conflicts; whitespace check passed. Full Linux/Windows hosted regressions required before merge. No native/gameplay testing performed; matching-C proof belongs to the unchanged decomp branch.
+
 ## 25 November 2026 - retire standalone recomp speed subsystem (v0.11.81)
 
 - Remove the 13-file `speed/` directory, unused `practice/live_speed_ui.py` and six standalone speed/runtime tests from the active toolkit. Preserve the full original experiment at Git commit `a9054c7211728f84173d0fc0e8bcd54d606b6f07` and retain the historical research report with an explicit retirement notice. Update README and Linux setup instructions. Retain original player velocity/movement features, all process-memory and game-state code, and the separate decomp branch unchanged.
