@@ -63,7 +63,7 @@ finishes. That health helper subtracts four quarters when progress is at least
 four, increases max health by two native units, and fills current health.
 It processes one upgrade per invocation, retaining any extra quarters.
 
-[Full reward/individual-flag follow-up](../decomp/DOLL_REWARD_TRACE.md) records
+[Full reward/individual-flag follow-up](https://github.com/Jake-Arnold/Goemon-64-Tools/blob/dae81a70fc6e4adf22f76846d202253d3f201b2d/decomp/DOLL_REWARD_TRACE.md) records
 script positions, the callback correction, static placement coverage and the
 special reward leads. Existing health-upgrade code is not counted as a new C
 function; the newly reconstructed event-start routine passes the full-ROM gate.

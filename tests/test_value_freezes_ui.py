@@ -24,6 +24,23 @@ class ValueFreezeUITests(unittest.TestCase):
         self._start_patch.stop()
         self.root.destroy()
 
+    def test_manual_and_watch_freeze_share_registration_and_status(self):
+        app = self.app
+        app.raw_address.set('8015C63B'); app.raw_width.set('1'); app.raw_value.set('10')
+        app.watch_rows = [Watch('Ryo', 0x8015C5E8, '100', '0x00000064', 'OK', 'Fixture')]
+        with patch.object(app, '_register_raw_freeze', wraps=app._register_raw_freeze) as register:
+            app.freeze_raw_value()
+            app.freeze_watch_by_id('Ryo')
+        self.assertEqual(register.call_count, 2)
+        self.assertEqual(app.freeze_status.get(), app.inspector_status.get())
+        self.assertEqual(len(app.freeze_tree.get_children()), 2)
+        app.toggle_live_watch_freeze('Ryo')
+        self.assertEqual(app.freeze_status.get(), app.inspector_status.get())
+        self.assertEqual(len(app.freeze_tree.get_children()), 1)
+        app.stop_all_freezes()
+        self.assertFalse(app.value_freezes.active())
+        self.assertFalse(app.freeze_tree.get_children())
+
     def test_ui_poll_does_not_perform_game_writes(self):
         app=self.app
         app.raw_address.set('8015C63B');app.raw_width.set('1');app.raw_value.set('10')
@@ -91,7 +108,7 @@ class ValueFreezeUITests(unittest.TestCase):
 
 
     def test_enemy_pass_through_toggle_tracks_relative_target(self):
-        from autosplitter.memory import PLAYER_TASK_PTR_ADDR
+        from practice.backends.memory import PLAYER_TASK_PTR_ADDR
         app=self.app
         address=app.mem.u32(PLAYER_TASK_PTR_ADDR)+0x30
         app.enemy_pass_through.set(True)

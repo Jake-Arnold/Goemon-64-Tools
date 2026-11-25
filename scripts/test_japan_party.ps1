@@ -37,6 +37,9 @@ function Invoke-PythonTest {
 }
 
 $backendTests = @(
+    'tests.test_memory_backends',
+    'tests.test_custom_watches',
+    'tests.test_linux_process',
     'tests.test_japanese_fields',
     'tests.test_japanese_scene_probes',
     'tests.test_japanese_party_unlock',
@@ -59,12 +62,16 @@ $backendTests = @(
     'tests.test_region_views',
     'tests.test_story_progress',
     'tests.test_plasma_conditions',
+    'tests.test_pickup_placements',
     'tests.test_japan_story_progress',
     'tests.test_native_checkpoints',
     'tests.test_region_unlocks',
     'tests.test_rom_layout_audit',
     'tests.test_rom_context_audit',
     'tests.test_japan_live_memory_edit',
+    'tests.test_hex_edit',
+    'tests.test_shared_polling_performance',
+    'tests.test_inspector',
     'tests.test_japan_value_freezes',
     'tests.test_value_freezes',
     'tests.test_japan_event_sessions',
@@ -100,6 +107,10 @@ $guiTests = @(
     'tests.test_value_freezes_ui',
     'tests.test_story_progress_ui',
     'tests.test_dashboard',
+    'tests.test_custom_watches_ui',
+    'tests.test_checkpoint_cross_area_ui',
+    'tests.test_practice_defaults',
+    'tests.test_live_speed_ui',
     'tests.test_entrance_ui',
     'tests.test_japan_recomp_write_ui'
 )

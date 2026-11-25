@@ -8,9 +8,9 @@ from dataclasses import replace
 from pathlib import Path
 import tkinter as tk
 from tkinter import ttk, messagebox, simpledialog
-from practice.inspector import get_watches, checkpoint_differences, Watch
+from practice.inspector import get_watches, Watch
 from practice.address_catalogue_ui import AddressCatalogueUI
-from practice.hex_edit import get_policy, parse_hex, checked_write
+from practice.hex_edit import watch_scalar_width, parse_hex, checked_write
 from practice.scenes import SCENES, scene_label, unidentified_scene_name
 from practice.region_session import active_session
 from practice.scene_controls import open_native_debug_menu, open_native_debug_for_scene, native_debug_selection, request_scene_warp, assess_direct_warp
@@ -19,8 +19,9 @@ from practice.experimental_controls import stage_reload_trial
 from practice.entrance_ui import EntranceMixin
 from practice.scene_placement import SpawnPlacement
 from practice.paths import practice_data_dir, diagnostics_dir
-from practice.custom_watches import (CustomWatch, FORMATS, make_watch, append_watch,
-                                     load_watches, save_watches, read_watch)
+from practice.custom_watches import (FORMATS, load_watches, read_watch,
+                                     regional_watches, add_regional_watch,
+                                     remove_regional_watch, rename_regional_watch)
 from practice.watch_names import load_watch_names, save_watch_names, validate_watch_label
 from practice.theme import PALETTE
 from practice.native_character import press_native_debug_accept, ready_for_scene_spawn
@@ -77,14 +78,11 @@ class InspectorMixin(EntranceMixin, AddressCatalogueUI):
         self.warp_monitor=None
         self.warp_monitor_after=None
         self.debug_shortcut_confirmed=False
-        self.diff_previous_key=None
         self.log_events=[]
         self.log_changes=tk.BooleanVar(value=False)
         self.last_inspect_at=0.0
-        self.last_compare_at=0.0
         self.inspector_status=tk.StringVar(value='Connect to begin inspecting memory. Raw addresses refer to US N64 guest RAM.')
         self.scene_status=tk.StringVar(value='Double-click an area to request an experimental entrance reload. Requires a connected game, a resolved ROM entrance and write access.')
-        self.compare_status=tk.StringVar(value='Capture or select a logical checkpoint to compare.')
 
         inspector=ttk.Frame(notebook,padding=8)
         notebook.add(inspector,text='Live memory')
@@ -276,18 +274,13 @@ class InspectorMixin(EntranceMixin, AddressCatalogueUI):
         # The selection, listbox, filter and entrance row are retained.
         # ROM-switch disconnection invalidates active reads independently.
 
-    def refresh_checkpoint_options(self):
-        if not hasattr(self,'diff_cp'):return
-        labels=self.checkpoint_labels()
-        self.diff_cp['values']=labels
-        if labels and self.diff_cp.current()<0:self.diff_cp.current(len(labels)-1)
-
     def add_custom_watch(self):
         if self.active_version.key == 'japan':
             if self.add_japan_custom_watch_from_search(
                     self.user_watch_address.get(),
                     self.user_watch_type.get(),
                     label=self.user_watch_name.get()):
+                self.last_inspect_at=0.0
                 self.refresh_inspector({})
                 self.inspector_status.set(
                     'Japan-only typed custom watch saved; read-only.')
@@ -295,11 +288,9 @@ class InspectorMixin(EntranceMixin, AddressCatalogueUI):
                 self.inspector_status.set(self.jp_custom_watch_status.get())
             return
         try:
-            spec=make_watch(self.user_watch_name.get(),self.user_watch_address.get(),
-                            self.user_watch_type.get())
-            updated=append_watch(self.custom_watches,spec)
-            save_watches(CUSTOM_WATCHES_PATH,updated)
-            self.custom_watches=updated
+            spec=add_regional_watch(self, 'usa', self.user_watch_name.get(),
+                                    self.user_watch_address.get(), self.user_watch_type.get(),
+                                    usa_path=CUSTOM_WATCHES_PATH)
             self.inspector_status.set(f'Added {spec.row_name} at 0x{spec.address:08X} ({spec.kind}).')
             self.filter_text.set('')
             if self.mem:
@@ -324,17 +315,11 @@ class InspectorMixin(EntranceMixin, AddressCatalogueUI):
             if found is None:
                 self.inspector_status.set('Select a Japanese custom watch first.')
                 return
-            updated = [item for item in self.jp_custom_watches if item != found]
-            try:
-                save_watches(self.jp_watch_path, updated)
-            except (OSError, ValueError) as exc:
-                self.inspector_status.set(f'Japan watch removal failed: {exc}')
+            if not self.remove_japan_custom_watch(found.name):
+                self.inspector_status.set(self.jp_custom_watch_status.get())
                 return
-            self.jp_custom_watches = updated
-            if self.jp_fields_tree.exists(self._jp_custom_iid(found)):
-                self.jp_fields_tree.delete(self._jp_custom_iid(found))
-            self._jp_reset_comparison()
-            self.refresh_japan_fields(force=True)
+            self.watch_previous.pop(found.row_name,None)
+            self.last_inspect_at=0.0
             self.refresh_inspector({})
             self.inspector_status.set(f'Removed Japan-only watch: {found.name}')
             return
@@ -344,13 +329,11 @@ class InspectorMixin(EntranceMixin, AddressCatalogueUI):
         if selected is None:
             self.inspector_status.set('Select a Custom: row before removing it.')
             return
-        updated=[spec for spec in self.custom_watches if spec.row_name!=selected]
         try:
-            save_watches(CUSTOM_WATCHES_PATH,updated)
-        except OSError as exc:
+            remove_regional_watch(self, 'usa', selected, usa_path=CUSTOM_WATCHES_PATH)
+        except (OSError, ValueError) as exc:
             self.inspector_status.set(f'Remove watch failed: {exc}')
             return
-        self.custom_watches=updated
         self.watch_rows=[w for w in self.watch_rows if w.name != selected]
         self.watch_previous.pop(selected,None)
         if self.mem:
@@ -401,26 +384,14 @@ class InspectorMixin(EntranceMixin, AddressCatalogueUI):
             menu.grab_release()
         return 'break'
 
-    def toggle_live_watch_freeze(self, row_id):
-        watch=next((w for w in self.watch_rows if w.name==row_id),None)
-        if watch is None or watch.addr is None:
-            self.inspector_status.set('No fixed guest address for this field.')
-            return
-        if self.value_freezes.get(watch.addr) is not None:
-            self.value_freezes.remove(watch.addr)
-            self.draw_value_freezes()
-            self.freeze_status.set(f'Unfroze {self.display_watch_name(row_id)}.')
-            self.inspector_status.set(self.freeze_status.get())
-        else:
-            self.freeze_watch_by_id(row_id)
-
     def rename_live_watch(self, row_id):
         """Rename a custom watch definition, or persist a built-in display alias."""
         watch=next((w for w in self.watch_rows if w.name==row_id),None)
         if watch is None:
             self.inspector_status.set('This Live Memory field is no longer available.')
             return
-        spec=next((s for s in self.custom_watches if s.row_name==row_id),None)
+        region=self.active_version.key
+        spec=next((s for s in regional_watches(self, region) if s.row_name==row_id),None)
         previous=self.display_watch_name(row_id)
         proposed=simpledialog.askstring(
             'Rename Live Memory field',
@@ -430,14 +401,14 @@ class InspectorMixin(EntranceMixin, AddressCatalogueUI):
         if proposed is None:
             return
         try:
+            if self.active_version.key != region:
+                raise ValueError('Game region changed; retry the rename')
             if spec is not None:
-                renamed=make_watch(proposed,spec.address,spec.kind)
+                renamed=rename_regional_watch(self, region, row_id, proposed,
+                                              usa_path=CUSTOM_WATCHES_PATH)
                 new_id=renamed.row_name
                 if new_id==row_id:
                     return
-                changed=[renamed if s.row_name==row_id else s for s in self.custom_watches]
-                save_watches(CUSTOM_WATCHES_PATH,changed)
-                self.custom_watches=changed
                 self.watch_rows=[replace(w,name=new_id) if w.name==row_id else w for w in self.watch_rows]
                 if row_id in self.watch_previous:
                     self.watch_previous[new_id]=self.watch_previous.pop(row_id)
@@ -519,20 +490,11 @@ class InspectorMixin(EntranceMixin, AddressCatalogueUI):
             self.inspector_status.set('This row has no fixed guest RAM address.')
             return
         try:
-            policy = None if japan else get_policy(watch.addr)
-            definitions = self.jp_custom_watches if japan else self.custom_watches
-            spec = next((v for v in definitions if v.row_name == watch.name), None)
-            raw_text = watch.raw.removeprefix('0x').removeprefix('0X').strip()
-            if spec is not None:
-                width = spec.width
-            elif policy is not None:
-                width = policy.width
-            elif (len(raw_text) in (2, 4, 8, 16)
-                  and all(ch in '0123456789abcdefABCDEF' for ch in raw_text)):
-                width = len(raw_text) // 2
-            else:
-                raise ValueError(
-                    'No usable hex width for this watch; edit a typed custom watch.')
+            region = self.active_version.key
+            try:
+                width = watch_scalar_width(watch, regional_watches(self, region), region=region)
+            except ValueError as exc:
+                raise ValueError('No usable hex width for this watch; edit a typed custom watch.') from exc
             original = ram.read_guest(watch.addr, width)
             original_hex = '0x' + original.hex().upper()
             text = simpledialog.askstring(
@@ -627,8 +589,8 @@ class InspectorMixin(EntranceMixin, AddressCatalogueUI):
         """Same current-scene label for both ROMs, including Impact/no actor.
 
         Reads the selected native global scene ID, never a player snapshot.
-        Scene Browser owns the cadence when visible; Live Memory can also
-        request an immediate refresh. No guest memory is ever written here.
+        Scene Browser owns the visible polling cadence; lifecycle changes
+        may explicitly invalidate the label. No guest memory is written here.
         """
         now = __import__('time').monotonic()
         if not force and now - getattr(self, '_scene_banner_last_poll', 0) < 0.35:
@@ -652,7 +614,6 @@ class InspectorMixin(EntranceMixin, AddressCatalogueUI):
             if self.jp_rdram is None:
                 self.watch_rows=[]
                 self.draw_watches()
-                self.refresh_scene_banner(force=True)
                 self.inspector_status.set('Connect to Japan-0 RDRAM for shared Live Memory.')
                 return
             import time
@@ -670,7 +631,6 @@ class InspectorMixin(EntranceMixin, AddressCatalogueUI):
                 self.watch_rows=rows
                 self.draw_watches()
                 self.watch_previous={row.name:row.raw for row in rows}
-                self.refresh_scene_banner(force=True)
                 self.inspector_status.set(
                     f'Japan-0: {len(rows)} source-backed/custom fields; '
                     f'{changed} changed; USA-only address policies disabled.')
@@ -684,7 +644,6 @@ class InspectorMixin(EntranceMixin, AddressCatalogueUI):
         self.last_inspect_at=now
         try:
             live_map=active_session(self).read_current_scene()
-            self.refresh_scene_banner(force=True)
             watches=get_watches(self.mem,snapshot,SCENES)
             watches.extend(read_watch(self.mem,spec) for spec in self.custom_watches)
             observed=getattr(self, 'observed_velocity', None)
@@ -712,29 +671,6 @@ class InspectorMixin(EntranceMixin, AddressCatalogueUI):
                 if len(modified)>12:self.append_event(f'{stamp}  ... +{len(modified)-12} changes')
         except (OSError,ValueError) as e:
             self.inspector_status.set(f'Inspector failed: {e}')
-
-    def refresh_checkpoint_diff(self,force=False):
-        if not hasattr(self,'diff_tree'):return
-        import time
-        now=time.monotonic()
-        if not force and now-self.last_compare_at<1.5:return
-        self.last_compare_at=now
-        if not self.mem or not self.checkpoints:return
-        idx=self.diff_cp.current()
-        if idx<0 or idx>=len(self.checkpoints):return
-        try:
-            d=checkpoint_differences(self.mem,self.checkpoints[idx])
-            self.compare_status.set(
-                f'Map: {d["map_live"]} / saved {d["map_saved"]} ({"MATCH" if d["map_matches"] else "DIFFERENT"}); '
-                f'character: {d["character_live"]} / saved {d["character_saved"]} '
-                f'({"MATCH" if d["character_matches"] else "DIFFERENT"}). '
-                f'Changed bytes: live={d["counts"]["live"]}, progression={d["counts"]["gamedata"]}, '
-                f'header={d["counts"]["header"]}; total={d["total"]} (showing {len(d["rows"])}).')
-            self.diff_tree.delete(*self.diff_tree.get_children())
-            for i,(region,n64,off,old,new) in enumerate(d['rows']):
-                self.diff_tree.insert('','end',iid=str(i),text=region,values=(n64,off,old,new))
-        except (OSError,ValueError,TypeError) as e:
-            self.compare_status.set(f'Comparison failed: {e}')
 
     def draw_scene_list(self):
         filt=self.scene_filter.get().lower().strip()

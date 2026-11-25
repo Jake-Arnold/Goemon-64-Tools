@@ -3,7 +3,7 @@ import unittest
 from types import SimpleNamespace
 from unittest.mock import patch
 
-from autosplitter.memory import Rdram
+from practice.backends.memory import Rdram
 from practice.toolkit import Toolkit
 from practice.japanese_debug_warp import (
     JAPAN_DEBUG_ENGINE_MODE, JAPAN_DEBUG_SCENE, JAPAN_DEBUG_CHARACTER,

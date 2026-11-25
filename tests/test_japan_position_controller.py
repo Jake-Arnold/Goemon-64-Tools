@@ -4,7 +4,7 @@ import unittest
 from types import SimpleNamespace
 from unittest.mock import patch
 
-from autosplitter.memory import Rdram
+from practice.backends.memory import Rdram
 from practice.toolkit import Toolkit
 from practice.japanese_position import (
     JAPAN_PLAYER_XYZ_START, JAPAN_SCENE_INDEX, JAPAN_CHARACTER_INDEX,

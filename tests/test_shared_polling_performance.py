@@ -34,27 +34,28 @@ class SharedPollingTests(unittest.TestCase):
             refresh_inspector=Mock(),
             refresh_unlocks=Mock(),
             refresh_story_progress=Mock(),
-            refresh_checkpoint_diff=Mock(),
+            refresh_scene_banner=Mock(),
             refresh_japan_party_controls=Mock(),
             last_inspect_at=1.0)
         return app
 
     def test_hidden_pages_do_not_refresh_in_either_region(self):
         for region in ('usa', 'japan'):
-            with self.subTest(region=region):
-                app = self._app(region, 'other')
-                Toolkit._poll_visible_panels(app)
-                for name in ('refresh_inspector', 'refresh_unlocks',
-                             'refresh_story_progress', 'refresh_checkpoint_diff',
-                             'refresh_japan_party_controls'):
-                    getattr(app, name).assert_not_called()
+            for panel in ('other', 'dashboard', 'catalogue'):
+                with self.subTest(region=region, panel=panel):
+                    app = self._app(region, panel)
+                    Toolkit._poll_visible_panels(app)
+                    for name in ('refresh_inspector', 'refresh_unlocks',
+                                 'refresh_story_progress', 'refresh_scene_banner',
+                                 'refresh_japan_party_controls'):
+                        getattr(app, name).assert_not_called()
 
     def test_each_active_page_refreshes_only_its_own_data(self):
         expected = {
             'watches': 'refresh_inspector',
             'unlocks': 'refresh_unlocks',
             'story': 'refresh_story_progress',
-            'dashboard': 'refresh_checkpoint_diff',
+            'scene': 'refresh_scene_banner',
         }
         for region in ('usa', 'japan'):
             for panel, method in expected.items():
@@ -65,6 +66,10 @@ class SharedPollingTests(unittest.TestCase):
                     for other in expected.values():
                         if other != method:
                             getattr(app, other).assert_not_called()
+                    if region == 'japan' and panel == 'scene':
+                        app.refresh_japan_party_controls.assert_called_once_with()
+                    else:
+                        app.refresh_japan_party_controls.assert_not_called()
 
     def test_force_watches_refresh_invalidates_throttle_only_once(self):
         app = self._app('usa', 'watches')

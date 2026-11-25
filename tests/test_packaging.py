@@ -25,6 +25,12 @@ class TestWindowsPackaging(unittest.TestCase):
         self.assertEqual(paths.practice_data_dir(), ROOT / 'practice')
         self.assertEqual(paths.resource_root(), ROOT)
 
+    def test_process_backends_are_in_the_practice_package(self):
+        from practice.backends import linux_process, memory, process_discovery
+        for module in (linux_process, memory, process_discovery):
+            self.assertEqual(Path(module.__file__).parent, ROOT / 'practice' / 'backends')
+        self.assertFalse((ROOT / 'autosplitter').exists())
+
     def test_packaged_paths_use_user_folder_and_temp_resources(self):
         import sys
         with tempfile.TemporaryDirectory() as root:

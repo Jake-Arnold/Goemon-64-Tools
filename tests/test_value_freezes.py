@@ -67,7 +67,7 @@ class ValueFreezeTests(unittest.TestCase):
 
     def test_enemy_pass_through_follows_live_player_task(self):
         from practice.value_freezes import ENEMY_PASS_THROUGH_OFFSET
-        from autosplitter.memory import PLAYER_TASK_PTR_ADDR
+        from practice.backends.memory import PLAYER_TASK_PTR_ADDR
         first = self.ram.u32(PLAYER_TASK_PTR_ADDR)
         self.assertTrue(self.ram.is_ram_pointer(first + ENEMY_PASS_THROUGH_OFFSET))
         self.freezes.enable_enemy_pass_through(self.token)
@@ -91,7 +91,7 @@ class ValueFreezeTests(unittest.TestCase):
 
     def test_enemy_pass_through_pause_and_session_loss(self):
         from practice.value_freezes import ENEMY_PASS_THROUGH_OFFSET
-        from autosplitter.memory import PLAYER_TASK_PTR_ADDR
+        from practice.backends.memory import PLAYER_TASK_PTR_ADDR
         address = self.ram.u32(PLAYER_TASK_PTR_ADDR) + ENEMY_PASS_THROUGH_OFFSET
         self.freezes.enable_enemy_pass_through(self.token)
         self.ram.write_guest(PAUSE_ADDR, b'\x01')
@@ -110,7 +110,7 @@ class ValueFreezeTests(unittest.TestCase):
 
     def test_enemy_pass_through_respects_pointer_change_before_write(self):
         from practice.value_freezes import ENEMY_PASS_THROUGH_OFFSET
-        from autosplitter.memory import PLAYER_TASK_PTR_ADDR
+        from practice.backends.memory import PLAYER_TASK_PTR_ADDR
         old = self.ram.u32(PLAYER_TASK_PTR_ADDR)
         new = old + 0x400
         self.freezes.enable_enemy_pass_through(self.token)
@@ -134,7 +134,7 @@ class ValueFreezeTests(unittest.TestCase):
 
     def test_enemy_pass_through_conflicting_fixed_lock_fails_closed(self):
         from practice.value_freezes import ENEMY_PASS_THROUGH_OFFSET
-        from autosplitter.memory import PLAYER_TASK_PTR_ADDR
+        from practice.backends.memory import PLAYER_TASK_PTR_ADDR
         target = self.ram.u32(PLAYER_TASK_PTR_ADDR) + ENEMY_PASS_THROUGH_OFFSET
         self.freezes.add(self.token, target, b'\x03')
         self.freezes.enable_enemy_pass_through(self.token)

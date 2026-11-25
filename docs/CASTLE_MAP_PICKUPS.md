@@ -70,7 +70,7 @@ placements. These are parsed records, not guesses based on consecutive IDs.
 All table masks are hexadecimal. The three manual observations retain their
 original provenance; the other seven Story progress entries say ROM placement /
 not live-tested. Full factual metadata and the read-only extractor are in
-`decomp/results/castle_pickup_placements.json` and `decomp/pickup_placements.py`.
+`research/rom/results/castle_pickup_placements.json` and `research/rom/pickup_placements.py`.
 The extractor validates the ROM identity, traverses instance groups, deduplicates
 referenced definitions, ignores uninstantiated actors and rejects malformed
 pointers or flags outside the 100-byte bank. No ROM data/assets are bundled.

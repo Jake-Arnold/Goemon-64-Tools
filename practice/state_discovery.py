@@ -10,7 +10,7 @@ from datetime import datetime, timezone
 import math
 import struct
 
-from autosplitter.memory import Rdram
+from practice.backends.memory import Rdram
 
 FOCUSED_RANGES = (
     ('system', 0x800C7800, 0x1000),

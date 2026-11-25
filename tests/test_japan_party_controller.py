@@ -3,7 +3,7 @@ from types import SimpleNamespace
 from unittest.mock import patch
 import unittest
 
-from autosplitter.memory import Rdram
+from practice.backends.memory import Rdram
 from practice.toolkit import Toolkit
 from practice.unlocks import UNLOCKS, Unlock
 from practice.region_unlocks import japan_unlock_all_targets

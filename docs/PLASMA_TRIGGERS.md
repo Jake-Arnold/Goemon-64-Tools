@@ -9,9 +9,9 @@ event `0x288`. The event tables map it to scenario file `0x70`, entry
 The bounded path contains **40 branch-if-set checks on 37 distinct saved bits**
 and **11 set operations** touching 11 distinct bits. Two set-only bits bring
 the combined checked-or-set total to **39**. The generated, text-free
-[condition metadata](../decomp/results/plasma_conditions.json) records each
+[condition metadata](../research/rom/results/plasma_conditions.json) records each
 check, address/mask, order and target. The separate
-[writer leads](../decomp/results/plasma_writers.json) contain 69 aligned script
+[writer leads](../research/rom/results/plasma_writers.json) contain 69 aligned script
 set/clear pattern candidates across those 39 bits; they do not include a native
 code scan or prove that every pattern is reachable. The only independently
 force-tested Plasma conditions here are the user's first two bits below.
@@ -90,8 +90,8 @@ Run with the user's own verified US ROM; both retail and decompressed versions
 produce identical text-free condition metadata:
 
 ```bash
-python -m decomp.plasma_conditions --rom /path/to/USA.z64 --report practice/diagnostics/plasma.json
-python -m decomp.plasma_writers --rom /path/to/decompressed.z64 --report practice/diagnostics/plasma-writers.json
+python -m research.rom.plasma_conditions --rom /path/to/USA.z64 --report practice/diagnostics/plasma.json
+python -m research.rom.plasma_writers --rom /path/to/decompressed.z64 --report practice/diagnostics/plasma-writers.json
 ```
 
 Reports require new paths and contain flags/addresses/offsets, not dialogue text,

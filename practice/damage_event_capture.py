@@ -9,7 +9,7 @@ from collections import deque
 from dataclasses import dataclass
 import time
 
-from autosplitter.memory import Rdram
+from practice.backends.memory import Rdram
 
 HP = 0x8015C5E4
 CHARACTER = 0x8015C5DC

@@ -1,8 +1,33 @@
 import unittest
-from practice.hex_edit import POLICIES, parse_hex, checked_write, get_policy
+from practice.hex_edit import POLICIES, parse_hex, checked_write, get_policy, watch_scalar_width
+from practice.custom_watches import make_watch
+from types import SimpleNamespace
 from tests.test_checkpoint import TestCheckpoint
 
 class TestHexEdit(unittest.TestCase):
+    def test_watch_width_precedence_and_region_isolation(self):
+        # Deliberately share the numeric USA policy address with a JP fixture.
+        # Width resolution must not import a USA policy into Japan.
+        address = next(a for a, policy in POLICIES.items() if policy.width == 4)
+        watch = SimpleNamespace(name='Custom: Width', addr=address, raw='0XAB')
+        custom = make_watch('Width', address, 'u16')
+        self.assertEqual(watch_scalar_width(watch, [], region='usa'), 4)
+        self.assertEqual(watch_scalar_width(watch, [], region='japan'), 1)
+        for region in ('usa', 'japan'):
+            self.assertEqual(watch_scalar_width(watch, [custom], region=region), 2)
+        for raw, width in [('00', 1), ('1234', 2), ('12345678', 4), ('0011223344556677', 8)]:
+            watch.raw = raw
+            self.assertEqual(watch_scalar_width(watch, [], region='japan'), width)
+        for raw in ('', '—', '123', 'ZZ', '001122'):
+            watch.raw = raw
+            with self.assertRaises(ValueError):
+                watch_scalar_width(watch, [], region='japan')
+        with self.assertRaises(ValueError):
+            watch_scalar_width(watch, [], region='unknown')
+        watch.addr = None
+        with self.assertRaises(ValueError):
+            watch_scalar_width(watch, [custom], region='usa')
+
     def test_canonical_parse_and_bounds(self):
         self.assertEqual(parse_hex('0x00ff',2),b'\x00\xff')
         self.assertEqual(parse_hex('a',1),b'\x0a')

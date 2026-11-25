@@ -11,14 +11,10 @@ class JapanesePartyUiSmokeTest(JapanTkSmokeTest):
         host = self.host
         self.assertFalse(hasattr(host, 'jp_party_buttons'))
         self.assertFalse(hasattr(host, 'jp_party_result'))
-        names = [
-            host.jp_research_tabs.tab(tab, 'text')
-            for tab in host.jp_research_tabs.tabs()
-        ]
-        self.assertEqual(names, ['Goemon XYZ', 'Scene warp'])
+        self.assertFalse(hasattr(host, 'jp_research_tabs'))
 
     def test_legacy_refresh_keeps_independent_controls_safe(self):
         host = self.host
         host.refresh_japan_party_controls()
-        self.assertIn('disabled', host.jp_position_apply_button.state())
-        self.assertIn('disabled', host.jp_debug_menu_button.state())
+        self.assertIn('disabled', host.jp_scene_position_apply_button.state())
+        self.assertFalse(host.jp_debug_controls_enabled)

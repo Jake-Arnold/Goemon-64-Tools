@@ -7,7 +7,6 @@ on:
   pull_request:
     paths:
       - "practice/**"
-      - "autosplitter/**"
       - "tests/**"
       - "scripts/test_japan_party.sh"
       - ".github/workflows/toolkit-linux-regression.yml"
