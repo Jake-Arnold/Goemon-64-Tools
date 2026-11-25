@@ -1,0 +1,6 @@
+[
+  {
+    "stage": "combined_link",
+    "error": "Unexpected global difference: ('08003690', '0', 'FUNC', 'GLOBAL', 'DEFAULT', 'ABS', 'D_08003690_704790')"
+  }
+]

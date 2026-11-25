@@ -5,7 +5,7 @@ from decomp import wave194_promotion as w, verify, promotion_integrity
 
 class Wave194Tests(unittest.TestCase):
     def test_current_ownership(self):
-        m=verify.load_manifest(w.ROOT/'manifest.json');c=verify.claimed_functions(m)
+        m=verify.load_manifest(w.ROOT/'results/manifest_2657_before_promo367.json');c=verify.claimed_functions(m)
         self.assertEqual(c,w.predecessor(m)+w.claims())
         self.assertEqual((len(c),sum(f['size'] for f in c)),(2657,156672))
         self.assertEqual(promotion_integrity.audit()['status'],'PASS')
@@ -38,7 +38,7 @@ class Wave194Tests(unittest.TestCase):
         with self.assertRaises(ValueError):w.validate_native('japan_0',q)
 
     def test_predecessor_and_source_drift(self):
-        m=verify.load_manifest(w.ROOT/'manifest.json');m[w.KEY]['format']='unreviewed'
+        m=verify.load_manifest(w.ROOT/'results/manifest_2657_before_promo367.json');m[w.KEY]['format']='unreviewed'
         with self.assertRaises(ValueError):w.predecessor(m)
         with patch.dict(w.REGIONS['usa'],{'manifest':'0'*64}):
             with self.assertRaises(ValueError):w.rows('usa')
@@ -46,7 +46,7 @@ class Wave194Tests(unittest.TestCase):
         with self.assertRaises(ValueError):w.master_predecessor(m)
 
     def test_inventory_tamper(self):
-        m=w.read(w.ROOT/'manifest.json');p=w.read(w.ROOT/'results/combined.json');i=w.read(w.ROOT/'results/inventory.json');i['summary']['newly_matching_c']+=1
+        m=w.read(w.ROOT/'results/manifest_2657_before_promo367.json');p=w.read(w.ROOT/'results/combined_2657_before_promo367.json');i=w.read(w.ROOT/'results/inventory_2657_before_promo367.json');i['summary']['newly_matching_c']+=1
         self.assertEqual(w.audit_usa(w.ROOT,m,p,i)['status'],'FAIL')
 
     def test_historical_compiler_ledger_and_research_provenance(self):

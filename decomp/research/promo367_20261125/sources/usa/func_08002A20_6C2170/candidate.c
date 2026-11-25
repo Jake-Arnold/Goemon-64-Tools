@@ -1,0 +1,19 @@
+#include "m2c_types.h"
+extern char func_80023DF0_249F0;
+extern char func_80023E40_24A40;
+extern char func_8003521C_35E1C;
+extern f64 D_080089F0_6C8140;
+extern M2C_UNK func_08002A98_6C21E8;
+
+void func_08002A20_6C2170(void *arg0, void *arg1) {
+    s32 temp_v0;
+
+    M2C_FIELD(arg1, f32 *, 0xC) = (f32) ((f64) M2C_FIELD(arg1, f32 *, 0xC) + D_080089F0_6C8140);
+    temp_v0 = M2C_FIELD(arg0, u16 *, 0x8A);
+    M2C_FIELD(arg0, u16 *, 0x8A) = (u16) (temp_v0 - 1);
+    if (temp_v0 == 0) {
+        ((M2C_UNK(*)())&func_80023E40_24A40)(0);
+        ((M2C_UNK(*)())&func_80023DF0_249F0)(2);
+        ((M2C_UNK(*)())&func_8003521C_35E1C)(&func_08002A98_6C21E8);
+    }
+}

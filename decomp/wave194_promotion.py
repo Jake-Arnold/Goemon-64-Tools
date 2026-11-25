@@ -147,7 +147,11 @@ def master_predecessor(m,root=ROOT):
     need(m.get(JP_KEY)==jp_head() and {k:v for k,v in m.items() if k!=JP_KEY}==frozen('japan_0_2664_before_wave194.json',root),'JP2664 frozen predecessor mismatch');return frozen('japan_0_2664_before_wave194.json',root)
 
 def validate_jp(root=ROOT):
-    need(previous.validate_jp(root)['accepted_C']==2664,'historical JP2664 integrity');m=read(root/'regions/japan_0.json');need(m.pop(JP_KEY,None)==jp_head() and m==frozen('japan_0_2664_before_wave194.json',root),'Japan canonical master drift');p=read(proof_path('japan_0',root));r,i=jp_documents(p,root);need(r==read(root/'regions'/JP_REG) and i==read(root/'results'/JP_INV),'Japan source/inventory drift');return {'status':'PASS','accepted_C':2757,'accepted_original_bytes':167420,'remaining_assembly':4619}
+    need(previous.validate_jp(root)['accepted_C']==2664,'historical JP2664 integrity');m=read(root/'regions/japan_0.json');
+    if 'promo367_promotion' in m:
+        from . import promo367_promotion as successor367
+        m=successor367.master_predecessor(m,root)
+    need(m.pop(JP_KEY,None)==jp_head() and m==frozen('japan_0_2664_before_wave194.json',root),'Japan canonical master drift');p=read(proof_path('japan_0',root));r,i=jp_documents(p,root);need(r==read(root/'regions'/JP_REG) and i==read(root/'results'/JP_INV),'Japan source/inventory drift');return {'status':'PASS','accepted_C':2757,'accepted_original_bytes':167420,'remaining_assembly':4619}
 
 if __name__=='__main__':
     parser=argparse.ArgumentParser(description=__doc__);parser.add_argument('--region',choices=REGIONS);parser.add_argument('--checkout',type=Path);parser.add_argument('--pristine',type=Path);parser.add_argument('--work',type=Path);parser.add_argument('--uv',default='uv');parser.add_argument('--jobs',type=int,default=4);a=parser.parse_args()

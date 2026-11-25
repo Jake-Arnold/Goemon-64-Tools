@@ -1,0 +1,1252 @@
+{
+  "format": "goemon-region-matching-v1",
+  "region": "japan_0",
+  "upstream_commit": "7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee",
+  "retail": {
+    "size": 16777216,
+    "sha1": "9843ee979b5f6c80f5eda85df0baed9ae7c4e73b"
+  },
+  "expanded": {
+    "size": 33554432,
+    "sha1": "6f8745fecc3a5e7d4918c7a73353eb0726116ded"
+  },
+  "splat_original": "config/japan_0/splat.yaml",
+  "splat_candidate": "config/japan_0/splat_thirtynine_c.local.yaml",
+  "link_map": "build/japan_0/mnsg.map",
+  "units": [
+    {
+      "source": "japan_matching/jp_motion_12D60.c",
+      "staged_source": "src/jp_motion_12D60.c",
+      "source_sha256": "c573d93bef7d803afa44a9e3fd09437819cb863dad8c210c00b46e4c84889f89",
+      "object": "build/japan_0/src/jp_motion_12D60.c.o",
+      "rom_offset": 77152,
+      "vram": 2147557728,
+      "section_size": 32,
+      "section_sha256": "7abe3e7fff0963bfcb4e6b333fa738d03ddb1d3147b3ca02f8573f4f34fbdf55",
+      "functions": [
+        {
+          "name": "func_80012160_12D60",
+          "rom_offset": 77152,
+          "vram": 2147557728,
+          "size": 32
+        }
+      ]
+    },
+    {
+      "source": "japan_matching/jp_camera_13B70.c",
+      "staged_source": "src/jp_camera_13B70.c",
+      "source_sha256": "b924622510395f9b8d3d4be8cf5a662160cff676678c5d4541c76ead87ae8d5b",
+      "object": "build/japan_0/src/jp_camera_13B70.c.o",
+      "rom_offset": 80752,
+      "vram": 2147561328,
+      "section_size": 32,
+      "section_sha256": "5ac8c04bfd5044d48649fa29217ef11385d853508fcff5445d9376620cec3ca5",
+      "functions": [
+        {
+          "name": "func_80012F70_13B70",
+          "rom_offset": 80752,
+          "vram": 2147561328,
+          "size": 32
+        }
+      ]
+    },
+    {
+      "source": "japan_matching/jp_bit_array.c",
+      "staged_source": "src/jp_bit_array.c",
+      "source_sha256": "acd4065aeb90b4015c19cc443e5d333e45aaedea94dee710dda4615b2bf0f650",
+      "object": "build/japan_0/src/jp_bit_array.c.o",
+      "rom_offset": 93680,
+      "vram": 2147574256,
+      "section_size": 128,
+      "section_sha256": "585a234af53888f922034d8f0c4f7c9c157dc35c12d26b3d35b1a9ff7419cc70",
+      "functions": [
+        {
+          "name": "func_800161F0_16DF0",
+          "rom_offset": 93680,
+          "vram": 2147574256,
+          "size": 36
+        },
+        {
+          "name": "func_80016214_16E14",
+          "rom_offset": 93716,
+          "vram": 2147574292,
+          "size": 40
+        },
+        {
+          "name": "func_8001623C_16E3C",
+          "rom_offset": 93756,
+          "vram": 2147574332,
+          "size": 52
+        }
+      ]
+    },
+    {
+      "source": "japan_matching/jp_wrapper_370B0.c",
+      "staged_source": "src/jp_wrapper_370B0.c",
+      "source_sha256": "0621c7fd9e6bf414ee57bcde3506a41a10bd3834cd10b54d3c03d6b0507c4d3b",
+      "object": "build/japan_0/src/jp_wrapper_370B0.c.o",
+      "rom_offset": 225456,
+      "vram": 2147706032,
+      "section_size": 32,
+      "section_sha256": "acc10686acac232d6a628faddac544d8d84da137a51e3b28f12aba53bd1d667f",
+      "functions": [
+        {
+          "name": "func_800364B0_370B0",
+          "rom_offset": 225456,
+          "vram": 2147706032,
+          "size": 32
+        }
+      ]
+    },
+    {
+      "source": "japan_matching/jp_wrapper_37178.c",
+      "staged_source": "src/jp_wrapper_37178.c",
+      "source_sha256": "caf978e1e641d466916688c49c9c23a6b0e2bd469d762e7e0254dcdf5d10876d",
+      "object": "build/japan_0/src/jp_wrapper_37178.c.o",
+      "rom_offset": 225656,
+      "vram": 2147706232,
+      "section_size": 32,
+      "section_sha256": "acc10686acac232d6a628faddac544d8d84da137a51e3b28f12aba53bd1d667f",
+      "functions": [
+        {
+          "name": "func_80036578_37178",
+          "rom_offset": 225656,
+          "vram": 2147706232,
+          "size": 32
+        }
+      ]
+    },
+    {
+      "source": "japan_matching/jp_wrapper_3757C.c",
+      "staged_source": "src/jp_wrapper_3757C.c",
+      "source_sha256": "3f6f50bd2ca313832922e8abc2308047b044570fa98884435dc7641af12b02e9",
+      "object": "build/japan_0/src/jp_wrapper_3757C.c.o",
+      "rom_offset": 226684,
+      "vram": 2147707260,
+      "section_size": 32,
+      "section_sha256": "ddf3cf630113e6dc13d6a5a25cc98407fdb47a5c5332c0696bc73db1568a16e8",
+      "functions": [
+        {
+          "name": "func_8003697C_3757C",
+          "rom_offset": 226684,
+          "vram": 2147707260,
+          "size": 32
+        }
+      ]
+    },
+    {
+      "source": "japan_matching/jp_get_3769C.c",
+      "staged_source": "src/jp_get_3769C.c",
+      "source_sha256": "1dfa30e089cdb248a7713644f2ab9f8810e87c5dac978468124773a53d5feeb1",
+      "object": "build/japan_0/src/jp_get_3769C.c.o",
+      "rom_offset": 226972,
+      "vram": 2147707548,
+      "section_size": 8,
+      "section_sha256": "57f881c616f42447d3a765f9fcf4eb021557a7ab9c63cfb1f1ef7033efbb1b45",
+      "functions": [
+        {
+          "name": "func_80036A9C_3769C",
+          "rom_offset": 226972,
+          "vram": 2147707548,
+          "size": 8
+        }
+      ]
+    },
+    {
+      "source": "japan_matching/jp_transition_37870.c",
+      "staged_source": "src/jp_transition_37870.c",
+      "source_sha256": "e98ba1ce4db0783b249f509e68e3e448303333e5423db873a491c96a42fa5d6b",
+      "object": "build/japan_0/src/jp_transition_37870.c.o",
+      "rom_offset": 227440,
+      "vram": 2147708016,
+      "section_size": 96,
+      "section_sha256": "a83e37d5505962bbb0d7edaf4080fa9931d725a1325cd11774e19bcf2b6268d9",
+      "functions": [
+        {
+          "name": "func_80036C70_37870",
+          "rom_offset": 227440,
+          "vram": 2147708016,
+          "size": 96
+        }
+      ]
+    },
+    {
+      "source": "japan_matching/jp_mode_flags.c",
+      "staged_source": "src/jp_mode_flags.c",
+      "source_sha256": "72eed7b6756517d2c1a91e0c2442dc0e5ac94ac9744c4c57c2d48e6933cecee8",
+      "object": "build/japan_0/src/jp_mode_flags.c.o",
+      "rom_offset": 227536,
+      "vram": 2147708112,
+      "section_size": 48,
+      "section_sha256": "952f9004206e8f3ab29fe84f8c8fcc536e5d237d742c76e4522234368f2c50c8",
+      "functions": [
+        {
+          "name": "func_80036CD0_378D0",
+          "rom_offset": 227536,
+          "vram": 2147708112,
+          "size": 16
+        },
+        {
+          "name": "func_80036CE0_378E0",
+          "rom_offset": 227552,
+          "vram": 2147708128,
+          "size": 16
+        },
+        {
+          "name": "func_80036CF0_378F0",
+          "rom_offset": 227568,
+          "vram": 2147708144,
+          "size": 16
+        }
+      ]
+    },
+    {
+      "source": "japan_matching/jp_warp_call_37900.c",
+      "staged_source": "src/jp_warp_call_37900.c",
+      "source_sha256": "2723f04618138b20a43935fe81be83048336a0e318dbb9b87131bfc4090aa064",
+      "object": "build/japan_0/src/jp_warp_call_37900.c.o",
+      "rom_offset": 227584,
+      "vram": 2147708160,
+      "section_size": 32,
+      "section_sha256": "7c70158f28f75cceb029fb3b2658ed024d443310cb4a3d920e8d3469dd187fa5",
+      "functions": [
+        {
+          "name": "func_80036D00_37900",
+          "rom_offset": 227584,
+          "vram": 2147708160,
+          "size": 32
+        }
+      ]
+    },
+    {
+      "source": "japan_matching/jp_warp_37920.c",
+      "staged_source": "src/jp_warp_37920.c",
+      "source_sha256": "e01e75d47949a585124c7447b12b4c89587fccfde094596c0456905ff3b387a6",
+      "object": "build/japan_0/src/jp_warp_37920.c.o",
+      "rom_offset": 227616,
+      "vram": 2147708192,
+      "section_size": 56,
+      "section_sha256": "b4632d4574a9a331388d6b563675fa5011bff7d2be20bc4c3393199a850da0c1",
+      "functions": [
+        {
+          "name": "func_80036D20_37920",
+          "rom_offset": 227616,
+          "vram": 2147708192,
+          "size": 56
+        }
+      ]
+    },
+    {
+      "source": "japan_matching/jp_coord_37958.c",
+      "staged_source": "src/jp_coord_37958.c",
+      "source_sha256": "ee74c3bbbd17e352591be5098af3a9d7c1d8b8798d2017dcea8e813806d7f9fd",
+      "object": "build/japan_0/src/jp_coord_37958.c.o",
+      "rom_offset": 227672,
+      "vram": 2147708248,
+      "section_size": 204,
+      "section_sha256": "4b71948f56d9191b31e40bb2493b6760b97b5787994ae2049f06388c388392e3",
+      "functions": [
+        {
+          "name": "func_80036D58_37958",
+          "rom_offset": 227672,
+          "vram": 2147708248,
+          "size": 204
+        }
+      ]
+    },
+    {
+      "source": "japan_matching/jp_coord_37A24.c",
+      "staged_source": "src/jp_coord_37A24.c",
+      "source_sha256": "c8221c82b82917aef08d78ebe8f9be58b3def47ece444d3edee6fcdf4757a6c3",
+      "object": "build/japan_0/src/jp_coord_37A24.c.o",
+      "rom_offset": 227876,
+      "vram": 2147708452,
+      "section_size": 208,
+      "section_sha256": "eb61fdcd87e9a7799bf945107c17ee3a62ceaf88fa23a35b553a802ebed1ee55",
+      "functions": [
+        {
+          "name": "func_80036E24_37A24",
+          "rom_offset": 227876,
+          "vram": 2147708452,
+          "size": 208
+        }
+      ]
+    },
+    {
+      "source": "japan_matching/jp_state_37AF4.c",
+      "staged_source": "src/jp_state_37AF4.c",
+      "source_sha256": "0b1a58ff0e90e193d29df7a640a343860e64e0fd47f075acca32d44912d665b2",
+      "object": "build/japan_0/src/jp_state_37AF4.c.o",
+      "rom_offset": 228084,
+      "vram": 2147708660,
+      "section_size": 100,
+      "section_sha256": "14761db592d3dd8e6f00742a6f056072d6f33b529db5dcc39b6396a7d2d435e2",
+      "functions": [
+        {
+          "name": "func_80036EF4_37AF4",
+          "rom_offset": 228084,
+          "vram": 2147708660,
+          "size": 100
+        }
+      ]
+    },
+    {
+      "source": "japan_matching/jp_warp_37B58.c",
+      "staged_source": "src/jp_warp_37B58.c",
+      "source_sha256": "7d33a95092f8fae3820f6fced6494170518a77424d26b6b0137946d0ece1e5ed",
+      "object": "build/japan_0/src/jp_warp_37B58.c.o",
+      "rom_offset": 228184,
+      "vram": 2147708760,
+      "section_size": 52,
+      "section_sha256": "723de51182c06b568d55aa4e12cf0acb3c7c96078fc7c3393d75a2bcca299202",
+      "functions": [
+        {
+          "name": "func_80036F58_37B58",
+          "rom_offset": 228184,
+          "vram": 2147708760,
+          "size": 52
+        }
+      ]
+    },
+    {
+      "source": "japan_matching/jp_warp_37B8C.c",
+      "staged_source": "src/jp_warp_37B8C.c",
+      "source_sha256": "2a0bcb0bb6129f865f64fc3f450ee0d8390b21f20b3d7810ff8faae40d28a8e1",
+      "object": "build/japan_0/src/jp_warp_37B8C.c.o",
+      "rom_offset": 228236,
+      "vram": 2147708812,
+      "section_size": 192,
+      "section_sha256": "7b48715c7611ea881e65367e33c90a01ebcf738ebde1b7c9cd48fd756d1932d4",
+      "functions": [
+        {
+          "name": "func_80036F8C_37B8C",
+          "rom_offset": 228236,
+          "vram": 2147708812,
+          "size": 192
+        }
+      ]
+    },
+    {
+      "source": "japan_matching/jp_warp_37C4C.c",
+      "staged_source": "src/jp_warp_37C4C.c",
+      "source_sha256": "60a6f1cc8b3bdbc47ddf61d5d724b5f562facf4bd58ddbfa60a52703136eca34",
+      "object": "build/japan_0/src/jp_warp_37C4C.c.o",
+      "rom_offset": 228428,
+      "vram": 2147709004,
+      "section_size": 56,
+      "section_sha256": "dedb70617fa6ace57622bad6965abd1396618d4a44b3099f8fb477b9d54812a9",
+      "functions": [
+        {
+          "name": "func_8003704C_37C4C",
+          "rom_offset": 228428,
+          "vram": 2147709004,
+          "size": 56
+        }
+      ]
+    },
+    {
+      "source": "japan_matching/jp_warp_37C84.c",
+      "staged_source": "src/jp_warp_37C84.c",
+      "source_sha256": "f86c49e730f3ccda4b0b14aedaed257844d1c4e51cc58ef29ade7751279c1b3b",
+      "object": "build/japan_0/src/jp_warp_37C84.c.o",
+      "rom_offset": 228484,
+      "vram": 2147709060,
+      "section_size": 52,
+      "section_sha256": "f7dabf5f4ab19dc80fb16c4a4896db2f12862f6a971c9167fa9920866245a313",
+      "functions": [
+        {
+          "name": "func_80037084_37C84",
+          "rom_offset": 228484,
+          "vram": 2147709060,
+          "size": 52
+        }
+      ]
+    },
+    {
+      "source": "japan_matching/jp_warp_37CB8.c",
+      "staged_source": "src/jp_warp_37CB8.c",
+      "source_sha256": "d73e21bfd4df34ea99aff51f4e478e059b5a94fbfe910258d777664251eb6721",
+      "object": "build/japan_0/src/jp_warp_37CB8.c.o",
+      "rom_offset": 228536,
+      "vram": 2147709112,
+      "section_size": 40,
+      "section_sha256": "bae4c2f3713710bc735cc030dfd36004c669172a38198b011a704c9c9d783676",
+      "functions": [
+        {
+          "name": "func_800370B8_37CB8",
+          "rom_offset": 228536,
+          "vram": 2147709112,
+          "size": 40
+        }
+      ]
+    },
+    {
+      "source": "japan_matching/jp_warp_37CE0.c",
+      "staged_source": "src/jp_warp_37CE0.c",
+      "source_sha256": "242e4b42e2edfc1850ed36532d8ddad7176bdf8acbc2bc947975cbf27b83957b",
+      "object": "build/japan_0/src/jp_warp_37CE0.c.o",
+      "rom_offset": 228576,
+      "vram": 2147709152,
+      "section_size": 60,
+      "section_sha256": "49158b601f13395a37e1bb312990290cd729fbbb05243fc57736e6a350d54392",
+      "functions": [
+        {
+          "name": "func_800370E0_37CE0",
+          "rom_offset": 228576,
+          "vram": 2147709152,
+          "size": 60
+        }
+      ]
+    },
+    {
+      "source": "japan_matching/jp_state_37D1C.c",
+      "staged_source": "src/jp_state_37D1C.c",
+      "source_sha256": "a52ac549fa820181775dc56a12c58851eef61d6c049faf480ac9a2994410388b",
+      "object": "build/japan_0/src/jp_state_37D1C.c.o",
+      "rom_offset": 228636,
+      "vram": 2147709212,
+      "section_size": 64,
+      "section_sha256": "04c8bc73db3dff5ebad38ccc8a66da3af133376d0642ec1a2886c4ea9184e9d5",
+      "functions": [
+        {
+          "name": "func_8003711C_37D1C",
+          "rom_offset": 228636,
+          "vram": 2147709212,
+          "size": 64
+        }
+      ]
+    },
+    {
+      "source": "japan_matching/jp_state_37D5C.c",
+      "staged_source": "src/jp_state_37D5C.c",
+      "source_sha256": "0a96cf285883afc41598ed186d44052acf3c671955f802e45f551c5446b452c9",
+      "object": "build/japan_0/src/jp_state_37D5C.c.o",
+      "rom_offset": 228700,
+      "vram": 2147709276,
+      "section_size": 92,
+      "section_sha256": "63a8915ff7d818a2f1d317e08432ad0e3b8f89d8398a4cb07da15d53d00dc84d",
+      "functions": [
+        {
+          "name": "func_8003715C_37D5C",
+          "rom_offset": 228700,
+          "vram": 2147709276,
+          "size": 92
+        }
+      ]
+    },
+    {
+      "source": "japan_matching/jp_compare_37EEC.c",
+      "staged_source": "src/jp_compare_37EEC.c",
+      "source_sha256": "7d8ff8a3ac10306a70a1220e9d69f0fdf13054047ae3efa4bf29e52cf8b924c6",
+      "object": "build/japan_0/src/jp_compare_37EEC.c.o",
+      "rom_offset": 229100,
+      "vram": 2147709676,
+      "section_size": 52,
+      "section_sha256": "8ca2ffbb8e8ee40bd4351076e7646fed2ec490b7df4dc7886db23714b9cec021",
+      "functions": [
+        {
+          "name": "func_800372EC_37EEC",
+          "rom_offset": 229100,
+          "vram": 2147709676,
+          "size": 52
+        }
+      ]
+    },
+    {
+      "source": "japan_matching/jp_wrapper_383C4.c",
+      "staged_source": "src/jp_wrapper_383C4.c",
+      "source_sha256": "c593a69e14fa8ae31ef513a6bdf2412a36df116a81802a0920e5570ceabf7e9d",
+      "object": "build/japan_0/src/jp_wrapper_383C4.c.o",
+      "rom_offset": 230340,
+      "vram": 2147710916,
+      "section_size": 36,
+      "section_sha256": "bea5378d4b2e20728bcf381d2c7aee3eaad90c3ce29f7e6444a6f3a6b0baee01",
+      "functions": [
+        {
+          "name": "func_800377C4_383C4",
+          "rom_offset": 230340,
+          "vram": 2147710916,
+          "size": 36
+        }
+      ]
+    },
+    {
+      "source": "japan_matching/jp_get_3847C.c",
+      "staged_source": "src/jp_get_3847C.c",
+      "source_sha256": "358e0e5683e277f9b1840734f3d73d6e14261fcbad05d396b83e6adccb4e39ac",
+      "object": "build/japan_0/src/jp_get_3847C.c.o",
+      "rom_offset": 230524,
+      "vram": 2147711100,
+      "section_size": 20,
+      "section_sha256": "abb085a5890f578988daa29430a0dca5f4690d69bd7a5b41e1769c6e32f3816b",
+      "functions": [
+        {
+          "name": "func_8003787C_3847C",
+          "rom_offset": 230524,
+          "vram": 2147711100,
+          "size": 20
+        }
+      ]
+    },
+    {
+      "source": "japan_matching/jp_set_3850C.c",
+      "staged_source": "src/jp_set_3850C.c",
+      "source_sha256": "d5a8dd0c00e6d8a24fca7deaa23016f235dd9659cb1825b55133cfb71ee49aa8",
+      "object": "build/japan_0/src/jp_set_3850C.c.o",
+      "rom_offset": 230668,
+      "vram": 2147711244,
+      "section_size": 20,
+      "section_sha256": "04a0c6d7786953f181e857bf42faa6487bebbfdc3c17e3824e45c62fa40f256c",
+      "functions": [
+        {
+          "name": "func_8003790C_3850C",
+          "rom_offset": 230668,
+          "vram": 2147711244,
+          "size": 20
+        }
+      ]
+    },
+    {
+      "source": "japan_matching/jp_main_38620.c",
+      "staged_source": "src/jp_main_38620.c",
+      "source_sha256": "b5dcce37328f69fdbd4a1d07e5a43bdd373dee22061e951e7f6672daaa430da2",
+      "object": "build/japan_0/src/jp_main_38620.c.o",
+      "rom_offset": 230944,
+      "vram": 2147711520,
+      "section_size": 16,
+      "section_sha256": "2415714719d85e4a789acee079f28e4e4c4c2b693ab00b843e8d8d91c8c3882c",
+      "functions": [
+        {
+          "name": "func_80037A20_38620",
+          "rom_offset": 230944,
+          "vram": 2147711520,
+          "size": 8
+        }
+      ]
+    },
+    {
+      "source": "japan_matching/jp_wrapper_39584.c",
+      "staged_source": "src/jp_wrapper_39584.c",
+      "source_sha256": "d432aa472dbbb1c9f8aaa0978fbdea21b079376cc984aa87e1876f831992c864",
+      "object": "build/japan_0/src/jp_wrapper_39584.c.o",
+      "rom_offset": 234884,
+      "vram": 2147715460,
+      "section_size": 40,
+      "section_sha256": "6fd622d27f78f5bcf2589d74c9f328895987d71049c41bf39324063de651948f",
+      "functions": [
+        {
+          "name": "func_80038984_39584",
+          "rom_offset": 234884,
+          "vram": 2147715460,
+          "size": 40
+        }
+      ]
+    },
+    {
+      "source": "japan_matching/jp_wrapper_395AC.c",
+      "staged_source": "src/jp_wrapper_395AC.c",
+      "source_sha256": "6c4e7449a99a348a12439c9dd60aba93d96ef413697e84742a4e9770c8583110",
+      "object": "build/japan_0/src/jp_wrapper_395AC.c.o",
+      "rom_offset": 234924,
+      "vram": 2147715500,
+      "section_size": 40,
+      "section_sha256": "47f003d233ee67695d115d2d03a0541a2bdc50f0140fb25396e9a881062ac9b2",
+      "functions": [
+        {
+          "name": "func_800389AC_395AC",
+          "rom_offset": 234924,
+          "vram": 2147715500,
+          "size": 40
+        }
+      ]
+    },
+    {
+      "source": "japan_matching/jp_flag_395D4.c",
+      "staged_source": "src/jp_flag_395D4.c",
+      "source_sha256": "3fcd1c4af1ae8a7dfb1c07d2e339d025de4c89e496b4f5705a0b8ece392e1952",
+      "object": "build/japan_0/src/jp_flag_395D4.c.o",
+      "rom_offset": 234964,
+      "vram": 2147715540,
+      "section_size": 48,
+      "section_sha256": "4607ae80cc05b2188fcf9956d7416ccc2bd17708e0f41414df22ae08fd46cc0e",
+      "functions": [
+        {
+          "name": "func_800389D4_395D4",
+          "rom_offset": 234964,
+          "vram": 2147715540,
+          "size": 48
+        }
+      ]
+    },
+    {
+      "source": "japan_matching/jp_if_a7ac.c",
+      "staged_source": "src/jp_if_a7ac.c",
+      "source_sha256": "b6de0ed8316d783f75044722b2bff1151cd0df071e328cd0c07ce9452368c348",
+      "object": "build/japan_0/src/jp_if_a7ac.c.o",
+      "rom_offset": 239532,
+      "vram": 2147720108,
+      "section_size": 36,
+      "section_sha256": "b75d42052c111e0e8e6169d0ce8653f7ed4068dac2c9aada6ac8ce0a8c6ea3fe",
+      "functions": [
+        {
+          "name": "func_80039BAC_3A7AC",
+          "rom_offset": 239532,
+          "vram": 2147720108,
+          "size": 36
+        }
+      ]
+    },
+    {
+      "source": "japan_matching/jp_if_a7d0.c",
+      "staged_source": "src/jp_if_a7d0.c",
+      "source_sha256": "61b966543cd3be7270e94108dead755908a535470266c1f28e4134874fbdad8c",
+      "object": "build/japan_0/src/jp_if_a7d0.c.o",
+      "rom_offset": 239568,
+      "vram": 2147720144,
+      "section_size": 36,
+      "section_sha256": "198c3516e1a32f859f470c40d567acfa6dae25a2cb3e12e71bb911b3522785e1",
+      "functions": [
+        {
+          "name": "func_80039BD0_3A7D0",
+          "rom_offset": 239568,
+          "vram": 2147720144,
+          "size": 36
+        }
+      ]
+    },
+    {
+      "source": "japan_matching/jp_if_aa34.c",
+      "staged_source": "src/jp_if_aa34.c",
+      "source_sha256": "806f48dc9993bb096eec1857c3488115c3c298ef3703540efd4d736a83a19873",
+      "object": "build/japan_0/src/jp_if_aa34.c.o",
+      "rom_offset": 240180,
+      "vram": 2147720756,
+      "section_size": 36,
+      "section_sha256": "71690fe3b9fd834cc9a90719cc9cf23e40b50fe8b614705ccf7a1d53e0237aab",
+      "functions": [
+        {
+          "name": "func_80039E34_3AA34",
+          "rom_offset": 240180,
+          "vram": 2147720756,
+          "size": 36
+        }
+      ]
+    },
+    {
+      "source": "japan_matching/jp_if_aa74.c",
+      "staged_source": "src/jp_if_aa74.c",
+      "source_sha256": "c9098dc5e74d004b55b836d113a851c567517fc65b6fd2968eeac9a9389a3cb6",
+      "object": "build/japan_0/src/jp_if_aa74.c.o",
+      "rom_offset": 240244,
+      "vram": 2147720820,
+      "section_size": 36,
+      "section_sha256": "db310f1e00a69a0a9793eca1457406edc9daccaa189c34300bf1c7eaf31fba3d",
+      "functions": [
+        {
+          "name": "func_80039E74_3AA74",
+          "rom_offset": 240244,
+          "vram": 2147720820,
+          "size": 36
+        }
+      ]
+    },
+    {
+      "source": "japan_matching/jp_if_aa98.c",
+      "staged_source": "src/jp_if_aa98.c",
+      "source_sha256": "43e58f9dbed984cae9a381333b3d9255d2e4b6bfaf285c9879e5b3852e57e54a",
+      "object": "build/japan_0/src/jp_if_aa98.c.o",
+      "rom_offset": 240280,
+      "vram": 2147720856,
+      "section_size": 36,
+      "section_sha256": "198c3516e1a32f859f470c40d567acfa6dae25a2cb3e12e71bb911b3522785e1",
+      "functions": [
+        {
+          "name": "func_80039E98_3AA98",
+          "rom_offset": 240280,
+          "vram": 2147720856,
+          "size": 36
+        }
+      ]
+    }
+  ],
+  "historical_34_manifest": "regions/japan_0_34_preserved_20261117.json",
+  "proven_original_elf_function_identities_sha256": "3a6e6bafd6818d5734d6880bb0a67a32bea2bbc26905778533d2a15707718d21",
+  "proven_original_semantic_relocations_sha256": "e5420c90550fb564bb6c839357e92d5ab28f90b4e945734dc2dcfd892eb41f20",
+  "original_elf_positive_function_count": 7376,
+  "original_elf_relocation_count": 80747,
+  "usa_derived_noop_port": {
+    "format": "goemon-japan-accepted-regional-c-port-v1",
+    "status": "PASSED_G2",
+    "region": "japan_0",
+    "baseline_matching_c_functions": 39,
+    "baseline_matching_c_bytes": 2092,
+    "additional_functions": 290,
+    "additional_bytes": 3264,
+    "matching_c_functions": 329,
+    "matching_c_bytes": 5356,
+    "remaining_assembly_functions": 7047,
+    "original_positive_elf_functions": 7376,
+    "manifest": "decomp/regions/japan_0_noop_port_290.json",
+    "build": "decomp/build_japan_noop_port_329.sh",
+    "verifier": "decomp/japan_noop_port.py",
+    "proof": "decomp/results/japan_0_329_native_combined_20261118.json",
+    "provenance": "USA-verified two-unused-pointer-parameter callback and zero-argument no-op C forms; selected against original JP ROM instruction signatures and original JP addresses; no gameplay logic reconstructed",
+    "runtime": "NOT RUN"
+  },
+  "usa_derived_character_switch_4": {
+    "status": "PASSED_G2_LOCAL",
+    "previous_matching_c_functions": 329,
+    "new_matching_c_functions": 4,
+    "new_matching_c_bytes": 332,
+    "total_matching_c_functions": 333,
+    "total_matching_c_bytes": 5688,
+    "remaining_assembly_functions": 7043,
+    "overlay": "file_11",
+    "new_functions": [
+      {
+        "name": "func_801E2888_59E858",
+        "rom_offset": 5892184
+      },
+      {
+        "name": "func_801E28B0_59E880",
+        "rom_offset": 5892224
+      },
+      {
+        "name": "func_801E2970_59E940",
+        "rom_offset": 5892416
+      },
+      {
+        "name": "func_801E2A04_59E9D4",
+        "rom_offset": 5892564
+      }
+    ],
+    "source": "decomp/research/character_switch_native_candidates.c",
+    "native_stage": "decomp/japan_character_switch_four.py",
+    "full_build": "decomp/build_japan_switch_333.sh",
+    "proof": "decomp/results/japan_0_333_character_switch_20261118.json",
+    "emulator_gameplay": "NOT_RUN"
+  },
+  "usa_derived_original_equivalent_11": {
+    "status": "PASSED_G2_LOCAL",
+    "previous_matching_c_functions": 333,
+    "added_functions": 11,
+    "added_bytes": 728,
+    "matching_c_functions": 344,
+    "matching_c_bytes": 6416,
+    "remaining_assembly_functions": 7032,
+    "overlay": "file_13",
+    "original_parent": "602FA0.s",
+    "new_functions": [
+      {
+        "jp_name": "func_801DB72C_6061AC",
+        "jp_rom_offset": 6316460,
+        "usa_source_name": "func_801D600C_6013EC",
+        "size": 48
+      },
+      {
+        "jp_name": "func_801DB75C_6061DC",
+        "jp_rom_offset": 6316508,
+        "usa_source_name": "func_801D603C_60141C",
+        "size": 48
+      },
+      {
+        "jp_name": "func_801DB78C_60620C",
+        "jp_rom_offset": 6316556,
+        "usa_source_name": "func_801D606C_60144C",
+        "size": 48
+      },
+      {
+        "jp_name": "func_801DB804_606284",
+        "jp_rom_offset": 6316676,
+        "usa_source_name": "func_801D60E4_6014C4",
+        "size": 64
+      },
+      {
+        "jp_name": "func_801DB844_6062C4",
+        "jp_rom_offset": 6316740,
+        "usa_source_name": "func_801D6124_601504",
+        "size": 40
+      },
+      {
+        "jp_name": "func_801DB86C_6062EC",
+        "jp_rom_offset": 6316780,
+        "usa_source_name": "func_801D614C_60152C",
+        "size": 80
+      },
+      {
+        "jp_name": "func_801DB8BC_60633C",
+        "jp_rom_offset": 6316860,
+        "usa_source_name": "func_801D619C_60157C",
+        "size": 56
+      },
+      {
+        "jp_name": "func_801DB908_606388",
+        "jp_rom_offset": 6316936,
+        "usa_source_name": "func_801D61E8_6015C8",
+        "size": 36
+      },
+      {
+        "jp_name": "func_801DC3D0_606E50",
+        "jp_rom_offset": 6319696,
+        "usa_source_name": "func_801D6CB0_602090",
+        "size": 144
+      },
+      {
+        "jp_name": "func_801DC93C_6073BC",
+        "jp_rom_offset": 6321084,
+        "usa_source_name": "func_801D721C_6025FC",
+        "size": 64
+      },
+      {
+        "jp_name": "func_801DC97C_6073FC",
+        "jp_rom_offset": 6321148,
+        "usa_source_name": "func_801D725C_60263C",
+        "size": 100
+      }
+    ],
+    "sources_manifest": "decomp/regions/japan_0_equiv11.json",
+    "stage": "decomp/japan_usa_equivalent_eleven.py",
+    "full_build": "decomp/build_japan_usa_equiv_344.sh",
+    "proof": "decomp/results/japan_0_344_usa_equiv11_20261118.json",
+    "emulator_gameplay": "NOT_RUN"
+  },
+  "usa_derived_original_equivalent_36": {
+    "status": "PASSED_G2_LOCAL",
+    "matching_c_functions": 380,
+    "matching_c_bytes": 7908,
+    "added_to_344": 36,
+    "new_instruction_bytes": 1492,
+    "remaining_assembly_entries": 6996,
+    "source_manifest": "decomp/regions/japan_0_equiv36.json",
+    "source_stager": "decomp/japan_usa_equivalent_36.py",
+    "clean_build": "decomp/build_japan_usa_equiv_380.sh",
+    "proof": "decomp/results/japan_0_380_usa_equiv36_20261119.json",
+    "clean_replay_metadata_sha256": "f1cf0cb998d26630eea639121b6aa4d21425545b1abf656e556a92407b295722",
+    "emulator_gameplay": "NOT_RUN"
+  },
+  "usa_derived_4_37_additional_41": {
+    "status": "PASSED_G2_LOCAL",
+    "baseline_matching_c": 380,
+    "new_functions": 41,
+    "new_matching_bytes": 1700,
+    "matching_c_functions": 421,
+    "matching_c_bytes": 9608,
+    "remaining_assembly_functions": 6955,
+    "source_manifests": [
+      "decomp/regions/japan_0_equiv4_more.json",
+      "decomp/regions/japan_0_equiv37_more.json"
+    ],
+    "stagers": [
+      "decomp/japan_usa_equivalent_four_more.py",
+      "decomp/japan_usa_equivalent_thirtyseven_more.py"
+    ],
+    "build": "decomp/build_japan_usa_equiv_421.sh",
+    "proof": "decomp/results/japan_0_421_usa_equiv41_20261119.json",
+    "independent_replay_proof_sha256": "bbc517f46495b1e38fdba3c8787ad047de0ce0b29aacb934f1e3fd5100ed6f75",
+    "emulator_gameplay": "NOT_RUN"
+  },
+  "usa_derived_original_equivalent_2_final": {
+    "status": "PASSED_G2_LOCAL",
+    "previous_matching_c_functions": 421,
+    "new_c_functions": 2,
+    "new_instruction_bytes": 68,
+    "matching_c_functions": 423,
+    "matching_c_bytes": 9676,
+    "remaining_assembly_functions": 6953,
+    "source_manifest": "decomp/regions/japan_0_equiv2_remaining.json",
+    "stager": "decomp/japan_usa_equivalent_two_remaining.py",
+    "clean_build": "decomp/build_japan_usa_equiv_423.sh",
+    "proof": "decomp/results/japan_0_423_usa_equiv2_20261119.json",
+    "original_elf_positive_function_count": 7376,
+    "original_semantic_relocation_count": 80747,
+    "independent_replay_proof_sha256": "cb332aa2fb04fb4745594f35f49592e5b37c3094d9fc98378b66640966e3a2aa",
+    "emulator_gameplay": "NOT_RUN"
+  },
+  "usa_derived_grouped_source_4": {
+    "status": "PASSED_G2_LOCAL",
+    "previous_matching_c_functions": 423,
+    "added_functions": 4,
+    "added_bytes": 216,
+    "matching_c_functions": 427,
+    "matching_c_bytes": 9892,
+    "remaining_assembly_functions": 6949,
+    "manifest": "decomp/regions/japan_0_grouped4.json",
+    "native_stage": "decomp/japan_usa_grouped_four.py",
+    "clean_builder": "decomp/build_japan_usa_grouped_427.sh",
+    "proof": "decomp/results/japan_0_427_grouped4_20261119.json",
+    "independent_native_checkouts": 2,
+    "emulator_gameplay": "NOT_RUN"
+  },
+  "usa_derived_main_2": {
+    "status": "PASSED_G2_LOCAL",
+    "previous_matching_c_functions": 427,
+    "added_functions": 2,
+    "added_bytes": 88,
+    "matching_c_functions": 429,
+    "matching_c_bytes": 9980,
+    "remaining_assembly_functions": 6947,
+    "manifest": "decomp/regions/japan_0_main2.json",
+    "stage": "decomp/japan_usa_main_two.py",
+    "full_builder": "decomp/build_japan_usa_main_429.sh",
+    "proof": "decomp/results/japan_0_429_main2_20261119.json",
+    "emulator_gameplay": "NOT_RUN"
+  },
+  "usa_derived_original_main_3": {
+    "status": "PASSED_G2_LOCAL",
+    "prior_matching_C": 429,
+    "new_original_C": 3,
+    "new_original_instruction_bytes": 428,
+    "matching_c_functions": 432,
+    "matching_c_bytes": 10408,
+    "remaining_assembly_entries": 6944,
+    "source_manifest": "decomp/regions/japan_0_main3.json",
+    "native_stage": "decomp/japan_usa_main_three.py",
+    "rebuild_script": "decomp/build_japan_usa_main_432.sh",
+    "proof": "decomp/results/japan_0_432_main3_20261119.json",
+    "native_independent_checkouts": 2,
+    "emulator_gameplay": "NOT_RUN"
+  },
+  "jp1686_native_promotion": {
+    "format": "goemon-jp-original-address-1686-C-v1",
+    "status": "PASSED_G2_LOCAL",
+    "prior_matching_c": 432,
+    "new_matching_c": 1686,
+    "matching_c_functions": 2118,
+    "new_matching_bytes": 101448,
+    "matching_c_bytes": 111856,
+    "assembly_functions_remaining": 5258,
+    "manifest": "decomp/research/jp1686_promotion/candidates.csv",
+    "stager": "decomp/japan_1686_promotion.py",
+    "clean_build": "decomp/build_japan_1686_promotion.sh",
+    "original_expanded_sha1": "6f8745fecc3a5e7d4918c7a73353eb0726116ded",
+    "original_retail_sha1": "9843ee979b5f6c80f5eda85df0baed9ae7c4e73b",
+    "proof": "decomp/results/japan_0_2118_promotion_20261120.json",
+    "inventory": "decomp/results/japan_0_2118_inventory_20261120.json",
+    "exceptions_in_original_asm": [
+      "func_08001228_6B3168",
+      "func_080012AC_6B51AC"
+    ],
+    "published": false
+  },
+  "glitch_start_three_20261121": {
+    "status": "PASSED_G2",
+    "github_publication": "PUBLISHED_REMOTE_VERIFIED",
+    "implementation_commit": "13a3a08a124e3ba9883d0a30d46b33995e9137d8",
+    "baseline": 2118,
+    "new_c": 3,
+    "new_instruction_bytes": 388,
+    "accepted_jp_c": 2121,
+    "accepted_instruction_bytes": 112244,
+    "assembly_remaining": 5255,
+    "manifest": "decomp/research/glitch_g2_20261121/manifest.json",
+    "stage_adapter": "decomp/glitch_g2_promotion.py",
+    "full_original_rom_sha1": "6f8745fecc3a5e7d4918c7a73353eb0726116ded",
+    "full_original_semantic_relocations": 80747,
+    "original_function_identities": 7376,
+    "teardown_68_bytes": "RETAIN_ASM_ORIGINAL_RELOCATIONS"
+  },
+  "vm_two_20261121": {
+    "status": "PASSED_G2",
+    "github_publication": "PUBLISHED_REMOTE_VERIFIED",
+    "baseline": 2121,
+    "new_c": 2,
+    "new_instruction_bytes": 92,
+    "accepted_jp_c": 2123,
+    "accepted_instruction_bytes": 112336,
+    "assembly_remaining": 5253,
+    "manifest": "decomp/research/vm_g2_20261121/manifest.json",
+    "stage_adapter": "decomp/vm_g2_promotion.py",
+    "result": "decomp/results/japan_0_2123_vm_g2_20261121.json",
+    "original_rom_sha1": "6f8745fecc3a5e7d4918c7a73353eb0726116ded",
+    "original_function_identities": 7376,
+    "semantic_relocations": 80747,
+    "clean_replays": 2,
+    "gameplay": "NOT_RUN",
+    "implementation_commit": "74f940e7c0fb6b0ef7286bca1018780450ae4993"
+  },
+  "short145_native_promotion": {
+    "status": "PUBLISHED_REMOTE_VERIFIED",
+    "new_matching_c_functions": 145,
+    "new_original_instruction_bytes": 8952,
+    "matching_c_functions": 2268,
+    "matching_c_bytes": 121288,
+    "asm_remaining": 5108,
+    "proof": "results/japan_0_2268_short145_g2_20261121.json",
+    "inventory": "results/japan_0_2268_inventory_20261121.json",
+    "source_root": "research/jp_short145_20261121",
+    "stager": "japan_short145_promotion.py",
+    "published": true,
+    "full_original_rom_sha1": "6f8745fecc3a5e7d4918c7a73353eb0726116ded",
+    "full_relocations": 80747,
+    "published_commit": "1fa94856a8a52ec069107fceaa7c828149e9b96a",
+    "publication_record": "results/japan_0_2268_publication_20261121.json"
+  },
+  "donor10_native_promotion": {
+    "format": "goemon-japan-donor10-promotion-v1",
+    "status": "PUBLISHED_REMOTE_VERIFIED",
+    "published": true,
+    "original_c_before": 2268,
+    "new_matching_c": 10,
+    "new_original_instruction_bytes": 716,
+    "matching_c_functions": 2278,
+    "matching_c_bytes": 122004,
+    "asm_remaining": 5098,
+    "proof": "results/japan_0_2278_donor10_g2_20261121.json",
+    "inventory": "results/japan_0_2278_donor10_inventory_20261121.json",
+    "manifest": "research/jp_donor10_20261121/manifest.json",
+    "stager": "japan_donor10_promotion.py",
+    "original_rom_sha1": "6f8745fecc3a5e7d4918c7a73353eb0726116ded",
+    "original_relocations": 80747,
+    "gameplay": "NOT_RUN",
+    "published_commit": "56c01ff13bfc0de545261057a51da9d7cbba11ee",
+    "publication_record": "results/japan_0_2278_donor10_publication_20261121.json"
+  },
+  "donor4_native_promotion": {
+    "format": "goemon-japan-donor4-promotion-v1",
+    "status": "PUBLISHED_REMOTE_VERIFIED",
+    "published": true,
+    "previous_matching_c": 2278,
+    "new_matching_c": 4,
+    "new_matching_bytes": 120,
+    "matching_c_functions": 2282,
+    "matching_c_bytes": 122124,
+    "asm_remaining": 5094,
+    "proof": "results/japan_0_2282_donor4_g2_20261121.json",
+    "inventory": "results/japan_0_2282_donor4_inventory_20261121.json",
+    "manifest": "research/jp_donor4_20261121/manifest.json",
+    "stager": "japan_donor4_promotion.py",
+    "original_sha1": "6f8745fecc3a5e7d4918c7a73353eb0726116ded",
+    "original_relocations": 80747,
+    "gameplay": "NOT_RUN",
+    "published_commit": "0d438041096567c85b315eb284ea9b548b9f8491",
+    "publication_record": "results/japan_0_2282_donor4_publication_20261121.json"
+  },
+  "tiny7_native_promotion": {
+    "format": "goemon-japan-tiny7-promotion-v1",
+    "status": "PUBLISHED_REMOTE_VERIFIED",
+    "published": true,
+    "original_c_before": 2282,
+    "new_matching_c": 7,
+    "new_original_instruction_bytes": 156,
+    "matching_c_functions": 2289,
+    "matching_c_bytes": 122280,
+    "asm_remaining": 5087,
+    "proof": "results/japan_0_2289_tiny7_g2_20261121.json",
+    "inventory": "results/japan_0_2289_tiny7_inventory_20261121.json",
+    "source_root": "research/jp_tiny7_20261121",
+    "stager": "japan_tiny7_promotion.py",
+    "full_original_rom_sha1": "6f8745fecc3a5e7d4918c7a73353eb0726116ded",
+    "retail_rom_sha1": "9843ee979b5f6c80f5eda85df0baed9ae7c4e73b",
+    "elf_identities": 7376,
+    "semantic_relocations": 80747,
+    "full_local_ci": "PASS",
+    "gameplay": "NOT_RUN",
+    "published_commit": "f7a7f3565540b552904ebc21a0cf2ebe3ea8118a",
+    "publication_record": "results/japan_0_2289_tiny7_publication_20261121.json"
+  },
+  "retry29_native_promotion": {
+    "format": "goemon-japan-retry29-promotion-v1",
+    "status": "PUBLISHED_REMOTE_VERIFIED",
+    "published": true,
+    "original_c_before": 2289,
+    "new_matching_c": 14,
+    "new_original_instruction_bytes": 512,
+    "matching_c_functions": 2303,
+    "matching_c_bytes": 122792,
+    "asm_remaining": 5073,
+    "proof": "results/japan_0_2303_retry29_g2_20261121.json",
+    "inventory": "results/japan_0_2303_retry29_inventory_20261121.json",
+    "manifest": "research/jp_retry29_20261121/manifest.json",
+    "stager": "japan_retry29_promotion.py",
+    "full_original_rom_sha1": "6f8745fecc3a5e7d4918c7a73353eb0726116ded",
+    "retail_rom_sha1": "9843ee979b5f6c80f5eda85df0baed9ae7c4e73b",
+    "original_elf_identities": 7376,
+    "semantic_relocations": 80747,
+    "full_local_ci": "PASS",
+    "gameplay": "NOT_RUN",
+    "published_commit": "ca77fe2b4d5b47b106b723a23a60da5b34b0d4b7",
+    "publication_record": "results/japan_0_2303_retry29_publication_20261121.json"
+  },
+  "retry10_native_promotion": {
+    "format": "goemon-japan-retry10-alternate-promotion-v1",
+    "status": "PUBLISHED_REMOTE_VERIFIED",
+    "published": true,
+    "original_c_before": 2303,
+    "new_matching_c": 4,
+    "new_original_instruction_bytes": 160,
+    "matching_c_functions": 2307,
+    "matching_c_bytes": 122952,
+    "asm_remaining": 5069,
+    "proof": "results/japan_0_2307_retry10_g2_20261121.json",
+    "inventory": "results/japan_0_2307_retry10_inventory_20261121.json",
+    "manifest": "research/jp_retry10_20261121/manifest.json",
+    "stager": "japan_retry10_promotion.py",
+    "full_original_rom_sha1": "6f8745fecc3a5e7d4918c7a73353eb0726116ded",
+    "retail_rom_sha1": "9843ee979b5f6c80f5eda85df0baed9ae7c4e73b",
+    "original_elf_identities": 7376,
+    "semantic_relocations": 80747,
+    "full_local_ci": "PASS",
+    "false_path_undefined_C": "func_08001410_70F980",
+    "gameplay": "NOT_RUN",
+    "published_commit": "ea758300aab5de1d344d4025a56314de72022bbc",
+    "publication_record": "results/japan_0_2307_retry10_publication_20261121.json"
+  },
+  "expand7_native_promotion": {
+    "format": "goemon-japan-expand7-promotion-v1",
+    "status": "PUBLISHED_REMOTE_VERIFIED",
+    "published": true,
+    "original_c_before": 2307,
+    "new_matching_c": 7,
+    "new_original_instruction_bytes": 284,
+    "matching_c_functions": 2314,
+    "matching_c_bytes": 123236,
+    "asm_remaining": 5062,
+    "source_root": "research/jp_expand7_20261121",
+    "manifest": "research/jp_expand7_20261121/manifest.json",
+    "stager": "japan_expand7_promotion.py",
+    "proof": "results/japan_0_2314_expand7_g2_20261121.json",
+    "inventory": "results/japan_0_2314_expand7_inventory_20261121.json",
+    "expanded_rom_sha1": "6f8745fecc3a5e7d4918c7a73353eb0726116ded",
+    "retail_rom_sha1": "9843ee979b5f6c80f5eda85df0baed9ae7c4e73b",
+    "elf_identities": 7376,
+    "semantic_relocations": 80747,
+    "full_local_ci": "PASS",
+    "gameplay": "NOT_RUN",
+    "published_commit": "921b024be4efd068e98f30853c62401ecae55f92",
+    "publication_record": "results/japan_0_2314_expand7_publication_20261121.json"
+  },
+  "cright_dual_reference_20261123": {
+    "format": "goemon-japan-cright-dual-original-reference-G2-v1",
+    "status": "PASSED_G2_DUAL_REFERENCE_LOCAL",
+    "original_c_before": 2369,
+    "new_matching_c": 1,
+    "matching_c_functions": 2370,
+    "matching_c_bytes": 127008,
+    "asm_remaining": 5006,
+    "target": "func_80212514_5CDAA4",
+    "rom_offset": 6085284,
+    "vma": 2149655828,
+    "size": 396,
+    "original_rom_sha1": "6f8745fecc3a5e7d4918c7a73353eb0726116ded",
+    "original_relocation_reference_count": 80747,
+    "independent_original_asm_relocation_reference_count": 80745,
+    "candidate_relocation_count": 80745,
+    "ordinary_raw_splat_relocation_equal": false,
+    "dual_original_reference_relocation_exact": true,
+    "reference_sha256": "43a133b21ac2b18d8e1d00f8c4e5718776b001a1f45c54e807dae12165e797c0",
+    "source": "research/jp_cright_initializer_20261122/stage_second_symbolic_99of99.c",
+    "stager": "japan_cright_promotion.py",
+    "provenance_checker": "japan_cright_dual_reference.py",
+    "proof": "results/japan_0_2370_cright_dual_reference_g2_20261123.json",
+    "inventory": "results/japan_0_2370_cright_inventory_20261123.json",
+    "gameplay": "NOT_RUN"
+  },
+  "crossregion30_native_promotion": {
+    "accepted_original_C": 2428,
+    "accepted_original_bytes": 130268,
+    "asm_remaining": 4948,
+    "base_original_C": 2398,
+    "canonical_semantic_relocations": 80745,
+    "excluded_three_asm": [
+      "osAiGetLength",
+      "__osSpGetStatus",
+      "__osSpSetStatus"
+    ],
+    "format": "goemon-JP2428-original-full-G2-v1",
+    "full_local_ci": "PASS_EXIT_0",
+    "full_original_elf_identities": 7376,
+    "inventory": "decomp/results/japan_0_2428_crossregion30_inventory_20261123.json",
+    "metadata_only_absolute_symbol_type_corrections": 3,
+    "new_original_C": 30,
+    "original_sha1": "6f8745fecc3a5e7d4918c7a73353eb0726116ded",
+    "proof": "decomp/results/japan_0_2428_crossregion30_g2_20261123.json",
+    "retail_sha1": "9843ee979b5f6c80f5eda85df0baed9ae7c4e73b",
+    "source_manifest": "decomp/regions/japan_0_crossregion30_2428.json",
+    "stable_global_symbol_identities_exact": 26393,
+    "status": "PUBLISHED_REMOTE_VERIFIED",
+    "published_git_commit": "360a9f6c3e381b0a9f5c7a939f36c16a338516a0"
+  },
+  "native100_promotion": {
+    "status": "PASSED_G2_LOCAL",
+    "base_original_C": 2428,
+    "new_original_C": 100,
+    "accepted_original_C": 2528,
+    "accepted_original_bytes": 137404,
+    "asm_remaining": 4848,
+    "canonical_semantic_relocations": 80745,
+    "full_original_elf_identities": 7376,
+    "source_manifest": "decomp/regions/japan_0_native100_2528.json",
+    "proof": "decomp/results/japan_0_2528_native100_g2_20261123.json",
+    "inventory": "decomp/results/japan_0_2528_native100_inventory_20261123.json"
+  },
+  "cright6_promotion": {
+    "format": "goemon-jp-cright6-post2528-v1",
+    "status": "PASSED_G2_LOCAL",
+    "base_original_C": 2528,
+    "new_original_C": 6,
+    "accepted_original_C": 2534,
+    "accepted_original_bytes": 138028,
+    "asm_remaining": 4842,
+    "canonical_semantic_relocations": 80745,
+    "full_original_elf_identities": 7376,
+    "source_manifest": "decomp/regions/japan_0_cright6_2534.json",
+    "proof": "decomp/results/japan_0_2534_cright6_g2_20261124.json",
+    "inventory": "decomp/results/japan_0_2534_cright6_inventory_20261124.json"
+  },
+  "transition17_promotion": {
+    "format": "goemon-transition-state-original-g2-v1",
+    "status": "PASSED_G2_LOCAL",
+    "base_original_C": 2534,
+    "new_original_C": 17,
+    "accepted_original_C": 2551,
+    "accepted_original_bytes": 139460,
+    "asm_remaining": 4825,
+    "canonical_semantic_relocations": 80655,
+    "full_original_elf_identities": 7376,
+    "source_manifest": "decomp/regions/japan_0_transition17_2551.json",
+    "proof": "decomp/results/japan_0_2551_transition17_g2_20261124.json",
+    "inventory": "decomp/results/japan_0_2551_transition17_inventory_20261124.json"
+  },
+  "consolidated13_promotion": {
+    "format": "goemon-jp-consolidated13-post2551-v1",
+    "status": "PASSED_G2_LOCAL",
+    "base_original_C": 2551,
+    "new_original_C": 13,
+    "accepted_original_C": 2564,
+    "accepted_original_bytes": 141596,
+    "asm_remaining": 4812,
+    "canonical_semantic_relocations": 80655,
+    "full_original_elf_identities": 7376,
+    "source_manifest": "decomp/regions/japan_0_consolidated13_2564.json",
+    "proof": "decomp/results/japan_0_2564_consolidated13_g2_20261124.json",
+    "inventory": "decomp/results/japan_0_2564_consolidated13_inventory_20261124.json"
+  },
+  "batch302_promotion": {
+    "format": "goemon-batch302-original-ido-v1",
+    "status": "PASSED_G2_LOCAL",
+    "base_original_C": 2564,
+    "new_original_C": 100,
+    "accepted_original_C": 2664,
+    "accepted_original_bytes": 155416,
+    "asm_remaining": 4712,
+    "canonical_semantic_relocations": 80655,
+    "full_original_elf_identities": 7376,
+    "source_manifest": "decomp/regions/japan_0_2664_batch302.json",
+    "proof": "decomp/results/japan_0_batch302_g2_20261125.json",
+    "inventory": "decomp/results/japan_0_2664_batch302_inventory_20261125.json"
+  },
+  "wave194_promotion": {
+    "format": "goemon-wave194-original-ido-v1",
+    "status": "PASSED_G2_LOCAL",
+    "base_original_C": 2664,
+    "new_original_C": 93,
+    "accepted_original_C": 2757,
+    "accepted_original_bytes": 167420,
+    "asm_remaining": 4619,
+    "canonical_semantic_relocations": 80654,
+    "full_original_elf_identities": 7376,
+    "source_manifest": "decomp/regions/japan_0_2757_wave194.json",
+    "proof": "decomp/results/japan_0_wave194_g2_20261125.json",
+    "inventory": "decomp/results/japan_0_2757_wave194_inventory_20261125.json"
+  }
+}

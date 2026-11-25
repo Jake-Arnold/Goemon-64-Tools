@@ -1,0 +1,775 @@
+{
+  "format": "goemon-promo367-original-ido-v1",
+  "region": "japan_0",
+  "base_c": 2757,
+  "matching_c": 2842,
+  "assembly_remaining": 4534,
+  "original_C_instruction_bytes": 178040,
+  "functions": [
+    {
+      "name": "func_80001D08_2908",
+      "rom_offset": 10504,
+      "vma": 2147491080,
+      "size": 44,
+      "source": "research/promo367_20261125/sources/japan_0/func_80001D08_2908/candidate.c",
+      "source_sha256": "4aeee419879a44b085ede1f00fe3bd40ca85e5bd72008e04e0abe4911a1e1219",
+      "original_sha256": "09e14a91a615b5f04f5b9ea68e652ed8fbc356f65276a556a084bfcc2a663235"
+    },
+    {
+      "name": "func_8000A474_B074",
+      "rom_offset": 45172,
+      "vma": 2147525748,
+      "size": 80,
+      "source": "research/promo367_20261125/sources/japan_0/func_8000A474_B074/candidate.c",
+      "source_sha256": "b09edb723cf02c9c49646f3051f359f667ea9ebbaa63746717b1ebd53105825b",
+      "original_sha256": "b7dc315f42ed1b646154da72a46c938539f37ea0e2cfb28b1e2572b5017447fb"
+    },
+    {
+      "name": "func_80034794_35394",
+      "rom_offset": 218004,
+      "vma": 2147698580,
+      "size": 52,
+      "source": "research/promo367_20261125/sources/japan_0/func_80034794_35394/candidate.c",
+      "source_sha256": "0c964ce379edb906f927c7a2c9df5055e8e14550d014c3b37325351ac6640390",
+      "original_sha256": "8b4a7a4f6e0bfd278fcaa5153dda0ea18a3e1aaa01a8427de94ef0f19c84348b"
+    },
+    {
+      "name": "func_80035398_35F98",
+      "rom_offset": 221080,
+      "vma": 2147701656,
+      "size": 148,
+      "source": "research/promo367_20261125/sources/japan_0/func_80035398_35F98/candidate.c",
+      "source_sha256": "509688a49c67d88007971b5c5c273b00a83ea0e35082e5c36f6bfcdfb73dcd01",
+      "original_sha256": "06000e3dc8d5f629dbc6235f8209ea9466497852bd09708b4ad63257dab423c3"
+    },
+    {
+      "name": "alMainBusParam",
+      "rom_offset": 326784,
+      "vma": 2147807360,
+      "size": 48,
+      "source": "research/promo367_20261125/sources/japan_0/alMainBusParam/candidate.c",
+      "source_sha256": "c0aee751b0073861d87292de1d0b177047aa69b727e4243637702414f29aa66f",
+      "original_sha256": "410003e495552fd8a304bf7f527965d5f53408f4a1e584c288b659710dd2f09c"
+    },
+    {
+      "name": "alAuxBusParam",
+      "rom_offset": 333952,
+      "vma": 2147814528,
+      "size": 48,
+      "source": "research/promo367_20261125/sources/japan_0/alAuxBusParam/candidate.c",
+      "source_sha256": "894d263239959f212d30a37d01c9f1207a256d35192d5eab079b1d73878ff259",
+      "original_sha256": "410003e495552fd8a304bf7f527965d5f53408f4a1e584c288b659710dd2f09c"
+    },
+    {
+      "name": "func_801E3ECC_59FE9C",
+      "rom_offset": 5897884,
+      "vma": 2149465804,
+      "size": 100,
+      "source": "research/promo367_20261125/sources/japan_0/func_801E3ECC_59FE9C/candidate.c",
+      "source_sha256": "2c5c7604ede7a5a9d8382ef9d999ee6aa99f8838452b049ec40df38ca88e2918",
+      "original_sha256": "9ca61d515ea652df71121985a50de1ea2ce2e5a8d6c1bfe64b7e97e2384d0b04"
+    },
+    {
+      "name": "func_801E4A18_5A09E8",
+      "rom_offset": 5900776,
+      "vma": 2149468696,
+      "size": 152,
+      "source": "research/promo367_20261125/sources/japan_0/func_801E4A18_5A09E8/candidate.c",
+      "source_sha256": "ff67b50c465d546ef3231c74de2554a535dd483338cdd9bc60e4d222c2f1ed3a",
+      "original_sha256": "bb037d3afa5880983bc4ea167e94fc996ec6308359c4b9c78f6d03297b7265cf"
+    },
+    {
+      "name": "func_801E4F40_5A0F10",
+      "rom_offset": 5902096,
+      "vma": 2149470016,
+      "size": 104,
+      "source": "research/promo367_20261125/sources/japan_0/func_801E4F40_5A0F10/candidate.c",
+      "source_sha256": "6cb5535b3fb5ff9365cd141766ac74f5b349a7801e648ad2bca58ba2202beef8",
+      "original_sha256": "97422ce7810a135878f6894fe20f3d75bf1ffd28a1d225e1b52ea59a7fa79a96"
+    },
+    {
+      "name": "func_801E5AD4_5A1AA4",
+      "rom_offset": 5905060,
+      "vma": 2149472980,
+      "size": 136,
+      "source": "research/promo367_20261125/sources/japan_0/func_801E5AD4_5A1AA4/candidate.c",
+      "source_sha256": "478c263e4019e16b50d1b1a923e2c8f3fa635c59fb446859a2f8649be08ba105",
+      "original_sha256": "dc4be210b3ba2cbca28c1df72f578b2f9d7ee4e3f6087d14e4a25968e5533c46"
+    },
+    {
+      "name": "func_801E6588_5A2558",
+      "rom_offset": 5907800,
+      "vma": 2149475720,
+      "size": 96,
+      "source": "research/promo367_20261125/sources/japan_0/func_801E6588_5A2558/candidate.c",
+      "source_sha256": "85aea14912f10e6a1f79c045b25fbec3dc62ababe02907194c861b720cf296b3",
+      "original_sha256": "4ed17e2d9fd12cea6341ee2265cdde50272b34e7a4857665c638e044610d0cc6"
+    },
+    {
+      "name": "func_801F5804_5B17D4",
+      "rom_offset": 5969876,
+      "vma": 2149537796,
+      "size": 284,
+      "source": "research/promo367_20261125/sources/japan_0/func_801F5804_5B17D4/candidate.c",
+      "source_sha256": "99e62c05c96d611510c88bfb7feb98346fa981fe765f007a861e929d7a25ad2d",
+      "original_sha256": "b9a0f4f3a59382152a40535c09f95940d042c9e2a6bff111e333f97b5f6588bf"
+    },
+    {
+      "name": "func_801F9698_5B5668",
+      "rom_offset": 5985896,
+      "vma": 2149553816,
+      "size": 204,
+      "source": "research/promo367_20261125/sources/japan_0/func_801F9698_5B5668/candidate.c",
+      "source_sha256": "fdf8905d1b112e111c247b6c0fbcfb1d2db1e46a82802fff241b477978a4897f",
+      "original_sha256": "12821acb0b3a2928030fce74e84d2fa27563eaab1be2e93c1a7111c9963cfa46"
+    },
+    {
+      "name": "func_801FB07C_5B704C",
+      "rom_offset": 5992524,
+      "vma": 2149560444,
+      "size": 96,
+      "source": "research/promo367_20261125/sources/japan_0/func_801FB07C_5B704C/candidate.c",
+      "source_sha256": "0559bc94fefa46dc029118776ec8fbfc469804ea71c95ebe9a211c13ba96f749",
+      "original_sha256": "3fd294557f5ecaca061e49625629d6f4fb381c849a2d8d279115d45f6ff2d937"
+    },
+    {
+      "name": "func_801FB940_5B7910",
+      "rom_offset": 5994768,
+      "vma": 2149562688,
+      "size": 116,
+      "source": "research/promo367_20261125/sources/japan_0/func_801FB940_5B7910/candidate.c",
+      "source_sha256": "4f3a4d64dc3593c248fea82fdbfbbc61c7a772bf9398068343659eaf572f4776",
+      "original_sha256": "c23b096c7b4868ee6c6d80ddcd1c30e34c2fe8b9ae8f283dd8afcb97b7835930"
+    },
+    {
+      "name": "func_801FB9B4_5B7984",
+      "rom_offset": 5994884,
+      "vma": 2149562804,
+      "size": 100,
+      "source": "research/promo367_20261125/sources/japan_0/func_801FB9B4_5B7984/candidate.c",
+      "source_sha256": "50a51ac0eddf7c739eb47b7fe5201882647d6c56b5e68ffdd65b0ad5ae7f23ba",
+      "original_sha256": "8f0307ff047880c1a827b291071362adae51de3884beb6fc70cf23c9588ae826"
+    },
+    {
+      "name": "func_801FBB3C_5B7B0C",
+      "rom_offset": 5995276,
+      "vma": 2149563196,
+      "size": 108,
+      "source": "research/promo367_20261125/sources/japan_0/func_801FBB3C_5B7B0C/candidate.c",
+      "source_sha256": "6b40d824284dcbd2c730b9c927bb7d44937841e3ba313892b32e52ad4fe158ad",
+      "original_sha256": "b4b3336eb4f5f433fee382d48a30c6375ff16bd2788e5d7c695c39ff07c483c0"
+    },
+    {
+      "name": "func_801FBCD4_5B7CA4",
+      "rom_offset": 5995684,
+      "vma": 2149563604,
+      "size": 112,
+      "source": "research/promo367_20261125/sources/japan_0/func_801FBCD4_5B7CA4/candidate.c",
+      "source_sha256": "7a3a84879e7fd52da78ff518db18a59a0cd1e0e7ca42946b05964e6d37e85631",
+      "original_sha256": "d1587e5b21fb1ac5ea41dc1a79a4e61424096a2273c0ebc4e42e4eef991dde99"
+    },
+    {
+      "name": "func_801FBD44_5B7D14",
+      "rom_offset": 5995796,
+      "vma": 2149563716,
+      "size": 100,
+      "source": "research/promo367_20261125/sources/japan_0/func_801FBD44_5B7D14/candidate.c",
+      "source_sha256": "a0ad0e98c82f2e3a7a629eeae68710309804205a3bace19784e0b2cf7d7c4c63",
+      "original_sha256": "57c5e993cca072a2871672e307dfdb3af7cc2bee1b778ae1c3302620ba45bee9"
+    },
+    {
+      "name": "func_801FBDA8_5B7D78",
+      "rom_offset": 5995896,
+      "vma": 2149563816,
+      "size": 108,
+      "source": "research/promo367_20261125/sources/japan_0/func_801FBDA8_5B7D78/candidate.c",
+      "source_sha256": "2cc04138e2610d3a651aed382b2be9641db135f6b6ced401f56e77fdeda49b6d",
+      "original_sha256": "b4b3336eb4f5f433fee382d48a30c6375ff16bd2788e5d7c695c39ff07c483c0"
+    },
+    {
+      "name": "func_801D8910_603390",
+      "rom_offset": 6304656,
+      "vma": 2149419280,
+      "size": 60,
+      "source": "research/promo367_20261125/sources/japan_0/func_801D8910_603390/candidate.c",
+      "source_sha256": "071d05b95e6b1c9fb7ee23cf9c33df86fce7e163c45fd804639fcd356a257a08",
+      "original_sha256": "9923428401d05ef63b9ee052ce3df240fdb39637c4d7b47af7c1928bb5b605c2"
+    },
+    {
+      "name": "func_801D6040_644530",
+      "rom_offset": 6571312,
+      "vma": 2149408832,
+      "size": 80,
+      "source": "research/promo367_20261125/sources/japan_0/func_801D6040_644530/candidate.c",
+      "source_sha256": "fce02c7e28aae346e4c5ff463e8172fe6890e8c7e5404c474be3c75d5ffe6460",
+      "original_sha256": "1d32da50fd3b69baaa5ed8687d5fc2205734033d31f80fc662c64b66ac361374"
+    },
+    {
+      "name": "func_801DA2E0_6487D0",
+      "rom_offset": 6588368,
+      "vma": 2149425888,
+      "size": 100,
+      "source": "research/promo367_20261125/sources/japan_0/func_801DA2E0_6487D0/candidate.c",
+      "source_sha256": "5cacebf65789c816fb6e78778e92d4cec933d0f3d450bb6b687e5fe9972b266e",
+      "original_sha256": "cf86d2d8edbf6fe9e876153a76de352954107849f75acac33cf28846c42b4fde"
+    },
+    {
+      "name": "func_801DA874_648D64",
+      "rom_offset": 6589796,
+      "vma": 2149427316,
+      "size": 100,
+      "source": "research/promo367_20261125/sources/japan_0/func_801DA874_648D64/candidate.c",
+      "source_sha256": "0029656e9bb2b995ea0281828d09b950bf568bdf613a7da57e8d3db9ab8daedb",
+      "original_sha256": "0a34218c6230fec52996d76d3bb5d09d2e3d9c92ddcdfc20713e9595b5c23f79"
+    },
+    {
+      "name": "func_801DC6A0_64AB90",
+      "rom_offset": 6597520,
+      "vma": 2149435040,
+      "size": 100,
+      "source": "research/promo367_20261125/sources/japan_0/func_801DC6A0_64AB90/candidate.c",
+      "source_sha256": "ba8a716d6b9dfc9fa52c7bdb93828604b8e839cb19cf94bafba840d83deaa901",
+      "original_sha256": "5ba24a6d6fa0cf10505a8421e7b9246bcbcc23525c258be00b0b87a66b7fcc03"
+    },
+    {
+      "name": "func_8021CD68_686458",
+      "rom_offset": 6841432,
+      "vma": 2149698920,
+      "size": 68,
+      "source": "research/promo367_20261125/sources/japan_0/func_8021CD68_686458/candidate.c",
+      "source_sha256": "464db0419fa6caf4d4d514a74d7626242f2fc39b4b23aff43b4cf549a4e19b8b",
+      "original_sha256": "1557ae742c0889885d355974d7e5d0facdbf49b70ec4518de0672406a5b46947"
+    },
+    {
+      "name": "func_801D168C_6A366C",
+      "rom_offset": 6960748,
+      "vma": 2149389964,
+      "size": 60,
+      "source": "research/promo367_20261125/sources/japan_0/func_801D168C_6A366C/candidate.c",
+      "source_sha256": "2088294837e9b76192ce973c6ac7c022983a0eaffc78e37f5955322a3d76ae28",
+      "original_sha256": "48bf756e5b7fde7cee594d1e41835845fd4972aca9633254a1420cd743d5b81a"
+    },
+    {
+      "name": "func_08003364_6B7264",
+      "rom_offset": 7041636,
+      "vma": 134230884,
+      "size": 192,
+      "source": "research/promo367_20261125/sources/japan_0/func_08003364_6B7264/candidate.c",
+      "source_sha256": "e7e5068eced9ab07b2e7bbf0c8235d34cb48720b936fe28cdff6928617cfa555",
+      "original_sha256": "0f8c88822e1096a2bd284f74a5c0b5b1b026b30848bcabec62fb6f261d5ad1f1"
+    },
+    {
+      "name": "func_08001FC4_6B9D44",
+      "rom_offset": 7052612,
+      "vma": 134225860,
+      "size": 176,
+      "source": "research/promo367_20261125/sources/japan_0/func_08001FC4_6B9D44/candidate.c",
+      "source_sha256": "ae448d83b0461297c78935229be6eacd7f4133785f3a576de459a65062a481ac",
+      "original_sha256": "f894144cf8fbc4dd3f06fb03f8aa98899e12cbd19d97cee8370c6e5521d39cf3"
+    },
+    {
+      "name": "func_08002C74_6BA9F4",
+      "rom_offset": 7055860,
+      "vma": 134229108,
+      "size": 84,
+      "source": "research/promo367_20261125/sources/japan_0/func_08002C74_6BA9F4/candidate.c",
+      "source_sha256": "7f703bde3a078078dd802ba9431db52c892cb878f40dc4f64acfbc8a4e32d282",
+      "original_sha256": "dd9efae9db449f04a7db46d66262e41ea5dca5460a316803e810aecce5dd03df"
+    },
+    {
+      "name": "func_080037EC_6BB56C",
+      "rom_offset": 7058796,
+      "vma": 134232044,
+      "size": 104,
+      "source": "research/promo367_20261125/sources/japan_0/func_080037EC_6BB56C/candidate.c",
+      "source_sha256": "705b20389f037dd4d9232be1c67a8aeaf33cc6910db2cf0f070e86d50ab28ebd",
+      "original_sha256": "466c68cd90c7b80455a07c3353b42b94263989acee09f062c64bf9538711e752"
+    },
+    {
+      "name": "func_08003BB8_6BB938",
+      "rom_offset": 7059768,
+      "vma": 134233016,
+      "size": 76,
+      "source": "research/promo367_20261125/sources/japan_0/func_08003BB8_6BB938/candidate.c",
+      "source_sha256": "7cf61ce87ad07f8e7897a05372b77ff5fd1f53fa08fd8a04c0d2d699bcbb081e",
+      "original_sha256": "aa9d59615356273032d09ce94b9a1a1156399adc753fe21927950258454386ff"
+    },
+    {
+      "name": "func_08005D88_6BDB08",
+      "rom_offset": 7068424,
+      "vma": 134241672,
+      "size": 80,
+      "source": "research/promo367_20261125/sources/japan_0/func_08005D88_6BDB08/candidate.c",
+      "source_sha256": "daa3e0cfd5bf64561b5261bccc3124851a701cf24e55c98ebe8d7a4fe3d74a02",
+      "original_sha256": "990c490884b9875d50ac9c58912c78389441a7d7b75383d0044688d9baca5649"
+    },
+    {
+      "name": "func_08007584_6BF304",
+      "rom_offset": 7074564,
+      "vma": 134247812,
+      "size": 172,
+      "source": "research/promo367_20261125/sources/japan_0/func_08007584_6BF304/candidate.c",
+      "source_sha256": "9e6bb70e14e8c97d1cd6c33f6efe0ff372a1e9b76d8d3a9ad33394ce343a9c48",
+      "original_sha256": "0bad7ecb330c074a6bd40140b3a5d6dd8e387ea5dbc9adb113db33ab4accb0a3"
+    },
+    {
+      "name": "func_08007C58_6BF9D8",
+      "rom_offset": 7076312,
+      "vma": 134249560,
+      "size": 104,
+      "source": "research/promo367_20261125/sources/japan_0/func_08007C58_6BF9D8/candidate.c",
+      "source_sha256": "7d891fe33bdac675c268d8ca0588545bd9186301f72b8e244dd356de40382089",
+      "original_sha256": "0e8a025ad1b4ef1eb59a8730fef995c74faf002d0aa1bf7877749ed76b7592fb"
+    },
+    {
+      "name": "func_08008130_6BFEB0",
+      "rom_offset": 7077552,
+      "vma": 134250800,
+      "size": 120,
+      "source": "research/promo367_20261125/sources/japan_0/func_08008130_6BFEB0/candidate.c",
+      "source_sha256": "dedf222d99cbb5840f586ede0d651f3071c8028a46d2c49337aa1be4e1643f26",
+      "original_sha256": "1bf21411f7aa575abef683eaf5e43309bb33f1da6c650d6c62d22960646699cf"
+    },
+    {
+      "name": "func_080085C0_6C0340",
+      "rom_offset": 7078720,
+      "vma": 134251968,
+      "size": 104,
+      "source": "research/promo367_20261125/sources/japan_0/func_080085C0_6C0340/candidate.c",
+      "source_sha256": "0c475e5f2e6f8c842f41b115d379ccf09f780bd1e31875fb9d0cb902490e90fa",
+      "original_sha256": "7b252544c1ca41fba72c205ab722d80157adbc12b5823502606ddd2d79a1a0e4"
+    },
+    {
+      "name": "func_08001268_6C5428",
+      "rom_offset": 7099432,
+      "vma": 134222440,
+      "size": 80,
+      "source": "research/promo367_20261125/sources/japan_0/func_08001268_6C5428/candidate.c",
+      "source_sha256": "a699b060453f31bbc2efe7cc333d7455a82cceabf7b75c83a0e393e7e7b68525",
+      "original_sha256": "eba073d2c26cc57f62e2a5b11ed54554aca84ee4dfad23443ef10ef2194ec321"
+    },
+    {
+      "name": "func_08001324_6C54E4",
+      "rom_offset": 7099620,
+      "vma": 134222628,
+      "size": 100,
+      "source": "research/promo367_20261125/sources/japan_0/func_08001324_6C54E4/candidate.c",
+      "source_sha256": "cb8a73fce35d3ed84e3efa4097939d60a03deb078013e38b797cbc0b1fc3b2be",
+      "original_sha256": "ca44426cc30da448a57c9c985759f8706585ac7b326535a9c4c35375fc5d66fc"
+    },
+    {
+      "name": "func_08001388_6C5548",
+      "rom_offset": 7099720,
+      "vma": 134222728,
+      "size": 92,
+      "source": "research/promo367_20261125/sources/japan_0/func_08001388_6C5548/candidate.c",
+      "source_sha256": "6a989e92ecaa1cd59e99bdee3ee7989871042454089510121c1f46647bdc2027",
+      "original_sha256": "ecb3443b156141898f232baf441e69cf4f657ffe7e452d24d9a871f4fa3c9672"
+    },
+    {
+      "name": "func_08002A20_6C6BE0",
+      "rom_offset": 7105504,
+      "vma": 134228512,
+      "size": 120,
+      "source": "research/promo367_20261125/sources/japan_0/func_08002A20_6C6BE0/candidate.c",
+      "source_sha256": "68f9220e8857d9bf556679cacef24e9a1ff3a8ed44419fff085dcffb99ae8bdd",
+      "original_sha256": "9654273fb8165da5084153ca9f662f4b71fc2043d08970a389ef7251c91ff7db"
+    },
+    {
+      "name": "func_08002CEC_6C6EAC",
+      "rom_offset": 7106220,
+      "vma": 134229228,
+      "size": 120,
+      "source": "research/promo367_20261125/sources/japan_0/func_08002CEC_6C6EAC/candidate.c",
+      "source_sha256": "7005a3b4e57ee7aca274cf19322209bc445d5fdc9260591409f1e719e0927657",
+      "original_sha256": "d0710f53bb27c258cf60b72b1af093f667f73ac933ba98f601b8c9489699d2f8"
+    },
+    {
+      "name": "func_08003B48_6C7D08",
+      "rom_offset": 7109896,
+      "vma": 134232904,
+      "size": 308,
+      "source": "research/promo367_20261125/sources/japan_0/func_08003B48_6C7D08/candidate.c",
+      "source_sha256": "c1c93c5151ebfce27b19c84f4a64e6fd50aed26f9ba1f2dd2b145f5e6c97a74e",
+      "original_sha256": "67983a1456da02dab041a63ed40e17e1b17b679bba5be318983fb0d3e5d2ea0e"
+    },
+    {
+      "name": "func_08005524_6C96E4",
+      "rom_offset": 7116516,
+      "vma": 134239524,
+      "size": 116,
+      "source": "research/promo367_20261125/sources/japan_0/func_08005524_6C96E4/candidate.c",
+      "source_sha256": "75e10cbaaba1cba7353d2a43037b555b35ddf3fd35507c4f0e7359f3826d668e",
+      "original_sha256": "36a1d29753b557e900f8d0c00b416357b34b75fef51648226a6ae9332d4ff71f"
+    },
+    {
+      "name": "func_0800562C_6C97EC",
+      "rom_offset": 7116780,
+      "vma": 134239788,
+      "size": 96,
+      "source": "research/promo367_20261125/sources/japan_0/func_0800562C_6C97EC/candidate.c",
+      "source_sha256": "adacdf2d63e0d910fac4d02b471280b8798a55466ab7bf44bc959f19c8ca1473",
+      "original_sha256": "f0751bd8028597fa9c3d2642127a2331b78115f698ae6479f4b64a9aa3701554"
+    },
+    {
+      "name": "func_08005BC8_6C9D88",
+      "rom_offset": 7118216,
+      "vma": 134241224,
+      "size": 116,
+      "source": "research/promo367_20261125/sources/japan_0/func_08005BC8_6C9D88/candidate.c",
+      "source_sha256": "5a117f4cec76345a3fa05f561c2d3ef7de9346ed3bef27a6407ce1882ecc904c",
+      "original_sha256": "7f734b218d1018c9977f0ce76cfa08ed7706972427b7e816065acbd3c7fc5ab0"
+    },
+    {
+      "name": "func_080073BC_6CB57C",
+      "rom_offset": 7124348,
+      "vma": 134247356,
+      "size": 216,
+      "source": "research/promo367_20261125/sources/japan_0/func_080073BC_6CB57C/candidate.c",
+      "source_sha256": "ac570b73f5e2857d6f5f8bb6686f33273fdb0bf1f98921a648e513a9c00803eb",
+      "original_sha256": "0b39cba456aca6630c167b884f659f5efae302c3ce5c238d80e64e17926bd010"
+    },
+    {
+      "name": "func_080075DC_6CB79C",
+      "rom_offset": 7124892,
+      "vma": 134247900,
+      "size": 216,
+      "source": "research/promo367_20261125/sources/japan_0/func_080075DC_6CB79C/candidate.c",
+      "source_sha256": "7bc010d8e6f0f1c22cde5adda8037b7b3eb725bfe860920039d98713f6072666",
+      "original_sha256": "752073232b626aaf1470060b1ba1c53706b78551f1f492c89594a06c3721f0f6"
+    },
+    {
+      "name": "func_080077C8_6CB988",
+      "rom_offset": 7125384,
+      "vma": 134248392,
+      "size": 216,
+      "source": "research/promo367_20261125/sources/japan_0/func_080077C8_6CB988/candidate.c",
+      "source_sha256": "2ad5cf9e1188995a3811cd0311a9b8a3d548bebb56db97e36a7ab652ddec7114",
+      "original_sha256": "54b1391bba2f4732f71533b29d287ea8c802e9142a62effa8acd06016f6b6677"
+    },
+    {
+      "name": "func_08000664_6D8A64",
+      "rom_offset": 7178852,
+      "vma": 134219364,
+      "size": 188,
+      "source": "research/promo367_20261125/sources/japan_0/func_08000664_6D8A64/candidate.c",
+      "source_sha256": "9385fdacc7af69a595e76271f38e9b5e37b5ceb2a07c9d5fc8f0e56f1b010669",
+      "original_sha256": "0e6065c8b6b32248e4c7241fda368c9994d262749f18a01496d7831e64a3720f"
+    },
+    {
+      "name": "func_080007DC_6D948C",
+      "rom_offset": 7181452,
+      "vma": 134219740,
+      "size": 164,
+      "source": "research/promo367_20261125/sources/japan_0/func_080007DC_6D948C/candidate.c",
+      "source_sha256": "b93673edbb4df1c43d7abe870463ffabaec16419471d79cc2ded98343b694289",
+      "original_sha256": "f95cdebc873fb7117b9b5d31258105bc418e2d8619c2e031cea1ddf400ff15f6"
+    },
+    {
+      "name": "func_08000A08_6DB2A8",
+      "rom_offset": 7189160,
+      "vma": 134220296,
+      "size": 116,
+      "source": "research/promo367_20261125/sources/japan_0/func_08000A08_6DB2A8/candidate.c",
+      "source_sha256": "9b40318ca6224fa2251d87100bc896b4cf371547c68ce46f64aab9472b5d5534",
+      "original_sha256": "471e5d2979a8da9a8942c53dd6220321915c2e528469c37c07a8376b7c0e4abd"
+    },
+    {
+      "name": "func_08000B84_6DB424",
+      "rom_offset": 7189540,
+      "vma": 134220676,
+      "size": 92,
+      "source": "research/promo367_20261125/sources/japan_0/func_08000B84_6DB424/candidate.c",
+      "source_sha256": "dee6214ecb3899d1d002bcf45206ab8571a408853620739e1022209c8c73dd4c",
+      "original_sha256": "177441c7b506fc466fe8155c0c52b84a1eb78523767afe75970e312558dd5751"
+    },
+    {
+      "name": "func_08000BE0_6DB480",
+      "rom_offset": 7189632,
+      "vma": 134220768,
+      "size": 88,
+      "source": "research/promo367_20261125/sources/japan_0/func_08000BE0_6DB480/candidate.c",
+      "source_sha256": "c285a1f6a9d6ab3e1629fb3cda26a577af9c706dfb2631229f960547aae58fee",
+      "original_sha256": "211f68534432cdaddb915a646862d28880aac8491192b8887945b8dc43b9092a"
+    },
+    {
+      "name": "func_08002634_6DCED4",
+      "rom_offset": 7196372,
+      "vma": 134227508,
+      "size": 76,
+      "source": "research/promo367_20261125/sources/japan_0/func_08002634_6DCED4/candidate.c",
+      "source_sha256": "31d7050d5ec465ead34dbd96c059b55957ab0600c82790def90d8d204150e207",
+      "original_sha256": "41da971e4164d677b1478ecaa597093562af1e723c25cf5ba96bf5e95b2ccf2f"
+    },
+    {
+      "name": "func_080021C8_6E0958",
+      "rom_offset": 7211352,
+      "vma": 134226376,
+      "size": 232,
+      "source": "research/promo367_20261125/sources/japan_0/func_080021C8_6E0958/candidate.c",
+      "source_sha256": "8646c5fdcbb381c6964aa7f991feebf26fa3b7b659a21fd922441eb088bf65ad",
+      "original_sha256": "51a62741dc08019dba15168925e26b00888436c3b0000da238fe3d99f971780e"
+    },
+    {
+      "name": "func_08002CCC_6E145C",
+      "rom_offset": 7214172,
+      "vma": 134229196,
+      "size": 168,
+      "source": "research/promo367_20261125/sources/japan_0/func_08002CCC_6E145C/candidate.c",
+      "source_sha256": "38b792aa523a0f077a063767c99bb72ec423f16dd6176c208ffdc6d0a49b7892",
+      "original_sha256": "47379569aefb60af8ab1886d8f8d98b92af145a148297e5012abc7dacf650d55"
+    },
+    {
+      "name": "func_08002D74_6E1504",
+      "rom_offset": 7214340,
+      "vma": 134229364,
+      "size": 152,
+      "source": "research/promo367_20261125/sources/japan_0/func_08002D74_6E1504/candidate.c",
+      "source_sha256": "96b9ffc525ded0a96aa81b4ab831341019fa0d98b33552d47a8023db79f00504",
+      "original_sha256": "79677c6c13abf970839f68e0baf35db489276a48c255525990a255e9e239cda0"
+    },
+    {
+      "name": "func_08003650_6E1DE0",
+      "rom_offset": 7216608,
+      "vma": 134231632,
+      "size": 168,
+      "source": "research/promo367_20261125/sources/japan_0/func_08003650_6E1DE0/candidate.c",
+      "source_sha256": "8e9351eee1591ff1d523963a07f323847d84bb6e3ae395e7e353b5f326e156c4",
+      "original_sha256": "ea857489bf49d272a5766fb62b7dec171ccd60721b3ecd2180fd39ab8194e5aa"
+    },
+    {
+      "name": "func_080037D8_6E1F68",
+      "rom_offset": 7217000,
+      "vma": 134232024,
+      "size": 152,
+      "source": "research/promo367_20261125/sources/japan_0/func_080037D8_6E1F68/candidate.c",
+      "source_sha256": "384e833c0255728eda11601b496b0bdacbd1496df6295fd37c22d1763b2f5403",
+      "original_sha256": "a8634ce64500b49e625d52dca76fd93a5dc848868041d0d2f02f02da2ab1e69f"
+    },
+    {
+      "name": "func_080010A4_6E4A14",
+      "rom_offset": 7227924,
+      "vma": 134221988,
+      "size": 80,
+      "source": "research/promo367_20261125/sources/japan_0/func_080010A4_6E4A14/candidate.c",
+      "source_sha256": "44865e16d5c605c80da079229f79295f7c81292164956581cd8b3fd0e53c6f54",
+      "original_sha256": "6ddf9aae96978c04f21af773105794d43ccf4636bced5e1475657d1302f92a7d"
+    },
+    {
+      "name": "func_080014B4_6E4E24",
+      "rom_offset": 7228964,
+      "vma": 134223028,
+      "size": 84,
+      "source": "research/promo367_20261125/sources/japan_0/func_080014B4_6E4E24/candidate.c",
+      "source_sha256": "a7f3d72cf98dd94303d301b8ccbb009ddb72b42ba5545c3d57e872356099b030",
+      "original_sha256": "de8398d908695e777ab6ee4fb93cb97b72b5bb158329fce69c5fa876e3cb73a8"
+    },
+    {
+      "name": "func_080023D0_6E5D40",
+      "rom_offset": 7232832,
+      "vma": 134226896,
+      "size": 116,
+      "source": "research/promo367_20261125/sources/japan_0/func_080023D0_6E5D40/candidate.c",
+      "source_sha256": "db365af9c4af5467de368367d29db25aa335323f31dd3e774e49aecc54aeda9c",
+      "original_sha256": "91b2ca505ee60fc5432d04a119938edada4190e2fad364fa25e643ec7e421429"
+    },
+    {
+      "name": "func_08000468_6EBE98",
+      "rom_offset": 7257752,
+      "vma": 134218856,
+      "size": 88,
+      "source": "research/promo367_20261125/sources/japan_0/func_08000468_6EBE98/candidate.c",
+      "source_sha256": "c8064f661bf5f7667282893b6f7d8c500f14bf1d4e6a3b97a4ba027376e3d54d",
+      "original_sha256": "d3a2ef37137a9be9ea6f80ba0292c35cd867b3abe8c0892ec19666f6fb57843e"
+    },
+    {
+      "name": "func_080012C0_6F8E50",
+      "rom_offset": 7310928,
+      "vma": 134222528,
+      "size": 360,
+      "source": "research/promo367_20261125/sources/japan_0/func_080012C0_6F8E50/candidate.c",
+      "source_sha256": "cb7f9a34c5386b3593d831d4d3574cc55ee8b4e3a946c7c1a29b5be472d91e43",
+      "original_sha256": "d7c331cfe1db19a04d531410661ecd70adc329c3f3bfdb4408aad108de18ea62"
+    },
+    {
+      "name": "func_08001750_6F92E0",
+      "rom_offset": 7312096,
+      "vma": 134223696,
+      "size": 148,
+      "source": "research/promo367_20261125/sources/japan_0/func_08001750_6F92E0/candidate.c",
+      "source_sha256": "64ec9cbd7c8ec41d4f9e0057b0edaa8d76728d9e5aaba3baccac7ed60421b391",
+      "original_sha256": "931e4116aae1caf4d6496f6adf42a5967dad676544c84870306ec7ff1f5e7c32"
+    },
+    {
+      "name": "func_080017E4_6F9374",
+      "rom_offset": 7312244,
+      "vma": 134223844,
+      "size": 156,
+      "source": "research/promo367_20261125/sources/japan_0/func_080017E4_6F9374/candidate.c",
+      "source_sha256": "46576cef9dff9c1fbda1dd438b5d892aca295dc4949ae84d08eaf94f6a011ab5",
+      "original_sha256": "157a8829e088e083adb1c1e48c571153b88cedfcf5ed6a0a4be7c62d00ebbfae"
+    },
+    {
+      "name": "func_08001BC4_6F9754",
+      "rom_offset": 7313236,
+      "vma": 134224836,
+      "size": 148,
+      "source": "research/promo367_20261125/sources/japan_0/func_08001BC4_6F9754/candidate.c",
+      "source_sha256": "b2d085400d1db8075f80ed1fb27f0c73f2d94e1c54cc8372a4b3cd1c84897e8a",
+      "original_sha256": "d400a9aedc2fdc24111491d2eabcdc8b7c1c01076c81ec45eb09f50db3e7084d"
+    },
+    {
+      "name": "func_08001C58_6F97E8",
+      "rom_offset": 7313384,
+      "vma": 134224984,
+      "size": 156,
+      "source": "research/promo367_20261125/sources/japan_0/func_08001C58_6F97E8/candidate.c",
+      "source_sha256": "91186b2e6972c6ac01e07747919f8278f80c94db645142e673e1bdc0c1d07714",
+      "original_sha256": "56b4ca8c325487428cc3d91fbf5ab81209b7b0638b4bad90064e9b057fb06bb0"
+    },
+    {
+      "name": "func_080042E8_6FBE78",
+      "rom_offset": 7323256,
+      "vma": 134234856,
+      "size": 84,
+      "source": "research/promo367_20261125/sources/japan_0/func_080042E8_6FBE78/candidate.c",
+      "source_sha256": "b8b4db4261a1f4f2c6119475922d4e9c82525adc7f399a00ae9ee7cb60be4029",
+      "original_sha256": "03535aa8b8586c6e742596f780a2806812a39e41bd2b8d7c039ffcc0f5834012"
+    },
+    {
+      "name": "func_080060EC_6FDC7C",
+      "rom_offset": 7330940,
+      "vma": 134242540,
+      "size": 96,
+      "source": "research/promo367_20261125/sources/japan_0/func_080060EC_6FDC7C/candidate.c",
+      "source_sha256": "edc0087d3e288be2ef069c8f6d474cbc6810dda029f6e2a544143afd74ac64b4",
+      "original_sha256": "d9797e81429fa194dcf28f794c06c546999812b1f33516304dc80450f305cb23"
+    },
+    {
+      "name": "func_08000ADC_7002AC",
+      "rom_offset": 7340716,
+      "vma": 134220508,
+      "size": 88,
+      "source": "research/promo367_20261125/sources/japan_0/func_08000ADC_7002AC/candidate.c",
+      "source_sha256": "6acb242cbe0bab55526cc480f61dd77977853b9e9eff14827d4d268f075e8e89",
+      "original_sha256": "b8cc96a4931362c89a729ecc76e3ae69a8cdac70091cc6d4cb62b731d9984cc7"
+    },
+    {
+      "name": "func_08000B34_700304",
+      "rom_offset": 7340804,
+      "vma": 134220596,
+      "size": 132,
+      "source": "research/promo367_20261125/sources/japan_0/func_08000B34_700304/candidate.c",
+      "source_sha256": "3604fda1b598b9728daec96a92d193d5886536493e1bd5ba63bf7a5efd9d0fc2",
+      "original_sha256": "1e7291ce1bb9bffb352a743717acef910633f8f39586d3ed777f5dddca7535b1"
+    },
+    {
+      "name": "func_08000BB8_700388",
+      "rom_offset": 7340936,
+      "vma": 134220728,
+      "size": 88,
+      "source": "research/promo367_20261125/sources/japan_0/func_08000BB8_700388/candidate.c",
+      "source_sha256": "6daf13049f7d97a8dc444807bdbc8cc2341e2543a9edffce0defdbe07afa5638",
+      "original_sha256": "e13f7199d43d0d74e858cedf5ef3f89bcb74b416e6f2d0b403120de1932adccc"
+    },
+    {
+      "name": "func_0800078C_70ECFC",
+      "rom_offset": 7400700,
+      "vma": 134219660,
+      "size": 176,
+      "source": "research/promo367_20261125/sources/japan_0/func_0800078C_70ECFC/candidate.c",
+      "source_sha256": "a48b576ca8dbcceec1f951f2cf8b0ff9972dacec62d8eedbc15639a3f2377dae",
+      "original_sha256": "af289b783084a8d32159261759fbcea601ceccf9b5294c11eddcd795dac56725"
+    },
+    {
+      "name": "func_08000854_7115A4",
+      "rom_offset": 7411108,
+      "vma": 134219860,
+      "size": 148,
+      "source": "research/promo367_20261125/sources/japan_0/func_08000854_7115A4/candidate.c",
+      "source_sha256": "1c60c900d812d163d0ff242d1e0010d9f56c783b89b8f5dd8ef1fc4b5a2b7d83",
+      "original_sha256": "74734348086100800798fed7a6d1f561c01d2722f27575fb48eb7d4773d2ab23"
+    },
+    {
+      "name": "func_080008E8_711638",
+      "rom_offset": 7411256,
+      "vma": 134220008,
+      "size": 84,
+      "source": "research/promo367_20261125/sources/japan_0/func_080008E8_711638/candidate.c",
+      "source_sha256": "75d98903d0c64458197b44462d6ceb5aec577c52d760efa769bc2995ee766f92",
+      "original_sha256": "08901c3cd9c458e54a029bbafed1e5639198e97bbe8cdaabf74130dce795083a"
+    },
+    {
+      "name": "func_08000D60_718200",
+      "rom_offset": 7438848,
+      "vma": 134221152,
+      "size": 100,
+      "source": "research/promo367_20261125/sources/japan_0/func_08000D60_718200/candidate.c",
+      "source_sha256": "a7e1cf19589a49b6cb5bef160e7fea9f07a56c48b5de3f281d15dfbd79f157cf",
+      "original_sha256": "da853f60d601f23d2ccad86b70ee995d410a4a67e13f8703fdfa60d6c567681f"
+    },
+    {
+      "name": "func_08001B58_718FF8",
+      "rom_offset": 7442424,
+      "vma": 134224728,
+      "size": 148,
+      "source": "research/promo367_20261125/sources/japan_0/func_08001B58_718FF8/candidate.c",
+      "source_sha256": "f3bfb9eeb158503e7bce6b912376dab7f6ba87b0facfa79ba5ce24e332b9b721",
+      "original_sha256": "583a2c71e98a6953f4a6a38988ae8cf0b5c281740d9541e3e9da54022e1c8fc0"
+    },
+    {
+      "name": "func_08003428_71A8C8",
+      "rom_offset": 7448776,
+      "vma": 134231080,
+      "size": 120,
+      "source": "research/promo367_20261125/sources/japan_0/func_08003428_71A8C8/candidate.c",
+      "source_sha256": "c7347708735a9315015d8a3c72e4b12e4ab20870e28bec4e13e370ae614f25a8",
+      "original_sha256": "7765a5166389eb638ea7bd5f913e9a18f3ae3527ea46bfcbd36446f282b6bbb9"
+    },
+    {
+      "name": "func_08000BB8_71BF78",
+      "rom_offset": 7454584,
+      "vma": 134220728,
+      "size": 132,
+      "source": "research/promo367_20261125/sources/japan_0/func_08000BB8_71BF78/candidate.c",
+      "source_sha256": "1a4218120736d1c9f02e83e07ca2ad10b993d729c0dfda186f90b8f6618525b6",
+      "original_sha256": "5fd25aa1576b20fa2a48981504a6ee99e1f2a3104dcae0e60d47cea0e5c5e3f3"
+    },
+    {
+      "name": "func_080018D4_71CC94",
+      "rom_offset": 7457940,
+      "vma": 134224084,
+      "size": 136,
+      "source": "research/promo367_20261125/sources/japan_0/func_080018D4_71CC94/candidate.c",
+      "source_sha256": "f8e6c07316e1c7e1e2f65ee42661b04d6820ed243b6b6abcb746ecd7a26dd70a",
+      "original_sha256": "de1ee10e57a09b506df3de2739e9252e095bfcf0403b678de82ab5e6abd87c50"
+    },
+    {
+      "name": "func_0800042C_71EE1C",
+      "rom_offset": 7466524,
+      "vma": 134218796,
+      "size": 136,
+      "source": "research/promo367_20261125/sources/japan_0/func_0800042C_71EE1C/candidate.c",
+      "source_sha256": "ea36734ec4d84a167c1a7cb5d3617863792e45585591461747bcb7b082cd72f2",
+      "original_sha256": "16133873db52765bd531f90745ce57b4045f158c05f080cd8cf29d234d4b3571"
+    },
+    {
+      "name": "func_08001344_721294",
+      "rom_offset": 7475860,
+      "vma": 134222660,
+      "size": 76,
+      "source": "research/promo367_20261125/sources/japan_0/func_08001344_721294/candidate.c",
+      "source_sha256": "94a34ac38e63c437a56f442018ddacbb773e34938101e5e1afe605e46548ea0f",
+      "original_sha256": "35249501958d5e3308b1c283f3a3dbd42cb1e32cd1c3678ed9fe34668f394a4d"
+    },
+    {
+      "name": "func_08000718_740FF8",
+      "rom_offset": 7606264,
+      "vma": 134219544,
+      "size": 132,
+      "source": "research/promo367_20261125/sources/japan_0/func_08000718_740FF8/candidate.c",
+      "source_sha256": "1e8f04f55b0788e5215bfe936da234703b9278163148584b76607d3d7f07b640",
+      "original_sha256": "177c7b6b02a070b23a7d01a448e23bceda1409770f477577fa85e147eac88051"
+    }
+  ]
+}
