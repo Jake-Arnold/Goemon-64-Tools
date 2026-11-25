@@ -24,8 +24,7 @@ class CrossAreaRestoreTests(unittest.TestCase):
         self.app.current=self.ram.snapshot()
         self.checkpoint=capture_checkpoint(self.ram,'Map 35')
         self.app.checkpoints=[self.checkpoint]
-        self.app.checkpoints_box['values']=self.app.checkpoint_labels()
-        self.app.checkpoints_box.current(0)
+        self.app.logical_checkpoint_selection = 0
         write_u8(self.process,0x801B0000+0xCC,0)
 
     def tearDown(self):
@@ -43,12 +42,22 @@ class CrossAreaRestoreTests(unittest.TestCase):
         self.assertEqual(self.ram.read_guest(0x800C7CA0,2),b'\x00\x23')
         self.assertEqual(self.app.pending_restore['phase'],'warp')
 
+    def test_capture_uses_plain_state_and_persists_checkpoint(self):
+        app = self.app
+        with patch('practice.toolkit.save_checkpoint_file') as save:
+            app.capture_full_checkpoint('Plain state capture')
+        self.assertEqual(app.logical_checkpoint_selection, 1)
+        self.assertEqual(app.checkpoints[1]['payload']['name'], 'Plain state capture')
+        save.assert_called_once()
+        self.assertEqual(save.call_args.args[1], app.checkpoints)
+        self.assertIn('Captured logical checkpoint', app.status.get())
+        self.assertFalse(hasattr(app, 'checkpoints_box'))
+
     def test_combined_selector_legacy_restores_only_xyz(self):
         app=self.app
         app.legacy_bookmarks=[dict(name='Old position',x=222.5,y=12.5,z=-77.5,
                                    character=self.ram.snapshot()['character'],map_id=35)]
-        app.checkpoints_box.configure(values=app.checkpoint_labels())
-        app.checkpoints_box.current(1)
+        app.logical_checkpoint_selection = 1
         original_progress=self.ram.read_guest(0x8015C608,0x304)
         original_hp=self.ram.u32(LIVE_ADDR+12)
         original_rotation=self.ram.read_guest(0x801A0014,6)
@@ -64,8 +73,7 @@ class CrossAreaRestoreTests(unittest.TestCase):
     def test_legacy_with_no_map_does_not_write(self):
         app=self.app
         app.legacy_bookmarks=[dict(name='Old legacy',x=5,y=6,z=7,character=0)]
-        app.checkpoints_box.configure(values=app.checkpoint_labels())
-        app.checkpoints_box.current(1)
+        app.logical_checkpoint_selection = 1
         original=self.ram.read_guest(0x801A0008,12)
         with patch('tkinter.messagebox.showerror') as err, \
              patch('tkinter.messagebox.askyesno') as ask:
@@ -76,8 +84,7 @@ class CrossAreaRestoreTests(unittest.TestCase):
     def test_legacy_rejects_cross_map_and_read_only(self):
         app=self.app
         app.legacy_bookmarks=[dict(name='Elsewhere',x=5,y=6,z=7,character=0,map_id=45)]
-        app.checkpoints_box.configure(values=app.checkpoint_labels())
-        app.checkpoints_box.current(1)
+        app.logical_checkpoint_selection = 1
         with patch('tkinter.messagebox.showerror') as err:
             app.restore_full_checkpoint()
         err.assert_called_once()

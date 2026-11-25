@@ -1,3 +1,9 @@
+## 25 November 2026 - UI cleanup 6B: remove hidden logical checkpoint widgets (v0.11.81)
+
+- Remove the hidden legacy logical-checkpoint card and its six widget references. Replace its selection with an ordinary integer initialized to -1; capture accepts a name and selects the new record without depending on Tk widgets. Preserve legacy bookmarks, logical checkpoint persistence, native named states, validation, permission checks, pending restore state and cancellation. Guard the unmounted checkpoint diff selector after capture rather than reporting an error after saving. No visible UI change or version bump.
+- Migrate tests to plain checkpoint selection, assert the hidden widgets are absent, test capture persistence and keep cross-area/legacy/read-only restoration assertions. Include checkpoint-controller and access-policy suites in both platform regression scripts.
+- Verified source archive 15006386794, SHA256 and exact base tree `fbfeae8ece5f900a5cfe6e32ef783ad332ee30c1` at `45b9feb7ac69141834cf50d44fb7ff8b304670b2`. Targeted Xvfb GUI/controller suite: 66 passed. Address catalogue check, compileall and diff whitespace checks passed. No live emulator/Windows runtime tests. Require hosted checks before merge; next phase 6C audits legacy Japanese panel dependencies.
+
 ## 25 November 2026 - UI cleanup 6A: remove retired dashboard RAM card (v0.11.81)
 
 - Remove the never-displayed Japanese guest-RAM dashboard card, its four widget/state attributes and obsolete `read_japan_rdram` callback, plus their disconnect/ambiguous/success/error status updates. Keep existing advanced RAM-base recovery, attachment status, process/reader lifecycle, spawn controls, verified region handling and all memory-write policies unchanged. The existing shared Debugger memory viewer supports raw guest bytes without persistent watches; Live Memory retains typed regional watches. No visible interface change or version bump.

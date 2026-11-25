@@ -192,6 +192,7 @@ class Toolkit(DialogueRegionMixin, DialogueMixin, UpdaterMixin, ReportsMixin, Ja
         # never misrepresented or rewritten as full progression checkpoints.
         self.legacy_bookmarks = json.loads(BOOKMARKS_FILE.read_text()) if BOOKMARKS_FILE.exists() else []
         self.checkpoints = load_checkpoint_file(CHECKPOINTS_FILE)
+        self.logical_checkpoint_selection = -1
         # A named native state is a local label for an emulator slot, never
         # a copy of its savestate bytes. Corrupt metadata must not prevent boot.
         try:
@@ -409,39 +410,6 @@ class Toolkit(DialogueRegionMixin, DialogueMixin, UpdaterMixin, ReportsMixin, Ja
         # Only verified Japanese native-save operations are enabled.
         self.refresh_named_native_checkpoints()
 
-        # Retain existing logical checkpoint code/data but hide its incomplete
-        # snapshot controls so the dashboard presents only native full states.
-        checkpoints = ttk.LabelFrame(right, text=' Legacy logical checkpoints ', padding=10)
-        checkpoints.pack(fill='x', pady=(0, 6))
-        ttk.Label(checkpoints, text='Includes saved position, orientation, health, lives, Ryo, items and progression.',
-                  style='CardMuted.TLabel',wraplength=430).pack(anchor='w',pady=(0,7))
-        ttk.Label(checkpoints, text='Name for new checkpoint',style='CardMuted.TLabel').pack(anchor='w')
-        self.checkpoint_name = ttk.Entry(checkpoints)
-        self.checkpoint_name.insert(0, 'Practice checkpoint')
-        self.checkpoint_name.pack(fill='x', pady=(4, 8))
-        ttk.Label(checkpoints, text='Saved checkpoints',style='Card.TLabel').pack(anchor='w')
-        self.checkpoints_box = ttk.Combobox(checkpoints, state='readonly', values=self.checkpoint_labels())
-        self.checkpoints_box.pack(fill='x', pady=4)
-        state_buttons = ttk.Frame(checkpoints, style='Card.TFrame')
-        state_buttons.pack(fill='x', pady=(2, 5))
-        self.capture_state_btn = ttk.Button(state_buttons, text='Capture logical checkpoint',
-                                            command=self.capture_full_checkpoint,style='Gold.TButton')
-        self.capture_state_btn.pack(side='left', expand=True, fill='x')
-        self.restore_state_btn = ttk.Button(state_buttons, text='Restore selected checkpoint',
-                                            command=self.restore_full_checkpoint)
-        self.restore_state_btn.pack(side='left', expand=True, fill='x', padx=(8, 0))
-        if not (args.enable_state_restore or args.enable_teleport):
-            self.restore_state_btn.state(['disabled'])
-        self.cancel_restore_btn = ttk.Button(checkpoints, text='Cancel pending checkpoint restore',
-                                             command=self.cancel_pending_restore)
-        self.cancel_restore_btn.pack(fill='x', pady=(3, 0))
-        self.cancel_restore_btn.state(['disabled'])
-        ttk.Label(checkpoints,text='Older position bookmarks appear here as position-only; '
-                  'they cannot restore health, items or progression.',style='CardMuted.TLabel',
-                  wraplength=430).pack(anchor='w',pady=(6,0))
-        self.legacy_checkpoint_card = checkpoints
-        checkpoints.pack_forget()
-
         # The dedicated tabs are visible directly above; no duplicate footer is needed.
         self._arrange_dashboard(1220)
         self.build_inspector_tabs(notebook)
@@ -654,10 +622,6 @@ class Toolkit(DialogueRegionMixin, DialogueMixin, UpdaterMixin, ReportsMixin, Ja
         self.connect_button.state(['!disabled'])
         if hasattr(self, 'launch_recomp_button'):
             self.launch_recomp_button.state(['!disabled'] if version.key in ('usa', 'japan') else ['disabled'])
-        self.capture_state_btn.state(['!disabled'] if enabled else ['disabled'])
-        self.restore_state_btn.state(
-            ['!disabled'] if enabled and (self.args.enable_state_restore or
-                                        self.args.enable_teleport) else ['disabled'])
         if enabled:
             self.status.set('USA selected. Connect to the USA game in Recomp or Project64.')
         else:
@@ -2314,18 +2278,18 @@ class Toolkit(DialogueRegionMixin, DialogueMixin, UpdaterMixin, ReportsMixin, Ja
         except (OSError,ValueError,RuntimeError) as exc:
             messagebox.showerror('Position-only restore failed',str(exc))
 
-    def capture_full_checkpoint(self):
+    def capture_full_checkpoint(self, name="Practice checkpoint"):
         if not self.mem or not self.current:
             messagebox.showerror("Not connected","Connect to the game first")
             return
         try:
-            cp=capture_checkpoint(self.mem,self.checkpoint_name.get())
+            cp=capture_checkpoint(self.mem,name)
             self.checkpoints.append(cp)
             save_checkpoint_file(CHECKPOINTS_FILE,self.checkpoints)
-            self.checkpoints_box["values"]=self.checkpoint_labels()
-            self.checkpoints_box.current(len(self.checkpoints)-1)
+            self.logical_checkpoint_selection = len(self.checkpoints)-1
             self.refresh_checkpoint_options()
-            self.diff_cp.current(len(self.checkpoints)-1)
+            if hasattr(self, "diff_cp"):
+                self.diff_cp.current(len(self.checkpoints)-1)
             self.refresh_checkpoint_diff(force=True)
             self.status.set("Captured logical checkpoint: XYZ, rotation, health, lives, Ryo, inventory and progression. This is not a savestate.")
         except Exception as e:
@@ -2353,19 +2317,6 @@ class Toolkit(DialogueRegionMixin, DialogueMixin, UpdaterMixin, ReportsMixin, Ja
         pending=self.pending_restore
         self.pending_restore=None
         self._release_native_key()
-        # main() also performs cleanup after the user has closed the Tk root.
-        # Destroyed widgets still exist as Python objects, but their Tcl
-        # commands no longer exist. Never abort pending-state cleanup there.
-        try:
-            if (getattr(self, 'cancel_restore_btn', None) is not None
-                    and self.cancel_restore_btn.winfo_exists()):
-                self.cancel_restore_btn.state(['disabled'])
-            if (getattr(self, 'restore_state_btn', None) is not None
-                    and (self.args.enable_state_restore or self.args.enable_teleport)
-                    and self.restore_state_btn.winfo_exists()):
-                self.restore_state_btn.state(['!disabled'])
-        except tk.TclError:
-            pass  # UI already destroyed; finish non-UI cleanup below.
         if pending and self.mem:
             try:
                 note=undo_character_preparation(self.mem,pending.get('party_patch'),
@@ -2396,8 +2347,6 @@ class Toolkit(DialogueRegionMixin, DialogueMixin, UpdaterMixin, ReportsMixin, Ja
     def _finish_pending_restore(self, checkpoint):
         self._restore_now(checkpoint)
         self.pending_restore = None
-        self.cancel_restore_btn.state(['disabled'])
-        self.restore_state_btn.state(['!disabled'])
 
     def _arm_character_restore(self, checkpoint, now):
         """After the correct scene is loaded, swap using the native C-Down path."""
@@ -2406,8 +2355,6 @@ class Toolkit(DialogueRegionMixin, DialogueMixin, UpdaterMixin, ReportsMixin, Ja
         self.pending_restore = dict(checkpoint=checkpoint, target=p['character'],
             party_patch=patch, phase='character', started=now,
             last_press=0.0, attempts=0, stable=0, manual_only=False)
-        self.restore_state_btn.state(['disabled'])
-        self.cancel_restore_btn.state(['!disabled'])
         self.status.set(f'Saved map loaded; switching natively to character {p["character"]}.')
 
     def _poll_cross_area_restore(self, pending, now):
@@ -2507,7 +2454,7 @@ class Toolkit(DialogueRegionMixin, DialogueMixin, UpdaterMixin, ReportsMixin, Ja
         if getattr(self.args,'read_only',False):
             self.status.set('Checkpoint restore is disabled in read-only mode.')
             return
-        i=self.checkpoints_box.current()
+        i=self.logical_checkpoint_selection
         if i<0 or not self.mem or not self.current:return
         if self.pending_restore:
             self.status.set('A checkpoint restore is already pending; cancel it first.')
@@ -2550,8 +2497,6 @@ class Toolkit(DialogueRegionMixin, DialogueMixin, UpdaterMixin, ReportsMixin, Ja
                 self.pending_restore=dict(checkpoint=cp, target=p['character'],
                     phase='warp',source_map=current_map,source_player=before['player_ptr'],
                     party_patch=None,started=time.monotonic(),stable=0,stable_player=None)
-                self.restore_state_btn.state(['disabled'])
-                self.cancel_restore_btn.state(['!disabled'])
                 self.status.set(f'Reloading map {p["map_id"]} for checkpoint; waiting for stable gameplay.')
             elif before['character']==p['character']:
                 self._restore_now(cp)

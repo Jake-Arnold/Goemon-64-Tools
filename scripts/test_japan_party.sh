@@ -141,6 +141,8 @@ if command -v xvfb-run >/dev/null 2>&1; then
     tests.test_value_freezes_ui \
     tests.test_story_progress_ui \
     tests.test_dashboard \
+    tests.test_checkpoint_cross_area_ui \
+    tests.test_practice_defaults \
     tests.test_live_speed_ui \
     tests.test_updater_ui \
     tests.test_entrance_ui \
@@ -178,6 +180,8 @@ elif [[ -n "${DISPLAY:-}" ]]; then
     tests.test_value_freezes_ui \
     tests.test_story_progress_ui \
     tests.test_dashboard \
+    tests.test_checkpoint_cross_area_ui \
+    tests.test_practice_defaults \
     tests.test_live_speed_ui \
     tests.test_updater_ui \
     tests.test_entrance_ui \

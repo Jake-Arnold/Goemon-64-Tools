@@ -47,8 +47,9 @@ class TestAccessGUI(unittest.TestCase):
         self.assertFalse(hasattr(app,'hex_advanced'))
         self.assertFalse(hasattr(app,'unsafe_check'))
         for button in (app.raw_write_btn,app.experimental_warp_btn,
-                       app.native_debug_btn,app.restore_state_btn):
+                       app.native_debug_btn):
             self.assertNotIn('disabled',button.state())
+        self.assertTrue(app.args.enable_state_restore)
         self.assertIsNone(app.mem)
 
     def test_read_only_disables_controls_and_blocks_action_handlers(self):
@@ -59,8 +60,9 @@ class TestAccessGUI(unittest.TestCase):
         self.assertFalse(hasattr(app,'hex_advanced'))
         self.assertFalse(hasattr(app,'unsafe_check'))
         for button in (app.raw_write_btn,app.experimental_warp_btn,
-                       app.native_debug_btn,app.restore_state_btn):
+                       app.native_debug_btn):
             self.assertIn('disabled',button.state())
+        self.assertFalse(app.args.enable_state_restore)
         for _label,controls in app.unlock_row_widgets.values():
             for button in controls.values():self.assertIn('disabled',button.state())
         process,app.mem=TestCheckpoint().sample()

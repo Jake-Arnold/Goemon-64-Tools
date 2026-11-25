@@ -103,6 +103,8 @@ $guiTests = @(
     'tests.test_value_freezes_ui',
     'tests.test_story_progress_ui',
     'tests.test_dashboard',
+    'tests.test_checkpoint_cross_area_ui',
+    'tests.test_practice_defaults',
     'tests.test_live_speed_ui',
     'tests.test_entrance_ui',
     'tests.test_japan_recomp_write_ui'
