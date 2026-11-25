@@ -329,7 +329,7 @@ class RefreshTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as folder:
             cache = Path(folder) / "full.json"
             meta = Path(folder) / "info.json"
-            url = canonical_url("main")
+            url = canonical_url("stable/toolkit")
             doc, info = refresh_canonical_catalogue(
                 cache_path=cache, info_path=meta,
                 opener=lambda *args, **kwargs: Response(url, payload))
@@ -350,6 +350,15 @@ class RefreshTests(unittest.TestCase):
                     opener=lambda *a, **kw: Response(url, b"bad json"))
             self.assertEqual(cache.read_bytes(), payload)
 
+    def test_remote_urls_use_stable_toolkit_not_main(self):
+        from practice.address_catalogue_remote import remote_url
+        for url in (canonical_url, remote_url):
+            self.assertIn('/stable/toolkit/practice/data/', url())
+            self.assertEqual(url(), url('stable/toolkit'))
+            for branch in ('main', 'stable/decomp', 'chatgptweb/decomp', 'toolkit/../main'):
+                with self.assertRaises(ValueError):
+                    url(branch)
+
     def test_rejects_cheat_as_live_reader(self):
         manifest = json.loads(DISCOVERIES.read_text(encoding="utf-8"))
         invalid = dict(manifest)
@@ -361,7 +370,7 @@ class RefreshTests(unittest.TestCase):
 
     def test_invalid_network_refresh_keeps_old_cache(self):
         from practice.address_catalogue_remote import remote_url
-        url = remote_url("main")
+        url = remote_url("stable/toolkit")
         class FakeResponse:
             def __init__(self, data, location=url):
                 self.data = data
@@ -394,7 +403,7 @@ class RefreshTests(unittest.TestCase):
         from practice.address_catalogue_remote import remote_url
         class FakeResponse:
             def geturl(self):
-                return remote_url("main")
+                return remote_url("stable/toolkit")
             def read(self, size):
                 return DISCOVERIES.read_bytes()[:size]
             def close(self):

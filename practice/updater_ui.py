@@ -12,7 +12,7 @@ import tkinter as tk
 from tkinter import ttk
 
 from practice.updater import (
-    UpdateError, VersionTarget, check_for_updates, detect_installed_target,
+    BRANCH, UpdateError, VersionTarget, check_for_updates, detect_installed_target,
     install_update, list_available_versions,
 )
 
@@ -78,7 +78,7 @@ class UpdaterMixin:
                     if operation == 'catalog_check':
                         target = detected or next(t for t in targets
                                                   if t.kind == 'branch'
-                                                  and t.name == 'main')
+                                                  and t.name == BRANCH)
                         result = (targets, detected,
                                   check_for_updates(PROJECT_ROOT, target))
                 elif operation == 'check':
@@ -150,7 +150,7 @@ class UpdaterMixin:
             chosen = self._update_targets[old_label]
         else:
             chosen = detected or next(
-                t for t in targets if t.kind == 'branch' and t.name == 'main')
+                t for t in targets if t.kind == 'branch' and t.name == BRANCH)
         self.update_target_choice.set(chosen.label)
         self._update_ready = None
         self.update_button.configure(text='Check for updates')
@@ -158,7 +158,7 @@ class UpdaterMixin:
         self.update_status.set(
             f'{len(targets)} versions available. Selected {chosen.label}.')
         if operation == 'catalog_check':
-            # The initial Check button selects the installed version or main.
+            # The initial Check button selects the installed version or stable/toolkit.
             # Avoid displaying a checked update for a different selection.
             status = result[2]
             if (chosen.kind == status.target_kind

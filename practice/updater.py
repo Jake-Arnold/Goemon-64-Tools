@@ -1,4 +1,4 @@
-"""Git-backed toolkit version selector: stable main, test branches, release tags.
+"""Git-backed toolkit version selector: stable/toolkit, test branches, release tags.
 
 Discover refs only from the canonical GitHub origin. Never reset, delete local
 commits, switch to decomp branches or overwrite tracked changes. A selected
@@ -15,7 +15,8 @@ import subprocess
 
 
 CANONICAL_REPOSITORY = "Jake-Arnold/Goemon-64-Tools"
-BRANCH = "main"
+BRANCH = "stable/toolkit"
+LEGACY_BRANCH = "main"
 REMOTE = "origin"
 SHA_PATTERN = re.compile(r"[0-9a-f]{40}\Z")
 TOOLKIT_BRANCH_PATTERN = re.compile(
@@ -51,7 +52,7 @@ class VersionTarget:
         if self.kind == "tag":
             return f"Release tag · {self.name}"
         if self.name == BRANCH:
-            return "Stable · main"
+            return f"Stable · {BRANCH}"
         return f"Test · {self.name}"
 
 
@@ -113,7 +114,7 @@ def _validate_checkout(root: Path):
     if Path(top).resolve() != root:
         raise UpdateError("The toolkit folder is not the root Git checkout.")
     branch = _git(root, "branch", "--show-current").stdout.strip()
-    if branch and branch != BRANCH and not TOOLKIT_BRANCH_PATTERN.fullmatch(branch):
+    if branch and branch not in (BRANCH, LEGACY_BRANCH) and not TOOLKIT_BRANCH_PATTERN.fullmatch(branch):
         raise UpdateError(
             f"Current branch '{branch}' is not a toolkit branch. "
             "Decompilation and other research checkouts are left untouched.")
@@ -190,7 +191,7 @@ def list_available_versions(root: Path):
             if TAG_PATTERN.fullmatch(name):
                 targets.append(VersionTarget("tag", name, peeled.get(ref, sha)))
     if not any(t.kind == "branch" and t.name == BRANCH for t in targets):
-        raise UpdateError("The official GitHub main branch was not listed.")
+        raise UpdateError("The official GitHub stable/toolkit branch was not listed.")
     stable = [t for t in targets if t.kind == "branch" and t.name == BRANCH]
     tests = sorted(
         (t for t in targets if t.kind == "branch" and t.name != BRANCH),
@@ -221,6 +222,9 @@ def _resolve_target(root: Path, target: VersionTarget | None, branch: str):
         return target
     if not branch:
         raise UpdateError("Select a branch or release before checking updates.")
+    # A legacy local main is a source checkout, never a remote update target.
+    if branch == LEGACY_BRANCH:
+        branch = BRANCH
     remote = _fetch_remote_target(
         root, VersionTarget("branch", branch, "0" * 40))
     return VersionTarget("branch", branch, remote)
