@@ -1,0 +1,68 @@
+{
+  "status": "ISOLATED_EXACT_RESEARCH_ONLY",
+  "base_commit": "3669a15a807c77249e85cd177ef2704d5560e5d1",
+  "upstream_commit": "7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee",
+  "compiler_sha256": "76d796c9591c9f5504949f85b29c32a6039a663791afe2f36f34ca18425b64d0",
+  "flags": "-c -O2 -mips2 -G 0 -non_shared -Xfullwarn -Xcpluscomm -Wab,-r4300_mul -woff 649,838,712 -D_LANGUAGE_C -D_FINALROM -DF3DEX_GBI -D__sgi -DNDEBUG -Iinclude -Ilibultra/include -Ilibultra/include/PR -Isrc -I.",
+  "roms": {
+    "usa": "6ea0ed71032ce08fc2745f412d84936382197494",
+    "japan_0": "6f8745fecc3a5e7d4918c7a73353eb0726116ded"
+  },
+  "matches": [
+    {
+      "symbol": "func_801DF3D8_59B2E8",
+      "region": "usa",
+      "bytes": 460,
+      "relocs": 19,
+      "source": "func_801DF3D8_59B2E8.typed.c",
+      "source_sha256": "d0c5e83f641363684557a75f1d887f5d15bc7906b94ec61f9c6738533b44a2be",
+      "original_sha256": "fbef101d1aabbab8c18242ae337e374587b6786d58b092f7d9b74bd9f411d9f3",
+      "negative_words": 114,
+      "first_difference": "+0x110",
+      "classification": "NO_NEW_COMPILER_FINDING"
+    },
+    {
+      "symbol": "func_801E46AC_5A067C",
+      "region": "japan_0",
+      "bytes": 460,
+      "relocs": 19,
+      "source": "func_801E46AC_5A067C.typed.c",
+      "source_sha256": "e0a921c04751dc245d63f1c628c9b2694199ef51695e9dea422fc5977cf6fe49",
+      "original_sha256": "4ab3816cf8de7916815e8fcd8085c40f18b5f711c8146123bdae964d8edbe50a",
+      "negative_words": 114,
+      "first_difference": "+0x110",
+      "classification": "NO_NEW_COMPILER_FINDING"
+    },
+    {
+      "symbol": "func_801DFE44_59BD54",
+      "region": "usa",
+      "bytes": 300,
+      "relocs": 12,
+      "source": "func_801DFE44_59BD54.postinc.c",
+      "source_sha256": "66d94cd68ee343284542862c942eb73c5eed0351c21df63b44a996601bbcad46",
+      "original_sha256": "6ef3db987fb4caa3da93db5ca2a1372363ffd64f174d35690c1b2aec0f512096",
+      "negative_words": 53,
+      "first_difference": "+0x1C",
+      "classification": "EXISTING_QUIRK_REPRODUCED"
+    },
+    {
+      "symbol": "func_801E5108_5A10D8",
+      "region": "japan_0",
+      "bytes": 300,
+      "relocs": 12,
+      "source": "func_801E5108_5A10D8.postinc.c",
+      "source_sha256": "e8620aff99ab9d78dcaab77001ebd4557a7642ff53435440195203a0e4958dda",
+      "original_sha256": "5fc5053121f512c8e591a5de8e73d231630f17820573b076ad608a3999e4ba35",
+      "negative_words": 53,
+      "first_difference": "+0x1C",
+      "classification": "EXISTING_QUIRK_REPRODUCED"
+    }
+  ],
+  "raw_object_and_named_relocations_exact": true,
+  "linked_rom_extent_exact": true,
+  "all_variant_replay": "PASS (16)",
+  "full_g2": "NOT_RUN",
+  "gameplay": "NOT_RUN",
+  "accepted_delta": 0,
+  "kit_sha256": "b689a9ed55081b6d905e0725b8ebf1146877708d215afbe5f2a41f0a1a8d738a"
+}
