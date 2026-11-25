@@ -1,0 +1,13 @@
+# Promo195 — 100 USA and 95 Japan original native matches
+
+## 2026-11-25 — Promo195 USA100 / Japan95 native integration candidate
+
+- Authenticated stable/decomp `3669a15a807c77249e85cd177ef2704d5560e5d1`, source archive artifact 15066045901, original upstream `7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee`, independent regional original ROMs and IDO 5.3. Canonical predecessors USA2939 / JP2843 replayed; no overlap with accepted claims or pending PR #250.
+- USA +100 / 13,608 original bytes; Japan +95 / 12,832 original bytes. All 195 independently assembled original reference comparisons and altered-source negative controls pass. Full expanded and retail original ROM equality, all 7,376 positive FUNC identities per region, 26,714 USA and 26,393 JP stable globals, 82,080 USA and 80,652 JP semantic relocations exact. Strict incremental inventory USA3039 / 205,920 bytes / 4,324 ASM (3,052 C including upstream), JP2938 / 190,992 bytes / 4,438 ASM. Stored canonical promotion integrity passes for both. No instructions/relocations patched; one previously documented guarded ABS symbol-type correction reproduced.
+- Historical replay recovered from a missing Python import path (USA2323) and YAML import (JP2534); exact original ELF checkpoints retained and missing retail comparison rerun. Offline dependency adapter uses supplied pinned Python packages. Generic host readelf/nm only for metadata inspection. Original toolchain and independent references unchanged. No toolkit, gameplay or proprietary input changes. Hosted full ROM-free regression and branch-routing checks required before merge. See `decomp/research/promo195_20261125/README.md` and dated G2 proof and inventory.
+
+## Replay
+
+Use the pinned private original ROM and toolchain, the complete exact predecessor and original-region pristine checkout, as required by the project. `python3 -m decomp.verify` incorporates the USA stage through `promo195_promotion.apply`. Japan uses `python3 -m decomp.promo195_promotion --region japan_0 --checkout <exact-JP2843> --pristine <original-JP-split> --work <new-private-dir> --uv <uv> --jobs 8`. Each stage reads the current compiler ledger, independently assembles the original function from the pinned upstream, compiles the positive and negative source, preserves original owner padding, and compares whole-ROM, symbols, all semantic relocations and strict inventory. No raw original bytes or proprietary tools are included in this source kit.
+
+`python3 -m decomp.promotion_integrity --validate` and `python3 -m decomp.promo195_promotion` validate the stored canonical transaction. GitHub Actions runs the full ROM-free regression.
