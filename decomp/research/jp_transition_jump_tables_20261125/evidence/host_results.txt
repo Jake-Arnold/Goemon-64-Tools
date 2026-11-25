@@ -1,0 +1,4 @@
+gcc baseline: PASS 65536 cases
+gcc negative: PASS 65536 cases
+clang baseline: PASS 65536 cases
+clang negative: PASS 65536 cases
