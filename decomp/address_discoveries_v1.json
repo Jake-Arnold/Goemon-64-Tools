@@ -1,7 +1,7 @@
 {
   "format": "goemon-address-discoveries-v1",
   "version": 1,
-  "updated": "2026-11-23",
+  "updated": "2026-11-25",
   "description": "Decomp-only research metadata for toolkit discovery sync. Original code VMAs remain reference-only; script VM guest globals are not automatically mapped to Japanese offsets.",
   "entries": [
     {
@@ -3229,6 +3229,114 @@
       ],
       "other_region_evidence": "JP NG5J-0 original LUI/LW pointer load ROM 0x4D70/0x4D74; pinned mnsg symbol map names g_system_ptr=0x80161DB8.",
       "next_test": "Read-only original USA and JP gameplay capture to confirm same initialized-pointer semantics in matched scenes; do not translate pointed-to object addresses."
+    },
+    {
+      "id": "research:ebi_action_1C_usa",
+      "name": "Player action 0x1C callback (code)",
+      "region": "usa",
+      "revision": "NG5E-0",
+      "address": "0x801DF3D8",
+      "category": "code_vma",
+      "data_type": null,
+      "width": null,
+      "signed": null,
+      "endian": null,
+      "mask": null,
+      "counterpart": "0x801E46AC",
+      "confidence": "research_observed",
+      "source": "decomp/research/ebi_slide_20261125/README.md",
+      "evidence": "Original file 11 ROM 0x59B2E8; authenticated original action table and isolated exact IDO native function. Ebi Slide runtime order unconfirmed.",
+      "context": "Overlay code VMA; not guest data or supported game-memory write.",
+      "mips_refs": [
+        "0x801DF3D8"
+      ],
+      "live_readable": false,
+      "control": null,
+      "owner": "file_11 player action dispatcher",
+      "discovered": "2026-11-25",
+      "updated": "2026-11-25",
+      "source_revision": "3669a15a807c77249e85cd177ef2704d5560e5d1"
+    },
+    {
+      "id": "research:ebi_action_1C_japan",
+      "name": "Player action 0x1C callback (code)",
+      "region": "japan",
+      "revision": "NG5J-0",
+      "address": "0x801E46AC",
+      "category": "code_vma",
+      "data_type": null,
+      "width": null,
+      "signed": null,
+      "endian": null,
+      "mask": null,
+      "counterpart": "0x801DF3D8",
+      "confidence": "research_observed",
+      "source": "decomp/research/ebi_slide_20261125/README.md",
+      "evidence": "Original file 11 ROM 0x5A067C; authenticated original action table and isolated exact IDO native function. Ebi Slide runtime order unconfirmed.",
+      "context": "Overlay code VMA; not guest data or supported game-memory write.",
+      "mips_refs": [
+        "0x801E46AC"
+      ],
+      "live_readable": false,
+      "control": null,
+      "owner": "file_11 player action dispatcher",
+      "discovered": "2026-11-25",
+      "updated": "2026-11-25",
+      "source_revision": "3669a15a807c77249e85cd177ef2704d5560e5d1"
+    },
+    {
+      "id": "research:ebi_action_46_usa",
+      "name": "Player action 0x46 callback (code)",
+      "region": "usa",
+      "revision": "NG5E-0",
+      "address": "0x801DFE44",
+      "category": "code_vma",
+      "data_type": null,
+      "width": null,
+      "signed": null,
+      "endian": null,
+      "mask": null,
+      "counterpart": "0x801E5108",
+      "confidence": "research_observed",
+      "source": "decomp/research/ebi_slide_20261125/README.md",
+      "evidence": "Original file 11 ROM 0x59BD54; authenticated original action table and isolated exact IDO native function. Ebi Slide runtime order unconfirmed.",
+      "context": "Overlay code VMA; not guest data or supported game-memory write.",
+      "mips_refs": [
+        "0x801DFE44"
+      ],
+      "live_readable": false,
+      "control": null,
+      "owner": "file_11 player action dispatcher",
+      "discovered": "2026-11-25",
+      "updated": "2026-11-25",
+      "source_revision": "3669a15a807c77249e85cd177ef2704d5560e5d1"
+    },
+    {
+      "id": "research:ebi_action_46_japan",
+      "name": "Player action 0x46 callback (code)",
+      "region": "japan",
+      "revision": "NG5J-0",
+      "address": "0x801E5108",
+      "category": "code_vma",
+      "data_type": null,
+      "width": null,
+      "signed": null,
+      "endian": null,
+      "mask": null,
+      "counterpart": "0x801DFE44",
+      "confidence": "research_observed",
+      "source": "decomp/research/ebi_slide_20261125/README.md",
+      "evidence": "Original file 11 ROM 0x5A10D8; authenticated original action table and isolated exact IDO native function. Ebi Slide runtime order unconfirmed.",
+      "context": "Overlay code VMA; not guest data or supported game-memory write.",
+      "mips_refs": [
+        "0x801E5108"
+      ],
+      "live_readable": false,
+      "control": null,
+      "owner": "file_11 player action dispatcher",
+      "discovered": "2026-11-25",
+      "updated": "2026-11-25",
+      "source_revision": "3669a15a807c77249e85cd177ef2704d5560e5d1"
     }
   ]
 }

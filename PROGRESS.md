@@ -1,3 +1,7 @@
+## 25 November 2026 — Ebi Slide paired native callbacks (ISOLATED_EXACT / RESEARCH_ONLY)
+
+- Original action 0x1C USA 801DF3D8 / JP 801E46AC (460 B each) and action 0x46 USA 801DFE44 / JP 801E5108 (300 B each) independently native IDO exact, 1,520 bytes total, original VMAs/extents, raw object encoded addends, exact 19/12 named relocation sites per function, original ROM code exact. Sixteen source variants replayed; direct postincrement reproduced prior IDO allocation quirk. Corrected earlier inverted 0.00001 threshold interpretation; 0.7 literal is on finite non-neutral branch; 0x46's 2.8/0.7 only first update. Action table provenance confirmed; actual Ebi Slide callback order unverified. Source-only ZIP delivered; four positives and principal negative controls in [research report](decomp/research/ebi_slide_20261125/README.md). Added reciprocal code-VMA research metadata and appended quirk ledger. Full canonical checkout/source archive unavailable, G2/inventory/integrity/gameplay NOT_RUN; canonical counts unchanged. No toolkit change.
+
 ## 2026-11-25 — Japan dispatcher JP2843 native integration candidate
 
 - Authenticated stable/decomp `11f76ecc7234a6f91047b538c179ce564fa7c5f9`, archive 15031871479 and original pinned JP upstream/IDO5.3; complete historical native replay reproduces canonical JP2842 ELF. Initial missing prefixed readelf corrected with documented host readelf.
