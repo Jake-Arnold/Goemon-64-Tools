@@ -10,7 +10,7 @@ import tkinter as tk
 from tkinter import ttk, messagebox, simpledialog
 from practice.inspector import get_watches, checkpoint_differences, Watch
 from practice.address_catalogue_ui import AddressCatalogueUI
-from practice.hex_edit import get_policy, parse_hex, checked_write
+from practice.hex_edit import watch_scalar_width, parse_hex, checked_write
 from practice.scenes import SCENES, scene_label, unidentified_scene_name
 from practice.region_session import active_session
 from practice.scene_controls import open_native_debug_menu, open_native_debug_for_scene, native_debug_selection, request_scene_warp, assess_direct_warp
@@ -393,19 +393,6 @@ class InspectorMixin(EntranceMixin, AddressCatalogueUI):
             menu.grab_release()
         return 'break'
 
-    def toggle_live_watch_freeze(self, row_id):
-        watch=next((w for w in self.watch_rows if w.name==row_id),None)
-        if watch is None or watch.addr is None:
-            self.inspector_status.set('No fixed guest address for this field.')
-            return
-        if self.value_freezes.get(watch.addr) is not None:
-            self.value_freezes.remove(watch.addr)
-            self.draw_value_freezes()
-            self.freeze_status.set(f'Unfroze {self.display_watch_name(row_id)}.')
-            self.inspector_status.set(self.freeze_status.get())
-        else:
-            self.freeze_watch_by_id(row_id)
-
     def rename_live_watch(self, row_id):
         """Rename a custom watch definition, or persist a built-in display alias."""
         watch=next((w for w in self.watch_rows if w.name==row_id),None)
@@ -512,20 +499,11 @@ class InspectorMixin(EntranceMixin, AddressCatalogueUI):
             self.inspector_status.set('This row has no fixed guest RAM address.')
             return
         try:
-            policy = None if japan else get_policy(watch.addr)
-            definitions = self.jp_custom_watches if japan else self.custom_watches
-            spec = next((v for v in definitions if v.row_name == watch.name), None)
-            raw_text = watch.raw.removeprefix('0x').removeprefix('0X').strip()
-            if spec is not None:
-                width = spec.width
-            elif policy is not None:
-                width = policy.width
-            elif (len(raw_text) in (2, 4, 8, 16)
-                  and all(ch in '0123456789abcdefABCDEF' for ch in raw_text)):
-                width = len(raw_text) // 2
-            else:
-                raise ValueError(
-                    'No usable hex width for this watch; edit a typed custom watch.')
+            region = self.active_version.key
+            try:
+                width = watch_scalar_width(watch, regional_watches(self, region), region=region)
+            except ValueError as exc:
+                raise ValueError('No usable hex width for this watch; edit a typed custom watch.') from exc
             original = ram.read_guest(watch.addr, width)
             original_hex = '0x' + original.hex().upper()
             text = simpledialog.askstring(

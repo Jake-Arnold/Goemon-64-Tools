@@ -4,7 +4,8 @@ import queue
 from tkinter import ttk
 
 from practice.checkpoints import _ensure_capture_safe
-from practice.hex_edit import parse_hex, get_policy
+from practice.hex_edit import parse_hex, watch_scalar_width
+from practice.custom_watches import regional_watches
 from practice.value_freezes import FastFreezeWorker
 from practice.japan_value_freezes import RegionalValueFreezes, stable_japan_gameplay
 
@@ -169,14 +170,36 @@ class ValueFreezesMixin:
             self.enemy_pass_through.set(False)
             self.freeze_status.set(f'Enemy pass-through blocked: {exc}')
 
+    def _freeze_feedback(self, message, *, inspector=False):
+        self.draw_value_freezes()
+        self.freeze_status.set(message)
+        if inspector:
+            self.inspector_status.set(message)
+
+    def _register_raw_freeze(self, address, value, label='Raw value'):
+        # Callers have already checked regional access. The lock book and worker
+        # still enforce the existing session identity and gameplay policy.
+        self.value_freezes.add(self.freeze_token(), address, value, label)
+        self._ensure_freeze_worker()
+
+    def toggle_live_watch_freeze(self, row_id):
+        watch = next((w for w in self.watch_rows if w.name == row_id), None)
+        if watch is None or watch.addr is None:
+            self.inspector_status.set('No fixed guest address for this field.')
+            return
+        if self.value_freezes.get(watch.addr) is not None:
+            self.value_freezes.remove(watch.addr)
+            self._freeze_feedback(f'Unfroze {self.display_watch_name(row_id)}.', inspector=True)
+        else:
+            self.freeze_watch_by_id(row_id)
+
     def freeze_raw_value(self):
         try:
             self.require_freeze_access(raw=True)
             address=int(self.raw_address.get().strip(),16)
             value=parse_hex(self.raw_value.get(),int(self.raw_width.get()))
-            self.value_freezes.add(self.freeze_token(),address,value)
-            self._ensure_freeze_worker()
-            self.draw_value_freezes();self.freeze_status.set('Raw freeze armed; checking every 10 ms.')
+            self._register_raw_freeze(address, value)
+            self._freeze_feedback('Raw freeze armed; checking every 10 ms.')
         except (OSError,ValueError,RuntimeError,PermissionError) as exc:self.freeze_status.set(str(exc))
 
     def freeze_selected_watch(self):
@@ -195,25 +218,18 @@ class ValueFreezesMixin:
                 raise ValueError('Selected watch is no longer available')
             if watch.addr is None:
                 raise ValueError('Selected watch has no fixed guest address')
-            japan = self.active_version.key == 'japan'
-            definitions = self.jp_custom_watches if japan else self.custom_watches
-            spec=next((s for s in definitions if s.row_name==watch.name),None)
-            policy=None if japan else get_policy(watch.addr)
-            raw_text=watch.raw.removeprefix('0x').removeprefix('0X').strip()
-            width=(spec.width if spec else policy.width if policy else
-                   len(raw_text)//2 if len(raw_text) in (2,4,8,16) and
-                   all(c in '0123456789abcdefABCDEF' for c in raw_text) else 0)
-            if width not in (1,2,4,8):
-                raise ValueError('No supported scalar width for this watch')
+            region = self.active_version.key
+            japan = region == 'japan'
+            try:
+                width = watch_scalar_width(watch, regional_watches(self, region), region=region)
+            except ValueError as exc:
+                raise ValueError('No supported scalar width for this watch') from exc
             # Always fetch current game RAM bytes instead of freezing a stale table value.
             ram=self.jp_rdram if japan else self.mem
             value=ram.read_guest(watch.addr,width)
             label=self.display_watch_name(watch.name)
-            self.value_freezes.add(self.freeze_token(),watch.addr,value,label)
-            self._ensure_freeze_worker()
-            self.draw_value_freezes()
-            self.freeze_status.set(f'Freeze armed: {label} (0x{watch.addr:08X}).')
-            self.inspector_status.set(self.freeze_status.get())
+            self._register_raw_freeze(watch.addr, value, label)
+            self._freeze_feedback(f'Freeze armed: {label} (0x{watch.addr:08X}).', inspector=True)
         except (OSError,ValueError,RuntimeError,PermissionError) as exc:
             self.freeze_status.set(f'Freeze blocked: {exc}')
             self.inspector_status.set(self.freeze_status.get())
@@ -226,13 +242,13 @@ class ValueFreezesMixin:
 
     def stop_selected_freeze(self):
         for selected in self.freeze_tree.selection():self.value_freezes.remove(int(selected))
-        self.draw_value_freezes();self.freeze_status.set('Selected freezes stopped.')
+        self._freeze_feedback('Selected freezes stopped.')
 
     def stop_all_freezes(self):
         self.value_freezes.clear();self.freeze_health.set(False)
         self.enemy_pass_through.set(False)
         self.god_mode_var.set(False)
-        self.draw_value_freezes();self.freeze_status.set('All freezes stopped.')
+        self._freeze_feedback('All freezes stopped.')
 
     def poll_value_freezes(self):
         """UI status refresh only; fast game-memory checks run independently."""
