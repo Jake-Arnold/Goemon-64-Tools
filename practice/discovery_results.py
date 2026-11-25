@@ -178,8 +178,6 @@ def add_research_watches(owner, candidates, *, label):
     save_watches(path, next_watches)
     setattr(owner, attr, next_watches)
     if region == "japan":
-        for spec in added:
-            owner._jp_insert_custom_watch(spec)
         owner._jp_reset_comparison()
         owner.refresh_japan_fields(force=True)
     if hasattr(owner, "refresh_inspector"):
@@ -317,12 +315,7 @@ class DiscoveryResultsPanel:
                     f"All {duplicates} selected watches already exist")
             if added and hasattr(self.owner, "notebook") and hasattr(
                     self.owner, "live_memory_tab"):
-                target = self.owner.live_memory_tab
-                if (getattr(getattr(self.owner, "active_version", None),
-                            "key", "usa") == "japan"
-                        and getattr(self.owner, "jp_custom_watches", None) is None):
-                    target = getattr(self.owner, "jp_fields_tab", target)
-                self.owner.notebook.select(target)
+                self.owner.notebook.select(self.owner.live_memory_tab)
         except (OSError, ValueError, KeyError, TypeError, AttributeError) as exc:
             self.live_status.set(f"Cannot watch selected candidates: {exc}")
 

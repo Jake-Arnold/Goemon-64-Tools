@@ -9,7 +9,7 @@ from tests.test_japanese_fields import FakeRam
 class JapanPositionUiTests(JapanTkSmokeTest):
     def test_position_controls_disabled_without_explicit_opt_in(self):
         host = self.host
-        self.assertIn('disabled', host.jp_position_apply_button.state())
+        self.assertIn('disabled', host.jp_scene_position_apply_button.state())
         self.assertEqual(host.jp_pos_x.get(), '-289.0')
         self.assertEqual(host.jp_pos_y.get(), '0.0')
         self.assertEqual(host.jp_pos_z.get(), '-167.0')
@@ -33,7 +33,7 @@ class JapanPositionUiTests(JapanTkSmokeTest):
         host.use_japan_oedo_entrance()
         self.assertEqual(host.jp_pos_x.get(), '-289.0')
         self.assertIn('no RAM write', host.jp_position_result.get())
-        self.assertIn('disabled', host.jp_position_apply_button.state())
+        self.assertIn('disabled', host.jp_scene_position_apply_button.state())
 
     def test_bounded_write_control_requires_all_verified_identifiers(self):
         host = self.host
@@ -46,18 +46,18 @@ class JapanPositionUiTests(JapanTkSmokeTest):
         host.verified_rom_path = 'japan0.n64'
         host.jp_rdram = FakeRam()
         host.refresh_japan_position_controls()
-        self.assertNotIn('disabled', host.jp_position_apply_button.state())
+        self.assertNotIn('disabled', host.jp_scene_position_apply_button.state())
         host.args.read_only = True
         host.refresh_japan_position_controls()
-        self.assertIn('disabled', host.jp_position_apply_button.state())
+        self.assertIn('disabled', host.jp_scene_position_apply_button.state())
         host.args.read_only = False
         host.connection_target = SimpleNamespace(get=lambda: 'mupen64plus')
         host.refresh_japan_position_controls()
-        self.assertIn('disabled', host.jp_position_apply_button.state())
+        self.assertIn('disabled', host.jp_scene_position_apply_button.state())
         host.connection_target = SimpleNamespace(get=lambda: 'project64')
         host.jp_rdram = None
         host.refresh_japan_position_controls()
-        self.assertIn('disabled', host.jp_position_apply_button.state())
+        self.assertIn('disabled', host.jp_scene_position_apply_button.state())
 
 
 if __name__ == '__main__':
