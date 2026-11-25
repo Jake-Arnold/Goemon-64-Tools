@@ -62,7 +62,7 @@ class UpdaterUITests(unittest.TestCase):
     def test_refresh_catalogue_offers_main_test_and_tag(self):
         app = self.app
         versions = (
-            VersionTarget('branch', 'main', 'a' * 40),
+            VersionTarget('branch', 'stable/toolkit', 'a' * 40),
             VersionTarget('branch', 'toolkit/test-flags', 'b' * 40),
             VersionTarget('tag', 'v0.11.36', 'c' * 40),
         )
@@ -70,7 +70,7 @@ class UpdaterUITests(unittest.TestCase):
         self.assertEqual(
             tuple(app.update_version_box['values']),
             tuple(v.label for v in versions))
-        self.assertEqual(app.update_target_choice.get(), 'Stable · main')
+        self.assertEqual(app.update_target_choice.get(), 'Stable · stable/toolkit')
         self.assertEqual(str(app.update_version_box.cget('state')), 'readonly')
         app.update_target_choice.set(versions[1].label)
         app.on_update_target_selected()
@@ -81,7 +81,7 @@ class UpdaterUITests(unittest.TestCase):
     def test_switch_to_test_or_release_requires_explicit_install(self):
         app = self.app
         versions = (
-            VersionTarget('branch', 'main', 'a' * 40),
+            VersionTarget('branch', 'stable/toolkit', 'a' * 40),
             VersionTarget('branch', 'toolkit/test-flags', 'b' * 40),
             VersionTarget('tag', 'v0.11.36', 'c' * 40),
         )
@@ -106,7 +106,7 @@ class UpdaterUITests(unittest.TestCase):
     def test_initial_check_discovers_current_installed_branch(self):
         app = self.app
         versions = (
-            VersionTarget('branch', 'main', 'a' * 40),
+            VersionTarget('branch', 'stable/toolkit', 'a' * 40),
             VersionTarget('branch', 'toolkit/test-flags', 'b' * 40),
         )
         status = UpdateStatus('available', 'c' * 40, 'b' * 40,
