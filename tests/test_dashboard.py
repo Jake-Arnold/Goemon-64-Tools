@@ -58,6 +58,10 @@ class DashboardSmokeTests(unittest.TestCase):
                      'checkpoint_name', 'checkpoints_box', 'legacy_checkpoint_card'):
             self.assertFalse(hasattr(app, attr), attr)
         self.assertEqual(app.logical_checkpoint_selection, -1)
+        for attr in ('refresh_checkpoint_options', 'refresh_checkpoint_diff',
+                     'compare_status', 'last_compare_at', 'diff_previous_key',
+                     'diff_cp', 'diff_tree'):
+            self.assertFalse(hasattr(app, attr), attr)
         self.assertFalse(hasattr(app,'bookmarks_box'))
         self.assertFalse(hasattr(app,'teleport_btn'))
         self.assertFalse(hasattr(app,'bookmark_name'))
@@ -392,13 +396,16 @@ class DashboardSmokeTests(unittest.TestCase):
         process = Mock()
         reader = SimpleNamespace(rdram_size=0x800000,
                                  read_guest=lambda address, length: bytes(range(length)))
-        with patch.object(app, 'refresh_japan_fields'), \
+        with patch.object(app, 'refresh_japan_fields') as comparison, \
+             patch.object(app, 'refresh_japan_party_controls', wraps=app.refresh_japan_party_controls) as guards, \
              patch.object(app, 'refresh_inspector'), \
              patch.object(app, 'refresh_unlocks'), \
              patch.object(app, 'refresh_story_progress'), \
              patch.object(app, 'select_story_edit'):
             deliver(('japan-ok', 123, 'project64', process, reader,
                      0x10000000, 'big'))
+        comparison.assert_not_called()
+        guards.assert_called_once_with()
         self.assertIs(app.jp_rdram, reader)
         self.assertIsNone(app.mem)
         self.assertIn('Attached to Japan-0', app.status.get())
@@ -469,7 +476,7 @@ class DashboardSmokeTests(unittest.TestCase):
              patch.object(app, '_refresh_unlocks_on_reader_change'), \
              patch.object(app.root, 'after'):
             app.tick()
-        party.assert_called_once()
+        party.assert_not_called()
         inspector.assert_not_called()
         unlocks.assert_not_called()
         story.assert_not_called()
@@ -494,6 +501,33 @@ class DashboardSmokeTests(unittest.TestCase):
         party.assert_not_called()
         unlocks.assert_not_called()
         story.assert_not_called()
+
+    def test_live_memory_does_not_refresh_hidden_scene_banner(self):
+        from tests.test_checkpoint import TestCheckpoint
+        from tests.test_japanese_fields import FakeRam
+        app = self.toolkit
+        _, app.mem = TestCheckpoint().sample()
+        app.notebook.select(app.live_memory_tab)
+        app.live_memory_sections.select(app.live_watches_page)
+        with patch.object(app, 'refresh_scene_banner') as scene:
+            app._poll_visible_panels(app.mem.snapshot(), force=True)
+            scene.assert_not_called()
+            self.assertTrue(app.watch_rows)
+            app.notebook.select(app.scene_tab)
+            app._poll_visible_panels(force=True)
+            scene.assert_called_once_with(force=True)
+        app.game_version_choice.set(VERSIONS['japan'].label)
+        app.on_game_version_changed()
+        app.jp_rdram = FakeRam({})
+        app.notebook.select(app.live_memory_tab)
+        app.live_memory_sections.select(app.live_watches_page)
+        with patch.object(app, 'refresh_scene_banner') as scene:
+            app._poll_visible_panels(force=True)
+            scene.assert_not_called()
+            self.assertTrue(app.watch_rows)
+            app.notebook.select(app.scene_tab)
+            app._poll_visible_panels(force=True)
+            scene.assert_called_once_with(force=True)
 
     def test_repainting_identical_live_watches_does_not_rebuild_tree(self):
         app = self.toolkit

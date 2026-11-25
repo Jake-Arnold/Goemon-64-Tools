@@ -8,7 +8,7 @@ from dataclasses import replace
 from pathlib import Path
 import tkinter as tk
 from tkinter import ttk, messagebox, simpledialog
-from practice.inspector import get_watches, checkpoint_differences, Watch
+from practice.inspector import get_watches, Watch
 from practice.address_catalogue_ui import AddressCatalogueUI
 from practice.hex_edit import watch_scalar_width, parse_hex, checked_write
 from practice.scenes import SCENES, scene_label, unidentified_scene_name
@@ -78,14 +78,11 @@ class InspectorMixin(EntranceMixin, AddressCatalogueUI):
         self.warp_monitor=None
         self.warp_monitor_after=None
         self.debug_shortcut_confirmed=False
-        self.diff_previous_key=None
         self.log_events=[]
         self.log_changes=tk.BooleanVar(value=False)
         self.last_inspect_at=0.0
-        self.last_compare_at=0.0
         self.inspector_status=tk.StringVar(value='Connect to begin inspecting memory. Raw addresses refer to US N64 guest RAM.')
         self.scene_status=tk.StringVar(value='Double-click an area to request an experimental entrance reload. Requires a connected game, a resolved ROM entrance and write access.')
-        self.compare_status=tk.StringVar(value='Capture or select a logical checkpoint to compare.')
 
         inspector=ttk.Frame(notebook,padding=8)
         notebook.add(inspector,text='Live memory')
@@ -276,12 +273,6 @@ class InspectorMixin(EntranceMixin, AddressCatalogueUI):
             ['!disabled'] if manual else ['disabled'])
         # The selection, listbox, filter and entrance row are retained.
         # ROM-switch disconnection invalidates active reads independently.
-
-    def refresh_checkpoint_options(self):
-        if not hasattr(self,'diff_cp'):return
-        labels=self.checkpoint_labels()
-        self.diff_cp['values']=labels
-        if labels and self.diff_cp.current()<0:self.diff_cp.current(len(labels)-1)
 
     def add_custom_watch(self):
         if self.active_version.key == 'japan':
@@ -598,8 +589,8 @@ class InspectorMixin(EntranceMixin, AddressCatalogueUI):
         """Same current-scene label for both ROMs, including Impact/no actor.
 
         Reads the selected native global scene ID, never a player snapshot.
-        Scene Browser owns the cadence when visible; Live Memory can also
-        request an immediate refresh. No guest memory is ever written here.
+        Scene Browser owns the visible polling cadence; lifecycle changes
+        may explicitly invalidate the label. No guest memory is written here.
         """
         now = __import__('time').monotonic()
         if not force and now - getattr(self, '_scene_banner_last_poll', 0) < 0.35:
@@ -623,7 +614,6 @@ class InspectorMixin(EntranceMixin, AddressCatalogueUI):
             if self.jp_rdram is None:
                 self.watch_rows=[]
                 self.draw_watches()
-                self.refresh_scene_banner(force=True)
                 self.inspector_status.set('Connect to Japan-0 RDRAM for shared Live Memory.')
                 return
             import time
@@ -641,7 +631,6 @@ class InspectorMixin(EntranceMixin, AddressCatalogueUI):
                 self.watch_rows=rows
                 self.draw_watches()
                 self.watch_previous={row.name:row.raw for row in rows}
-                self.refresh_scene_banner(force=True)
                 self.inspector_status.set(
                     f'Japan-0: {len(rows)} source-backed/custom fields; '
                     f'{changed} changed; USA-only address policies disabled.')
@@ -655,7 +644,6 @@ class InspectorMixin(EntranceMixin, AddressCatalogueUI):
         self.last_inspect_at=now
         try:
             live_map=active_session(self).read_current_scene()
-            self.refresh_scene_banner(force=True)
             watches=get_watches(self.mem,snapshot,SCENES)
             watches.extend(read_watch(self.mem,spec) for spec in self.custom_watches)
             observed=getattr(self, 'observed_velocity', None)
@@ -683,29 +671,6 @@ class InspectorMixin(EntranceMixin, AddressCatalogueUI):
                 if len(modified)>12:self.append_event(f'{stamp}  ... +{len(modified)-12} changes')
         except (OSError,ValueError) as e:
             self.inspector_status.set(f'Inspector failed: {e}')
-
-    def refresh_checkpoint_diff(self,force=False):
-        if not hasattr(self,'diff_tree'):return
-        import time
-        now=time.monotonic()
-        if not force and now-self.last_compare_at<1.5:return
-        self.last_compare_at=now
-        if not self.mem or not self.checkpoints:return
-        idx=self.diff_cp.current()
-        if idx<0 or idx>=len(self.checkpoints):return
-        try:
-            d=checkpoint_differences(self.mem,self.checkpoints[idx])
-            self.compare_status.set(
-                f'Map: {d["map_live"]} / saved {d["map_saved"]} ({"MATCH" if d["map_matches"] else "DIFFERENT"}); '
-                f'character: {d["character_live"]} / saved {d["character_saved"]} '
-                f'({"MATCH" if d["character_matches"] else "DIFFERENT"}). '
-                f'Changed bytes: live={d["counts"]["live"]}, progression={d["counts"]["gamedata"]}, '
-                f'header={d["counts"]["header"]}; total={d["total"]} (showing {len(d["rows"])}).')
-            self.diff_tree.delete(*self.diff_tree.get_children())
-            for i,(region,n64,off,old,new) in enumerate(d['rows']):
-                self.diff_tree.insert('','end',iid=str(i),text=region,values=(n64,off,old,new))
-        except (OSError,ValueError,TypeError) as e:
-            self.compare_status.set(f'Comparison failed: {e}')
 
     def draw_scene_list(self):
         filt=self.scene_filter.get().lower().strip()

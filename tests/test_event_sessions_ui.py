@@ -141,7 +141,10 @@ class EventSessionUITests(unittest.TestCase):
             'Compare memory changes')
         self.assertFalse(hasattr(app,'save_buffers_tree'))
         self.assertFalse(hasattr(app,'save_buffers_tab'))
-        app.refresh_checkpoint_options();app.refresh_checkpoint_diff(force=True)
+        for attr in ('refresh_checkpoint_options', 'refresh_checkpoint_diff',
+                     'compare_status', 'last_compare_at', 'diff_previous_key',
+                     'diff_cp', 'diff_tree'):
+            self.assertFalse(hasattr(app, attr), attr)
         app.refresh_native_watch(time.monotonic())
 
     def test_monitor_advances_without_removed_shadow_panel(self):
