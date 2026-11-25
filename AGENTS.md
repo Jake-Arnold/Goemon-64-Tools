@@ -5,7 +5,7 @@
 **Toolkit:** base/PR `stable/toolkit`, topic `toolkit/<purpose>`. **Decomp:** base/PR `stable/decomp`, topic `decomp/<purpose>`. Old `main` and `chatgptweb/decomp` are legacy refs; GitHub default is not an agent's task selector. Read `BRANCHES.md` on live GitHub and the relevant runbook before edits; fetch remote SHA/open PRs and confirm current proof. Do not merge complete toolkit/decomp histories. Preserve research and old PRs. Only scope-reviewed metadata can transfer. Include `PROGRESS.md` in same commit; never force-push. This rule supersedes contradictory dated text below.
 
 
-Project: Goemon 64 speedrunning/practice toolkit (Windows Python and portable C core).
+Project: Goemon N64 original-ROM matching-C decompilation. The runnable toolkit lives only on `stable/toolkit`.
 
 ## Required delivery of task-referenced scripts
 
@@ -33,7 +33,7 @@ full CI. Update `PROGRESS.md` in the same commit.
 3. Maintain or expand Python and portable C tests. Execute appropriate tests before commits; distinguish mock-RAM tests from in-game verification.
 4. Treat N64 scene loading, game state, map pointers and character pointers as unsafe until the engine's native transition path is understood. Do not enable raw warp shortcuts based only on apparent map-ID changes.
 5. Do not commit ROMs, copyrighted game assets, saves, per-user routes, diagnostics containing personal information, credentials, or raw game memory dumps. Respect `.gitignore`.
-6. Preserve existing Python module organisation, autosplitter code and portable C prototypes unless a change explicitly requires restructuring.
+6. Preserve native decompilation sources, proof and research dependencies. The legacy toolkit application, autosplitter and portable prototypes were archived at `160587eb162d957128c8c7dac62439ae5efc3942`; the retained `practice/` compatibility helpers are not an application entry point.
 7. The initial v0.9.9 imported-baseline work did not establish direct warps. Later native-warp and story-flag work on `stable/toolkit` superseded that historical limitation (user confirmation 2026-11-08). The decomp-only branch must not revisit or modify those features without separate authorization.
 
 ## Decomp address discoveries are research metadata, not toolkit writes
