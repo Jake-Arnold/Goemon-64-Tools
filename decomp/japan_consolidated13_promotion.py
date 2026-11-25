@@ -45,6 +45,9 @@ def documents(p,root=ROOT):
     return {'format':FORMAT,'region':'japan_0','base_c':2551,'matching_c':2564,'assembly_remaining':4812,'original_C_instruction_bytes':141596,'functions':rr},{'format':FORMAT,'region':'japan_0','base_c':2551,'matching_c_after':2564,'remaining_assembly':4812,'accepted_original_C_bytes':141596,'original_positive_elf_count':7376,'independent_original_semantic_relocations':80655,'candidate_semantic_relocations':80655,'same_independent_original_semantic_relocations':True,'full_original_G2':True,'predecessor_elf_sha256':PRE,'candidate_elf_sha256':NEW,'previous_C_names':prior,'new_C_names':ns,'strict_readelf_summary':p['strict_inventory'],'new_C_functions':rr}
 def validate(root=ROOT):
     need(transition.validate_jp(root)['accepted_C']==2551,'historical JP2551 integrity');m=read(root/'regions/japan_0.json');
+    if 'promo36_promotion' in m:
+        from . import promo36_promotion as successor36
+        m=successor36.master_predecessor(m,root)
     if 'promo367_promotion' in m:
         from . import promo367_promotion as successor367
         m=successor367.master_predecessor(m,root)

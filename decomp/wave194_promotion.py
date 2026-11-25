@@ -148,6 +148,9 @@ def master_predecessor(m,root=ROOT):
 
 def validate_jp(root=ROOT):
     need(previous.validate_jp(root)['accepted_C']==2664,'historical JP2664 integrity');m=read(root/'regions/japan_0.json');
+    if 'promo36_promotion' in m:
+        from . import promo36_promotion as successor36
+        m=successor36.master_predecessor(m,root)
     if 'promo367_promotion' in m:
         from . import promo367_promotion as successor367
         m=successor367.master_predecessor(m,root)

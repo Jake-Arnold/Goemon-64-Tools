@@ -148,6 +148,9 @@ def jp_documents(p,root=ROOT):
     return {'format':FORMAT,'region':'japan_0','base_c':2564,'matching_c':2664,'assembly_remaining':4712,'original_C_instruction_bytes':155416,'functions':rr},{'format':FORMAT,'region':'japan_0','base_c':2564,'matching_c_after':2664,'remaining_assembly':4712,'accepted_original_C_bytes':155416,'original_positive_elf_count':7376,'independent_original_semantic_relocations':80655,'candidate_semantic_relocations':80655,'same_independent_original_semantic_relocations':True,'full_original_G2':True,'predecessor_elf_sha256':REGIONS['japan_0']['prior'],'candidate_elf_sha256':REGIONS['japan_0']['elf'],'previous_C_names':prior,'new_C_names':sorted(f['name'] for f in fs),'strict_readelf_summary':p['strict_inventory'],'new_C_functions':rr}
 def validate_jp(root=ROOT):
     need(prior_jp.validate(root)['accepted_C']==2564,'historical JP2564 integrity');m=read(root/'regions/japan_0.json');
+    if 'promo36_promotion' in m:
+        from . import promo36_promotion as successor36
+        m=successor36.master_predecessor(m,root)
     if 'promo367_promotion' in m:
         from . import promo367_promotion as successor367
         m=successor367.master_predecessor(m,root)

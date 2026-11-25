@@ -1,0 +1,145 @@
+{
+  "format": "goemon-promo36-original-ido-v1",
+  "region": "japan_0",
+  "base_c": 2842,
+  "matching_c": 2857,
+  "assembly_remaining": 4519,
+  "original_C_instruction_bytes": 179216,
+  "functions": [
+    {
+      "name": "func_801E39F0_59F9C0",
+      "rom_offset": 5896640,
+      "vma": 2149464560,
+      "size": 40,
+      "source": "research/promo36_20261125/sources/japan_0/func_801E39F0_59F9C0/candidate.c",
+      "source_sha256": "205755408cbbb4a925222ecc26843bd024e86240d94d3cd3fd2a7d89a062e5a5",
+      "original_sha256": "1582cd8212d12b11e339fc13419971acce0eac894a20637280ec370fe32bd62b"
+    },
+    {
+      "name": "func_801E3AB8_59FA88",
+      "rom_offset": 5896840,
+      "vma": 2149464760,
+      "size": 40,
+      "source": "research/promo36_20261125/sources/japan_0/func_801E3AB8_59FA88/candidate.c",
+      "source_sha256": "569c525450ce639087068fc53a77fbad55aca0b07ee1e51a7898d243df01b079",
+      "original_sha256": "1582cd8212d12b11e339fc13419971acce0eac894a20637280ec370fe32bd62b"
+    },
+    {
+      "name": "func_08000B4C_73ECBC",
+      "rom_offset": 7597244,
+      "vma": 134220620,
+      "size": 88,
+      "source": "research/promo36_20261125/sources/japan_0/func_08000B4C_73ECBC/candidate.c",
+      "source_sha256": "77628b91dce722195988cf608e460a7e6aaaa67059f7cd9f5a6d9e47c267870b",
+      "original_sha256": "71c53c94af2219ef14b575c113ca0f64ab10b5831c941e1a66aaa83d3320c859"
+    },
+    {
+      "name": "func_801D6008_668558",
+      "rom_offset": 6718808,
+      "vma": 2149408776,
+      "size": 124,
+      "source": "research/promo36_20261125/sources/japan_0/func_801D6008_668558/candidate.c",
+      "source_sha256": "baea20ae7b67c5cf43b7f12c74846219c6c94fb0cb9ca250438ad60eb90f66f5",
+      "original_sha256": "b762712ddf388d046797a2a65145dd5af2bd7232f87da8a93c8c70be0806464f"
+    },
+    {
+      "name": "func_801D63A8_6688F8",
+      "rom_offset": 6719736,
+      "vma": 2149409704,
+      "size": 124,
+      "source": "research/promo36_20261125/sources/japan_0/func_801D63A8_6688F8/candidate.c",
+      "source_sha256": "8e99d773c9ed72eb411428f9025bdb6a7af2bea757d13d1954aa79b40c93d333",
+      "original_sha256": "6998361da1f46ff47513e0e9b442b9cafa1cb922f07a7e69e640d07aba6c5c57"
+    },
+    {
+      "name": "func_801D6588_668AD8",
+      "rom_offset": 6720216,
+      "vma": 2149410184,
+      "size": 124,
+      "source": "research/promo36_20261125/sources/japan_0/func_801D6588_668AD8/candidate.c",
+      "source_sha256": "8732beb4342baefa36bf799f961e1780dea3de3ccbcaf976284fb15ddc38ae80",
+      "original_sha256": "4b24aace11e699fe67198b151b13244359c4e4e697cabda28ac4e6e2e117b7ed"
+    },
+    {
+      "name": "func_801D61F8_668748",
+      "rom_offset": 6719304,
+      "vma": 2149409272,
+      "size": 124,
+      "source": "research/promo36_20261125/sources/japan_0/func_801D61F8_668748/candidate.c",
+      "source_sha256": "bf4a961cd04869a218eefdd5df4947ec06d7321ae50273f2140becc1adcb4bfc",
+      "original_sha256": "a7c2ab66a4598902451f16ba7d3cf95ccf85a491e87fc34c35645e8f09feb971"
+    },
+    {
+      "name": "func_801D8C54_6036D4",
+      "rom_offset": 6305492,
+      "vma": 2149420116,
+      "size": 48,
+      "source": "research/promo36_20261125/sources/japan_0/func_801D8C54_6036D4/candidate.c",
+      "source_sha256": "19f2a8abce8dcae4dc9cccef7f46cce2a89e2c6112ba89b6a9110706910d8429",
+      "original_sha256": "a69d49323e9f52c249738aac1251fdb7e909ed417a703cd8cbd579197c33e720"
+    },
+    {
+      "name": "func_801DD94C_6083CC",
+      "rom_offset": 6325196,
+      "vma": 2149439820,
+      "size": 48,
+      "source": "research/promo36_20261125/sources/japan_0/func_801DD94C_6083CC/candidate.c",
+      "source_sha256": "8dd8f6592212f6983d54e969feffc42fefe2835cf327730e7a4d88519105f7eb",
+      "original_sha256": "59b5b82b8b374487cdc31b1fc68b47921ee85c4ce5188bc7042fb8fa2c69c192"
+    },
+    {
+      "name": "func_801E8A5C_6134DC",
+      "rom_offset": 6370524,
+      "vma": 2149485148,
+      "size": 52,
+      "source": "research/promo36_20261125/sources/japan_0/func_801E8A5C_6134DC/candidate.c",
+      "source_sha256": "90c686396a724b22dc76cfca5d6f4e616791e9704c6fd9099b4cd2b29a4de82e",
+      "original_sha256": "a9e39794635cb62bf3208bb41056d702251e927beabb31ba7b4942a4ee86faa9"
+    },
+    {
+      "name": "func_801E98C4_614344",
+      "rom_offset": 6374212,
+      "vma": 2149488836,
+      "size": 88,
+      "source": "research/promo36_20261125/sources/japan_0/func_801E98C4_614344/candidate.c",
+      "source_sha256": "d548170262eede42625cf5f45cc623ecfd3ce429e22c1c9bf85c02ca34f559ec",
+      "original_sha256": "e24aa37258dd2398a0605b0e3f04796acf0c658fd96a62864184b9d15fddd440"
+    },
+    {
+      "name": "func_801FC988_627408",
+      "rom_offset": 6452232,
+      "vma": 2149566856,
+      "size": 52,
+      "source": "research/promo36_20261125/sources/japan_0/func_801FC988_627408/candidate.c",
+      "source_sha256": "2ae1905aaa92f62726079482c8dc1a5ffdbc61471894eb1c296befa7b6351800",
+      "original_sha256": "779eb0f96b461c3bf7825d50635272f494b0c89bcbb7befcbdeb9ab605007d64"
+    },
+    {
+      "name": "func_80036624_37224",
+      "rom_offset": 225828,
+      "vma": 2147706404,
+      "size": 60,
+      "source": "research/promo36_20261125/sources/japan_0/func_80036624_37224/candidate.c",
+      "source_sha256": "8085ef79dcdfb1e8a8c05df90198433fb539fff4a80c2f52ea89f715b5bc71ef",
+      "original_sha256": "be7f592d5912a87f45f3b02817211ca79085bd746012ecf46a8b0881d2e05591"
+    },
+    {
+      "name": "func_80226164_5E16F4",
+      "rom_offset": 6166260,
+      "vma": 2149736804,
+      "size": 108,
+      "source": "research/promo36_20261125/sources/japan_0/func_80226164_5E16F4/candidate.c",
+      "source_sha256": "cb78b48919ebbbab2399a9948348f68640d9a1221b6007bc1b8d1b1e33e7efc0",
+      "original_sha256": "6cb9576b6c4dd4c6015291e029d8329c48f9398cfd203fe4177272ff03716924"
+    },
+    {
+      "name": "func_80217AD0_69F1D0",
+      "rom_offset": 6943184,
+      "vma": 2149677776,
+      "size": 56,
+      "source": "research/promo36_20261125/sources/japan_0/func_80217AD0_69F1D0/candidate.c",
+      "source_sha256": "4c09b862102dddc398998a534e676aff3eda8adfc9497492c92633e7e59f8fc2",
+      "original_sha256": "f5a999840b8ef717a928a34824915be6921431525b63bd1c986dced05609385e"
+    }
+  ]
+}

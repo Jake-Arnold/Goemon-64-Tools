@@ -1648,5 +1648,8 @@
   },
   "usa_promo367_promotion": {
     "format": "goemon-promo367-original-ido-v1"
+  },
+  "usa_promo36_promotion": {
+    "format": "goemon-promo36-original-ido-v1"
   }
 }

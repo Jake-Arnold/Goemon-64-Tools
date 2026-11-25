@@ -102,7 +102,12 @@ def jp_documents(p,root=ROOT):
 def master_predecessor(m,root=ROOT):
     path=root/'results/japan_0_2757_before_promo367.json';need(sha(path.read_bytes())==JP_FROZEN_SHA,'JP frozen predecessor fingerprint');old=read(path);need(m.get(JP_KEY)==jp_head() and {k:v for k,v in m.items() if k!=JP_KEY}==old,'JP2757 frozen predecessor mismatch');return old
 def validate_jp(root=ROOT):
-    need(previous.validate_jp(root)['accepted_C']==2757,'historical JP2757 integrity');master_predecessor(read(root/'regions/japan_0.json'),root);p=read(proof_path('japan_0',root));r,i=jp_documents(p,root);need(r==read(root/'regions'/JP_REG) and i==read(root/'results'/JP_INV),'Japan source/inventory drift');return {'status':'PASS','accepted_C':2842,'accepted_original_bytes':178040,'remaining_assembly':4534}
+    need(previous.validate_jp(root)['accepted_C']==2757,'historical JP2757 integrity')
+    m=read(root/'regions/japan_0.json')
+    if 'promo36_promotion' in m:
+        from . import promo36_promotion as successor36
+        m=successor36.master_predecessor(m,root)
+    master_predecessor(m,root);p=read(proof_path('japan_0',root));r,i=jp_documents(p,root);need(r==read(root/'regions'/JP_REG) and i==read(root/'results'/JP_INV),'Japan source/inventory drift');return {'status':'PASS','accepted_C':2842,'accepted_original_bytes':178040,'remaining_assembly':4534}
 
 if __name__=='__main__':
     parser=argparse.ArgumentParser(description=__doc__);parser.add_argument('--region',choices=REGIONS);parser.add_argument('--checkout',type=Path);parser.add_argument('--pristine',type=Path);parser.add_argument('--work',type=Path);parser.add_argument('--uv',default='uv');parser.add_argument('--jobs',type=int,default=4);a=parser.parse_args()

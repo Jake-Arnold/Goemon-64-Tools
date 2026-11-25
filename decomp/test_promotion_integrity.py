@@ -14,9 +14,9 @@ class CanonicalPromotionIntegrityTests(unittest.TestCase):
     def test_exact_final_c_claims_and_frozen_original_addresses(self):
         manifest=load_manifest(integrity.ROOT/'manifest.json')
         claims=claimed_functions(manifest)
-        self.assertEqual(len(claims),2939)
-        self.assertEqual(sum(f['size'] for f in claims),192312)
-        self.assertEqual(len({f['name'] for f in claims}),2939)
+        self.assertEqual(len(claims),2960)
+        self.assertEqual(sum(f['size'] for f in claims),194088)
+        self.assertEqual(len({f['name'] for f in claims}),2960)
         self.assertEqual(len(reconcile.fixture()['functions']),108)
         self.assertEqual(reconcile.fixture()['source_ownership_exception'][0]['name'],
                          'func_800108BC_114BC')
@@ -67,7 +67,7 @@ class CanonicalPromotionIntegrityTests(unittest.TestCase):
         audit=integrity.audit()
         self.assertEqual(audit['status'],'PASS',audit['errors'])
         self.assertEqual((audit['accepted_C'],audit['accepted_original_bytes']),
-                         (2939,192312))
+                         (2960,194088))
 
     def test_staged_only_manifest_from_previous_commit_fails_closed(self):
         manifest=json.loads((integrity.ROOT/'results/manifest_2323_before_transition_20261124.json').read_text())
