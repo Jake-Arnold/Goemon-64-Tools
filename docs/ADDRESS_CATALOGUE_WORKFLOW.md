@@ -8,7 +8,7 @@ Existing Python modules retain their UI labels, input validation, game-transitio
 
 ## Project-wide reciprocal identity contract
 
-The authoritative reviewed address registry on toolkit `main` describes
+The authoritative reviewed address registry on toolkit `stable/toolkit` describes
 **both original ROM regions and all confirmed or candidate field pairings**.
 It is not a toolkit-only implementation detail. The separate decompilation
 canon owns source/assembly identities and full-ROM acceptance separately,
@@ -37,7 +37,7 @@ The machine-generated registry can list multiple masks for the same address, byt
 
 ## Source manifests
 
-The reviewed toolkit discovery manifest is `practice/data/address_discoveries_v1.json` with `format: "goemon-address-discoveries-v1"`. Decomp agents publish the same format to `decomp/address_discoveries_v1.json` on their **separate** `chatgptweb/decomp` baseline. Both source paths are version-controlled JSON.
+The reviewed toolkit discovery manifest is `practice/data/address_discoveries_v1.json` with `format: "goemon-address-discoveries-v1"`. Decomp agents publish the same format to `decomp/address_discoveries_v1.json` on their **separate** `stable/decomp` baseline. Both source paths are version-controlled JSON.
 
 Each address entry provides, to the degree established, stable `id`, `name`, `region`, `revision`, `address`, `category`, `data_type`, `width`, `signed`, `endian`, `mask`, `counterpart`, `confidence`, `evidence`, `source`, `context`, `mips_refs`, `live_readable`, `control`, `owner`, `discovered`, `updated` and `source_revision`. Unknown metadata must be `null`, not guessed.
 
@@ -91,7 +91,9 @@ For new discoveries, the same agent task must (1) record the exact finding and p
 
 ## Cross-branch metadata update
 
-`.github/workflows/address-catalogue-decomp-sync.yml` periodically fetches only `decomp/address_discoveries_v1.json` from `chatgptweb/decomp`, never the decomp source tree. It validates the imported JSON, preserves conflicting revisions as `disputed` records, writes only the three address metadata/audit files to a new `toolkit/address-metadata-sync-*` branch, runs tests and opens a **reviewable PR targeting main** where permitted by repository token settings. If an earlier sync PR is open, it avoids duplicate PRs. It never merges PRs automatically.
+`.github/workflows/address-catalogue-decomp-sync.yml` periodically fetches only `decomp/address_discoveries_v1.json` from `stable/decomp`, every six hours and on manual dispatch, never the decomp source tree. It validates the imported JSON, preserves conflicting revisions as `disputed` records, writes only the three address metadata/audit files to a new `toolkit/address-metadata-sync-*` branch, runs tests and opens a **reviewable PR targeting `stable/toolkit`** where permitted by repository token settings. If an earlier sync PR is open, it avoids duplicate PRs. It never merges PRs automatically.
+
+The original bootstrap job that pushed generated snapshots to a fixed November 2026 topic branch has been retired. Use the scheduled workflow or the reviewed manual import below; neither should directly push to a stable branch.
 
 A separate agent can import a downloaded/staged decomp manifest manually:
 

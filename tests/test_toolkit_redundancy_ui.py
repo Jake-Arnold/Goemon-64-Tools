@@ -42,11 +42,11 @@ class RedundancyUITests(unittest.TestCase):
 
     def test_diagnostics_tab_hidden_but_shared_live_and_scene_remain(self):
         app = self.app
-        self.assertEqual(app.notebook.tab(app.jp_fields_tab, "state"), "hidden")
+        self.assertFalse(hasattr(app, 'jp_fields_tab'))
         self.assertFalse(hasattr(app, "verify_rom_button"))
         app.game_version_choice.set("Japan - Ganbare Goemon")
         app.on_game_version_changed()
-        self.assertEqual(app.notebook.tab(app.jp_fields_tab, "state"), "hidden")
+        self.assertFalse(hasattr(app, 'jp_fields_tab'))
         self.assertEqual(app.notebook.tab(app.live_memory_tab, "state"), "normal")
         self.assertEqual(app.notebook.tab(app.scene_tab, "state"), "normal")
         self.assertTrue(app.jp_scene_position_frame.winfo_manager())
@@ -55,7 +55,7 @@ class RedundancyUITests(unittest.TestCase):
         app.game_version_choice.set("USA - Mystical Ninja")
         app.on_game_version_changed()
         self.assertFalse(app.jp_scene_position_frame.winfo_manager())
-        self.assertEqual(app.notebook.tab(app.jp_fields_tab, "state"), "hidden")
+        self.assertFalse(hasattr(app, 'jp_fields_tab'))
 
     def test_initial_japan_connect_requests_rom_once_in_same_flow(self):
         app = self.app

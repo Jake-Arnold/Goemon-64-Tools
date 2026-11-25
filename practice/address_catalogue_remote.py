@@ -25,11 +25,12 @@ OFFICIAL_HOST = "https://raw.githubusercontent.com/Jake-Arnold/Goemon-64-Tools"
 OFFICIAL_PATH = "practice/data/address_discoveries_v1.json"
 REMOTE_MAX_BYTES = 1_500_000
 CACHE_FILE = practice_data_dir() / "address_catalogue_remote.json"
-ALLOWED_BRANCH = re.compile(r"(?:main|toolkit/[0-9A-Za-z_.-]+(?:/[0-9A-Za-z_.-]+)*)\Z")
+ALLOWED_BRANCH = re.compile(r"(?:stable/toolkit|toolkit/[0-9A-Za-z_.-]+(?:/[0-9A-Za-z_.-]+)*)\Z")
 
 
-def remote_url(branch="main"):
-    if not ALLOWED_BRANCH.fullmatch(branch):
+def remote_url(branch="stable/toolkit"):
+    if not ALLOWED_BRANCH.fullmatch(branch) or any(
+            part in (".", "..") for part in branch.split("/")):
         raise ValueError("Invalid official branch")
     # Branch names are allowlisted and all path components are literal.
     return f"{OFFICIAL_HOST}/{branch}/{OFFICIAL_PATH}"
@@ -152,7 +153,7 @@ def load_cached_discoveries(path=CACHE_FILE):
         return None
 
 
-def refresh_address_discoveries(*, branch="main", opener=None,
+def refresh_address_discoveries(*, branch="stable/toolkit", opener=None,
                                 cache_path=CACHE_FILE):
     """Network IO only. Call on a worker, never in Tk's main callback.
 
@@ -198,8 +199,9 @@ CATALOGUE_CACHE_INFO = practice_data_dir() / "address_catalogue_sync_info.json"
 CANONICAL_MAX_BYTES = 5_000_000
 
 
-def canonical_url(branch="main"):
-    if not ALLOWED_BRANCH.fullmatch(branch):
+def canonical_url(branch="stable/toolkit"):
+    if not ALLOWED_BRANCH.fullmatch(branch) or any(
+            part in (".", "..") for part in branch.split("/")):
         raise ValueError("Invalid official registry branch")
     return f"{OFFICIAL_HOST}/{branch}/{CANONICAL_PATH}"
 
@@ -276,7 +278,7 @@ def merge_remote_metadata(local, remote):
     }
 
 
-def refresh_canonical_catalogue(*, branch="main", opener=None,
+def refresh_canonical_catalogue(*, branch="stable/toolkit", opener=None,
                                 cache_path=CATALOGUE_CACHE_FILE,
                                 info_path=CATALOGUE_CACHE_INFO):
     """Nonblocking caller contract; performs only one official, bounded GET."""

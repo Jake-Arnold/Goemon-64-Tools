@@ -97,6 +97,27 @@ class DebuggerTests(unittest.TestCase):
 if __name__=='__main__':unittest.main()
 
 class DebuggerUiSmokeTests(unittest.TestCase):
+    def test_frame_page_read_only_and_script_export(self):
+        import tkinter as tk
+        from tkinter import ttk
+        from argparse import Namespace
+        from unittest.mock import patch
+        from practice.pj64_debugger_ui import PJ64DebuggerMixin
+        try: root = tk.Tk()
+        except tk.TclError as exc: self.skipTest(str(exc))
+        try:
+            class Stub(PJ64DebuggerMixin): pass
+            app = Stub(); app.root = root; app.args = Namespace(read_only=True, enable_hex_edit=False)
+            app.notebook = ttk.Notebook(root)
+            app.build_pj64_debugger_tab(app.notebook)
+            self.assertIn('Frame control (PJ64)', [app.debug_pages.tab(t, 'text') for t in app.debug_pages.tabs()])
+            self.assertTrue(all('disabled' in b.state() for b in app.frame_controls))
+            with patch('practice.pj64_frame_ui.request') as request, patch('practice.pj64_frame_ui.filedialog.asksaveasfilename') as dialog:
+                app._frame_request('pause'); app._frame_export()
+                request.assert_not_called(); dialog.assert_not_called()
+            self.assertIn('read-only', app.frame_status.get())
+        finally: root.destroy()
+
     def test_tab_uses_existing_rdram_and_clears_stale_session(self):
         import tkinter as tk
         from tkinter import ttk

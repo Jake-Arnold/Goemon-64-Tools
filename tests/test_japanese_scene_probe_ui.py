@@ -23,13 +23,13 @@ class JapaneseSceneUiTest(JapanTkSmokeTest):
         host.compare_japan_baseline()
         keys = {x[0] for x in host._jp_last_changes}
         self.assertEqual(keys, {"scene_map", "ryo"})
-        self.assertIn("CHANGED:", host.jp_fields_tree.set("jp_field_scene_map", "status"))
-        self.assertEqual(host.jp_fields_tree.set("jp_field_scene_map", "value"),
+        self.assertIn(("scene_map", "012C", "012D"), host._jp_last_changes)
+        self.assertEqual(host._jp_last_readings["scene_map"].value,
                          "301 / 0x12D — Mt. Fuji")
         self.assertFalse(hasattr(ram, "write_guest"))
         host.clear_japan_field_values()
         self.assertIsNone(host._jp_baseline)
-        self.assertEqual(host.jp_fields_tree.set("jp_field_scene_map", "value"), "—")
+        self.assertEqual(host._jp_last_readings, {})
 
     def test_change_of_pid_or_ram_base_invalidates_baseline(self):
         host = self.host

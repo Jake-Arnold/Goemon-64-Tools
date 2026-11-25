@@ -9,7 +9,7 @@ import threading
 
 from practice.checkpoints import _ensure_capture_safe
 from practice.hex_edit import checked_write
-from autosplitter.memory import PLAYER_TASK_PTR_ADDR
+from practice.backends.memory import PLAYER_TASK_PTR_ADDR
 
 MAX_HEALTH = 0x8015C5E0
 HEALTH = 0x8015C5E4

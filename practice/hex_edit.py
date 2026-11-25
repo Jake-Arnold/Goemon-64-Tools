@@ -65,6 +65,23 @@ def get_policy(address: int):
     return POLICIES.get(address)
 
 
+def watch_scalar_width(watch, definitions, *, region):
+    """Shared read width only; this never authorizes a memory write."""
+    if region not in ('usa', 'japan'):
+        raise ValueError('Select USA or Japan first')
+    if watch.addr is None:
+        raise ValueError('Selected watch has no fixed guest address')
+    spec = next((item for item in definitions if item.row_name == watch.name), None)
+    policy = get_policy(watch.addr) if region == 'usa' else None
+    raw = watch.raw.removeprefix('0x').removeprefix('0X').strip()
+    width = (spec.width if spec is not None else policy.width if policy is not None
+             else len(raw) // 2 if len(raw) in (2, 4, 8, 16)
+             and re.fullmatch(r'[0-9a-fA-F]+', raw) else 0)
+    if width not in (1, 2, 4, 8):
+        raise ValueError('No supported scalar width for this watch; use a typed custom watch')
+    return width
+
+
 def checked_write(ram, address: int, expected: bytes, new: bytes, *, allow_advanced=False, raw_override=False):
     """Single compare-before-write with post-write verification. No auto retry.
 

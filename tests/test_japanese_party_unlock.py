@@ -1,7 +1,7 @@
 """ROM-free tests for opt-in Japanese party unlock writes."""
 import unittest
 
-from autosplitter.memory import Rdram
+from practice.backends.memory import Rdram
 from practice.japanese_party_unlock import (
     PARTY_FLAGS, CHARACTER_INDEX_ADDR, SCENE_ID_ADDR,
     unlock_japan_party_member,

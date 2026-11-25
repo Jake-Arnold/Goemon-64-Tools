@@ -18,8 +18,6 @@ from practice.pj64_debugger import (DebuggerSession, disassembly, guest_address,
 from practice.theme import PALETTE
 from practice.region_session import active_session
 from practice.scripted_trace_ui import ScriptedTraceUiMixin
-
-
 from practice.pj64_frame_ui import PJ64FrameUiMixin
 
 

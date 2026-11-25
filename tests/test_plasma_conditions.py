@@ -2,7 +2,7 @@ import struct
 import unittest
 from pathlib import Path
 import json
-from decomp.plasma_conditions import (ADVICE_END, ADVICE_START, flag_location,
+from research.rom.plasma_conditions import (ADVICE_END, ADVICE_START, flag_location,
                                       instantiated_actor_messages, scan_advice)
 
 class PlasmaConditionsTests(unittest.TestCase):
@@ -34,7 +34,7 @@ class PlasmaConditionsTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError,'inventory changed'):scan_advice(script)
 
     def test_published_metadata_covers_common_event_and_complete_branch_inventory(self):
-        path=Path(__file__).resolve().parents[1]/'decomp/results/plasma_conditions.json'
+        path=Path(__file__).resolve().parents[1]/'research/rom/results/plasma_conditions.json'
         data=json.loads(path.read_text(encoding='utf-8'))
         self.assertEqual([x['stage'] for x in data['rooms']],[423,424,425,426])
         self.assertTrue(all(x['event_id']=='0x288' for x in data['rooms']))
@@ -48,7 +48,7 @@ class PlasmaConditionsTests(unittest.TestCase):
         self.assertEqual(next(x for x in checks if x['flag_id']=='0x044')['target_file_offset'],'0x3A34')
 
     def test_published_writer_leads_are_bounded_and_distinguish_sources(self):
-        path=Path(__file__).resolve().parents[1]/'decomp/results/plasma_writers.json'
+        path=Path(__file__).resolve().parents[1]/'research/rom/results/plasma_writers.json'
         result=json.loads(path.read_text(encoding='utf-8'))
         self.assertEqual(len(result['flag_ids']),39)
         self.assertEqual(len(result['writers']),69)

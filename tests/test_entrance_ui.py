@@ -67,7 +67,7 @@ class EntranceUITests(unittest.TestCase):
 
     def test_legacy_debug_handler_is_menu_only_never_arms_spawn(self):
         from practice.scene_controls import PENDING_MAP_ADDR
-        from autosplitter.memory import PLAYER_OBJECT_PTR_ADDR, PLAYER_TASK_PTR_ADDR
+        from practice.backends.memory import PLAYER_OBJECT_PTR_ADDR, PLAYER_TASK_PTR_ADDR
         before = self.app.mem.read_guest(PENDING_MAP_ADDR, 12)
         self.app.scene_list.selection_clear(0, 'end')
         self.app.mem.write_guest(PLAYER_OBJECT_PTR_ADDR, bytes(4))
@@ -252,7 +252,7 @@ class EntranceUITests(unittest.TestCase):
     def test_scene_request_blocks_overlapping_checkpoint_restore(self):
         from practice.checkpoints import capture_checkpoint
         checkpoint=capture_checkpoint(self.app.mem,'Before reload')
-        self.app.checkpoints=[checkpoint];self.app.checkpoints_box['values']=['Before reload'];self.app.checkpoints_box.current(0)
+        self.app.checkpoints=[checkpoint];self.app.logical_checkpoint_selection=0
         with patch('practice.ui_extension.messagebox.askyesno',side_effect=AssertionError('No confirmation expected')):self.app.try_reload_warp()
         # An unexpected failure to stage the USA warp must fail fast rather
         # than display a hidden Tk modal under Xvfb and hang the whole suite.

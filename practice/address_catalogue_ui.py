@@ -504,7 +504,7 @@ class AddressCatalogueUI:
         self.catalogue_selected.set("Checking official repository for metadata...")
         def job():
             try:
-                remote, info = refresh_canonical_catalogue(branch="main")
+                remote, info = refresh_canonical_catalogue()
                 # Bundled control addresses and permissions remain immutable
                 # during a remote descriptive metadata-only refresh.
                 local = load_registry()[0]

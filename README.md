@@ -1,8 +1,8 @@
-# Goemon Speedrun Tools v0.11.82 — Experimental Project64 Frame Control
+# Goemon Speedrun Tools v0.11.85 — Experimental Project64 Frame Control
 
 > **Repository branch policy (23 November 2026):** Toolkit development uses `stable/toolkit` → `toolkit/<topic>` → PR to `stable/toolkit`. Decomp work uses `stable/decomp` → `decomp/<topic>` → PR to `stable/decomp`. `main` and `chatgptweb/decomp` are legacy names, not new baselines. Read [BRANCHES.md](BRANCHES.md). Never merge the entire branches together.
 
-## v0.11.82 — experimental Project64 frame control
+## v0.11.85 — experimental Project64 frame control
 
 Debugger → Frame control (PJ64) exports an authenticated localhost script, pauses at controller-poll boundaries, and schedules P1 button/stick input for bounded steps. An optional manually verified execution PC enables update-interval research. Controller polls are not confirmed game frames. See [setup and limits](docs/PJ64_FRAME_CONTROL.md).
 
@@ -29,6 +29,8 @@ The toolkit address catalogue now includes the separately reviewed address metad
 The historical metadata-sync branches are superseded by this consolidated update. The long-lived `stable/decomp` baseline remains independent from `stable/toolkit`.
 
 ## Run the practice toolkit from `stable/toolkit` (Windows and Linux)
+
+The matching-C snapshot formerly under `decomp/` is archived at [the last toolkit commit containing it](https://github.com/Jake-Arnold/Goemon-64-Tools/blob/dae81a70fc6e4adf22f76846d202253d3f201b2d/decomp/README.md). For current decompilation use [stable/decomp](https://github.com/Jake-Arnold/Goemon-64-Tools/blob/stable/decomp/decomp/README.md). Retained read-only Plasma and pickup research lives in `research/rom/`.
 
 **Use the `stable/toolkit` branch for the runnable practice toolkit.** The
 `stable/decomp` branch is a separate matching-C development workspace;
@@ -773,7 +775,7 @@ All tests use simulated RAM and headless Tk; original-game behaviour remains to 
 
 **Refresh Address Catalogue** retrieves the full canonical registry JSON from the official repository via a bounded, schema-validated read-only worker, caches it offline with timestamp/upstream revision, and overlays descriptive updates. Remote records cannot change any built-in writer's target, permissions or bit mask. The running toolkit can discover newly imported descriptions without a Python software update.
 
-New discoveries are recorded in [practice/data/address_discoveries_v1.json](practice/data/address_discoveries_v1.json), or in the separate decomp [`decomp/address_discoveries_v1.json`](decomp/address_discoveries_v1.json) research branch. [Reproducible sync and schema documentation](docs/ADDRESS_CATALOGUE_WORKFLOW.md) explains how the scheduled GitHub workflow opens **metadata-only** import PRs rather than merging decomp code. Run `python3 -m scripts.sync_address_catalogue --check` to fail CI when sources/manifests are not reconciled.
+New discoveries are recorded in [practice/data/address_discoveries_v1.json](practice/data/address_discoveries_v1.json), or in the separate decomp [`decomp/address_discoveries_v1.json`](https://github.com/Jake-Arnold/Goemon-64-Tools/blob/stable/decomp/decomp/address_discoveries_v1.json) research branch. [Reproducible sync and schema documentation](docs/ADDRESS_CATALOGUE_WORKFLOW.md) explains how the scheduled GitHub workflow opens **metadata-only** import PRs rather than merging decomp code. Run `python3 -m scripts.sync_address_catalogue --check` to fail CI when sources/manifests are not reconciled.
 
 This is registry, synthetic memory and Tk testing. New candidates are not automatically promoted to gameplay-verified fields; code VMAs and dynamic pointer targets are never casually dereferenced or written.
 
@@ -815,9 +817,9 @@ The **USA named saved-event catalogue** and all **Japanese mapped curated / Plas
 
 ## Dashboard: version selection, update checks and one-click installs (v0.11.37)
 
-The Dashboard updater offers a **Version** dropdown with **Stable · main**, **Test · toolkit/* branches** and available **Release tag · vX.Y.Z** entries. **Refresh versions** retrieves the current GitHub refs without changing any source files. **Check for updates** compares the selected version against the installed checkout. After checking, **Install update and restart** fast-forwards the current branch, or **Switch version and restart** switches explicitly to another chosen branch or release tag.
+The Dashboard updater offers a **Version** dropdown with **Stable · stable/toolkit**, **Test · toolkit/* branches** and available **Release tag · vX.Y.Z** entries. **Refresh versions** retrieves the current GitHub refs without changing any source files. **Check for updates** compares the selected version against the installed checkout. After checking, **Install update and restart** fast-forwards the current branch, or **Switch version and restart** switches explicitly to another chosen branch or release tag.
 
-This works with canonical Git-cloned installs on **Ubuntu or Windows**. Only the selected version is installed; decompilation and research branches are not listed. Existing local branch histories are preserved when switching versions, and releases use detached-HEAD checkouts rather than modifying a local branch. To return to stable, select **Stable · main**. The updater refuses dirty tracked files, diverged destination branches, unknown remotes and changed remote commits between checking and installation. It never force-resets Git, discards local commits, or removes untracked files. Git itself blocks switching if an untracked file would be overwritten. ZIP downloads are not auto-updatable.
+This works with canonical Git-cloned installs on **Ubuntu or Windows**. Only the selected version is installed; decompilation and research branches are not listed. Existing local branch histories are preserved when switching versions, and releases use detached-HEAD checkouts rather than modifying a local branch. To return to stable, select **Stable · stable/toolkit**. The updater refuses dirty tracked files, diverged destination branches, unknown remotes and changed remote commits between checking and installation. It never force-resets Git, discards local commits, or removes untracked files. Git itself blocks switching if an untracked file would be overwritten. ZIP downloads are not auto-updatable. Older installations that still expect `main` must first switch to `stable/toolkit` in Git (preserve any local changes and commits); current versions no longer fetch `main`.
 
 Git/network work takes place off the Tk UI thread. After installation the toolkit closes process handles, input injectors and freeze workers through normal shutdown before relaunching the selected code. Replaced code may depend on newer Python packages and release tags may contain older interfaces. Manual native-game testing is still required.
 
@@ -1151,7 +1153,7 @@ Japan-0 can now use the exact-ROM-verified memory attachment with **Project64.ex
 
 Dashboard contains **Connection** and **Logical checkpoints** side by side at its default 1220×790 window size, keeping both panels visible without scrolling. At narrower widths, the cards stack vertically and the scrollbar remains available. Scene Browser and Live Memory are separate dedicated tabs; the dashboard no longer duplicates their tables.
 
-The rebuilt-recomp **Game speed** UI has been removed. Standalone speed research and preparation code remains in the repository but is not part of the toolkit interface.
+The rebuilt-recomp **Game speed** UI has been removed. The standalone speed research and preparation code is archived in [Git history](https://github.com/Jake-Arnold/Goemon-64-Tools/tree/a9054c7211728f84173d0fc0e8bcd54d606b6f07/speed); it is no longer in the active toolkit tree.
 
 **Event sessions** has two internal tabs: **Event flag sessions** for repeated 100-byte USA saved-event experiments or a user-selected 100-byte Japanese *research window* (not a known JP saved bank), and **Advanced RAM comparison** for the former State discovery A/B/C probes (including wide scope and no-player contexts). The redundant **Saved / shadow** UI has been removed.
 
@@ -1191,7 +1193,7 @@ Windows; launch with `--read-only` to disable game writes and automated input.
 
 ## Experimental native Linux toolkit
 
-The Python/Tk toolkit has an experimental native Linux process-memory backend, a native-game launch control, existing-PID connection with optional OS authorization, write-enabled practice controls by default, original-ROM-researched script diagnostics, **X11-only verified-target key injection**, and a **Linux speed channel for separately rebuilt patched hosts**. See [Linux setup and limitations](docs/LINUX_TOOLKIT.md). This is not a claim of Wayland input support, stock-recomp speed control or live gameplay verification.
+The Python/Tk toolkit has an experimental native Linux process-memory backend, a native-game launch control, existing-PID connection with optional OS authorization, write-enabled practice controls by default, original-ROM-researched script diagnostics, and **X11-only verified-target key injection**. See [Linux setup and limitations](docs/LINUX_TOOLKIT.md). This is not a claim of Wayland input support, stock-recomp speed control or live gameplay verification.
 
 The four normal Plasma locations share one advice event. Story progress now
 includes all 39 bits checked or set by its traced advice path. Your two forced
@@ -1208,7 +1210,7 @@ entry now includes the user’s first-conversation observation. See
 
 ## Archived speed-control research
 
-The previous Dashboard speed controls were removed because they required a separately rebuilt recomp. Source preparation and experimental standalone speed-control modules remain for reference; see [speed research](docs/SPEED_CONTROL_RESEARCH.md).
+The previous Dashboard speed controls were removed because they required a separately rebuilt recomp. Source preparation, experimental standalone speed-control modules and their tests are preserved at the [last pre-retirement commit](https://github.com/Jake-Arnold/Goemon-64-Tools/tree/a9054c7211728f84173d0fc0e8bcd54d606b6f07/speed). See [historical speed research](docs/SPEED_CONTROL_RESEARCH.md). The current toolkit does not control host-clock speed.
 
 ## Connect without a player
 
@@ -1326,17 +1328,17 @@ a rebuild to include the new panel.
 
 # Matching C reconstruction
 
-The [decompilation track](decomp/README.md) now includes **74 matching functions / 5,564 function bytes**
+The [decompilation track](https://github.com/Jake-Arnold/Goemon-64-Tools/blob/dae81a70fc6e4adf22f76846d202253d3f201b2d/decomp/README.md) now includes **74 matching functions / 5,564 function bytes**
 across flag-bank, system/byte-memory, save/resource and VM helper, assignment, resource and control routines.
 The VM unit intentionally retains 20 unresolved functions as assembly; its host
 comparator model is not counted as matching C. Most of the game remains unreconstructed.
 Fresh baseline and C-replacement builds both match the complete
 original decompressed US ROM byte-for-byte. Reproducible verification, synthetic
 C tests and per-function result metadata are included; game data stays local.
-The [whole-build inventory](decomp/INVENTORY.md) identifies 7,376 function entries:
+The [whole-build inventory](https://github.com/Jake-Arnold/Goemon-64-Tools/blob/dae81a70fc6e4adf22f76846d202253d3f201b2d/decomp/INVENTORY.md) identifies 7,376 function entries:
 87 matching C entries including 13 already upstream, and 7,289 still in assembly.
 The count includes SDK/runtime code and is not proof of complete function discovery.
-The [batch pipeline](decomp/BATCH_PIPELINE.md) now automates draft generation,
+The [batch pipeline](https://github.com/Jake-Arnold/Goemon-64-Tools/blob/dae81a70fc6e4adf22f76846d202253d3f201b2d/decomp/BATCH_PIPELINE.md) now automates draft generation,
 parallel byte probes and bounded search, with cached baseline verification for
 reviewed batches. Probe candidates are excluded from the verified count.
 This remains a partial decompilation, not a new release.

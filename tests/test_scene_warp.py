@@ -32,7 +32,7 @@ class TestWarp(unittest.TestCase):
         self.assertEqual(ram.u16(MAP_ADDR),353)
 
     def test_impact_submode_missing_player_and_non_gameplay_state_enter_debug(self):
-        from autosplitter.memory import PLAYER_OBJECT_PTR_ADDR, PLAYER_TASK_PTR_ADDR
+        from practice.backends.memory import PLAYER_OBJECT_PTR_ADDR, PLAYER_TASK_PTR_ADDR
         from practice.checkpoints import STATE_ADDR
         proc, ram = TestCheckpoint().sample()
         ram.write_guest(SUBMODE_ADDR, b'\x04')  # Impact battle

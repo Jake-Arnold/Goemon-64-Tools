@@ -1,5 +1,5 @@
 import unittest
-from autosplitter.memory import Rdram
+from practice.backends.memory import Rdram
 from tests.test_checkpoint import TestCheckpoint
 from practice.inspector import get_watches, checkpoint_differences
 from practice.checkpoints import capture_checkpoint, MAP_ADDR, PHASE_ADDR, GAMEDATA_ADDR
