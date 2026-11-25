@@ -1,3 +1,8 @@
+## 2026-11-25 — Ebi Slide eligibility and scheduler order (research)
+
+- Two isolated exact post-update functions JP 801D1228 (236 B), USA 801CBAF8 (240 B), exact raw object bytes, original VMA/extent, 10 ordered text relocs each. 148 source attempts independently replayed; six remaining targets FAILED_NATIVE. Eligibility pair 66/80; JP/USA dispatcher 48/100 and 47/104; pre-update both 92/170. Corrected original pre-update size to 680 B. Nine cumulative isolated exact Ebi Slide functions (4020 bytes), no canonical promotion.
+- Correct callback mapping +8 pre-update, +C action, +10 post-update; history shifts after movement. Original eligibility disallows 0D directly, permits 0..3 or Ebi 42 subject to checks. Exact sampled frame sequence remains unproved. See `decomp/research/ebi_slide_input_order_20261125/README.md`. Source-only replay ZIP supplied in project conversation. Native test base 3669a15a807c77249e85cd177ef2704d5560e5d1; publication base f4e4b6105796ec4c4e19b0415a24a9deea1f2e16; no #271/#250 overlap. Full current canonical checkout unavailable, G2 and inventory/integrity NOT_RUN; USA3039 +13 upstream / JP2938 unchanged. No toolkit changes.
+
 ## 2026-11-25 — Promo195 USA100 / Japan95 native integration candidate
 
 - Authenticated stable/decomp `3669a15a807c77249e85cd177ef2704d5560e5d1`, source archive artifact 15066045901, original upstream `7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee`, independent regional original ROMs and IDO 5.3. Canonical predecessors USA2939 / JP2843 replayed; no overlap with accepted claims or pending PR #250.
