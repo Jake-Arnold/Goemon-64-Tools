@@ -1,0 +1,94 @@
+{
+  "status": "RESEARCH_ONLY",
+  "text_bytes": 6416,
+  "original_text_sha256": "fc2b0bb19c757aecd44b15b33380632d39b7c572298713fad33a5e399605a560",
+  "all_text_exact": true,
+  "all_38_function_identities_exact": true,
+  "named_reference_relocations": 625,
+  "numeric_shadow_relocations": 609,
+  "candidate_relocations": 609,
+  "removed_synthetic_reference_tuples": [
+    [
+      2388,
+      "R_MIPS_HI16",
+      "D_3ADF2"
+    ],
+    [
+      2404,
+      "R_MIPS_LO16",
+      "D_3ADF2"
+    ],
+    [
+      2440,
+      "R_MIPS_HI16",
+      "D_3ADD6"
+    ],
+    [
+      2444,
+      "R_MIPS_HI16",
+      "D_3ADD6"
+    ],
+    [
+      2452,
+      "R_MIPS_LO16",
+      "D_3ADD6"
+    ],
+    [
+      2468,
+      "R_MIPS_LO16",
+      "D_3ADD6"
+    ],
+    [
+      2524,
+      "R_MIPS_HI16",
+      "D_3ADD5"
+    ],
+    [
+      2536,
+      "R_MIPS_LO16",
+      "D_3ADD5"
+    ],
+    [
+      3224,
+      "R_MIPS_HI16",
+      "D_3ADF2"
+    ],
+    [
+      3240,
+      "R_MIPS_LO16",
+      "D_3ADF2"
+    ],
+    [
+      3260,
+      "R_MIPS_HI16",
+      "D_3ADD6"
+    ],
+    [
+      3264,
+      "R_MIPS_HI16",
+      "D_3ADD6"
+    ],
+    [
+      3272,
+      "R_MIPS_LO16",
+      "D_3ADD6"
+    ],
+    [
+      3288,
+      "R_MIPS_LO16",
+      "D_3ADD6"
+    ],
+    [
+      3320,
+      "R_MIPS_HI16",
+      "D_3ADD5"
+    ],
+    [
+      3332,
+      "R_MIPS_LO16",
+      "D_3ADD5"
+    ]
+  ],
+  "reference_relocation_multiset_exact": true,
+  "scope": "Two newly exact C functions plus 36 original ASM siblings; independent original numeric shadow for these two functions only; not canonical mixed source layout or full ROM."
+}
