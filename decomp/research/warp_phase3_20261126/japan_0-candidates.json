@@ -1,0 +1,41 @@
+[
+  {
+    "region": "japan_0",
+    "name": "func_801D0D00_58CCD0",
+    "rom_offset": 5819600,
+    "vma": 2149387520,
+    "original_bytes": 472,
+    "relocation_count": 48,
+    "source": "sources/japan_0_candidate.c",
+    "negative_source": "sources/japan_0_negative_bound.c",
+    "source_sha256": "88f159a3406e5be1e6dafed7cf95f887698d46eca6cc604a83c78995976037f7",
+    "negative_sha256": "6a60c7f7b9c81425a9a01ea22134eb4a38687d15fd0142c1c79afde62062d56b",
+    "code_sha256": "78098d9aedd92acf4edfac62833faf53046de9f87bd92d8ed1d6093d5bb31419",
+    "flags": [
+      "-c",
+      "-G",
+      "0",
+      "-non_shared",
+      "-Xfullwarn",
+      "-Xcpluscomm",
+      "-Iinclude",
+      "-Ilibultra/include",
+      "-Ilibultra/include/PR",
+      "-Isrc",
+      "-I.",
+      "-Wab,-r4300_mul",
+      "-woff",
+      "649,838,712",
+      "-D_LANGUAGE_C",
+      "-D_FINALROM",
+      "-DF3DEX_GBI",
+      "-D__sgi",
+      "-DNDEBUG",
+      "-O2",
+      "-mips2"
+    ],
+    "include_dir": "decomp/research/warp_phase3_20261126/sources",
+    "compiler_quirk_outcome": "NEW_REPRODUCIBLE_QUIRK",
+    "nonstandard_sdk_flags": false
+  }
+]

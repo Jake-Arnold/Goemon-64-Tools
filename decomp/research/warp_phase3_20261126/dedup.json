@@ -1,0 +1,18 @@
+{
+  "canonical_usa": 3066,
+  "canonical_japan_0": 3004,
+  "usa_no_name_or_range_overlap": true,
+  "jp_no_name_overlap": true,
+  "jp_resolved_names": 2889,
+  "jp_unresolved_names": 115,
+  "jp_no_resolved_range_overlap": true,
+  "pending_pr276": "historical nonmatching source donor, not accepted",
+  "principal_pending_prs_checked": [
+    250,
+    194,
+    200,
+    202
+  ],
+  "principal_pending_overlap": false,
+  "exhaustive_pending_manifests": false
+}

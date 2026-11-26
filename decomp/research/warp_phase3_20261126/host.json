@@ -1,0 +1,16 @@
+[
+  {
+    "region": "usa",
+    "cases": 4096,
+    "sanitizers": "address,undefined",
+    "status": "PASS",
+    "scope": "synthetic call order/arguments and field relationships, host layout only"
+  },
+  {
+    "region": "japan_0",
+    "cases": 4096,
+    "sanitizers": "address,undefined",
+    "status": "PASS",
+    "scope": "synthetic call order/arguments and field relationships, host layout only"
+  }
+]

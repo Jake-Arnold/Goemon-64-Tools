@@ -1,0 +1,42 @@
+typedef unsigned char u8;
+typedef unsigned short u16;
+typedef short s16;
+typedef struct { u8 pad[0x2FE4]; s16 x,y,z; u16 heading; } Pending;
+typedef struct Task Task;
+struct Task { u8 pad[0x18]; void *object; u8 pad1[0x38]; void *field54; u8 pad2[4]; void *field5c; u8 field60; u8 pad3[3]; void *field64; u8 pad4[0x28]; u8 field90; u8 pad5[0x4b]; Task *fielddc; };
+extern u8 *g_system_ptr;
+extern float D_8020F5C8_5CB598;
+extern Task *D_80201514_5BD4E4,*D_80201548_5BD518;
+extern void *D_8020151C_5BD4EC,*D_80201524_5BD4F4,*D_8020152C_5BD4FC,*D_80201534_5BD504;
+extern int D_80211650_5CD620[];
+extern u8 D_80201550_5BD520[];
+extern int D_80161DCC_1629CC;
+extern void func_801D0F04_58CED4(void),func_801EDF84_5A9F54(void),func_801D0F30_58CF00(void);
+extern Task *func_80035558_36158(void *,void (*)(void),void *,void *,float,float,float,u16,u16,u16,float,float,float,u16,u16);
+extern void *func_80035B5C_3675C(Task *,int,int);
+extern void func_8001C54C_1D14C(void *,void *),func_801DF058_59B028(void *),func_801D1370_58D340(void),func_801D7A04_5939D4(void),func_80034E8C_35A8C(void (*)(void));
+extern Task *func_80034A78_35678(void *,void (*)(void),int);
+void func_801D0D00_58CCD0(void *a,void *b) {
+    float scale = D_8020F5C8_5CB598;
+    Pending *p=(Pending *)(g_system_ptr+0x38000);
+    int i;
+    D_80201514_5BD4E4=func_80035558_36158(a,func_801D0F04_58CED4,0,0,(float)p->x,(float)p->y,(float)p->z,0,p->heading,0,scale,scale,scale,0,0);
+    D_80201514_5BD4E4->field5c=D_80211650_5CD620;
+    for(i=0;i<49;i++) { D_80211650_5CD620[0]=0; }
+    D_8020151C_5BD4EC=D_80201514_5BD4E4->object;
+    D_80201524_5BD4F4=func_80035B5C_3675C(D_80201514_5BD4E4,2,1);
+    D_8020152C_5BD4FC=func_80035B5C_3675C(D_80201514_5BD4E4,2,1);
+    func_8001C54C_1D14C(D_80201524_5BD4F4,D_8020151C_5BD4EC);
+    func_8001C54C_1D14C(D_8020152C_5BD4FC,D_8020151C_5BD4EC);
+    D_80201514_5BD4E4->field60=D_80161DCC_1629CC;
+    func_801DF058_59B028(D_8020152C_5BD4FC);
+    D_80201514_5BD4E4->field54=D_80201550_5BD520;
+    func_801D1370_58D340();
+    func_801D7A04_5939D4();
+    D_80201514_5BD4E4->field64=D_80201534_5BD504;
+    D_80201514_5BD4E4->field90=0;
+    D_80201548_5BD518=func_80034A78_35678(a,func_801EDF84_5A9F54,0);
+    D_80201514_5BD4E4->fielddc=D_80201548_5BD518;
+    D_80201548_5BD518->field5c=D_80201514_5BD4E4;
+    func_80034E8C_35A8C(func_801D0F30_58CF00);
+}
