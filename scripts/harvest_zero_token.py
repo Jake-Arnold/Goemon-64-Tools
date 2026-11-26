@@ -185,6 +185,15 @@ def _probe_one(task: dict) -> dict:
     snapshot = Path(task["snapshot"])
     m2c_py = Path(task["m2c_py"])
     rom_path = Path(task["rom_path"])
+    flag_kind = task.get("flag_kind", "O2")
+    flags = list(FLAGS)
+    nonstd = False
+    if flag_kind == "O2g3":
+        flags = list(FLAGS) + ["-g3"]
+        nonstd = True
+    elif flag_kind == "O1":
+        flags = [("-O1" if x == "-O2" else x) for x in FLAGS]
+        nonstd = True
 
     with tempfile.TemporaryDirectory(prefix=f"h_{name}_") as td:
         w = Path(td)
@@ -244,7 +253,7 @@ def _probe_one(task: dict) -> dict:
 
         cc = snapshot / "tools/ido-5.3/cc"
         cc_res = subprocess.run(
-            [str(cc), *FLAGS, "-I" + str(w), "-o", str(cand_o), str(cand_c)],
+            [str(cc), *flags, "-I" + str(w), "-o", str(cand_o), str(cand_c)],
             cwd=snapshot,
             stdout=subprocess.PIPE,
             stderr=subprocess.STDOUT,
@@ -257,7 +266,7 @@ def _probe_one(task: dict) -> dict:
                 cand_src = alt_src
                 cand_c.write_text(cand_src)
                 cc_res = subprocess.run(
-                    [str(cc), *FLAGS, "-I" + str(w), "-o", str(cand_o), str(cand_c)],
+                    [str(cc), *flags, "-I" + str(w), "-o", str(cand_o), str(cand_c)],
                     cwd=snapshot,
                     stdout=subprocess.PIPE,
                     stderr=subprocess.STDOUT,
@@ -273,6 +282,17 @@ def _probe_one(task: dict) -> dict:
         try:
             if exact(cand_o, ref_o, f_meta):
                 glitch.check_nontext(cand_o)
+                if nonstd:
+                    def_o = w / "default.o"
+                    dr = subprocess.run(
+                        [str(cc), *FLAGS, "-I" + str(w), "-o", str(def_o), str(cand_c)],
+                        cwd=snapshot,
+                        stdout=subprocess.DEVNULL,
+                        stderr=subprocess.DEVNULL,
+                        timeout=20,
+                    )
+                    if dr.returncode == 0 and def_o.is_file() and exact(def_o, ref_o, f_meta):
+                        return {"name": name, "status": "default_also_exact"}
                 is_exact = True
         except Exception:
             is_exact = False
@@ -285,7 +305,7 @@ def _probe_one(task: dict) -> dict:
                 neg_o = w / f"neg_{idx}.o"
                 neg_c.write_text(v)
                 nr = subprocess.run(
-                    [str(cc), *FLAGS, "-I" + str(w), "-o", str(neg_o), str(neg_c)],
+                    [str(cc), *flags, "-I" + str(w), "-o", str(neg_o), str(neg_c)],
                     cwd=snapshot,
                     stdout=subprocess.PIPE,
                     stderr=subprocess.STDOUT,
@@ -351,7 +371,17 @@ def main() -> None:
     parser.add_argument("--limit", type=int, default=0, help="0 = scan all matching targets")
     parser.add_argument("--workers", type=int, default=14)
     parser.add_argument("--max-packets", type=int, default=50, help="Max near-miss executor task packets to write")
+    parser.add_argument("--flags", choices=("O2", "O2g3", "O1"), default="O2")
     args = parser.parse_args()
+
+    flag_list = list(FLAGS)
+    nonstd = False
+    if args.flags == "O2g3":
+        flag_list = list(FLAGS) + ["-g3"]
+        nonstd = True
+    elif args.flags == "O1":
+        flag_list = [("-O1" if x == "-O2" else x) for x in FLAGS]
+        nonstd = True
 
     rom_path = args.pristine / f"config/{args.region}/baserom.decompressed.z64"
     targets = _discover_targets(args.region, args.snapshot, args.pristine, args.max_bytes, args.min_bytes)
@@ -368,6 +398,7 @@ def main() -> None:
             "snapshot": str(args.snapshot.resolve()),
             "m2c_py": str(args.m2c.resolve()),
             "rom_path": str(rom_path.resolve()),
+            "flag_kind": args.flags,
         }
         for t in targets
     ]
@@ -411,15 +442,15 @@ def main() -> None:
             "code_sha256": hit["code_sha256"],
             "source_sha256": _sha(hit["candidate_c"].encode()),
             "negative_sha256": _sha(hit["negative_c"].encode()),
-            "flags": FLAGS,
-            "nonstandard_sdk_flags": False,
+            "flags": flag_list,
+            "nonstandard_sdk_flags": nonstd,
             "relocation_count": hit["relocation_count"],
             "include_dir": f"{rel_base}/sources/{args.region}/{n}",
             "compiler_quirk_outcome": "NO_NEW_COMPILER_FINDING",
             "ledger_sha256": ledger_sha,
             "source": f"sources/{args.region}/{n}/candidate.c",
             "negative_source": f"sources/{args.region}/{n}/negative.c",
-            "origin": "zero-token m2c+IDO CPU harvester",
+            "origin": f"zero-token m2c+IDO ({args.flags}) CPU harvester",
             "headers_sha256": {"m2c_types.h": hdr_sha},
         })
 
