@@ -351,6 +351,40 @@
       ],
       "last_reviewed": "2026-11-21",
       "completion_proof": "https://github.com/Jake-Arnold/Goemon-64-Tools/commit/605ce2ccc6742e09ca2b5b016834940bfcd88450"
+    },
+    {
+      "id": "GQ-EBISLIDE-001",
+      "title": "Resolve Ebi Slide wall collision mechanism and verify USA reproduction",
+      "status": "pending",
+      "priority": 1,
+      "workstream": "japan-glitch",
+      "region": "both",
+      "proof_tier": "LIVE_JP_CLIP_OBSERVED / MOVEMENT_STATE_EXPLAINED / COLLISION_CAUSE_PENDING",
+      "summary": "Test Q reproduces genuine JP slide and wall clip. Landing action 1C writes E8 .7, retains E4 2.8; 0D -> idle -> 8F preserves stale normal-size parameters. 36 8F samples, 95.4596 units; typical speed 2.8 vs grounded miniature 1.12. Earlier grounded transformation motion not genuine slide. PR #278 already merged nine related exact C functions.",
+      "requires": [
+        "Private miniature savestate facing solid obstruction; repeat Q and controls in native inspector",
+        "Original JP and USA ROM-aware source/disassembly for collision chain",
+        "Read-only collision-state observations, native IDO protocol for any later source changes"
+      ],
+      "next_step": "Use decomp/research/ebi_slide_live_20261126/README.md: matched-wall Q/ordinary mini/Q without CU/delayed CU/normal-size control; trace common post-update callees and 8F wrapper to actual wall resolver. Identify collision decision at candidate frame 84, then confirm USA timing independently. No raw game-memory traces in Git.",
+      "acceptance": "Controlled wall-contact positive/negative traces and original-MIPS control-flow/field evidence identify exact collision mechanism; independent USA reproduction or documented regional negative result. Any C promotion separately requires full G2 gates.",
+      "evidence": [
+        "decomp/research/ebi_slide_live_20261126/README.md",
+        "decomp/research/ebi_slide_live_20261126/capture-summary.json",
+        "https://github.com/Jake-Arnold/Goemon-64-Tools/pull/278",
+        "https://github.com/Jake-Arnold/Goemon-64-Tools/pull/272"
+      ],
+      "conflicts_with": [
+        "GQ-USA-004"
+      ],
+      "history": [
+        {
+          "at": "2026-11-26",
+          "status": "pending",
+          "note": "User Q trace and screencast confirm Japan wall clip; movement-state explanation established; collision mechanism remains open."
+        }
+      ],
+      "last_reviewed": "2026-11-26"
     }
   ]
 }
