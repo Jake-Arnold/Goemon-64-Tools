@@ -7,6 +7,7 @@
 
 - Authenticated live `stable/decomp@4b72b379ccb04ae577db899ef4f0a694fbaa05b9` after PR #287 (`cross_region_zero_token_18`) passed full hosted GitHub Actions CI and merged.
 - Archived full 965 KB `PROGRESS.md` verbatim to `docs/archive/PROGRESS_HISTORY_20261126.md` and full 91 KB `decomp/CONTINUE.md` verbatim to `decomp/CONTINUE_HISTORY_20261126.md`, reducing active handoff docs by >98% while preserving 100% of historical provenance.
+- Also moved 7 superseded top-level queue/planning docs (`MASTER_WORK_QUEUE.md`, `NEXT_*.md`, `ARCHITECT_V3_PILOT.md`, `EXECUTION_STRATEGY_V2.md`) into `docs/archive/` (verified zero Python/CI references).
 - Native IDO / full-ROM G2: `NOT_RUN` (document-only rotation; zero source, manifest, proof, inventory, or count changes). Canonical totals remain **USA 3,091 C / 212,940 B / 4,272 ASM** (3,104 C incl. 13 upstream) and **Japan 3,033 C / 203,424 B / 4,343 ASM**.
 - Local checks run: `decomp.promotion_integrity --validate` PASS, `decomp.batch_registry` PASS, `decomp/test_codex_skills.py` and `decomp/test_batch_registry.py` PASS. Hosted GitHub Actions `Decomp ROM-free regression` and `Branch base and topic prefix` required before merge.
 
