@@ -1,0 +1,28 @@
+{
+  "status": "RESEARCH_ONLY",
+  "base_commit": "8b195d8ce5a31723a71af428ee4f7bccf32b0bf8",
+  "base_tree": "3b7ec59747ce3557dd5b01d35ea94d1a8853e956",
+  "archive_artifact": 15142908886,
+  "canonical_counts": {
+    "usa": 3066,
+    "japan_0": 3004
+  },
+  "native_functions": 2,
+  "native_bytes": 944,
+  "named_relocations": 96,
+  "controls_rejected": 6,
+  "distinct_region_source_trials": 179,
+  "unique_region_source_digests": 178,
+  "compiled_and_linked": 149,
+  "rejected_by_compiler_or_linker": 30,
+  "exact_variants_not_distinct_functions": 20,
+  "text_owner_bytes": 203120,
+  "text_owner_functions": 920,
+  "text_owner_relocations": 7117,
+  "host_sanitizer_cases": 8192,
+  "canonical_predecessor_integrity": "PASS",
+  "full_candidate_G2": "NOT_RUN",
+  "strict_candidate_inventory": "NOT_RUN",
+  "candidate_promotion_integrity": "NOT_RUN",
+  "gameplay": "NOT_RUN"
+}

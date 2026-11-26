@@ -270,3 +270,7 @@ The verifier creates new workdirs and refuses reused output paths. A successful 
 ## Retention and cleanup boundaries
 
 Historical native proof snapshots are not disposable merely because their count is old. [Results retention audit](results/README.md) and [21 November retention review](docs/DECOMP_RETENTION_AUDIT_20261121.md) document which files are uniquely valuable. Keep research, failure traces, real source/code hashes, input provenance and all distinct G2 proofs. No game code is removed by this runbook reorganisation.
+
+## 2026-11-26 UTC — Warp Phase 3 paired spawn native exact, research only
+
+`decomp/research/warp_phase3_20261126/` has the exact paired 472-byte original-address IDO C bodies, all 96 named relocation identities, six compiled rejected controls, full original text-owner comparison and 8192 synthetic actual-source host cases. Both native candidates recover the 109/118 near-match by repeated-store loop source shape. Do not count these as accepted: current USA3066/JP3004 unchanged. Replay authenticated current complete canonical predecessors and additive full G2/strict inventory/promotion integrity, require hosted regression and routing before promotion. Phase 2 draft #283 and Phase 1 Batch B independently outstanding.

@@ -1,0 +1,46 @@
+[
+  {
+    "region": "japan_0",
+    "owner": "asm/japan_0/58CB60.s",
+    "targets": [
+      "func_801D0D00_58CCD0"
+    ],
+    "status": "UNIT_TEXT_EXACT",
+    "rom_offset": 5819232,
+    "vma": 2149387152,
+    "text_bytes": 2016,
+    "original_sha256": "f33e1cb95c8bcaa64f148cb076469cad8c7eafd84ff78c02907b03cc80f21f41",
+    "mixed_text_sha256": "f33e1cb95c8bcaa64f148cb076469cad8c7eafd84ff78c02907b03cc80f21f41",
+    "rom_exact": true,
+    "original_functions": 14,
+    "mixed_functions": 14,
+    "function_identities_exact": true,
+    "original_relocations": 125,
+    "mixed_relocations": 125,
+    "original_reloc_sha256": "9f150c485c93b2286a0dcf0b91d28ff02403ceb9806a02b8cf8231fabc214ed2",
+    "mixed_reloc_sha256": "9f150c485c93b2286a0dcf0b91d28ff02403ceb9806a02b8cf8231fabc214ed2",
+    "semantic_relocations_exact": true
+  },
+  {
+    "region": "usa",
+    "owner": "asm/usa/587370.s",
+    "targets": [
+      "func_801CB5D0_5874E0"
+    ],
+    "status": "UNIT_TEXT_EXACT",
+    "rom_offset": 5796720,
+    "vma": 2149364832,
+    "text_bytes": 201104,
+    "original_sha256": "2e85bbfdd3cf97ec71fe84c47cb18bb5ca471eaa06c5f95e2b60cc809a363765",
+    "mixed_text_sha256": "2e85bbfdd3cf97ec71fe84c47cb18bb5ca471eaa06c5f95e2b60cc809a363765",
+    "rom_exact": true,
+    "original_functions": 906,
+    "mixed_functions": 906,
+    "function_identities_exact": true,
+    "original_relocations": 6992,
+    "mixed_relocations": 6992,
+    "original_reloc_sha256": "a63965914044ed8f63ec877988355a1cf7de798c7b81f46acbabd9a6cf9e8cd9",
+    "mixed_reloc_sha256": "a63965914044ed8f63ec877988355a1cf7de798c7b81f46acbabd9a6cf9e8cd9",
+    "semantic_relocations_exact": true
+  }
+]

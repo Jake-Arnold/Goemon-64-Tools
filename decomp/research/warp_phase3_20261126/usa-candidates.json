@@ -1,0 +1,41 @@
+[
+  {
+    "region": "usa",
+    "name": "func_801CB5D0_5874E0",
+    "rom_offset": 5797088,
+    "vma": 2149365200,
+    "original_bytes": 472,
+    "relocation_count": 48,
+    "source": "sources/usa_candidate.c",
+    "negative_source": "sources/usa_negative_bound.c",
+    "source_sha256": "130eedcde17d2ea3036796b5e06d8fd98b55f3404ac6e9952009d7d100fd0b58",
+    "negative_sha256": "4306321069eb22abadadb88d4373625a2dc933bc335bc3ca5a4a6faf96a3263b",
+    "code_sha256": "1ea794fc80363c6789de1ec3d64df345d4faf0272c5f2cbc679e884b7173d133",
+    "flags": [
+      "-c",
+      "-G",
+      "0",
+      "-non_shared",
+      "-Xfullwarn",
+      "-Xcpluscomm",
+      "-Iinclude",
+      "-Ilibultra/include",
+      "-Ilibultra/include/PR",
+      "-Isrc",
+      "-I.",
+      "-Wab,-r4300_mul",
+      "-woff",
+      "649,838,712",
+      "-D_LANGUAGE_C",
+      "-D_FINALROM",
+      "-DF3DEX_GBI",
+      "-D__sgi",
+      "-DNDEBUG",
+      "-O2",
+      "-mips2"
+    ],
+    "include_dir": "decomp/research/warp_phase3_20261126/sources",
+    "compiler_quirk_outcome": "NEW_REPRODUCIBLE_QUIRK",
+    "nonstandard_sdk_flags": false
+  }
+]
