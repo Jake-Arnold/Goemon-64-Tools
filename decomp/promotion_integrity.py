@@ -33,6 +33,9 @@ def audit(root:Path=ROOT)->dict:
         inv=json.loads((root/'results/inventory.json').read_text())
     except (FileNotFoundError,ValueError) as exc:
         return {'status':'FAIL','errors':['Missing/malformed canonical proof/inventory: '+str(exc)]}
+    if manifest.get('usa_warp_batch_a_promotion'):
+        from . import warp_batch_a_promotion as warp
+        return warp.audit_usa(root,manifest,proof,inv)
     if manifest.get('usa_ebi_slide9_promotion'):
         from . import ebi_slide9_promotion as ebi9
         return ebi9.audit_usa(root,manifest,proof,inv)

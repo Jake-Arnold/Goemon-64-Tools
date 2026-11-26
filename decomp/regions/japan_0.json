@@ -1318,5 +1318,19 @@
     "source_manifest": "decomp/regions/japan_0_2995_ebi_slide9.json",
     "proof": "decomp/results/japan_0_ebi_slide9_g2_20261126.json",
     "inventory": "decomp/results/japan_0_2995_ebi_slide9_inventory_20261126.json"
+  },
+  "warp_batch_a_promotion": {
+    "format": "goemon-warp-batch-a-original-ido-v1",
+    "status": "PASSED_G2_LOCAL",
+    "base_original_C": 2995,
+    "new_original_C": 9,
+    "accepted_original_C": 3004,
+    "accepted_original_bytes": 201000,
+    "asm_remaining": 4372,
+    "canonical_semantic_relocations": 80652,
+    "full_original_elf_identities": 7376,
+    "source_manifest": "decomp/regions/japan_0_3004_warp_batch_a.json",
+    "proof": "decomp/results/japan_0_warp_batch_a_g2_20261126.json",
+    "inventory": "decomp/results/japan_0_3004_warp_batch_a_inventory_20261126.json"
   }
 }

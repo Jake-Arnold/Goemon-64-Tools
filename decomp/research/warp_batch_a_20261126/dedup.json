@@ -1,0 +1,19 @@
+{
+  "canonical_commit": "ee6328ab121bb59b27f03a54c3c80563a720fe77",
+  "usa_accepted_ranges_checked": 3056,
+  "usa_additional_upstream_names_checked": 13,
+  "jp_accepted_names_checked": 2995,
+  "jp_resolved_original_ranges_checked": 2993,
+  "overlap": [],
+  "pending_pr250_candidate_manifests": "no additional name overlap",
+  "pending_pr_filename_audit": [
+    194,
+    195,
+    198,
+    199,
+    200,
+    202,
+    250
+  ],
+  "pending_manifest_audit": "not exhaustive; original 800374AC excluded"
+}
