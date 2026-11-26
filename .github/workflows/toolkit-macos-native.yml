@@ -4,9 +4,13 @@ on:
     paths:
       - 'native/**'
       - 'practice/mupen_native*.py'
+      - 'practice/native_trace_wire.py'
+      - 'practice/native_state_control.py'
       - 'Run-Mac.sh'
       - 'scripts/build_mupen_input.sh'
       - 'tests/test_mupen_native*'
+      - 'tests/test_native_trace_wire.py'
+      - 'tests/test_native_state_control.py'
       - '.github/workflows/toolkit-macos-native.yml'
 permissions:
   contents: read
@@ -29,4 +33,4 @@ jobs:
       - name: Verify native plugin ABI and frontend state machine (no ROM)
         env:
           GOEMON_NATIVE_INPUT_LIBRARY: build/goemon_mupen_input.dylib
-        run: python -m unittest tests.test_mupen_native -v
+        run: python -m unittest tests.test_mupen_native tests.test_native_trace_wire tests.test_native_state_control -v

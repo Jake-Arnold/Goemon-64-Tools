@@ -10,10 +10,12 @@ import subprocess
 import sys
 import sysconfig
 import threading
+import time
 import tkinter as tk
 from tkinter import ttk, filedialog, messagebox
 
-from practice.mupen_native import PREFIX, write_trace, MAX_NATIVE_STEPS, MAX_TRACE_ROWS
+from practice.mupen_native import write_trace, MAX_NATIVE_STEPS, MAX_TRACE_ROWS
+from practice.native_trace_wire import TraceReader
 from practice.mupen_input_build import default_input_path, request_input_build
 from practice.native_inspector_preferences import (inspector_preferences_path, load_editor_preferences,
     save_editor_preferences)
@@ -65,6 +67,7 @@ class NativeFrameUi:
         self.root=root; self.process=None; self.busy=False; self.report=None; self.reference=None
         self.events=queue.Queue(); self.generation=0; self.closed=False
         self.pending=None; self.inflight=None; self.last_render=None; self.last_error=''
+        self.last_activity=0.; self.stalled=False; self.protocol_failed=False; self.recovery_path=None
         self.managed_ram=None; self.session_rom=None
         self.build_future=None
         self.settings_path=Path(settings_path) if settings_path is not None else inspector_preferences_path()
@@ -106,6 +109,14 @@ class NativeFrameUi:
             ttk.Button(extra,style='Inspector.TButton',text=label,command=lambda op=op:self.control(op)).pack(side='left')
         self.mini_button=ttk.Button(extra,style='Inspector.TButton',text='Unlock Mini Ebisumaru (JP)',command=self.unlock_mini,state='disabled');self.mini_button.pack(side='left')
         ttk.Button(extra,style='Inspector.TButton',text='Copy trace',command=self.copy_trace).pack(side='left')
+        statebar=ttk.Frame(body);statebar.pack(fill='x')
+        self.slot=tk.StringVar(value='0')
+        ttk.Label(statebar,text='State slot').pack(side='left')
+        ttk.Spinbox(statebar,from_=0,to=9,textvariable=self.slot,width=3).pack(side='left')
+        ttk.Button(statebar,style='Inspector.TButton',text='Save state (F5)',command=lambda:self.state_action('save_state')).pack(side='left')
+        ttk.Button(statebar,style='Inspector.TButton',text='Load state (F7)',command=lambda:self.state_action('load_state')).pack(side='left')
+        ttk.Button(statebar,style='Inspector.TButton',text='Recover latest trace',command=self.copy_recovered).pack(side='left')
+        self.state_bindings=[(key,self.root.bind(key,lambda e,op=op:self.state_hotkey(e,op),add='+')) for key,op in (('<F5>','save_state'),('<F7>','load_state'))]
         ttk.Label(body,textvariable=self.status,wraplength=990).pack(anchor='w')
         row=ttk.Frame(body); row.pack(fill='x')
         self.buttons={b:tk.BooleanVar() for b in BUTTONS}
@@ -266,18 +277,31 @@ class NativeFrameUi:
             needs_relocate=bool(self.located_text and watch_text.strip()==self.located_text)
             args.extend(['--watches','' if needs_relocate else watch_text])
             # Keep the SDL/native core on the child process main thread.
-            self.process=subprocess.Popen(args,cwd=str(Path(__file__).resolve().parents[1]),stdin=subprocess.PIPE,stdout=subprocess.PIPE,stderr=subprocess.STDOUT,text=True,bufsize=1)
+            self.process=subprocess.Popen(args,cwd=str(Path(__file__).resolve().parents[1]),stdin=subprocess.PIPE,stdout=subprocess.PIPE,stderr=subprocess.PIPE,text=True,encoding='utf-8',errors='replace',bufsize=1)
         except (OSError,ValueError,RuntimeError) as exc:self.status.set(str(exc));return
         self._cancel_render();self.generation+=1;gen=self.generation;proc=self.process;self.busy=True;self.inflight='launch';self.pending=None;self.report=None;self.reference=None;self.last_render=None;self.last_error='';self.trace_select_all=False
+        self.last_activity=time.monotonic();self.stalled=False;self.protocol_failed=False;self.recovery_path=None
         self.start_button.state(['disabled']); self.set_setup_visible(False); self.status.set('Starting native core…' + (' Pause and locate the player again.' if needs_relocate else ''))
+        last_log=['']
+        def logs():
+            try:
+                for line in proc.stderr:
+                    if line.strip():last_log[0]=line.strip()[-500:]
+            except (OSError,ValueError):pass
         def read():
-            last_log=''
-            for line in proc.stdout:
-                if line.startswith(PREFIX):
-                    try:self.events.put((gen,'report',json.loads(line[len(PREFIX):])))
-                    except ValueError:pass
-                elif line.strip():last_log=line.strip()
-            code=proc.wait(); self.events.put((gen,'exit',f'Emulator exited ({code}). {last_log}'))
+            reader=TraceReader(); failed=False
+            try:
+                for line in proc.stdout:
+                    if failed:continue  # keep draining even after protocol fault
+                    try:
+                        value=reader.receive(line)
+                        if value is not None:self.events.put((gen,'report',value))
+                    except (ValueError,KeyError,TypeError) as exc:
+                        failed=True;self.events.put((gen,'protocol_error',str(exc)))
+                if reader.pending is not None and not failed:self.events.put((gen,'protocol_error','Incomplete final report'))
+            except (OSError,ValueError) as exc:self.events.put((gen,'protocol_error',str(exc)))
+            code=proc.wait(); self.events.put((gen,'exit',f'Emulator exited ({code}). {last_log[0]}'))
+        threading.Thread(target=logs,daemon=True).start()
         threading.Thread(target=read,daemon=True).start()
 
     def default(self):
@@ -285,6 +309,11 @@ class NativeFrameUi:
 
     def control(self,op,**fields):
         if self.closed or not self.process:return
+        if self.protocol_failed or self.stalled:
+            if op=='stop' and messagebox.askyesno('Stop stalled emulator?', 'Stop this managed emulator process? Unsaved gameplay may be lost; the latest trace checkpoint is retained.',parent=self.root):
+                try:self.process.terminate()
+                except OSError as exc:self.status.set(str(exc))
+            return
         try:
             if op=='hold' and 'input' not in fields:fields['input']=self.default()
             if self.busy:
@@ -294,9 +323,26 @@ class NativeFrameUi:
                 return
             if op!='status':self.last_error=''
             self.process.stdin.write(json.dumps(dict(op=op,**fields))+'\n');self.process.stdin.flush()
-            self.busy=True;self.inflight=op
+            self.busy=True;self.inflight=op;self.last_activity=time.monotonic();self.stalled=False
             if op=='step':self.status.set(f"Stepping 0/{len(fields['inputs'])} core frames…")
         except (OSError,ValueError) as exc:self.status.set(str(exc))
+
+    def state_hotkey(self,event,op):
+        if event.widget is self.body or str(event.widget).startswith(str(self.body)+'.'):
+            self.state_action(op);return 'break'
+
+    def state_action(self,op):
+        r=self.report
+        if not self.process or not r or not r.get('capabilities',{}).get('savestate_control'):
+            self.status.set('Managed states require a running native core 2.6.0');return
+        if r['state']!=3 or r['recording'] or r.get('state_job_pending'):
+            self.status.set('Pause and stop recording before using a savestate');return
+        try:
+            slot=int(self.slot.get())
+            if not 0<=slot<=9:raise ValueError('Choose a slot from 0 to 9')
+        except ValueError as exc:self.status.set(str(exc));return
+        if op=='load_state' and not messagebox.askyesno('Load savestate?', 'Restore this slot? Current gameplay and the active trace will be replaced. The latest trace checkpoint remains recoverable; reapply or relocate watches after loading.',parent=self.root):return
+        self.control(op,slot=slot,confirm=True)
 
     def unlock_mini(self):
         r=self.report
@@ -362,10 +408,20 @@ class NativeFrameUi:
         self.table.selection_set(self.table.get_children())
         return 'break'
 
-    def copy_trace(self,selected=False):
-        if not self.report or not self.report['rows']:
+    def copy_recovered(self):
+        try:
+            if not self.recovery_path:raise ValueError('No recovery checkpoint from this session')
+            path=Path(self.recovery_path)
+            if path.stat().st_size>16000000:raise ValueError('Recovery checkpoint exceeds 16 MB')
+            report=json.loads(path.read_text(encoding='utf-8'))
+            self.copy_trace(report=report)
+        except (OSError,ValueError,KeyError,TypeError) as exc:self.status.set(f'Trace recovery unavailable: {exc}')
+
+    def copy_trace(self,selected=False,report=None):
+        r=self.report if report is None else report
+        if not r or not r['rows']:
             self.status.set('No captured rows to copy');return 'break'
-        rows=self.report['rows'];columns=['serial','frame','polls','buttons','x','y']+[w['name'] for w in self.report['watches']]
+        rows=r['rows'];columns=['serial','frame','polls','buttons','x','y']+[w['name'] for w in r['watches']]
         if selected and not self.trace_select_all:
             indices=sorted(int(i) for i in self.table.selection())
             rows=[rows[i] for i in indices if i<len(rows)]
@@ -447,18 +503,37 @@ class NativeFrameUi:
             while True:
                 gen,kind,payload=self.events.get_nowait()
                 if gen!=self.generation:continue
+                if kind=='protocol_error':
+                    self.protocol_failed=True;self.busy=True;self.pending=None
+                    self.status.set(f'Native protocol error: {payload}. Recover latest trace or stop emulator.')
+                    continue
+                if self.protocol_failed and kind!='exit':continue
+                self.last_activity=time.monotonic();self.stalled=False
                 if kind=='report' and payload.get('progress'):
                     progress=payload['progress']
-                    if self.inflight=='step':self.status.set(f"Stepping {progress['done']}/{progress['total']} core frames…")
+                    if self.inflight=='step':
+                        if 'report' in payload:
+                            self.report=payload['report'];self.recovery_path=self.report.get('recovery_path',self.recovery_path)
+                            self.managed_ram=payload.get('managed_ram');self.render()
+                        self.status.set(f"Stepping {progress['done']}/{progress['total']} core frames…" if progress['done']<progress['total'] else 'Final frame complete; receiving final report…')
                     continue  # progress is not command completion
                 completed=self.inflight
                 self.busy=False;self.inflight=None
                 if kind=='exit':
-                    self.process=None;self.managed_ram=None;self.session_rom=None;self.pending=None;self.start_button.state(['!disabled']);self.mini_button.state(['disabled']);self.watches.configure(state='normal');self.set_setup_visible(True);self.status.set(self.last_error or payload)
-                elif not payload['ok']:self.last_error=payload['error'];self.status.set(self.last_error)
+                    self.process=None;self.managed_ram=None;self.session_rom=None;self.pending=None;self.protocol_failed=False;self.start_button.state(['!disabled']);self.mini_button.state(['disabled']);self.watches.configure(state='normal');self.set_setup_visible(True);self.status.set(self.last_error or payload)
+                elif not payload['ok']:
+                    self.last_error=payload['error']
+                    if 'report' in payload:
+                        previous=self.report;self.report=payload['report'];self.managed_ram=payload.get('managed_ram')
+                        self.recovery_path=self.report.get('recovery_path',self.recovery_path)
+                        if previous and previous['watches']!=self.report['watches']:self.reference=None;self.last_render=None
+                        self.render()
+                    self.status.set(self.last_error)
                 else:
                     previous=self.report;self.report=payload['report'];r=self.report
                     self.managed_ram=payload.get('managed_ram')
+                    self.recovery_path=r.get('recovery_path',self.recovery_path)
+                    if completed=='load_state':self.reference=None;self.last_render=None
                     if completed=='locate_player' and r.get('player_text'):
                         self.located_text=r['player_text'].strip()
                         self.watches.delete('1.0','end');self.watches.insert('1.0',r['player_text'])
@@ -475,8 +550,13 @@ class NativeFrameUi:
                     player=f" | task 0x{r['player_base']:08X}" if r.get('player_base') else ''
                     if not r.get('player_base') and self.located_text and self.watches.get('1.0','end-1c').strip()==self.located_text and not diagnostic:
                         diagnostic='Saved player watches: pause and Locate Player again.'
-                    self.status.set(f"{r['region']} | {state} | core callback {r['serial']} | {len(r['rows'])}/{MAX_TRACE_ROWS} captured | {r.get('input_mode','scripted')} input | recording {r['recording']}{player} | {r.get('ram_reader','')} | {self.last_error or r['error'] or diagnostic or notice}");self.render()
+                    job_notice=('Unacknowledged savestate job; stop and relaunch' if r.get('state_job_pending') else r.get('state_job_notice',''))
+                    recovery_notice=('Trace checkpoint failed: '+r['recovery_error'] if r.get('recovery_error') else '')
+                    self.status.set(f"{r['region']} | {state} | core callback {r['serial']} | {len(r['rows'])}/{MAX_TRACE_ROWS} captured | {r.get('input_mode','scripted')} input | recording {r['recording']}{player} | {r.get('ram_reader','')} | {self.last_error or r['error'] or job_notice or diagnostic or notice or recovery_notice}");self.render()
         except queue.Empty:pass
+        if self.process and self.busy and not self.protocol_failed and not self.stalled and self.last_activity and time.monotonic()-self.last_activity>20:
+            self.stalled=True;self.pending=None
+            self.status.set(f'No native response for 20s ({self.inflight}). Recover latest trace; Stop emulator if unresponsive.')
         if self.process and not self.busy and self.pending:
             op,fields=self.pending;self.pending=None;self.control(op,**fields)
         if self.drain_id is not None:
@@ -495,7 +575,8 @@ class NativeFrameUi:
 
     def manual_edits_paused(self):
         r=self.report
-        return bool(r and r['state']==3 and not r['recording']
+        return bool(r and r['state']==3 and not r['recording'] and not r.get('state_job_pending')
+                    and not self.stalled and not self.protocol_failed
                     and self.inflight in (None,'status') and self.pending is None)
 
     def poll(self):
@@ -513,6 +594,9 @@ class NativeFrameUi:
         self.save_editor_settings()
         self._cancel_render()
         self.closed=True
+        for key,funcid in self.state_bindings:
+            try:self.root.unbind(key,funcid)
+            except tk.TclError:pass
         self.generation+=1
         self.pending=None
         for callback in (self.drain_id,self.poll_id):

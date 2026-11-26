@@ -122,6 +122,27 @@ class NativeInspectorTests(unittest.TestCase):
         self.assertEqual(len(report['rows']),600);self.assertEqual(report['serial'],600)
         self.assertEqual(report['state'],PAUSED)
 
+    def test_managed_state_control_integration(self):
+        i=self.setup_inspector();i.core.core_version=0x020600
+        i.control(dict(op='step',inputs=[NEUTRAL]))
+        def queue_state(op,slot):
+            self.assertEqual(slot,0);i.core.pending_state=op
+        original=i.core.cmd
+        def cmd(op):
+            original(op)
+            if op==ADVANCE and hasattr(i.core,'pending_state'):
+                i.state_job_complete(i.core.pending_state,1);del i.core.pending_state
+        i.core.queue_state=queue_state;i.core.cmd=cmd
+        r=i.control(dict(op='save_state',slot=0));self.assertEqual(len(r['rows']),1)
+        self.assertTrue(r['capabilities']['savestate_control'])
+        with self.assertRaisesRegex(RuntimeError,'confirmation'):i.control(dict(op='load_state',slot=0))
+        r=i.control(dict(op='load_state',slot=0,confirm=True))
+        self.assertEqual(r['rows'],[]);self.assertEqual(r['watches'],[]);self.assertEqual(r['state'],PAUSED)
+        self.assertIn('Loaded slot 0',r['state_job_notice'])
+        i.state_job_expected=10
+        with self.assertRaisesRegex(RuntimeError,'Unacknowledged'):i.control(dict(op='resume'))
+        self.assertTrue(i.control(dict(op='status'))['state_job_pending'])
+
     def test_running_and_multiple_callback_rejected(self):
         i=self.setup_inspector();i.control(dict(op='resume'))
         with self.assertRaises(RuntimeError):i.control(dict(op='step',inputs=[NEUTRAL]))

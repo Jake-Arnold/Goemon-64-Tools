@@ -114,7 +114,7 @@ class NativeUiTests(unittest.TestCase):
         self.assertEqual(ui.timeline.get('1.0','end-1c'),'1-120 - 80 0')
         self.assertEqual(ui.n.get(),'600');self.assertEqual(ui.located_text,w)
         for k,v in ui.paths.items():v.set('/tmp/custom-'+k)
-        proc=SimpleNamespace(stdin=io.StringIO(),stdout=[],wait=lambda:0)
+        proc=SimpleNamespace(stdin=io.StringIO(),stdout=[],stderr=[],wait=lambda:0)
         with patch('practice.mupen_native_ui.subprocess.Popen',return_value=proc) as launch:
             ui.start();args=launch.call_args.args[0]
             self.assertEqual(args[args.index('--watches')+1],'')
@@ -165,7 +165,38 @@ class NativeUiTests(unittest.TestCase):
         ui.timeline.insert('1.0','2-120 - 80 0');ui.buttons['CU'].set(True);ui.step(1)
         self.assertEqual(json.loads(stream.getvalue())['inputs'],[dict(NEUTRAL,buttons=8)])
         ui.events.put((ui.generation,'report',dict(progress=dict(done=1,total=1))))
-        ui.drain();self.assertTrue(ui.busy);self.assertEqual(ui.inflight,'step');self.assertIn('1/1',ui.status.get());ui.process=None
+        ui.drain();self.assertTrue(ui.busy);self.assertEqual(ui.inflight,'step');self.assertIn('Final frame complete',ui.status.get());ui.process=None
+
+    def test_progress_report_recovery_and_watchdog(self):
+        import time
+        ui=self.ui; stream=io.StringIO(); ui.process=SimpleNamespace(stdin=stream)
+        ui.control('step',inputs=[NEUTRAL])
+        checkpoint=Path(self.temp.name)/'trace.json'
+        r=dict(rows=[dict(serial=1,frame=0,polls=1,buttons=0,x=0,y=0,a=4)],watches=[dict(name='a')],region='japan',state=3,serial=1,recording=False,error='',recovery_path=str(checkpoint))
+        checkpoint.write_text(json.dumps(r))
+        ui.events.put((ui.generation,'report',dict(ok=True,report=r,progress=dict(done=1,total=1))))
+        ui.drain();self.assertTrue(ui.busy);self.assertEqual(ui.report['rows'],r['rows'])
+        ui.copy_recovered();self.assertIn('a',self.root.clipboard_get())
+        ui.last_activity=time.monotonic()-21;ui.drain();self.assertTrue(ui.stalled)
+        self.assertFalse(ui.manual_edits_paused())
+        self.assertIn('20s',ui.status.get())
+        ui.events.put((ui.generation,'report',dict(ok=True,report=r)))
+        ui.drain();self.assertFalse(ui.stalled);self.assertFalse(ui.busy)
+        ui.events.put((ui.generation,'protocol_error','incomplete'));ui.drain()
+        self.assertTrue(ui.protocol_failed);self.assertFalse(ui.manual_edits_paused())
+        ui.process=None
+
+    def test_managed_slot_controls_and_confirmation(self):
+        ui=self.ui;stream=io.StringIO();ui.process=SimpleNamespace(stdin=stream)
+        ui.report=dict(state=3,recording=False,rows=[],capabilities=dict(savestate_control=True))
+        ui.slot.set('2');ui.state_action('save_state')
+        self.assertEqual(json.loads(stream.getvalue()),dict(op='save_state',slot=2,confirm=True))
+        ui.busy=False;ui.inflight=None
+        with patch('practice.mupen_native_ui.messagebox.askyesno',return_value=False):ui.state_action('load_state')
+        self.assertEqual(len(stream.getvalue().splitlines()),1)
+        with patch('practice.mupen_native_ui.messagebox.askyesno',return_value=True):ui.state_action('load_state')
+        self.assertEqual(json.loads(stream.getvalue().splitlines()[-1]),dict(op='load_state',slot=2,confirm=True))
+        ui.process=None
 
     def test_rows_compare(self):
         ui=self.ui; w=dict(name='action',kind='u16',address=0x80001000)

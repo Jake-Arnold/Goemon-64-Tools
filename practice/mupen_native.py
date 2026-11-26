@@ -22,8 +22,11 @@ from practice.address_registry import guest_address
 from practice.game_versions import identify_rom
 from practice.entrances import canonical_rom
 from practice.pj64_frame_control import controller_input, parse_inputs
+from practice.native_trace_wire import PREFIX, TraceWriter, private_stdout, checkpoint
+from practice.native_state_control import SET_SLOT, run_state_job, state_complete
 
-PREFIX = 'GOEMON_NATIVE '
+_wire = None
+_emit_lock = threading.Lock()
 STOPPED, RUNNING, PAUSED = 1, 2, 3
 ROM_OPEN, ROM_CLOSE, EXECUTE, STOP, PAUSE, RESUME, QUERY = 1, 2, 5, 6, 7, 8, 9
 FRAME_CALLBACK, ADVANCE = 15, 20
@@ -157,7 +160,7 @@ def player_watch_text(base):
 
 class NativeCore:
     """One isolated native session. Calls validated against the public 2.x API."""
-    def __init__(self, args, on_state, on_frame, data=None):
+    def __init__(self, args, on_state, on_frame, data=None, on_state_job=None):
         if data is None: data = Path(args.rom).read_bytes()
         self.region = identify_rom(data).key
         self.rom = C.create_string_buffer(canonical_rom(data))
@@ -166,7 +169,10 @@ class NativeCore:
         self.physical_available = False
         self.started = self.opened = False
         self.log = DebugCB(lambda ctx, level, msg: print(msg.decode('utf-8', 'replace'), file=sys.stderr) if msg else None)
-        self.state_cb = StateCB(lambda ctx, param, value: on_state(value) if param == 1 else None)
+        def state_callback(ctx, param, value):
+            if param == 1: on_state(value)
+            elif param in (10, 11) and on_state_job is not None: on_state_job(param, value)
+        self.state_cb = StateCB(state_callback)
         self.frame_cb = FrameCB(on_frame)
         self.command = bind(self.core, 'CoreDoCommand', C.c_int, C.c_int, C.c_int, C.c_void_p)
         try:
@@ -198,10 +204,10 @@ class NativeCore:
             # resume, advance, reset or load state behind the parent's back.
             events = C.c_void_p()
             checked(bind(self.core,'ConfigOpenSection',C.c_int,C.c_char_p,C.POINTER(C.c_void_p))(b'CoreEvents',C.byref(events)), 'Core events config')
-            for name in (b'Pause', b'Frame Advance', b'Load State', b'Reset', b'Speed Limiter Toggle'):
+            for name in (b'Pause', b'Frame Advance', b'Save State', b'Load State', b'Reset', b'Speed Limiter Toggle'):
                 key=b'Kbd Mapping '+name
                 checked(set_param(events,key,1,C.byref(C.c_int(0))),key.decode())
-            for name in (b'Pause', b'Frame Advance', b'Load State', b'Reset'):
+            for name in (b'Pause', b'Frame Advance', b'Save State', b'Load State', b'Reset'):
                 key=b'Joy Mapping '+name
                 checked(set_param(events,key,4,C.c_char_p(b'')),key.decode())
             checked(self.command(ROM_OPEN,len(data),C.cast(self.rom,C.c_void_p)), 'ROM_OPEN'); self.opened=True
@@ -240,6 +246,10 @@ class NativeCore:
 
     def cmd(self, op):
         checked(self.command(op,0,None), f'Core command {op}')
+
+    def queue_state(self, op, slot):
+        checked(self.command(SET_SLOT,slot,None),'Set savestate slot')
+        self.cmd(op)
 
     def read_word(self, addr, width):
         self.read_error = ''
@@ -340,6 +350,10 @@ class Inspector:
         self.physical_mode=False; self.managed_base=None
         self.watch_errors={}; self.player_base=None; self.player_text=None
         self.unlock_pending=False; self.unlock_result=None; self.unlock_error=None
+        self.state_job_expected=None; self.state_job_result=None; self.state_job_notice=''
+
+    def state_job_complete(self,parameter,value):
+        state_complete(self,parameter,value)
 
     def state_changed(self,value):
         with self.cv: self.state=value; self.cv.notify_all()
@@ -402,14 +416,20 @@ class Inspector:
                         watch_errors=dict(self.watch_errors), player_base=self.player_base, player_text=self.player_text,
                         ram_reader='native 2.6.0 words' if getattr(self.core,'core_version',None)==0x020600 else 'debugger API',
                         mini_unlock=self.unlock_result, input_mode='physical' if self.physical_mode else 'scripted',
-                        capabilities=dict(frame_advance=True,scripted_p1=True,physical_input=bool(getattr(self.core,'physical_available',False)),typed_reads=True,live_watches=True,pointer_watches=True,logic_updates=False,breakpoints=False,ram_writes=False,mini_unlock=self.region=='japan' and getattr(self.core,'core_version',None)==0x020600,savestate_control=False,core_debugger=bool(getattr(self.core,'debugger',False))))
+                        state_job_pending=self.state_job_expected is not None, state_job_notice=self.state_job_notice,
+                        capabilities=dict(frame_advance=True,scripted_p1=True,physical_input=bool(getattr(self.core,'physical_available',False)),typed_reads=True,live_watches=True,pointer_watches=True,logic_updates=False,breakpoints=False,ram_writes=False,mini_unlock=self.region=='japan' and getattr(self.core,'core_version',None)==0x020600,savestate_control=getattr(self.core,'core_version',None)==0x020600,core_debugger=bool(getattr(self.core,'debugger',False))))
 
     def control(self,q, *, progress=None):
         op=q.get('op')
         if op=='status': return self.report()
         if self.finished: raise RuntimeError('Session closed')
         if self.state==STOPPED: raise RuntimeError('Emulator not running')
-        if op=='pause':
+        if self.state_job_expected is not None and op!='stop':
+            raise RuntimeError('Unacknowledged savestate job; stop and relaunch the session')
+        self.state_job_notice=''
+        if op in ('save_state','load_state'):
+            run_state_job(self,op,q.get('slot'),q.get('confirm',False))
+        elif op=='pause':
             if self.state!=PAUSED: self.core.cmd(PAUSE); self.wait(lambda:self.state==PAUSED)
         elif op=='resume':
             self.set_input(NEUTRAL); self.core.cmd(RESUME)
@@ -513,16 +533,31 @@ class Inspector:
 
 
 def emit(value):
-    print(PREFIX+json.dumps(value,allow_nan=False),flush=True)
+    with _emit_lock:
+        if _wire is not None: _wire.send(value)
+        else: print(PREFIX+json.dumps(value,allow_nan=False),flush=True)
 
 
 def worker(args):
     data=Path(args.rom).read_bytes()
     region=identify_rom(data).key
     inspector=Inspector(parse_watches(args.watches,region),region)
-    core=NativeCore(args,inspector.state_changed,inspector.frame,data=data); inspector.core=core
-    def response(report):
-        value=dict(ok=True,report=report)
+    core=NativeCore(args,inspector.state_changed,inspector.frame,data=data,on_state_job=inspector.state_job_complete); inspector.core=core
+    recovery_path=Path(args.config).expanduser().resolve()/'goemon-native-session'/'research-traces'/f'trace-{os.getpid()}-{time.time_ns()}.json'
+    saved_stamp=None; recovery_error=''
+    def response(report, **fields):
+        nonlocal saved_stamp,recovery_error
+        report['recovery_path']=str(recovery_path)
+        rows=report['rows']
+        if rows:
+            stamp=(len(rows),rows[0]['serial'],rows[-1]['serial'])
+            if stamp!=saved_stamp:
+                try:
+                    checkpoint(recovery_path,report)
+                    saved_stamp=stamp; recovery_error=''
+                except (OSError,ValueError) as exc: recovery_error=str(exc)
+        report['recovery_error']=recovery_error
+        value=dict(ok=True,report=report,**fields)
         if inspector.managed_base is not None and report['state'] in (RUNNING,PAUSED):
             value['managed_ram']=dict(pid=os.getpid(),base=inspector.managed_base,region=region,size=0x400000)
         return value
@@ -533,9 +568,11 @@ def worker(args):
                     q=json.loads(line)
                     if not isinstance(q,dict): raise ValueError('Expected command object')
                     with inspector.operation:
-                        emit(response(inspector.control(q, progress=lambda done,total: emit(dict(progress=dict(done=done,total=total))))))
+                        def progress(done,total):
+                            emit(response(inspector.report(),progress=dict(done=done,total=total)))
+                        emit(response(inspector.control(q, progress=progress)))
                 except (ValueError, KeyError, TypeError, RuntimeError) as exc:
-                    emit(dict(ok=False,error=str(exc)))
+                    value=response(inspector.report()); value.update(ok=False,error=str(exc)); emit(value)
         except OSError:
             pass
         finally:
@@ -568,6 +605,8 @@ def main():
     p.add_argument('--physical_input',default='')
     p.add_argument('--watches',default='')
     args=p.parse_args()
+    global _wire
+    _wire=TraceWriter(private_stdout())
     try: worker(args)
     except Exception as exc: emit(dict(ok=False,error=str(exc))); return 1
     return 0

@@ -1,6 +1,10 @@
-# Goemon Speedrun Tools v0.11.93 — Persistent and responsive native trace capture
+# Goemon Speedrun Tools v0.11.94 — Reliable native trace transfer and managed savestates
 
 > **Repository branch policy (23 November 2026):** Toolkit development uses `stable/toolkit` → `toolkit/<topic>` → PR to `stable/toolkit`. Decomp work uses `stable/decomp` → `decomp/<topic>` → PR to `stable/decomp`. `main` and `chatgptweb/decomp` are legacy names, not new baselines. Read [BRANCHES.md](BRANCHES.md). Never merge the entire branches together.
+
+## v0.11.94 — Native trace transfer and managed savestates
+
+Dedicated protocol output keeps native/plugin logs out of trace records. Incremental bounded packets, background reassembly, local automatic trace checkpoints and a stalled-response watchdog preserve evidence without replaying full buffers. **Recover latest trace** copies the most recent checkpoint. Pause and choose state slot 0–9; use inspector F5/F7 or Save/Load state buttons (core 2.6.0). Restore clears active watches and trace; relocate or reapply before recording. Managed state jobs advance neutral core boundaries and wait for completion; exact zero-frame restore and live freeze resolution are not yet verified. See [native setup](docs/MUPEN_NATIVE.md).
 
 ## v0.11.93 — Persistent and responsive native trace capture
 
