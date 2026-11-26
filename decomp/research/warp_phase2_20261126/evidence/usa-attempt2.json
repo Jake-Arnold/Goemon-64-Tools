@@ -1,0 +1,104 @@
+{
+  "region": "usa",
+  "base_commit": "8b195d8ce5a31723a71af428ee4f7bccf32b0bf8",
+  "status": "RESEARCH_ONLY",
+  "stage": "split_data",
+  "prior_elf_sha256": "1107b0f4d2d7eaf17107323ae5119076476a773aabba01f77d27113353abb6ff",
+  "native": [],
+  "links": {},
+  "staging": {
+    "region": "usa",
+    "functions": [
+      {
+        "name": "func_802150E4_5D05B4",
+        "region": "usa",
+        "vma": 2149667044,
+        "rom_offset": 6096308,
+        "original_bytes": 128,
+        "owner": "5C8770.s",
+        "source": "/tmp/warp-phase2/kit/sources/func_802150E4_5D05B4/02_literal_chain.c",
+        "source_sha256": "f3803b7dd9bebacdd7a9884fa053e4fcd4758b965804f82dca05b6eff56da839",
+        "code_sha256": "36d2e67e8d4dbbe261115c8ae7e92c1cf19617e355dcfd94849ce1387535f8a7",
+        "relocation_count": 9,
+        "staged_path": "src/warpphase2/func_802150E4_5D05B4.c",
+        "active_owner": "asm/usa/warpbatcha_001_000.s",
+        "section": "file_12"
+      },
+      {
+        "name": "func_80215164_5D0634",
+        "region": "usa",
+        "vma": 2149667172,
+        "rom_offset": 6096436,
+        "original_bytes": 120,
+        "owner": "5C8770.s",
+        "source": "/tmp/warp-phase2/kit/sources/func_80215164_5D0634/02_literal_chain.c",
+        "source_sha256": "25e00be06a8734a2830067eb4b7d95c7a04bec2a12ac9e0eeceea59c42ba8fb5",
+        "code_sha256": "348fe43da5d1621a819288d9ee42fabef63668d0d400d535c95139db5c640675",
+        "relocation_count": 9,
+        "staged_path": "src/warpphase2/func_80215164_5D0634.c",
+        "active_owner": "asm/usa/warpbatcha_001_000.s",
+        "section": "file_12"
+      },
+      {
+        "name": "func_802157C4_5D0C94",
+        "region": "usa",
+        "vma": 2149668804,
+        "rom_offset": 6098068,
+        "original_bytes": 108,
+        "owner": "5C8770.s",
+        "source": "/tmp/warp-phase2/kit/sources/func_802157C4_5D0C94/02_literal_chain.c",
+        "source_sha256": "692a2c286188a9b6c47c65d476048112bdcb770dde31c69d8d4b8b4ad25aee97",
+        "code_sha256": "37077cfea2353a31479d5aa4ba8dddbe04d65e86fcf7a1ee71f45531a1b4dac1",
+        "relocation_count": 6,
+        "staged_path": "src/warpphase2/func_802157C4_5D0C94.c",
+        "active_owner": "asm/usa/warpbatcha_002_000.s",
+        "section": "file_12"
+      }
+    ],
+    "fragments": [
+      {
+        "path": "asm/usa/warpphase2_000_tail.s",
+        "start": 6096556,
+        "end": 6096560,
+        "suffix": ".text",
+        "owner": "asm/usa/warpbatcha_001_000.s"
+      },
+      {
+        "path": "asm/usa/warpphase2_001_000.s",
+        "start": 6097356,
+        "end": 6098068,
+        "suffix": ".text",
+        "owner": "asm/usa/warpbatcha_002_000.s"
+      },
+      {
+        "path": "asm/usa/warpphase2_001_tail.s",
+        "start": 6098176,
+        "end": 6100556,
+        "suffix": ".text",
+        "owner": "asm/usa/warpbatcha_002_000.s"
+      }
+    ],
+    "parents": [
+      {
+        "owner": "asm/usa/warpbatcha_001_000.s",
+        "section": "file_12",
+        "suffix": ".text",
+        "names": [
+          "func_802150E4_5D05B4",
+          "func_80215164_5D0634"
+        ]
+      },
+      {
+        "owner": "asm/usa/warpbatcha_002_000.s",
+        "section": "file_12",
+        "suffix": ".text",
+        "names": [
+          "func_802157C4_5D0C94"
+        ]
+      }
+    ],
+    "blocked": [],
+    "linker_sha256": "698228ddfbd474faa23aba87fea8a3a23f176069f374da305fa48719e577c274"
+  },
+  "error": "('usa', '.data.phase2_3', 4390, 4404)"
+}

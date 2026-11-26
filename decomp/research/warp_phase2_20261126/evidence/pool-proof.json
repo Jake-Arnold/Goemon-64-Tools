@@ -1,0 +1,746 @@
+[
+  {
+    "region": "usa",
+    "name": "func_802150E4_5D05B4",
+    "original_vma": 2149667044,
+    "rom_offset": 6096308,
+    "original_bytes": 128,
+    "original_code_sha256": "36d2e67e8d4dbbe261115c8ae7e92c1cf19617e355dcfd94849ce1387535f8a7",
+    "pool_symbol": "D_8023A124_5F55F4",
+    "pool_vma": 2149818660,
+    "pool_rom_offset": 6247924,
+    "pool_word_sha256": "31cf8391f9bfd8eedef79bcf6b13f2db5f20089185538b317e01e372d5b8b750",
+    "original_asm_sha256": "17f505e082bf99c15f781a4446eb0cb682c3557e01c27563c99a7bd10b0ec2bb",
+    "original_data_line_sha256": "2c7131cfb6ae8ca9a41f997acecae0febe8dda5e54f5ba858101f73aa1c31dc6",
+    "independent_local_asm_sha256": "2d272d27d088d60f52a2097170ecf31b17ae78ce699b06b1ddce0d6376d2fd93",
+    "native_sha256": "f3803b7dd9bebacdd7a9884fa053e4fcd4758b965804f82dca05b6eff56da839",
+    "compiler_sha256": "76d796c9591c9f5504949f85b29c32a6039a663791afe2f36f34ca18425b64d0",
+    "flags": [
+      "-c",
+      "-G",
+      "0",
+      "-non_shared",
+      "-Xfullwarn",
+      "-Xcpluscomm",
+      "-Iinclude",
+      "-Ilibultra/include",
+      "-Ilibultra/include/PR",
+      "-Isrc",
+      "-I.",
+      "-Wab,-r4300_mul",
+      "-woff",
+      "649,838,712",
+      "-D_LANGUAGE_C",
+      "-D_FINALROM",
+      "-DF3DEX_GBI",
+      "-D__sgi",
+      "-DNDEBUG",
+      "-O2",
+      "-mips2"
+    ],
+    "ledger_sha256": "16afbab3439857e85fe2d2764c18a4f2deb3c5a623f8531ea37226b829e2f60a",
+    "named_relocations": 9,
+    "local_relocations": 9,
+    "native_relocations": 9,
+    "named_removed": [
+      [
+        44,
+        "R_MIPS_HI16",
+        "D_8023A124_5F55F4"
+      ],
+      [
+        48,
+        "R_MIPS_LO16",
+        "D_8023A124_5F55F4"
+      ]
+    ],
+    "local_added": [
+      [
+        44,
+        "R_MIPS_HI16",
+        ".rodata"
+      ],
+      [
+        48,
+        "R_MIPS_LO16",
+        ".rodata"
+      ]
+    ],
+    "named_original_gate_exact": false,
+    "raw_local_text_and_relocations_exact": true,
+    "linked_original_text_and_extent_exact": true,
+    "original_pool_exact": true,
+    "second_source_independent_replay_exact": true,
+    "attempts": [
+      {
+        "source": "func_802150E4_5D05B4/02_literal_chain.c",
+        "sha256": "f3803b7dd9bebacdd7a9884fa053e4fcd4758b965804f82dca05b6eff56da839",
+        "ledger_sha256": "16afbab3439857e85fe2d2764c18a4f2deb3c5a623f8531ea37226b829e2f60a",
+        "outcome": "EXISTING_QUIRK_REPRODUCED",
+        "first_named_mismatch_category": "relocation",
+        "first_named_mismatch_offset": 44
+      },
+      {
+        "source": "func_802150E4_5D05B4/03_literal_local.c",
+        "sha256": "08c5b16e38e36744919c8efc7b88c788b9b6b80f975a9a846c8d0743269e7719",
+        "ledger_sha256": "16afbab3439857e85fe2d2764c18a4f2deb3c5a623f8531ea37226b829e2f60a",
+        "outcome": "EXISTING_QUIRK_REPRODUCED",
+        "first_named_mismatch_category": "relocation",
+        "first_named_mismatch_offset": 44
+      },
+      {
+        "source": "func_802150E4_5D05B4/06_negative_wrong_float.c",
+        "sha256": "09cb8d1565a766423d641044f90b3a7989de45f56fd16023a88bb18e60e832e2",
+        "ledger_sha256": "16afbab3439857e85fe2d2764c18a4f2deb3c5a623f8531ea37226b829e2f60a",
+        "outcome": "NO_NEW_COMPILER_FINDING",
+        "negative": true,
+        "first_mismatch_category": "literal_pool",
+        "first_mismatch_offset": 6247924
+      }
+    ],
+    "negative_controls": [
+      {
+        "control": "wrong_pool_address",
+        "rejected": true,
+        "reason": "original text/extent"
+      },
+      {
+        "control": "wrong_pool_word",
+        "rejected": true,
+        "reason": "original pool"
+      },
+      {
+        "control": "wrong_pool_addend",
+        "rejected": true,
+        "reason": "original text/extent"
+      },
+      {
+        "control": "altered_C_float",
+        "rejected": true,
+        "reason": "original pool"
+      }
+    ],
+    "status": "RESEARCH_ONLY_INDEPENDENT_ASM_REFERENCE_EXACT",
+    "full_g2": "NOT_RUN"
+  },
+  {
+    "region": "usa",
+    "name": "func_80215164_5D0634",
+    "original_vma": 2149667172,
+    "rom_offset": 6096436,
+    "original_bytes": 120,
+    "original_code_sha256": "348fe43da5d1621a819288d9ee42fabef63668d0d400d535c95139db5c640675",
+    "pool_symbol": "D_8023A128_5F55F8",
+    "pool_vma": 2149818664,
+    "pool_rom_offset": 6247928,
+    "pool_word_sha256": "31cf8391f9bfd8eedef79bcf6b13f2db5f20089185538b317e01e372d5b8b750",
+    "original_asm_sha256": "e9576f83c9138c23ff8ebf3997b348cbcdc5198181f59a198ad9f6ddc671d728",
+    "original_data_line_sha256": "f6290575d0cf814af9aa228b3532481e81efb7c3d6a9feba1e7581edebdd46f5",
+    "independent_local_asm_sha256": "7747b83d6a816b16735b19ff5024725c52f591d7f1f6cdc9f66698e4ffe0764a",
+    "native_sha256": "25e00be06a8734a2830067eb4b7d95c7a04bec2a12ac9e0eeceea59c42ba8fb5",
+    "compiler_sha256": "76d796c9591c9f5504949f85b29c32a6039a663791afe2f36f34ca18425b64d0",
+    "flags": [
+      "-c",
+      "-G",
+      "0",
+      "-non_shared",
+      "-Xfullwarn",
+      "-Xcpluscomm",
+      "-Iinclude",
+      "-Ilibultra/include",
+      "-Ilibultra/include/PR",
+      "-Isrc",
+      "-I.",
+      "-Wab,-r4300_mul",
+      "-woff",
+      "649,838,712",
+      "-D_LANGUAGE_C",
+      "-D_FINALROM",
+      "-DF3DEX_GBI",
+      "-D__sgi",
+      "-DNDEBUG",
+      "-O2",
+      "-mips2"
+    ],
+    "ledger_sha256": "16afbab3439857e85fe2d2764c18a4f2deb3c5a623f8531ea37226b829e2f60a",
+    "named_relocations": 9,
+    "local_relocations": 9,
+    "native_relocations": 9,
+    "named_removed": [
+      [
+        44,
+        "R_MIPS_HI16",
+        "D_8023A128_5F55F8"
+      ],
+      [
+        48,
+        "R_MIPS_LO16",
+        "D_8023A128_5F55F8"
+      ]
+    ],
+    "local_added": [
+      [
+        44,
+        "R_MIPS_HI16",
+        ".rodata"
+      ],
+      [
+        48,
+        "R_MIPS_LO16",
+        ".rodata"
+      ]
+    ],
+    "named_original_gate_exact": false,
+    "raw_local_text_and_relocations_exact": true,
+    "linked_original_text_and_extent_exact": true,
+    "original_pool_exact": true,
+    "second_source_independent_replay_exact": true,
+    "attempts": [
+      {
+        "source": "func_80215164_5D0634/02_literal_chain.c",
+        "sha256": "25e00be06a8734a2830067eb4b7d95c7a04bec2a12ac9e0eeceea59c42ba8fb5",
+        "ledger_sha256": "16afbab3439857e85fe2d2764c18a4f2deb3c5a623f8531ea37226b829e2f60a",
+        "outcome": "EXISTING_QUIRK_REPRODUCED",
+        "first_named_mismatch_category": "relocation",
+        "first_named_mismatch_offset": 44
+      },
+      {
+        "source": "func_80215164_5D0634/03_literal_local.c",
+        "sha256": "e8ea2f75c83d6b743f55eaea5de9df3efe12cb3cd30c52865d6f4b8af2a0fe94",
+        "ledger_sha256": "16afbab3439857e85fe2d2764c18a4f2deb3c5a623f8531ea37226b829e2f60a",
+        "outcome": "EXISTING_QUIRK_REPRODUCED",
+        "first_named_mismatch_category": "relocation",
+        "first_named_mismatch_offset": 44
+      },
+      {
+        "source": "func_80215164_5D0634/06_negative_wrong_float.c",
+        "sha256": "4a0398ae2b01f552d6f089274b9974b62a16f18130f9f7d948cc7bfe7c6a1b68",
+        "ledger_sha256": "16afbab3439857e85fe2d2764c18a4f2deb3c5a623f8531ea37226b829e2f60a",
+        "outcome": "NO_NEW_COMPILER_FINDING",
+        "negative": true,
+        "first_mismatch_category": "literal_pool",
+        "first_mismatch_offset": 6247928
+      }
+    ],
+    "negative_controls": [
+      {
+        "control": "wrong_pool_address",
+        "rejected": true,
+        "reason": "original text/extent"
+      },
+      {
+        "control": "wrong_pool_word",
+        "rejected": true,
+        "reason": "original pool"
+      },
+      {
+        "control": "wrong_pool_addend",
+        "rejected": true,
+        "reason": "original text/extent"
+      },
+      {
+        "control": "altered_C_float",
+        "rejected": true,
+        "reason": "original pool"
+      }
+    ],
+    "status": "RESEARCH_ONLY_INDEPENDENT_ASM_REFERENCE_EXACT",
+    "full_g2": "NOT_RUN"
+  },
+  {
+    "region": "usa",
+    "name": "func_802157C4_5D0C94",
+    "original_vma": 2149668804,
+    "rom_offset": 6098068,
+    "original_bytes": 108,
+    "original_code_sha256": "37077cfea2353a31479d5aa4ba8dddbe04d65e86fcf7a1ee71f45531a1b4dac1",
+    "pool_symbol": "D_8023A238_5F5708",
+    "pool_vma": 2149818936,
+    "pool_rom_offset": 6248200,
+    "pool_word_sha256": "cea23fc0ff6ff5c3256ac12d2f117ac6077bc1e314894509962f9ec10ea0a269",
+    "original_asm_sha256": "582be74f836a114761ddea3b70305ebdfd99ead30f10f7ad90494ecd5adaae8c",
+    "original_data_line_sha256": "ca24c00c4998be8be56414749a203fcf8e4b84942638f1b28ea5a5af99f2c329",
+    "independent_local_asm_sha256": "a9c4e891f699178daa38c14c03dc5663ea0994fb5f91763218f9faa659585b2b",
+    "native_sha256": "692a2c286188a9b6c47c65d476048112bdcb770dde31c69d8d4b8b4ad25aee97",
+    "compiler_sha256": "76d796c9591c9f5504949f85b29c32a6039a663791afe2f36f34ca18425b64d0",
+    "flags": [
+      "-c",
+      "-G",
+      "0",
+      "-non_shared",
+      "-Xfullwarn",
+      "-Xcpluscomm",
+      "-Iinclude",
+      "-Ilibultra/include",
+      "-Ilibultra/include/PR",
+      "-Isrc",
+      "-I.",
+      "-Wab,-r4300_mul",
+      "-woff",
+      "649,838,712",
+      "-D_LANGUAGE_C",
+      "-D_FINALROM",
+      "-DF3DEX_GBI",
+      "-D__sgi",
+      "-DNDEBUG",
+      "-O2",
+      "-mips2"
+    ],
+    "ledger_sha256": "16afbab3439857e85fe2d2764c18a4f2deb3c5a623f8531ea37226b829e2f60a",
+    "named_relocations": 6,
+    "local_relocations": 6,
+    "native_relocations": 6,
+    "named_removed": [
+      [
+        36,
+        "R_MIPS_HI16",
+        "D_8023A238_5F5708"
+      ],
+      [
+        40,
+        "R_MIPS_LO16",
+        "D_8023A238_5F5708"
+      ]
+    ],
+    "local_added": [
+      [
+        36,
+        "R_MIPS_HI16",
+        ".rodata"
+      ],
+      [
+        40,
+        "R_MIPS_LO16",
+        ".rodata"
+      ]
+    ],
+    "named_original_gate_exact": false,
+    "raw_local_text_and_relocations_exact": true,
+    "linked_original_text_and_extent_exact": true,
+    "original_pool_exact": true,
+    "second_source_independent_replay_exact": true,
+    "attempts": [
+      {
+        "source": "func_802157C4_5D0C94/02_literal_chain.c",
+        "sha256": "692a2c286188a9b6c47c65d476048112bdcb770dde31c69d8d4b8b4ad25aee97",
+        "ledger_sha256": "16afbab3439857e85fe2d2764c18a4f2deb3c5a623f8531ea37226b829e2f60a",
+        "outcome": "EXISTING_QUIRK_REPRODUCED",
+        "first_named_mismatch_category": "relocation",
+        "first_named_mismatch_offset": 36
+      },
+      {
+        "source": "func_802157C4_5D0C94/03_literal_local.c",
+        "sha256": "82650611661bce6ad1c1e1a13b6e1bf4bb61d2fc95f51648e9b212fa500ad137",
+        "ledger_sha256": "16afbab3439857e85fe2d2764c18a4f2deb3c5a623f8531ea37226b829e2f60a",
+        "outcome": "EXISTING_QUIRK_REPRODUCED",
+        "first_named_mismatch_category": "relocation",
+        "first_named_mismatch_offset": 36
+      },
+      {
+        "source": "func_802157C4_5D0C94/06_negative_wrong_float.c",
+        "sha256": "cd4865ff2bd0a398a19bb28560a2b12b231dcd42348b86402d039d5ba7dc3e7c",
+        "ledger_sha256": "16afbab3439857e85fe2d2764c18a4f2deb3c5a623f8531ea37226b829e2f60a",
+        "outcome": "NO_NEW_COMPILER_FINDING",
+        "negative": true,
+        "first_mismatch_category": "literal_pool",
+        "first_mismatch_offset": 6248200
+      }
+    ],
+    "negative_controls": [
+      {
+        "control": "wrong_pool_address",
+        "rejected": true,
+        "reason": "original text/extent"
+      },
+      {
+        "control": "wrong_pool_word",
+        "rejected": true,
+        "reason": "original pool"
+      },
+      {
+        "control": "wrong_pool_addend",
+        "rejected": true,
+        "reason": "original text/extent"
+      },
+      {
+        "control": "altered_C_float",
+        "rejected": true,
+        "reason": "original pool"
+      }
+    ],
+    "status": "RESEARCH_ONLY_INDEPENDENT_ASM_REFERENCE_EXACT",
+    "full_g2": "NOT_RUN"
+  },
+  {
+    "region": "japan_0",
+    "name": "func_80219E74_5D5404",
+    "original_vma": 2149686900,
+    "rom_offset": 6116356,
+    "original_bytes": 128,
+    "original_code_sha256": "683d4d67c8bf4bda17d5aa1ce2df3af39a60c1d4dbb863b8febd9980213ff69c",
+    "pool_symbol": "D_8023EE34_5FA3C4",
+    "pool_vma": 2149838388,
+    "pool_rom_offset": 6267844,
+    "pool_word_sha256": "31cf8391f9bfd8eedef79bcf6b13f2db5f20089185538b317e01e372d5b8b750",
+    "original_asm_sha256": "7223b860eb3622a944fd6db6e6091f2d8f29fc1dbe4ae9e0c0337e21597b2829",
+    "original_data_line_sha256": "ab4678bd1c128eda2b35ebcb8b70d38513f1032ed32e887547578e46068cbb5e",
+    "independent_local_asm_sha256": "d6fa55ceaa2cc3fbc58ac1f7db471c650020e99aa25696f2ab51934711415d89",
+    "native_sha256": "b253f0ea4b875c9dee83976de6be5925d885c2f0ddbefe5db2257f11d1d9cb4a",
+    "compiler_sha256": "76d796c9591c9f5504949f85b29c32a6039a663791afe2f36f34ca18425b64d0",
+    "flags": [
+      "-c",
+      "-G",
+      "0",
+      "-non_shared",
+      "-Xfullwarn",
+      "-Xcpluscomm",
+      "-Iinclude",
+      "-Ilibultra/include",
+      "-Ilibultra/include/PR",
+      "-Isrc",
+      "-I.",
+      "-Wab,-r4300_mul",
+      "-woff",
+      "649,838,712",
+      "-D_LANGUAGE_C",
+      "-D_FINALROM",
+      "-DF3DEX_GBI",
+      "-D__sgi",
+      "-DNDEBUG",
+      "-O2",
+      "-mips2"
+    ],
+    "ledger_sha256": "16afbab3439857e85fe2d2764c18a4f2deb3c5a623f8531ea37226b829e2f60a",
+    "named_relocations": 9,
+    "local_relocations": 9,
+    "native_relocations": 9,
+    "named_removed": [
+      [
+        44,
+        "R_MIPS_HI16",
+        "D_8023EE34_5FA3C4"
+      ],
+      [
+        48,
+        "R_MIPS_LO16",
+        "D_8023EE34_5FA3C4"
+      ]
+    ],
+    "local_added": [
+      [
+        44,
+        "R_MIPS_HI16",
+        ".rodata"
+      ],
+      [
+        48,
+        "R_MIPS_LO16",
+        ".rodata"
+      ]
+    ],
+    "named_original_gate_exact": false,
+    "raw_local_text_and_relocations_exact": true,
+    "linked_original_text_and_extent_exact": true,
+    "original_pool_exact": true,
+    "second_source_independent_replay_exact": true,
+    "attempts": [
+      {
+        "source": "func_80219E74_5D5404/02_literal_chain.c",
+        "sha256": "b253f0ea4b875c9dee83976de6be5925d885c2f0ddbefe5db2257f11d1d9cb4a",
+        "ledger_sha256": "16afbab3439857e85fe2d2764c18a4f2deb3c5a623f8531ea37226b829e2f60a",
+        "outcome": "EXISTING_QUIRK_REPRODUCED",
+        "first_named_mismatch_category": "relocation",
+        "first_named_mismatch_offset": 44
+      },
+      {
+        "source": "func_80219E74_5D5404/03_literal_local.c",
+        "sha256": "d18faaa6eb5670cd5878662281417fa80d04250f682ae5e73327f84e6b37ab07",
+        "ledger_sha256": "16afbab3439857e85fe2d2764c18a4f2deb3c5a623f8531ea37226b829e2f60a",
+        "outcome": "EXISTING_QUIRK_REPRODUCED",
+        "first_named_mismatch_category": "relocation",
+        "first_named_mismatch_offset": 44
+      },
+      {
+        "source": "func_80219E74_5D5404/06_negative_wrong_float.c",
+        "sha256": "6678f40edfea4edada6a2ae308e4f5beb18641978f5a40f2c2541cf9736ff6b5",
+        "ledger_sha256": "16afbab3439857e85fe2d2764c18a4f2deb3c5a623f8531ea37226b829e2f60a",
+        "outcome": "NO_NEW_COMPILER_FINDING",
+        "negative": true,
+        "first_mismatch_category": "literal_pool",
+        "first_mismatch_offset": 6267844
+      }
+    ],
+    "negative_controls": [
+      {
+        "control": "wrong_pool_address",
+        "rejected": true,
+        "reason": "original text/extent"
+      },
+      {
+        "control": "wrong_pool_word",
+        "rejected": true,
+        "reason": "original pool"
+      },
+      {
+        "control": "wrong_pool_addend",
+        "rejected": true,
+        "reason": "original text/extent"
+      },
+      {
+        "control": "altered_C_float",
+        "rejected": true,
+        "reason": "original pool"
+      }
+    ],
+    "status": "RESEARCH_ONLY_INDEPENDENT_ASM_REFERENCE_EXACT",
+    "full_g2": "NOT_RUN"
+  },
+  {
+    "region": "japan_0",
+    "name": "func_80219EF4_5D5484",
+    "original_vma": 2149687028,
+    "rom_offset": 6116484,
+    "original_bytes": 120,
+    "original_code_sha256": "221cb38eea23967cb59db75f0ea203ab6d318a1cfb56c8978265f2c536aeaab1",
+    "pool_symbol": "D_8023EE38_5FA3C8",
+    "pool_vma": 2149838392,
+    "pool_rom_offset": 6267848,
+    "pool_word_sha256": "31cf8391f9bfd8eedef79bcf6b13f2db5f20089185538b317e01e372d5b8b750",
+    "original_asm_sha256": "88ea4bfcd4a226b13fbc94323f16aa9a1b2156c777f0ab87e56acf79cfbf24d6",
+    "original_data_line_sha256": "b6d1765e2bfa5d9b1c5f12d35bf779e278e7dc4d0d3bd3b82be89981fbb6fdc1",
+    "independent_local_asm_sha256": "3943d77a818a48ec5aa0a09fe76ffaa9d0190e665c72512218252c357045a32c",
+    "native_sha256": "a5181392a02a3b8ab86ab10f566b3bad672b199779804e8f1599ac8f505d7d43",
+    "compiler_sha256": "76d796c9591c9f5504949f85b29c32a6039a663791afe2f36f34ca18425b64d0",
+    "flags": [
+      "-c",
+      "-G",
+      "0",
+      "-non_shared",
+      "-Xfullwarn",
+      "-Xcpluscomm",
+      "-Iinclude",
+      "-Ilibultra/include",
+      "-Ilibultra/include/PR",
+      "-Isrc",
+      "-I.",
+      "-Wab,-r4300_mul",
+      "-woff",
+      "649,838,712",
+      "-D_LANGUAGE_C",
+      "-D_FINALROM",
+      "-DF3DEX_GBI",
+      "-D__sgi",
+      "-DNDEBUG",
+      "-O2",
+      "-mips2"
+    ],
+    "ledger_sha256": "16afbab3439857e85fe2d2764c18a4f2deb3c5a623f8531ea37226b829e2f60a",
+    "named_relocations": 9,
+    "local_relocations": 9,
+    "native_relocations": 9,
+    "named_removed": [
+      [
+        44,
+        "R_MIPS_HI16",
+        "D_8023EE38_5FA3C8"
+      ],
+      [
+        48,
+        "R_MIPS_LO16",
+        "D_8023EE38_5FA3C8"
+      ]
+    ],
+    "local_added": [
+      [
+        44,
+        "R_MIPS_HI16",
+        ".rodata"
+      ],
+      [
+        48,
+        "R_MIPS_LO16",
+        ".rodata"
+      ]
+    ],
+    "named_original_gate_exact": false,
+    "raw_local_text_and_relocations_exact": true,
+    "linked_original_text_and_extent_exact": true,
+    "original_pool_exact": true,
+    "second_source_independent_replay_exact": true,
+    "attempts": [
+      {
+        "source": "func_80219EF4_5D5484/02_literal_chain.c",
+        "sha256": "a5181392a02a3b8ab86ab10f566b3bad672b199779804e8f1599ac8f505d7d43",
+        "ledger_sha256": "16afbab3439857e85fe2d2764c18a4f2deb3c5a623f8531ea37226b829e2f60a",
+        "outcome": "EXISTING_QUIRK_REPRODUCED",
+        "first_named_mismatch_category": "relocation",
+        "first_named_mismatch_offset": 44
+      },
+      {
+        "source": "func_80219EF4_5D5484/03_literal_local.c",
+        "sha256": "8ed221ee2af6d69be22b0131bb2c994043d7eba78a6260541a5d2038027b34ad",
+        "ledger_sha256": "16afbab3439857e85fe2d2764c18a4f2deb3c5a623f8531ea37226b829e2f60a",
+        "outcome": "EXISTING_QUIRK_REPRODUCED",
+        "first_named_mismatch_category": "relocation",
+        "first_named_mismatch_offset": 44
+      },
+      {
+        "source": "func_80219EF4_5D5484/06_negative_wrong_float.c",
+        "sha256": "5a7ff479d641c7aeea1a2f4991e7a4f376cdb1b020f80672f271bbf81e849e63",
+        "ledger_sha256": "16afbab3439857e85fe2d2764c18a4f2deb3c5a623f8531ea37226b829e2f60a",
+        "outcome": "NO_NEW_COMPILER_FINDING",
+        "negative": true,
+        "first_mismatch_category": "literal_pool",
+        "first_mismatch_offset": 6267848
+      }
+    ],
+    "negative_controls": [
+      {
+        "control": "wrong_pool_address",
+        "rejected": true,
+        "reason": "original text/extent"
+      },
+      {
+        "control": "wrong_pool_word",
+        "rejected": true,
+        "reason": "original pool"
+      },
+      {
+        "control": "wrong_pool_addend",
+        "rejected": true,
+        "reason": "original text/extent"
+      },
+      {
+        "control": "altered_C_float",
+        "rejected": true,
+        "reason": "original pool"
+      }
+    ],
+    "status": "RESEARCH_ONLY_INDEPENDENT_ASM_REFERENCE_EXACT",
+    "full_g2": "NOT_RUN"
+  },
+  {
+    "region": "japan_0",
+    "name": "func_8021A554_5D5AE4",
+    "original_vma": 2149688660,
+    "rom_offset": 6118116,
+    "original_bytes": 108,
+    "original_code_sha256": "b637bd8591c5dd9fcf7398cb746dcf670d98e236f2fd65b95605c9b76897465d",
+    "pool_symbol": "D_8023EF48_5FA4D8",
+    "pool_vma": 2149838664,
+    "pool_rom_offset": 6268120,
+    "pool_word_sha256": "cea23fc0ff6ff5c3256ac12d2f117ac6077bc1e314894509962f9ec10ea0a269",
+    "original_asm_sha256": "df8628c4e4755b6e97f3b46100e1028945b37c14f5942a4bd7073afd75a8ecb2",
+    "original_data_line_sha256": "2b167d9e163e4fa1cbfe06e04485a0aa9bbeca510ba07b3fbcfc3dca53294e7d",
+    "independent_local_asm_sha256": "1bc32485875089b48808b4f02ac9bee595829af91282185442bcda7e481c6631",
+    "native_sha256": "cb20fe3435a692e61ffa306455fb89bab928f94950fdf14d8741490c4c2047f9",
+    "compiler_sha256": "76d796c9591c9f5504949f85b29c32a6039a663791afe2f36f34ca18425b64d0",
+    "flags": [
+      "-c",
+      "-G",
+      "0",
+      "-non_shared",
+      "-Xfullwarn",
+      "-Xcpluscomm",
+      "-Iinclude",
+      "-Ilibultra/include",
+      "-Ilibultra/include/PR",
+      "-Isrc",
+      "-I.",
+      "-Wab,-r4300_mul",
+      "-woff",
+      "649,838,712",
+      "-D_LANGUAGE_C",
+      "-D_FINALROM",
+      "-DF3DEX_GBI",
+      "-D__sgi",
+      "-DNDEBUG",
+      "-O2",
+      "-mips2"
+    ],
+    "ledger_sha256": "16afbab3439857e85fe2d2764c18a4f2deb3c5a623f8531ea37226b829e2f60a",
+    "named_relocations": 6,
+    "local_relocations": 6,
+    "native_relocations": 6,
+    "named_removed": [
+      [
+        36,
+        "R_MIPS_HI16",
+        "D_8023EF48_5FA4D8"
+      ],
+      [
+        40,
+        "R_MIPS_LO16",
+        "D_8023EF48_5FA4D8"
+      ]
+    ],
+    "local_added": [
+      [
+        36,
+        "R_MIPS_HI16",
+        ".rodata"
+      ],
+      [
+        40,
+        "R_MIPS_LO16",
+        ".rodata"
+      ]
+    ],
+    "named_original_gate_exact": false,
+    "raw_local_text_and_relocations_exact": true,
+    "linked_original_text_and_extent_exact": true,
+    "original_pool_exact": true,
+    "second_source_independent_replay_exact": true,
+    "attempts": [
+      {
+        "source": "func_8021A554_5D5AE4/02_literal_chain.c",
+        "sha256": "cb20fe3435a692e61ffa306455fb89bab928f94950fdf14d8741490c4c2047f9",
+        "ledger_sha256": "16afbab3439857e85fe2d2764c18a4f2deb3c5a623f8531ea37226b829e2f60a",
+        "outcome": "EXISTING_QUIRK_REPRODUCED",
+        "first_named_mismatch_category": "relocation",
+        "first_named_mismatch_offset": 36
+      },
+      {
+        "source": "func_8021A554_5D5AE4/03_literal_local.c",
+        "sha256": "33a3d149757d3a4c53525d0af831f8fa592214e870b331b783f4902f06295339",
+        "ledger_sha256": "16afbab3439857e85fe2d2764c18a4f2deb3c5a623f8531ea37226b829e2f60a",
+        "outcome": "EXISTING_QUIRK_REPRODUCED",
+        "first_named_mismatch_category": "relocation",
+        "first_named_mismatch_offset": 36
+      },
+      {
+        "source": "func_8021A554_5D5AE4/06_negative_wrong_float.c",
+        "sha256": "ae026cf8cd645fa2fb987f81783e6c14e7a6f83d03b375e5863c5f86aad2b526",
+        "ledger_sha256": "16afbab3439857e85fe2d2764c18a4f2deb3c5a623f8531ea37226b829e2f60a",
+        "outcome": "NO_NEW_COMPILER_FINDING",
+        "negative": true,
+        "first_mismatch_category": "literal_pool",
+        "first_mismatch_offset": 6268120
+      }
+    ],
+    "negative_controls": [
+      {
+        "control": "wrong_pool_address",
+        "rejected": true,
+        "reason": "original text/extent"
+      },
+      {
+        "control": "wrong_pool_word",
+        "rejected": true,
+        "reason": "original pool"
+      },
+      {
+        "control": "wrong_pool_addend",
+        "rejected": true,
+        "reason": "original text/extent"
+      },
+      {
+        "control": "altered_C_float",
+        "rejected": true,
+        "reason": "original pool"
+      }
+    ],
+    "status": "RESEARCH_ONLY_INDEPENDENT_ASM_REFERENCE_EXACT",
+    "full_g2": "NOT_RUN"
+  }
+]

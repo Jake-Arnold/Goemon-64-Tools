@@ -1,0 +1,104 @@
+{
+  "region": "japan_0",
+  "base_commit": "8b195d8ce5a31723a71af428ee4f7bccf32b0bf8",
+  "status": "RESEARCH_ONLY",
+  "stage": "split_data",
+  "prior_elf_sha256": "8b62b85eb9e32bc5b499017ac882c54e34ad666bdd47f3cd3867d36477935b0d",
+  "native": [],
+  "links": {},
+  "staging": {
+    "region": "japan_0",
+    "functions": [
+      {
+        "name": "func_80219E74_5D5404",
+        "region": "japan_0",
+        "vma": 2149686900,
+        "rom_offset": 6116356,
+        "original_bytes": 128,
+        "owner": "5D52F0.s",
+        "source": "/tmp/warp-phase2/kit/sources/func_80219E74_5D5404/02_literal_chain.c",
+        "source_sha256": "b253f0ea4b875c9dee83976de6be5925d885c2f0ddbefe5db2257f11d1d9cb4a",
+        "code_sha256": "683d4d67c8bf4bda17d5aa1ce2df3af39a60c1d4dbb863b8febd9980213ff69c",
+        "relocation_count": 9,
+        "staged_path": "src/warpphase2/func_80219E74_5D5404.c",
+        "active_owner": "asm/japan_0/jp1686_157_001.s",
+        "section": "file_12"
+      },
+      {
+        "name": "func_80219EF4_5D5484",
+        "region": "japan_0",
+        "vma": 2149687028,
+        "rom_offset": 6116484,
+        "original_bytes": 120,
+        "owner": "5D52F0.s",
+        "source": "/tmp/warp-phase2/kit/sources/func_80219EF4_5D5484/02_literal_chain.c",
+        "source_sha256": "a5181392a02a3b8ab86ab10f566b3bad672b199779804e8f1599ac8f505d7d43",
+        "code_sha256": "221cb38eea23967cb59db75f0ea203ab6d318a1cfb56c8978265f2c536aeaab1",
+        "relocation_count": 9,
+        "staged_path": "src/warpphase2/func_80219EF4_5D5484.c",
+        "active_owner": "asm/japan_0/jp1686_157_001.s",
+        "section": "file_12"
+      },
+      {
+        "name": "func_8021A554_5D5AE4",
+        "region": "japan_0",
+        "vma": 2149688660,
+        "rom_offset": 6118116,
+        "original_bytes": 108,
+        "owner": "5D5500.s",
+        "source": "/tmp/warp-phase2/kit/sources/func_8021A554_5D5AE4/02_literal_chain.c",
+        "source_sha256": "cb20fe3435a692e61ffa306455fb89bab928f94950fdf14d8741490c4c2047f9",
+        "code_sha256": "b637bd8591c5dd9fcf7398cb746dcf670d98e236f2fd65b95605c9b76897465d",
+        "relocation_count": 6,
+        "staged_path": "src/warpphase2/func_8021A554_5D5AE4.c",
+        "active_owner": "asm/japan_0/warpbatcha_003_000.s",
+        "section": "file_12"
+      }
+    ],
+    "fragments": [
+      {
+        "path": "asm/japan_0/warpphase2_000_tail.s",
+        "start": 6116604,
+        "end": 6116608,
+        "suffix": ".text",
+        "owner": "asm/japan_0/jp1686_157_001.s"
+      },
+      {
+        "path": "asm/japan_0/warpphase2_001_000.s",
+        "start": 6117404,
+        "end": 6118116,
+        "suffix": ".text",
+        "owner": "asm/japan_0/warpbatcha_003_000.s"
+      },
+      {
+        "path": "asm/japan_0/warpphase2_001_tail.s",
+        "start": 6118224,
+        "end": 6120580,
+        "suffix": ".text",
+        "owner": "asm/japan_0/warpbatcha_003_000.s"
+      }
+    ],
+    "parents": [
+      {
+        "owner": "asm/japan_0/jp1686_157_001.s",
+        "section": "file_12",
+        "suffix": ".text",
+        "names": [
+          "func_80219E74_5D5404",
+          "func_80219EF4_5D5484"
+        ]
+      },
+      {
+        "owner": "asm/japan_0/warpbatcha_003_000.s",
+        "section": "file_12",
+        "suffix": ".text",
+        "names": [
+          "func_8021A554_5D5AE4"
+        ]
+      }
+    ],
+    "blocked": [],
+    "linker_sha256": "20aa234f1d17d8185091f0a4862503ce38ecf8557de9263b45196ec79e325b89"
+  },
+  "error": "('japan_0', '.data', 71952, 71940)"
+}
