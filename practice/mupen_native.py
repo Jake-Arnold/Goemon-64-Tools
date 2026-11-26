@@ -23,7 +23,7 @@ from practice.game_versions import identify_rom
 from practice.entrances import canonical_rom
 from practice.pj64_frame_control import controller_input, parse_inputs
 from practice.native_trace_wire import PREFIX, TraceWriter, private_stdout, checkpoint
-from practice.native_state_control import SET_SLOT, run_state_job, state_complete
+from practice.native_state_control import SET_SLOT, LOAD_COMPLETE, run_state_job, state_complete
 
 _wire = None
 _emit_lock = threading.Lock()
@@ -349,6 +349,7 @@ class Inspector:
         self.finished=False; self.operation=threading.Lock()
         self.physical_mode=False; self.managed_base=None
         self.watch_errors={}; self.player_base=None; self.player_text=None
+        self.player_watches_suspended=False
         self.unlock_pending=False; self.unlock_result=None; self.unlock_error=None
         self.state_job_expected=None; self.state_job_result=None; self.state_job_notice=''
 
@@ -362,6 +363,9 @@ class Inspector:
         with self.cv:
             try:
                 self.serial+=1
+                # Load jobs can cross intermediate RAM states; never sample them.
+                if self.state_job_expected == LOAD_COMPLETE:
+                    self.cv.notify_all(); return
                 if (self.managed_base is None and sys.platform == 'linux'
                         and getattr(self.core,'core_version',None)==0x020600
                         and hasattr(self.core,'rdram_pointer')):
@@ -376,7 +380,7 @@ class Inspector:
                 row=dict(serial=self.serial,frame=index,polls=self.core.polls(),**(dict(buttons=None,x=None,y=None) if self.physical_mode else self.input))
                 self.watch_errors={}
                 valid_player=(self.player_base is None or
-                    (self.core.read_word(self.player_base+8,4)==JP_PRE and self.core.read_word(self.player_base+0x10,4)==JP_POST))
+                    (not self.player_watches_suspended and self.core.read_word(self.player_base+8,4)==JP_PRE and self.core.read_word(self.player_base+0x10,4)==JP_POST))
                 for w in self.watches:
                     name=w['name']
                     if not valid_player and self.player_base<=w['address']<self.player_base+0xEC:
@@ -455,6 +459,7 @@ class Inspector:
                     # in the next core callback; never read RAM on the UI thread.
                     self.watches=new; self.rows=[]; self.last=None; self.error=''
                     self.watch_errors={}; self.player_base=None; self.player_text=None
+                    self.player_watches_suspended=False
         elif op=='locate_player':
             with self.cv:
                 if self.state!=PAUSED or self.recording or self.stepping:
@@ -465,6 +470,7 @@ class Inspector:
                 text=player_watch_text(base)
                 new=parse_watches(text,self.region)
                 self.player_base=base; self.player_text=text
+                self.player_watches_suspended=False
                 self.watches=new; self.rows=[]; self.last=None; self.error=''; self.watch_errors={}
         elif op=='unlock_mini':
             if self.region!='japan' or getattr(self.core,'core_version',None)!=0x020600:

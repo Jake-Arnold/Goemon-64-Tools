@@ -124,6 +124,7 @@ class NativeInspectorTests(unittest.TestCase):
 
     def test_managed_state_control_integration(self):
         i=self.setup_inspector();i.core.core_version=0x020600
+        i.watches=parse_watches('\n'.join(f'w{n} u32 {0x80001000+4*n:08X}' for n in range(24)),'japan'); expected=list(i.watches)
         i.control(dict(op='step',inputs=[NEUTRAL]))
         def queue_state(op,slot):
             self.assertEqual(slot,0);i.core.pending_state=op
@@ -136,12 +137,25 @@ class NativeInspectorTests(unittest.TestCase):
         r=i.control(dict(op='save_state',slot=0));self.assertEqual(len(r['rows']),1)
         self.assertTrue(r['capabilities']['savestate_control'])
         with self.assertRaisesRegex(RuntimeError,'confirmation'):i.control(dict(op='load_state',slot=0))
-        r=i.control(dict(op='load_state',slot=0,confirm=True))
-        self.assertEqual(r['rows'],[]);self.assertEqual(r['watches'],[]);self.assertEqual(r['state'],PAUSED)
+        with patch.object(i.core,'read_watch',wraps=i.core.read_watch) as reads:
+            r=i.control(dict(op='load_state',slot=0,confirm=True))
+            reads.assert_not_called()
+        self.assertEqual(r['rows'],[]);self.assertEqual(r['watches'],expected);self.assertEqual(r['state'],PAUSED);self.assertIsNone(r['last'])
         self.assertIn('Loaded slot 0',r['state_job_notice'])
+        r=i.control(dict(op='step',inputs=[NEUTRAL]));self.assertEqual(len(r['rows']),1)
+        self.assertTrue(all(r['rows'][0][w['name']]==i.core.word for w in expected))
         i.state_job_expected=10
         with self.assertRaisesRegex(RuntimeError,'Unacknowledged'):i.control(dict(op='resume'))
         self.assertTrue(i.control(dict(op='status'))['state_job_pending'])
+
+    def test_suspended_player_watches_do_not_read_task(self):
+        i=self.setup_inspector();i.player_base=0x80001000;i.player_text='preset';i.player_watches_suspended=True
+        i.watches=parse_watches('task u16 80001002\nfixed u32 80002000','japan')
+        with patch.object(i.core,'read_watch',wraps=i.core.read_watch) as reads:
+            r=i.control(dict(op='step',inputs=[NEUTRAL]))
+            reads.assert_called_once_with(i.watches[1])
+        self.assertIsNone(r['rows'][0]['task']);self.assertEqual(r['rows'][0]['fixed'],i.core.word)
+        self.assertIn('Player signature changed',r['watch_errors']['task'])
 
     def test_running_and_multiple_callback_rejected(self):
         i=self.setup_inspector();i.control(dict(op='resume'))

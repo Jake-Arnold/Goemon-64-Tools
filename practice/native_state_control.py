@@ -35,9 +35,10 @@ def run_state_job(inspector, operation, slot, confirm=False):
         inspector.state_job_notice = ''
         inspector.set_input(NEUTRAL)
         if load:
-            # Never reuse live pointers or mix a restored state with an old trace.
-            inspector.rows = []; inspector.last = None; inspector.watches = []
-            inspector.player_base = None; inspector.player_text = None
+            # Definitions are not live pointers. Keep the schema, invalidate
+            # samples, and suspend located task reads until revalidated.
+            inspector.rows = []; inspector.last = None
+            inspector.player_watches_suspended = inspector.player_base is not None
             inspector.watch_errors = {}; inspector.error = ''
             inspector.unlock_result = None
         inspector.state_job_expected = LOAD_COMPLETE if load else SAVE_COMPLETE
@@ -59,7 +60,19 @@ def run_state_job(inspector, operation, slot, confirm=False):
             raise RuntimeError('Savestate completion not acknowledged; stop and relaunch the session')
         if not inspector.state_job_result:
             raise RuntimeError(f'Savestate slot {slot} operation failed (check slot/file)')
-        inspector.state_job_notice = (f'Loaded slot {slot}; reapply or relocate watches.' if load else f'Saved slot {slot} at a neutral core boundary.')
+        if load:
+            with inspector.cv:
+                # Only a unique structural candidate at the original root may
+                # reactivate a previously located preset. Manual addresses stay
+                # literal; pointer chains are evaluated anew at the next sample.
+                if inspector.player_base is not None:
+                    try:
+                        inspector.player_watches_suspended = inspector.core.locate_japan_player() != inspector.player_base
+                    except RuntimeError:
+                        inspector.player_watches_suspended = True
+                inspector.state_job_notice = (f'Loaded slot {slot}; watches retained. Locate Player again: task identity changed or is ambiguous.' if inspector.player_watches_suspended else f'Loaded slot {slot}; watches retained, sampling resumes at next core frame.')
+        else:
+            inspector.state_job_notice = f'Saved slot {slot} at a neutral core boundary.'
     finally:
         # If queued work is not acknowledged, do not allow another command to
         # race a delayed save/load. Only status and stop are then accepted.

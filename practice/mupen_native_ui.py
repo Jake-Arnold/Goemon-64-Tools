@@ -341,7 +341,7 @@ class NativeFrameUi:
             slot=int(self.slot.get())
             if not 0<=slot<=9:raise ValueError('Choose a slot from 0 to 9')
         except ValueError as exc:self.status.set(str(exc));return
-        if op=='load_state' and not messagebox.askyesno('Load savestate?', 'Restore this slot? Current gameplay and the active trace will be replaced. The latest trace checkpoint remains recoverable; reapply or relocate watches after loading.',parent=self.root):return
+        if op=='load_state' and not messagebox.askyesno('Load savestate?', 'Restore this slot? Current gameplay and the active trace will be replaced. The latest trace checkpoint remains recoverable. Applied watches are retained; relocated or ambiguous player presets require Locate Player again.',parent=self.root):return
         self.control(op,slot=slot,confirm=True)
 
     def unlock_mini(self):

@@ -1,3 +1,9 @@
+## 2026-11-26 — Toolkit v0.11.95: retain applied memory watches on savestate restore
+
+- User repeatedly loads a known Japanese savestate during Ebi Slide research; requiring Apply watches each time interrupts capture. Latest 180-frame/24-watch recording has identical shared fields to original Test Q apart from serial/core frame. This is user capture evidence, not a new runtime write or decomp claim. Keep decomp collision findings separate.
+- Retain applied schema, clear old trace/last sample/comparison, skip intermediate load callbacks, and resolve manual pointer chains anew. For located Japan preset require a unique structural locator candidate at its old root after acknowledged load; otherwise suspend task-root reads and retain definitions for explicit relocation. Manual absolute addresses retain their literal meaning; no inferred rebasing or identity claim. Acknowledged failure retains definitions and suspends located reads; unacknowledged jobs remain quarantined.
+- Verified live stable/toolkit 8f0b98c878e4a1292a8ba1b0819926939467c808, source archive 15125565937 checksum/tree 0c10ffb8ae2bbba3bbccb028c5a8ed6fbe21832b; v0.11.94 topic 54e545b5dd1ccaa1fe257ffec890a011e63b0616 all previous hosted checks succeeded. Direct shell git DNS unavailable. Isolated standalone state-control module/tests: five tests passed; exact uploaded blobs verified. Integration tests cover 24-watch retention, no reads during load, resumption on next frame and suspended guarded task reads; full integration awaits hosted CI because complete topic checkout not materialized locally. No local live emulator validation of v0.11.95. Next: verify hosted tests, then user reloads same slot and checks 24 columns without Apply watches. No private captures or saves committed.
+
 ## 26 November 2026 — v0.11.93 native capture usability
 
 ## 2026-11-26 — Toolkit v0.11.94: native trace transport and managed savestates

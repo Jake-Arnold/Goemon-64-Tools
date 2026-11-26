@@ -1,10 +1,14 @@
-# Goemon Speedrun Tools v0.11.94 — Reliable native trace transfer and managed savestates
+# Goemon Speedrun Tools v0.11.95 — Retain native memory watches after savestate load
 
 > **Repository branch policy (23 November 2026):** Toolkit development uses `stable/toolkit` → `toolkit/<topic>` → PR to `stable/toolkit`. Decomp work uses `stable/decomp` → `decomp/<topic>` → PR to `stable/decomp`. `main` and `chatgptweb/decomp` are legacy names, not new baselines. Read [BRANCHES.md](BRANCHES.md). Never merge the entire branches together.
 
+## v0.11.95 — Preserve applied watches across savestate loads
+
+F7 and Load state retain the active watch definitions (including all 24 custom watches). Old trace rows and comparison are cleared, and intermediate load frames are not sampled. Literal guest addresses remain literal; pointer chains resolve afresh on the next sample. A previously located Japan player preset resumes only if a unique structural candidate is found at its previous root. If the task moved or is ambiguous, its reads remain unavailable until Locate Player is used again. This is not proof of a manually entered object's identity.
+
 ## v0.11.94 — Native trace transfer and managed savestates
 
-Dedicated protocol output keeps native/plugin logs out of trace records. Incremental bounded packets, background reassembly, local automatic trace checkpoints and a stalled-response watchdog preserve evidence without replaying full buffers. **Recover latest trace** copies the most recent checkpoint. Pause and choose state slot 0–9; use inspector F5/F7 or Save/Load state buttons (core 2.6.0). Restore clears active watches and trace; relocate or reapply before recording. Managed state jobs advance neutral core boundaries and wait for completion; exact zero-frame restore and live freeze resolution are not yet verified. See [native setup](docs/MUPEN_NATIVE.md).
+Dedicated protocol output keeps native/plugin logs out of trace records. Incremental bounded packets, background reassembly, local automatic trace checkpoints and a stalled-response watchdog preserve evidence without replaying full buffers. **Recover latest trace** copies the most recent checkpoint. Pause and choose state slot 0–9; use inspector F5/F7 or Save/Load state buttons (core 2.6.0). In v0.11.94 restore cleared active watches and trace; v0.11.95 retains watch definitions as described above. Managed state jobs advance neutral core boundaries and wait for completion; exact zero-frame restore and live freeze resolution are not yet verified. See [native setup](docs/MUPEN_NATIVE.md).
 
 ## v0.11.93 — Persistent and responsive native trace capture
 
