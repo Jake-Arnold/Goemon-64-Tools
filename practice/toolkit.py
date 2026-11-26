@@ -315,6 +315,9 @@ class Toolkit(DialogueRegionMixin, DialogueMixin, UpdaterMixin, ReportsMixin, Ja
             connection, text='Advanced connection  ▸',
             command=self.toggle_connection_advanced)
         self.connection_advanced_toggle.pack(fill='x', pady=(0, 7))
+        if sys.platform in ('linux','darwin') and not getattr(sys, 'frozen', False) and not getattr(self.args, 'read_only', False):
+            ttk.Button(self.connection_advanced_frame, text='Open native Mupen64Plus Frame Inspector',
+                       command=self.launch_native_mupen).pack(fill='x', pady=(0, 7))
         if sys.platform == 'linux':
             self.launch_recomp_button = ttk.Button(
                 self.connection_advanced_frame,
@@ -1505,6 +1508,14 @@ class Toolkit(DialogueRegionMixin, DialogueMixin, UpdaterMixin, ReportsMixin, Ja
         self.open_live_memory_tab()
         return 'break'
 
+    def launch_native_mupen(self):
+        """Navigate to the embedded native inspector; launch only on user action."""
+        if not self._native_frame_available:
+            self.status.set('Native Mupen64Plus research requires Linux/macOS source mode and input-enabled access.')
+            return
+        self.open_frame_inspector('mupen64plus')
+        self.status.set('Native Frame Inspector selected; launch the ROM there.')
+
     def launch_linux_recomp(self):
         """Launch a user-selected native Linux build as our child for ptrace access.
 
@@ -1608,6 +1619,10 @@ class Toolkit(DialogueRegionMixin, DialogueMixin, UpdaterMixin, ReportsMixin, Ja
         """
         if self._connecting:
             return
+        if sys.platform == 'darwin':
+            self.status.set('External process RAM attachment is unavailable on macOS. '
+                            'Use Advanced connection > Launch native Mupen64Plus (source mode).')
+            return
         if self.active_version.key == 'japan':
             self._connect_japan_emulator()
             return
@@ -1619,7 +1634,7 @@ class Toolkit(DialogueRegionMixin, DialogueMixin, UpdaterMixin, ReportsMixin, Ja
                 self._disconnect_for_version_change()
                 self.game_pid = pid
                 self.status.set(f'Mupen64Plus PID {pid} selected for full savestates. '
-                                'Its RAM layout is not supported by the toolkit.')
+                                'External USA RAM attachment is unsupported; use Launch native Mupen64Plus for research.')
             except (ValueError, RuntimeError, OSError) as exc:
                 self.status.set(f'Mupen64Plus connection failed: {exc}')
             return
@@ -2073,6 +2088,7 @@ class Toolkit(DialogueRegionMixin, DialogueMixin, UpdaterMixin, ReportsMixin, Ja
 
     def _on_main_tab_changed(self, _event=None):
         """Sample the selected tab once after navigation, never hidden tabs."""
+        self._sync_frame_backend()
         self.root.after_idle(lambda: self._poll_visible_panels(force=True))
 
     def _refresh_unlocks_on_reader_change(self):
@@ -2545,6 +2561,7 @@ def main(argv=None):
     try:
         root.mainloop()
     finally:
+        app.shutdown_frame_inspector()
         app.stop_damage_capture(quiet=True)
         app._stop_freeze_worker()
         app.stop_transition_trace()

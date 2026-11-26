@@ -53,6 +53,7 @@ $backendTests = @(
     'tests.test_japan_native_recomp',
     'tests.test_japan_auto_attach',
     'tests.test_pj64_frame_control',
+    'tests.test_mupen_native',
     'tests.test_japan_pid_restart_watch',
     'tests.test_gui_smoke_runner',
     'tests.test_toolkit_version',
@@ -91,6 +92,7 @@ $backendTests = @(
     'tests.test_state_discovery'
 )
 $guiTests = @(
+    'tests.test_mupen_native_ui',
     'tests.test_japanese_fields_ui',
     'tests.test_japanese_scene_probe_ui',
     'tests.test_japanese_party_controls_ui',
