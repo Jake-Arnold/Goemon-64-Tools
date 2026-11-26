@@ -14,7 +14,7 @@ import time
 import tkinter as tk
 from tkinter import ttk, filedialog, messagebox
 
-from practice.mupen_native import write_trace, MAX_NATIVE_STEPS, MAX_TRACE_ROWS
+from practice.mupen_native import write_trace, MAX_NATIVE_STEPS, MAX_TRACE_ROWS, MAX_WATCHES
 from practice.native_trace_wire import TraceReader
 from practice.mupen_input_build import default_input_path, request_input_build
 from practice.native_inspector_preferences import (inspector_preferences_path, load_editor_preferences,
@@ -141,7 +141,7 @@ class NativeFrameUi:
             editor.bind('<<Modified>>',self._editor_modified,add='+')
         self.n.trace_add('write',lambda *_:self._schedule_save())
         actions=ttk.Frame(edit);actions.grid(row=2,column=0,sticky='w')
-        ttk.Button(actions,style='Inspector.TButton',text='Apply watches (paused)',command=self.apply_watches).pack(side='left')
+        ttk.Button(actions,style='Inspector.TButton',text=f'Apply watches (max {MAX_WATCHES}, paused)',command=self.apply_watches).pack(side='left')
         ttk.Button(actions,style='Inspector.TButton',text='JP controller preset',command=self.controller_preset).pack(side='left')
         ttk.Button(actions,style='Inspector.TButton',text='Locate Player (JP)',command=self.locate_player).pack(side='left')
         grid=ttk.Frame(body);grid.pack(fill='both',expand=True);grid.rowconfigure(0,weight=1);grid.columnconfigure(0,weight=1)
@@ -529,6 +529,9 @@ class NativeFrameUi:
                         if previous and previous['watches']!=self.report['watches']:self.reference=None;self.last_render=None
                         self.render()
                     self.status.set(self.last_error)
+                    if completed in ('watches', 'locate_player'):
+                        active=len(self.report['watches']) if self.report else 0
+                        messagebox.showerror('Watches not applied', f'{self.last_error}\n\nActive watches: {active}. Previous configuration retained.',parent=self.root)
                 else:
                     previous=self.report;self.report=payload['report'];r=self.report
                     self.managed_ram=payload.get('managed_ram')
@@ -552,7 +555,7 @@ class NativeFrameUi:
                         diagnostic='Saved player watches: pause and Locate Player again.'
                     job_notice=('Unacknowledged savestate job; stop and relaunch' if r.get('state_job_pending') else r.get('state_job_notice',''))
                     recovery_notice=('Trace checkpoint failed: '+r['recovery_error'] if r.get('recovery_error') else '')
-                    self.status.set(f"{r['region']} | {state} | core callback {r['serial']} | {len(r['rows'])}/{MAX_TRACE_ROWS} captured | {r.get('input_mode','scripted')} input | recording {r['recording']}{player} | {r.get('ram_reader','')} | {self.last_error or r['error'] or job_notice or diagnostic or notice or recovery_notice}");self.render()
+                    self.status.set(f"{r['region']} | {state} | core callback {r['serial']} | {len(r['watches'])}/{MAX_WATCHES} watches | {len(r['rows'])}/{MAX_TRACE_ROWS} captured | {r.get('input_mode','scripted')} input | recording {r['recording']}{player} | {r.get('ram_reader','')} | {self.last_error or r['error'] or job_notice or diagnostic or notice or recovery_notice}");self.render()
         except queue.Empty:pass
         if self.process and self.busy and not self.protocol_failed and not self.stalled and self.last_activity and time.monotonic()-self.last_activity>20:
             self.stalled=True;self.pending=None

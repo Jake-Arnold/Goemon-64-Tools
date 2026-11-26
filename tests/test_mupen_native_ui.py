@@ -74,6 +74,18 @@ class NativeUiTests(unittest.TestCase):
         with patch('practice.mupen_native_ui.messagebox.askyesno',return_value=True):ui.apply_watches()
         sent=json.loads(stream.getvalue());self.assertEqual(sent['op'],'watches');self.assertTrue(sent['replace_trace']);self.assertIn('new s16',sent['text'])
         ui.process=None
+    def test_rejected_watch_schema_shows_dialog_and_retains_active_columns(self):
+        ui=self.ui;stream=io.StringIO();ui.process=SimpleNamespace(stdin=stream)
+        ui.report=dict(region='japan',state=3,recording=False,rows=[],watches=[dict(name='old')])
+        ui.watches.insert('1.0','\n'.join(f'w{i} u32 80001000' for i in range(65)))
+        ui.apply_watches()
+        ui.events.put((ui.generation,'report',dict(ok=False,error='Maximum 64 watches',report=ui.report)))
+        with patch('practice.mupen_native_ui.messagebox.showerror') as dialog:
+            ui.drain()
+            dialog.assert_called_once()
+            self.assertIn('Maximum 64 watches',dialog.call_args.args[1])
+        self.assertEqual(ui.report['watches'],[dict(name='old')]);ui.process=None
+
     def test_japan_preset_and_comparison_invalidation(self):
         ui=self.ui;ui.controller_preset();self.assertIn('@research:controller_japan_raw_x',ui.watches.get('1.0','end'))
         ui.report=dict(watches=[],rows=[]);ui.reference={'rows':[]};ui.generation=1
@@ -152,11 +164,12 @@ class NativeUiTests(unittest.TestCase):
         ui.report=dict(watches=[w],rows=[]);ui.render();self.assertEqual(len(ui.table.get_children()),0)
 
     def test_full_trace_large_table_is_chunked(self):
-        ui=self.ui;watches=[dict(name=f'w{i}',kind='u32',address=0x80001000+i*4) for i in range(24)]
+        ui=self.ui;watches=[dict(name=f'w{i}',kind='u32',address=0x80001000+i*4) for i in range(64)]
         rows=[dict(serial=i+1,frame=i,polls=1,buttons=0,x=0,y=0,**{w['name']:i for w in watches}) for i in range(3600)]
         ui.report=dict(watches=watches,rows=rows);ui.render()
         self.assertEqual(ui.render_cursor,100)
         ui.copy_trace();self.assertEqual(len(self.root.clipboard_get().splitlines()),3601)
+        self.assertEqual(self.root.clipboard_get().splitlines()[0].split('\t')[-1],'w63')
         while ui.render_cursor<len(rows):ui._cancel_render();ui._render_chunk()
         self.assertEqual(len(ui.table.get_children()),3600)
 

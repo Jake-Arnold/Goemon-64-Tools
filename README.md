@@ -1,6 +1,10 @@
-# Goemon Speedrun Tools v0.11.95 — Retain native memory watches after savestate load
+# Goemon Speedrun Tools v0.11.96 — Expanded native memory watches
 
 > **Repository branch policy (23 November 2026):** Toolkit development uses `stable/toolkit` → `toolkit/<topic>` → PR to `stable/toolkit`. Decomp work uses `stable/decomp` → `decomp/<topic>` → PR to `stable/decomp`. `main` and `chatgptweb/decomp` are legacy names, not new baselines. Read [BRANCHES.md](BRANCHES.md). Never merge the entire branches together.
+
+## v0.11.96 — 64 native watches and visible rejection errors
+
+The native Frame Inspector accepts up to 64 typed watches and displays the active count. Invalid changes show a dialog without replacing the previous watch schema or capture. Existing frame, text, pointer and packet bounds remain unchanged.
 
 ## v0.11.95 — Preserve applied watches across savestate loads
 

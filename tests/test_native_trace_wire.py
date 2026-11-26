@@ -12,7 +12,7 @@ from practice.native_trace_wire import PREFIX, TraceReader, TraceWriter, checkpo
 class NativeTraceWireTests(unittest.TestCase):
     def test_large_trace_delta_reset_and_unchanged_poll(self):
         stream = io.StringIO(); sender = TraceWriter(stream); receiver = TraceReader()
-        rows = [dict(serial=i, **{f'w{j}': i / 3 for j in range(24)}) for i in range(3600)]
+        rows = [dict(serial=i, **{f'w{j:02d}_long_watch_name': i / 3 for j in range(64)}) for i in range(3600)]
         report = dict(rows=rows[:600], watches=[dict(name='a')], state=3)
         def transfer(report):
             sender.send(dict(ok=True, report=report))

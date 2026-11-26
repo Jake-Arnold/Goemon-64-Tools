@@ -1,3 +1,8 @@
+## 2026-11-26 — Toolkit v0.11.96: expand native watch capacity and report rejected schemas
+
+- User's 27-watch draft exceeded the hardcoded 24-watch parser limit; previous schema remained active. Raise to 64, keep 8192-character/pointer/3600-row bounds, display active count and explicit rejection dialog. No changes to guest addresses or writes.
+- Stable parent 8f0b98c878e4a1292a8ba1b0819926939467c808 authenticated from source archive 15125565937 (tree 0c10ffb8ae2bbba3bbccb028c5a8ed6fbe21832b); current existing PR #277 head cba83c2b248fd817dab783fc7e49b97c65883f81 is ahead of that base, no behind commits. Shell Git DNS unavailable; local stable parser with identical capacity edit passed six checks (24/27/64/65, duplicate, alignment). Complete topic checkout not locally materialized. Expanded inspector capture, savestate, UI dialog, 3600-row clipboard and wire tests await hosted CI; no live emulator tested. Keep private traces outside Git.
+
 ## 2026-11-26 — Toolkit v0.11.95: retain applied memory watches on savestate restore
 
 - User repeatedly loads a known Japanese savestate during Ebi Slide research; requiring Apply watches each time interrupts capture. Latest 180-frame/24-watch recording has identical shared fields to original Test Q apart from serial/core frame. This is user capture evidence, not a new runtime write or decomp claim. Keep decomp collision findings separate.

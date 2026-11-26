@@ -31,7 +31,7 @@ STOPPED, RUNNING, PAUSED = 1, 2, 3
 ROM_OPEN, ROM_CLOSE, EXECUTE, STOP, PAUSE, RESUME, QUERY = 1, 2, 5, 6, 7, 8, 9
 FRAME_CALLBACK, ADVANCE = 15, 20
 WIDTHS = {'u8': 1, 's8': 1, 'u16': 2, 's16': 2, 'u32': 4, 's32': 4, 'f32': 4}
-MAX_WATCHES = 24
+MAX_WATCHES = 64
 MAX_POINTER_HOPS = 4
 MAX_NATIVE_STEPS = 600
 MAX_TRACE_ROWS = 3600
@@ -66,14 +66,16 @@ def parse_watches(text, region):
     for line in text.splitlines():
         if not line.strip() or line.lstrip().startswith('#'):
             continue
+        if len(result) >= MAX_WATCHES:
+            raise ValueError(f'Maximum {MAX_WATCHES} watches; previous applied watches unchanged')
         fields = line.split()
         if len(fields) != 3:
             raise ValueError('Expected name type address or root->hex_offset')
         name, kind, raw = fields
         if (not re.fullmatch('[A-Za-z][A-Za-z0-9_]{0,23}', name)
                 or name in ('frame', 'serial', 'polls', 'buttons', 'x', 'y')
-                or kind not in WIDTHS or len(result) >= MAX_WATCHES or any(w['name']==name for w in result)):
-            raise ValueError('Expected up to 24 unique watches: name u8/s8/u16/s16/u32/s32/f32 address')
+                or kind not in WIDTHS or any(w['name']==name for w in result)):
+            raise ValueError('Expected unique watches: name u8/s8/u16/s16/u32/s32/f32 address')
         root, *hops = raw.split('->')
         if len(hops) > MAX_POINTER_HOPS:
             raise ValueError('Pointer chain exceeds four dereferences')

@@ -11,7 +11,7 @@ import unittest
 from unittest.mock import patch
 
 from practice.mupen_native import (Inspector, NativeCore, PAUSED, RUNNING, ADVANCE, PAUSE, RESUME, STOP,
-    NEUTRAL, parse_watches, valid_input, write_trace, MAX_NATIVE_STEPS, MAX_TRACE_ROWS,
+    NEUTRAL, parse_watches, valid_input, write_trace, MAX_NATIVE_STEPS, MAX_TRACE_ROWS, MAX_WATCHES,
     locate_japan_player, player_watch_text, JP_PRE, JP_POST)
 from practice.pj64_frame_control import controller_input
 
@@ -63,6 +63,20 @@ class NativeInspectorTests(unittest.TestCase):
             with self.assertRaises(ValueError):parse_watches(value,'usa')
         with self.assertRaises(ValueError):valid_input(dict(buttons=64,x=0,y=0))
         with self.assertRaises(ValueError):valid_input(dict(buttons=0,x=81,y=0))
+    def test_expanded_watch_schema_and_rejection(self):
+        i=self.setup_inspector()
+        lines=[f'w{n} u32 {0x80001000+4*n:08X}' for n in range(MAX_WATCHES+1)]
+        for count in (27, MAX_WATCHES):
+            text='\n'.join(lines[:count])
+            r=i.control(dict(op='watches',text=text,replace_trace=True))
+            self.assertEqual(len(r['watches']),count)
+            r=i.control(dict(op='step',inputs=[NEUTRAL]))
+            self.assertEqual(r['rows'][0][f'w{count-1}'],i.core.word)
+        old=i.report()
+        with self.assertRaisesRegex(ValueError,'Maximum 64 watches'):
+            i.control(dict(op='watches',text='\n'.join(lines),replace_trace=True))
+        self.assertEqual(i.report(),old)
+
     def test_live_schema_is_atomic_and_paused_only(self):
         i=self.setup_inspector(); i.control(dict(op='step',inputs=[NEUTRAL]))
         old=i.report(); command=dict(op='watches',text='new s16 80001004')
@@ -124,7 +138,7 @@ class NativeInspectorTests(unittest.TestCase):
 
     def test_managed_state_control_integration(self):
         i=self.setup_inspector();i.core.core_version=0x020600
-        i.watches=parse_watches('\n'.join(f'w{n} u32 {0x80001000+4*n:08X}' for n in range(24)),'japan'); expected=list(i.watches)
+        i.watches=parse_watches('\n'.join(f'w{n} u32 {0x80001000+4*n:08X}' for n in range(MAX_WATCHES)),'japan'); expected=list(i.watches)
         i.control(dict(op='step',inputs=[NEUTRAL]))
         def queue_state(op,slot):
             self.assertEqual(slot,0);i.core.pending_state=op
