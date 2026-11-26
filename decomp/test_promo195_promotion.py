@@ -4,7 +4,7 @@ from decomp import promo195_promotion as p, verify, promotion_integrity
 
 class Promo195Tests(unittest.TestCase):
     def test_live_usa_claims(self):
-        m=verify.load_manifest(p.ROOT/'manifest.json');claims=verify.claimed_functions(m)
+        m=verify.load_manifest(p.ROOT/'results/manifest_3039_before_promo65.json');claims=verify.claimed_functions(m)
         self.assertEqual((len(claims),sum(x['size'] for x in claims)),(3039,205920))
         self.assertEqual(len({x['name'] for x in claims}),3039)
         self.assertEqual(promotion_integrity.audit()['status'],'PASS')
@@ -27,12 +27,12 @@ class Promo195Tests(unittest.TestCase):
         q=copy.deepcopy(d);q['strict_inventory']['upstream_unmarked_names'].pop()
         with self.assertRaises(ValueError):p.validate_native(region,q)
     def test_predecessor_mutation(self):
-        m=p.read(p.ROOT/'manifest.json');m[p.KEY]['format']='bad'
+        m=p.read(p.ROOT/'results/manifest_3039_before_promo65.json');m[p.KEY]['format']='bad'
         with self.assertRaises(ValueError):p.predecessor(m)
     def test_inventory_tamper(self):
-        m=p.read(p.ROOT/'manifest.json');d=p.read(p.ROOT/'results/combined.json');i=p.read(p.ROOT/'results/inventory.json');i['summary']['newly_matching_c']+=1
+        m=p.read(p.ROOT/'results/manifest_3039_before_promo65.json');d=p.read(p.ROOT/'results/combined_3039_before_promo65.json');i=p.read(p.ROOT/'results/inventory_3039_before_promo65.json');i['summary']['newly_matching_c']+=1
         self.assertEqual(p.audit_usa(p.ROOT,m,d,i)['status'],'FAIL')
     def test_japan_canonical(self):
         self.assertEqual(p.validate_jp()['accepted_C'],2938)
-        m=p.read(p.ROOT/'regions/japan_0.json');m[p.JP_KEY]['asm_remaining']-=1
+        m=p.read(p.ROOT/'results/japan_0_2938_before_promo65.json');m[p.JP_KEY]['asm_remaining']-=1
         with self.assertRaises(ValueError):p.master_predecessor(m)

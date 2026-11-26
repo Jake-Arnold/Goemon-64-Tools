@@ -491,6 +491,9 @@ def claimed_functions(manifest):
 
 
 def _claimed_functions(manifest):
+    if manifest.get("usa_promo65_promotion") is not None:
+        from . import promo65_promotion as promo65
+        return promo65.predecessor(manifest)+promo65.claims()
     if manifest.get("usa_promo195_promotion") is not None:
         from . import promo195_promotion as promo195
         return promo195.predecessor(manifest)+promo195.claims()
@@ -1520,6 +1523,7 @@ def load_manifest(path):
     selector_stage_value = manifest.pop('overlay_mini_selector_stage', None)
     opening_new2_stage_value = manifest.pop('overlay_usa_opening_new2_stage', None)
     short72_stage_value = manifest.pop('overlay_usa_short72_stage', None)
+    promo65_value = manifest.pop('usa_promo65_promotion', None)
     promo195_value = manifest.pop('usa_promo195_promotion', None)
     promo367_value = manifest.pop('usa_promo367_promotion', None)
     wave194_value = manifest.pop('usa_wave194_promotion', None)
@@ -1915,6 +1919,10 @@ def load_manifest(path):
         from . import promo195_promotion as promo195
         manifest[promo195.KEY]=promo195_value
         promo195.predecessor(manifest)
+    if promo65_value is not None:
+        from . import promo65_promotion as promo65
+        manifest[promo65.KEY]=promo65_value
+        promo65.predecessor(manifest)
     return manifest
 
 
@@ -2788,6 +2796,7 @@ def apply_transition_stage(candidate,baseline,work,uv,jobs,manifest,report,expec
 
 
 def run_build(args,manifest,report):
+    promo65_value=manifest.pop('usa_promo65_promotion',None)
     promo195_value=manifest.pop('usa_promo195_promotion',None)
     promo367_value=manifest.pop('usa_promo367_promotion',None)
     wave194_value=manifest.pop('usa_wave194_promotion',None)
@@ -3951,6 +3960,10 @@ def run_build(args,manifest,report):
         from . import promo195_promotion as promo195
         manifest[promo195.KEY]=promo195_value
         promo195.apply(candidate,baseline,work,uv,args.jobs,manifest,report,expected)
+    if promo65_value is not None:
+        from . import promo65_promotion as promo65
+        manifest[promo65.KEY]=promo65_value
+        promo65.apply(candidate,baseline,work,uv,args.jobs,manifest,report,expected)
     if not result['full_rom_match'] or result['matched_functions']!=result['claimed_functions']:
         raise ValueError('Candidate failed exact matching')
     report['stage']='complete';report['status']='matched'

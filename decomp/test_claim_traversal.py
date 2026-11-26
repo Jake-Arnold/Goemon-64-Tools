@@ -50,7 +50,7 @@ class ClaimTraversalTests(unittest.TestCase):
         manifest = verify.load_manifest(verify.ROOT / 'manifest.json')
         claims = verify.claimed_functions(manifest)
         self.assertEqual((len(claims), sum(row['size'] for row in claims)),
-                         (3039, 205920))
+                         (3052, 207240))
         with patch.object(vm440, 'SOURCE_SHA', '0' * 64):
             with self.assertRaisesRegex(ValueError, 'VM440 C source drift'):
                 verify.claimed_functions(manifest)
