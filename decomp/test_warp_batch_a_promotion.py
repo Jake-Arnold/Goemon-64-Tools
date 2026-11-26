@@ -3,7 +3,7 @@ import copy, unittest
 from decomp import warp_batch_a_promotion as p, verify, promotion_integrity
 class WarpBatchATests(unittest.TestCase):
     def test_current_claims(self):
-        c=verify.claimed_functions(verify.load_manifest(p.ROOT/'manifest.json'))
+        c=verify.claimed_functions(verify.load_manifest(p.ROOT/'results/manifest_3066_before_promo36.json'))
         self.assertEqual((len(c),sum(f['size'] for f in c)),(3066,210636))
         self.assertEqual(promotion_integrity.audit()['status'],'PASS')
         self.assertEqual(p.validate_jp()['accepted_C'],3004)

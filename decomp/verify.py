@@ -491,6 +491,9 @@ def claimed_functions(manifest):
 
 
 def _claimed_functions(manifest):
+    if manifest.get("usa_promo36_promotion") is not None:
+        from . import promo36_promotion as promo36
+        return promo36.predecessor(manifest)+promo36.claims()
     if manifest.get("usa_warp_batch_a_promotion") is not None:
         from . import warp_batch_a_promotion as warp
         return warp.predecessor(manifest)+warp.claims()
@@ -1529,6 +1532,7 @@ def load_manifest(path):
     selector_stage_value = manifest.pop('overlay_mini_selector_stage', None)
     opening_new2_stage_value = manifest.pop('overlay_usa_opening_new2_stage', None)
     short72_stage_value = manifest.pop('overlay_usa_short72_stage', None)
+    promo36_value = manifest.pop('usa_promo36_promotion', None)
     warp_value = manifest.pop('usa_warp_batch_a_promotion', None)
     ebi9_value = manifest.pop('usa_ebi_slide9_promotion', None)
     promo65_value = manifest.pop('usa_promo65_promotion', None)
@@ -1939,6 +1943,10 @@ def load_manifest(path):
         from . import warp_batch_a_promotion as warp
         manifest[warp.KEY]=warp_value
         warp.predecessor(manifest)
+    if promo36_value is not None:
+        from . import promo36_promotion as promo36
+        manifest[promo36.KEY]=promo36_value
+        promo36.predecessor(manifest)
     return manifest
 
 
@@ -2812,6 +2820,7 @@ def apply_transition_stage(candidate,baseline,work,uv,jobs,manifest,report,expec
 
 
 def run_build(args,manifest,report):
+    promo36_value=manifest.pop('usa_promo36_promotion',None)
     warp_value=manifest.pop('usa_warp_batch_a_promotion',None)
     ebi9_value=manifest.pop('usa_ebi_slide9_promotion',None)
     promo65_value=manifest.pop('usa_promo65_promotion',None)
@@ -3990,6 +3999,10 @@ def run_build(args,manifest,report):
         from . import warp_batch_a_promotion as warp
         manifest[warp.KEY]=warp_value
         warp.apply(candidate,baseline,work,uv,args.jobs,manifest,report,expected)
+    if promo36_value is not None:
+        from . import promo36_promotion as promo36
+        manifest[promo36.KEY]=promo36_value
+        promo36.apply(candidate,baseline,work,uv,args.jobs,manifest,report,expected)
     if not result['full_rom_match'] or result['matched_functions']!=result['claimed_functions']:
         raise ValueError('Candidate failed exact matching')
     report['stage']='complete';report['status']='matched'

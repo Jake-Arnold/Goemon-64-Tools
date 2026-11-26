@@ -90,10 +90,11 @@ def apply(co,base,work,uv,jobs,m,report,rom):
 def documents(p,root=ROOT):
     out=frozen('combined',root);project(p,out,root);out['verifier_source_sha256_lf']=sha((root/'verify.py').read_bytes());i=frozen('inventory',root);i['candidate_elf_sha256']=REGIONS['usa']['elf'];i['summary'].update(newly_matching_c=3066,current_unmarked_entries=3079,remaining_assembly_entries=4297);return out,i
 
-def audit_usa(root,m,p,i):
+def audit_usa(root,m,p,i,historical_verifier_sha=None):
     try:
         need(previous.audit_usa(root,frozen('manifest',root),frozen('combined',root),frozen('inventory',root),historical_verifier_sha=PREDECESSOR_VERIFIER_SHA)['status']=='PASS','historical USA3056 integrity');predecessor(m,root)
         stage=read(proof_path('usa',root));need(p[KEY]==stage,'canonical/dated proof drift');expected,ei=documents(stage,root)
+        if historical_verifier_sha is not None: expected['verifier_source_sha256_lf']=historical_verifier_sha
         need(p['status']=='matched' and all(p[k]==expected[k] for k in ('comparison','sources_sha256_lf','retained_assembly_functions','verifier_source_sha256_lf',KEY)),'canonical proof ownership/ROM drift');need(i==ei,'strict inventory drift')
         return {'status':'PASS','accepted_C':3066,'accepted_original_bytes':210636,'remaining_assembly':4297,'errors':[]}
     except (KeyError,ValueError,TypeError,FileNotFoundError) as exc:return {'status':'FAIL','errors':[str(exc)]}
@@ -108,6 +109,9 @@ def jp_documents(p,root=ROOT):
     validate_native('japan_0',p,root);fs=rows('japan_0',root);rr=[{'name':f['name'],'rom_offset':f['rom_offset'],'vma':f['vma'],'size':f['original_bytes'],'source':str(BATCH/f['source']),'source_sha256':f['source_sha256'],'original_sha256':f['code_sha256']} for f in fs];prior=sorted(prior_names('japan_0',root))
     return {'format':FORMAT,'region':'japan_0','base_c':2995,'matching_c':3004,'assembly_remaining':4372,'original_C_instruction_bytes':201000,'functions':rr},{'format':FORMAT,'region':'japan_0','base_c':2995,'matching_c_after':3004,'remaining_assembly':4372,'accepted_original_C_bytes':201000,'original_positive_elf_count':7376,'independent_original_semantic_relocations':80652,'candidate_semantic_relocations':80652,'same_independent_original_semantic_relocations':True,'full_original_G2':True,'predecessor_elf_sha256':REGIONS['japan_0']['prior'],'candidate_elf_sha256':REGIONS['japan_0']['elf'],'previous_C_names':prior,'new_C_names':sorted(f['name'] for f in fs),'strict_readelf_summary':p['strict_inventory'],'new_C_functions':rr}
 def master_predecessor(m,root=ROOT):
+    if "promo36_promotion" in m:
+        from . import promo36_promotion as successor
+        m=successor.master_predecessor(m,root)
     path=root/'results/japan_0_2995_before_warp_batch_a.json';need(sha(path.read_bytes())==JP_FROZEN_SHA,'JP frozen predecessor fingerprint');old=read(path);need(m.get(JP_KEY)==jp_head() and {k:v for k,v in m.items() if k!=JP_KEY}==old,'JP2995 frozen predecessor mismatch');return old
 def validate_jp(root=ROOT):
     need(previous.validate_jp(root)['accepted_C']==2995,'historical JP2995 integrity');master_predecessor(read(root/'regions/japan_0.json'),root);p=read(proof_path('japan_0',root));r,i=jp_documents(p,root);need(r==read(root/'regions'/JP_REG) and i==read(root/'results'/JP_INV),'Japan source/inventory drift');return {'status':'PASS','accepted_C':3004,'accepted_original_bytes':201000,'remaining_assembly':4372}
