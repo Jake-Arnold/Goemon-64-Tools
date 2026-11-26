@@ -1,6 +1,30 @@
-# Goemon Speedrun Tools v0.11.90 — Unified Frame Inspector
+# Goemon Speedrun Tools v0.11.96 — Expanded native memory watches
 
 > **Repository branch policy (23 November 2026):** Toolkit development uses `stable/toolkit` → `toolkit/<topic>` → PR to `stable/toolkit`. Decomp work uses `stable/decomp` → `decomp/<topic>` → PR to `stable/decomp`. `main` and `chatgptweb/decomp` are legacy names, not new baselines. Read [BRANCHES.md](BRANCHES.md). Never merge the entire branches together.
+
+## v0.11.96 — 64 native watches and visible rejection errors
+
+The native Frame Inspector accepts up to 64 typed watches and displays the active count. Invalid changes show a dialog without replacing the previous watch schema or capture. Existing frame, text, pointer and packet bounds remain unchanged.
+
+## v0.11.95 — Preserve applied watches across savestate loads
+
+F7 and Load state retain the active watch definitions (including all 24 custom watches). Old trace rows and comparison are cleared, and intermediate load frames are not sampled. Literal guest addresses remain literal; pointer chains resolve afresh on the next sample. A previously located Japan player preset resumes only if a unique structural candidate is found at its previous root. If the task moved or is ambiguous, its reads remain unavailable until Locate Player is used again. This is not proof of a manually entered object's identity.
+
+## v0.11.94 — Native trace transfer and managed savestates
+
+Dedicated protocol output keeps native/plugin logs out of trace records. Incremental bounded packets, background reassembly, local automatic trace checkpoints and a stalled-response watchdog preserve evidence without replaying full buffers. **Recover latest trace** copies the most recent checkpoint. Pause and choose state slot 0–9; use inspector F5/F7 or Save/Load state buttons (core 2.6.0). In v0.11.94 restore cleared active watches and trace; v0.11.95 retains watch definitions as described above. Managed state jobs advance neutral core boundaries and wait for completion; exact zero-frame restore and live freeze resolution are not yet verified. See [native setup](docs/MUPEN_NATIVE.md).
+
+## v0.11.93 — Persistent and responsive native trace capture
+
+Native watch/timeline editor drafts and batch size persist locally, with fresh locator validation before using saved generated player watches. Frame ranges (`1-120 - 80 0`) reduce repetitive input lines; Step +1 uses the manual controls rather than the retained timeline. Long batches show progress, trace table updates append in small chunks, and **Copy trace** or Ctrl+A/Ctrl+C (Cmd+A/Cmd+C on macOS) copies the original captured rows as TSV. The trace itself is not persisted. See [native setup](docs/MUPEN_NATIVE.md).
+
+## v0.11.92 — Native watch repair and Ebi Slide capture
+
+Core 2.6.0 uses its native RDRAM word API regardless of debugger capability. Pause in normal Japanese gameplay, click **Locate Player (JP)** to populate the callback-pair candidate and Ebi Slide watches, then verify action and motion by stepping. Up to 600 scripted frames per batch and 3,600 recorded frames; individual failed watch reads report reasons. macOS startup build compatibility corrected. See [native setup](docs/MUPEN_NATIVE.md).
+
+## v0.11.91 — Physical controller and managed Japan RAM (experimental)
+
+The source toolkit automatically builds or refreshes the bundled Goemon input plugin at startup using the installed SDK/compiler. Discover the stock SDL input provider, then use **Play with controller** for ordinary gameplay. Pause and Step/Run timeline to return to exclusive scripted input. Linux Japan-0 sessions with core 2.6.0 can use Dashboard → Connect to game (Mupen64Plus or Auto, PID blank) to attach the inspector-owned child without external PID discovery. Live Memory and mapped unlock edits require pause and recording stopped; continuous freezes and native warps remain unavailable. USA and macOS Dashboard attachment are not implemented. See [native setup](docs/MUPEN_NATIVE.md).
 
 ## v0.11.90 — Unified Frame Inspector
 

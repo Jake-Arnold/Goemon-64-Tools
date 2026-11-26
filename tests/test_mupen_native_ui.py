@@ -20,9 +20,27 @@ class NativeUiTests(unittest.TestCase):
     def setUp(self):
         try:self.root=tk.Tk()
         except tk.TclError as exc:self.skipTest(str(exc))
-        self.ui=NativeFrameUi(self.root);self.root.withdraw()
+        self.temp=tempfile.TemporaryDirectory();self.addCleanup(self.temp.cleanup)
+        self.settings=Path(self.temp.name)/'native-inspector.json'
+        self.ui=NativeFrameUi(self.root,settings_path=self.settings);self.root.withdraw()
     def tearDown(self):
         if hasattr(self,'ui'):self.ui.close()
+    def test_automatic_build_populates_input_and_preserves_manual_choice(self):
+        from concurrent.futures import Future
+        from practice.mupen_native_ui import default_input_path
+        ui=self.ui; f=Future()
+        with patch('practice.mupen_native_ui.request_input_build',return_value=f):
+            ui._request_default_build()
+            self.assertIn('Preparing',ui.status.get());self.assertEqual(ui.paths['input'].get(),'')
+            f.set_result(default_input_path());ui._poll_input_build()
+            self.assertEqual(ui.paths['input'].get(),str(default_input_path()))
+            g=Future();ui.build_future=g;ui.paths['input'].set('/custom/plugin.so')
+            g.set_result(default_input_path());ui._poll_input_build()
+            self.assertEqual(ui.paths['input'].get(),'/custom/plugin.so')
+            ui.paths['input'].set('');bad=Future();ui.build_future=bad
+            bad.set_exception(RuntimeError('SDK missing'));ui._poll_input_build()
+            self.assertIn('SDK missing',ui.status.get());self.assertEqual(ui.paths['input'].get(),'')
+
     def test_status_poll_does_not_drop_user_input(self):
         ui=self.ui; stream=io.StringIO();ui.process=SimpleNamespace(stdin=stream)
         ui.control('status');ui.x.set('80');ui.control('hold');ui.x.set('0')
@@ -31,6 +49,22 @@ class NativeUiTests(unittest.TestCase):
         sent=[json.loads(x) for x in stream.getvalue().splitlines()]
         self.assertEqual(sent,[{'op':'status'},{'op':'hold','input':dict(NEUTRAL,x=80)}])
         ui.process=None
+    def test_managed_attachment_metadata_and_paused_edit_guard(self):
+        ui=self.ui;owner=SimpleNamespace(pid=123,poll=lambda:None)
+        ui.process=owner;ui.session_rom=Path('/tmp/original.z64')
+        metadata=dict(pid=123,base=0x10000,size=0x400000,region='japan')
+        ui.managed_ram=metadata
+        self.assertEqual(ui.managed_attachment(),(owner,0x10000,ui.session_rom))
+        for fields in (dict(pid=124),dict(region='usa'),dict(size=0x800000),dict(base=3)):
+            ui.managed_ram=dict(metadata,**fields);self.assertIsNone(ui.managed_attachment())
+        ui.managed_ram=metadata;ui.report=dict(state=2,recording=False)
+        self.assertFalse(ui.manual_edits_paused());ui.report['state']=3
+        self.assertTrue(ui.manual_edits_paused());ui.inflight='step'
+        self.assertFalse(ui.manual_edits_paused());ui.inflight=None;ui.pending=('physical',{})
+        self.assertFalse(ui.manual_edits_paused());ui.pending=None
+        ui.report['recording']=True;self.assertFalse(ui.manual_edits_paused())
+        owner.poll=lambda:0;self.assertIsNone(ui.managed_attachment());ui.process=None
+
     def test_apply_watches_preserves_session_and_requires_confirmation(self):
         ui=self.ui;stream=io.StringIO();ui.process=SimpleNamespace(stdin=stream)
         ui.report=dict(state=3,recording=False,rows=[{'frame':1}],watches=[])
@@ -40,6 +74,18 @@ class NativeUiTests(unittest.TestCase):
         with patch('practice.mupen_native_ui.messagebox.askyesno',return_value=True):ui.apply_watches()
         sent=json.loads(stream.getvalue());self.assertEqual(sent['op'],'watches');self.assertTrue(sent['replace_trace']);self.assertIn('new s16',sent['text'])
         ui.process=None
+    def test_rejected_watch_schema_shows_dialog_and_retains_active_columns(self):
+        ui=self.ui;stream=io.StringIO();ui.process=SimpleNamespace(stdin=stream)
+        ui.report=dict(region='japan',state=3,recording=False,rows=[],watches=[dict(name='old')])
+        ui.watches.insert('1.0','\n'.join(f'w{i} u32 80001000' for i in range(65)))
+        ui.apply_watches()
+        ui.events.put((ui.generation,'report',dict(ok=False,error='Maximum 64 watches',report=ui.report)))
+        with patch('practice.mupen_native_ui.messagebox.showerror') as dialog:
+            ui.drain()
+            dialog.assert_called_once()
+            self.assertIn('Maximum 64 watches',dialog.call_args.args[1])
+        self.assertEqual(ui.report['watches'],[dict(name='old')]);ui.process=None
+
     def test_japan_preset_and_comparison_invalidation(self):
         ui=self.ui;ui.controller_preset();self.assertIn('@research:controller_japan_raw_x',ui.watches.get('1.0','end'))
         ui.report=dict(watches=[],rows=[]);ui.reference={'rows':[]};ui.generation=1
@@ -52,6 +98,118 @@ class NativeUiTests(unittest.TestCase):
         self.assertEqual(stream.getvalue(),'')
         with patch('practice.mupen_native_ui.messagebox.askyesno',return_value=True):ui.unlock_mini()
         self.assertEqual(json.loads(stream.getvalue()),dict(op='unlock_mini',confirm=True));ui.process=None
+
+    def test_locate_player_populates_editor_and_shows_read_diagnostics(self):
+        ui=self.ui;stream=io.StringIO();ui.process=SimpleNamespace(stdin=stream)
+        ui.report=dict(region='japan',state=3,recording=False,rows=[],watches=[])
+        ui.locate_player();self.assertEqual(json.loads(stream.getvalue()),dict(op='locate_player',replace_trace=False))
+        r=dict(ui.report,serial=1,error='',player_base=0x8016F780,player_text='pre_callback u32 8016F788',
+               ram_reader='native 2.6.0 words',watch_errors={'raw_x':'Core RDRAM pointer unavailable'})
+        ui.events.put((ui.generation,'report',dict(ok=True,report=r)));ui.drain()
+        self.assertIn('pre_callback u32 8016F788',ui.watches.get('1.0','end'))
+        self.assertIn('task 0x8016F780',ui.status.get());self.assertIn('Core RDRAM pointer unavailable',ui.status.get())
+        ui.process=None
+
+    def test_long_timeline_sends_600_frames(self):
+        ui=self.ui;stream=io.StringIO();ui.process=SimpleNamespace(stdin=stream)
+        ui.n.set('600');ui.timeline.insert('1.0','14 CU 0 0');ui.step()
+        sent=json.loads(stream.getvalue());self.assertEqual(len(sent['inputs']),600)
+        self.assertEqual(sent['inputs'][13]['buttons'],8);ui.process=None
+
+    def test_editor_persistence_and_stale_locator_not_applied_at_launch(self):
+        ui=self.ui;w='pre_callback u32 8016F788'
+        ui.watches.insert('1.0',w);ui.located_text=w
+        ui.timeline.insert('1.0','1-120 - 80 0');ui.n.set('600')
+        ui.save_editor_settings();ui.close()
+        self.root=tk.Tk();self.root.withdraw();self.ui=ui=NativeFrameUi(self.root,settings_path=self.settings)
+        self.assertEqual(ui.watches.get('1.0','end-1c'),w)
+        self.assertEqual(ui.timeline.get('1.0','end-1c'),'1-120 - 80 0')
+        self.assertEqual(ui.n.get(),'600');self.assertEqual(ui.located_text,w)
+        for k,v in ui.paths.items():v.set('/tmp/custom-'+k)
+        proc=SimpleNamespace(stdin=io.StringIO(),stdout=[],stderr=[],wait=lambda:0)
+        with patch('practice.mupen_native_ui.subprocess.Popen',return_value=proc) as launch:
+            ui.start();args=launch.call_args.args[0]
+            self.assertEqual(args[args.index('--watches')+1],'')
+        ui.process=None
+        stream=io.StringIO();ui.process=SimpleNamespace(stdin=stream);ui.busy=False;ui.inflight=None
+        ui.report=dict(region='japan',state=3,recording=False,rows=[],watches=[])
+        ui.apply_watches();self.assertEqual(json.loads(stream.getvalue())['op'],'locate_player');ui.process=None
+
+    def test_editor_autosave_and_bad_settings(self):
+        from practice.native_inspector_preferences import load_editor_preferences
+        ui=self.ui;ui.watches.insert('1.0','value u32 80001000');ui.timeline.insert('1.0','1-60 - 80 0')
+        ui.n.set('60');self.root.update()
+        done=tk.BooleanVar(value=False);self.root.after(450,lambda:done.set(True));self.root.wait_variable(done)
+        self.assertEqual(load_editor_preferences(self.settings)['steps'],'60')
+        self.settings.write_text('{bad json');self.assertEqual(load_editor_preferences(self.settings),{})
+        self.settings.write_text(json.dumps(dict(format='goemon-native-inspector-v1',watches='x'*8193,timeline='',steps='1')))
+        self.assertEqual(load_editor_preferences(self.settings),{})
+
+    def test_copy_original_rows_during_incremental_render_and_append(self):
+        ui=self.ui;w=dict(name='action',kind='u8',address=0x80001000)
+        def row(i):return dict(serial=i+1,frame=i,polls=1,buttons=0,x=0,y=0,action=i%256)
+        ui.report=dict(watches=[w],rows=[row(i) for i in range(600)]);ui.render()
+        self.assertEqual(len(ui.table.get_children()),100);self.assertIsNotNone(ui.render_job)
+        ui.select_all_trace();ui.copy_trace(selected=True)
+        clip=self.root.clipboard_get().splitlines()
+        self.assertEqual(len(clip),601);self.assertEqual(clip[0],'serial\tframe\tpolls\tbuttons\tx\ty\taction')
+        self.assertEqual(clip[-1].split('\t')[:2],['600','599'])
+        previous=ui.table.get_children();ui.report=dict(watches=[w],rows=[row(i) for i in range(650)]);ui.render()
+        self.assertEqual(ui.table.get_children()[:100],previous)
+        while ui.render_cursor<650:
+            ui._cancel_render();ui._render_chunk()
+        self.assertEqual(len(ui.table.get_children()),650);self.assertEqual(len(ui.table.selection()),650)
+        ui.trace_select_all=False;ui.table.selection_set('17');ui.copy_trace(selected=True)
+        self.assertEqual(self.root.clipboard_get().splitlines()[1].split('\t')[:2],['18','17'])
+        ui.report=dict(watches=[w],rows=[]);ui.render();self.assertEqual(len(ui.table.get_children()),0)
+
+    def test_full_trace_large_table_is_chunked(self):
+        ui=self.ui;watches=[dict(name=f'w{i}',kind='u32',address=0x80001000+i*4) for i in range(64)]
+        rows=[dict(serial=i+1,frame=i,polls=1,buttons=0,x=0,y=0,**{w['name']:i for w in watches}) for i in range(3600)]
+        ui.report=dict(watches=watches,rows=rows);ui.render()
+        self.assertEqual(ui.render_cursor,100)
+        ui.copy_trace();self.assertEqual(len(self.root.clipboard_get().splitlines()),3601)
+        self.assertEqual(self.root.clipboard_get().splitlines()[0].split('\t')[-1],'w63')
+        while ui.render_cursor<len(rows):ui._cancel_render();ui._render_chunk()
+        self.assertEqual(len(ui.table.get_children()),3600)
+
+    def test_single_step_ignores_timeline_and_progress_keeps_busy(self):
+        ui=self.ui;stream=io.StringIO();ui.process=SimpleNamespace(stdin=stream)
+        ui.timeline.insert('1.0','2-120 - 80 0');ui.buttons['CU'].set(True);ui.step(1)
+        self.assertEqual(json.loads(stream.getvalue())['inputs'],[dict(NEUTRAL,buttons=8)])
+        ui.events.put((ui.generation,'report',dict(progress=dict(done=1,total=1))))
+        ui.drain();self.assertTrue(ui.busy);self.assertEqual(ui.inflight,'step');self.assertIn('Final frame complete',ui.status.get());ui.process=None
+
+    def test_progress_report_recovery_and_watchdog(self):
+        import time
+        ui=self.ui; stream=io.StringIO(); ui.process=SimpleNamespace(stdin=stream)
+        ui.control('step',inputs=[NEUTRAL])
+        checkpoint=Path(self.temp.name)/'trace.json'
+        r=dict(rows=[dict(serial=1,frame=0,polls=1,buttons=0,x=0,y=0,a=4)],watches=[dict(name='a')],region='japan',state=3,serial=1,recording=False,error='',recovery_path=str(checkpoint))
+        checkpoint.write_text(json.dumps(r))
+        ui.events.put((ui.generation,'report',dict(ok=True,report=r,progress=dict(done=1,total=1))))
+        ui.drain();self.assertTrue(ui.busy);self.assertEqual(ui.report['rows'],r['rows'])
+        ui.copy_recovered();self.assertIn('a',self.root.clipboard_get())
+        ui.last_activity=time.monotonic()-21;ui.drain();self.assertTrue(ui.stalled)
+        self.assertFalse(ui.manual_edits_paused())
+        self.assertIn('20s',ui.status.get())
+        ui.events.put((ui.generation,'report',dict(ok=True,report=r)))
+        ui.drain();self.assertFalse(ui.stalled);self.assertFalse(ui.busy)
+        ui.events.put((ui.generation,'protocol_error','incomplete'));ui.drain()
+        self.assertTrue(ui.protocol_failed);self.assertFalse(ui.manual_edits_paused())
+        ui.process=None
+
+    def test_managed_slot_controls_and_confirmation(self):
+        ui=self.ui;stream=io.StringIO();ui.process=SimpleNamespace(stdin=stream)
+        ui.report=dict(state=3,recording=False,rows=[],capabilities=dict(savestate_control=True))
+        ui.slot.set('2');ui.state_action('save_state')
+        self.assertEqual(json.loads(stream.getvalue()),dict(op='save_state',slot=2,confirm=True))
+        ui.busy=False;ui.inflight=None
+        with patch('practice.mupen_native_ui.messagebox.askyesno',return_value=False):ui.state_action('load_state')
+        self.assertEqual(len(stream.getvalue().splitlines()),1)
+        with patch('practice.mupen_native_ui.messagebox.askyesno',return_value=True):ui.state_action('load_state')
+        self.assertEqual(json.loads(stream.getvalue().splitlines()[-1]),dict(op='load_state',slot=2,confirm=True))
+        ui.process=None
 
     def test_rows_compare(self):
         ui=self.ui; w=dict(name='action',kind='u16',address=0x80001000)
@@ -72,9 +230,17 @@ class EmbeddedNativeUiTests(unittest.TestCase):
         try:self.root=tk.Tk()
         except tk.TclError as exc:self.skipTest(str(exc))
         self.root.withdraw()
+        self.temp=tempfile.TemporaryDirectory();self.addCleanup(self.temp.cleanup)
+        self.settings_patch=patch('practice.mupen_native_ui.inspector_preferences_path',return_value=Path(self.temp.name)/'native-inspector.json')
+        self.settings_patch.start();self.addCleanup(self.settings_patch.stop)
 
     def tearDown(self):
-        try:self.root.destroy()
+        try:
+            # The stub also builds the unrelated Project64 polling page.
+            # Cancel its timers before destroying this isolated Tk interpreter.
+            for timer in self.root.tk.call('after','info'):
+                self.root.after_cancel(timer)
+            self.root.destroy()
         except tk.TclError:pass
 
     def test_embedded_panel_does_not_change_root_and_shutdown_closes_pipe(self):
@@ -125,13 +291,13 @@ class EmbeddedNativeUiTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as d:
             p=Path(d);lib=p/'lib'/'x86_64-linux-gnu';plugins=lib/'mupen64plus';plugins.mkdir(parents=True)
             (lib/'libmupen64plus.so.2').touch()
-            for name in ('mupen64plus-video-rice.so','mupen64plus-audio-sdl.so','mupen64plus-rsp-hle.so'):(plugins/name).touch()
+            for name in ('mupen64plus-video-rice.so','mupen64plus-audio-sdl.so','mupen64plus-rsp-hle.so','mupen64plus-input-sdl.so'):(plugins/name).touch()
             (p/'share'/'games'/'mupen64plus').mkdir(parents=True)
             with patch('practice.mupen_native_ui.sysconfig.get_config_var',return_value='x86_64-linux-gnu'):
                 found=discover_prefix(p)
             self.assertEqual(found['core'],str(lib/'libmupen64plus.so.2'))
             self.assertEqual(found['gfx'],str(plugins/'mupen64plus-video-rice.so'))
-            self.assertTrue({'audio','rsp','data'}<=found.keys())
+            self.assertTrue({'audio','rsp','data','physical_input'}<=found.keys())
             self.assertEqual(found['data'],str(p/'share'/'games'/'mupen64plus'))
 
 if __name__=='__main__':unittest.main()

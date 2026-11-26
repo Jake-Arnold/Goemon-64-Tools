@@ -69,3 +69,7 @@ practice/entrances.json
 # Per-user position bookmarks and logical checkpoints
 practice/bookmarks.json
 practice/checkpoints.json
+
+# Local native input build fingerprint
+build/goemon_mupen_input.*.stamp
+build/goemon_mupen_input.*.tmp.*

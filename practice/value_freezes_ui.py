@@ -8,6 +8,7 @@ from practice.hex_edit import parse_hex, watch_scalar_width
 from practice.custom_watches import regional_watches
 from practice.value_freezes import FastFreezeWorker
 from practice.japan_value_freezes import RegionalValueFreezes, stable_japan_gameplay
+from practice.managed_native_ram import ManagedNativeRam
 
 
 class ValueFreezesMixin:
@@ -87,6 +88,7 @@ class ValueFreezesMixin:
         if self.active_version.key == 'japan':
             connected = (
                 self.jp_rdram is not None and self.game_pid is not None
+                and not isinstance(getattr(self.jp_rdram, 'process', None), ManagedNativeRam)
                 and self.jp_backend in ('project64', 'mupen64plus', 'recomp')
                 and not self._connecting
                 and not getattr(self.args, 'read_only', False)
@@ -113,6 +115,8 @@ class ValueFreezesMixin:
 
     def require_freeze_access(self, raw=False):
         if self.active_version.key == 'japan':
+            if isinstance(getattr(self.jp_rdram, 'process', None), ManagedNativeRam):
+                raise PermissionError('Continuous freezes are unavailable for managed native sessions; use paused manual edits')
             if not raw:
                 raise PermissionError('USA health, God Mode and task freezes are not Japan-0 compatible')
             if (self.jp_rdram is None or self.game_pid is None or self._connecting
