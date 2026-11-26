@@ -1,0 +1,260 @@
+[
+  {
+    "region": "usa",
+    "variant": "usa_baseline_replay.c",
+    "source_sha256": "a34e7229f92290c8b216444b57e102296a92f769e7fa290ed14569ba528383d5",
+    "ledger_sha256": "16afbab3439857e85fe2d2764c18a4f2deb3c5a623f8531ea37226b829e2f60a",
+    "compiler_sha256": "76d796c9591c9f5504949f85b29c32a6039a663791afe2f36f34ca18425b64d0",
+    "flags": [
+      "-c",
+      "-G",
+      "0",
+      "-non_shared",
+      "-Xfullwarn",
+      "-Xcpluscomm",
+      "-Iinclude",
+      "-Ilibultra/include",
+      "-Ilibultra/include/PR",
+      "-Isrc",
+      "-I.",
+      "-Wab,-r4300_mul",
+      "-woff",
+      "649,838,712",
+      "-D_LANGUAGE_C",
+      "-D_FINALROM",
+      "-DF3DEX_GBI",
+      "-D__sgi",
+      "-DNDEBUG",
+      "-O2",
+      "-mips2",
+      "-v",
+      "-Wc,-d"
+    ],
+    "diagnostic_text_equals_normal": true,
+    "diagnostic_relocations_equal_normal": true,
+    "codegen_branch_operands": [
+      [
+        2,
+        14
+      ]
+    ],
+    "compiler_outcome": "NO_NEW_COMPILER_FINDING",
+    "first_mismatch_category": "INSTRUCTION_SCHEDULING",
+    "first_difference": 176
+  },
+  {
+    "region": "usa",
+    "variant": "usa_castcmp.c",
+    "source_sha256": "0551363d03f04934a4ee7ecd0b20c556849eb9654f1d2fe5dc37ed56461eb502",
+    "ledger_sha256": "16afbab3439857e85fe2d2764c18a4f2deb3c5a623f8531ea37226b829e2f60a",
+    "compiler_sha256": "76d796c9591c9f5504949f85b29c32a6039a663791afe2f36f34ca18425b64d0",
+    "flags": [
+      "-c",
+      "-G",
+      "0",
+      "-non_shared",
+      "-Xfullwarn",
+      "-Xcpluscomm",
+      "-Iinclude",
+      "-Ilibultra/include",
+      "-Ilibultra/include/PR",
+      "-Isrc",
+      "-I.",
+      "-Wab,-r4300_mul",
+      "-woff",
+      "649,838,712",
+      "-D_LANGUAGE_C",
+      "-D_FINALROM",
+      "-DF3DEX_GBI",
+      "-D__sgi",
+      "-DNDEBUG",
+      "-O2",
+      "-mips2",
+      "-v",
+      "-Wc,-d"
+    ],
+    "diagnostic_text_equals_normal": true,
+    "diagnostic_relocations_equal_normal": true,
+    "codegen_branch_operands": [
+      [
+        2,
+        14
+      ]
+    ],
+    "compiler_outcome": "NO_NEW_COMPILER_FINDING",
+    "first_mismatch_category": "INSTRUCTION_SCHEDULING",
+    "first_difference": 176
+  },
+  {
+    "region": "usa",
+    "variant": "usa_comma.c",
+    "source_sha256": "e7b1811497ab3c26db89b352c8bfa1b0b02c1a895e2f5b2959ef9968857774d1",
+    "ledger_sha256": "16afbab3439857e85fe2d2764c18a4f2deb3c5a623f8531ea37226b829e2f60a",
+    "compiler_sha256": "76d796c9591c9f5504949f85b29c32a6039a663791afe2f36f34ca18425b64d0",
+    "flags": [
+      "-c",
+      "-G",
+      "0",
+      "-non_shared",
+      "-Xfullwarn",
+      "-Xcpluscomm",
+      "-Iinclude",
+      "-Ilibultra/include",
+      "-Ilibultra/include/PR",
+      "-Isrc",
+      "-I.",
+      "-Wab,-r4300_mul",
+      "-woff",
+      "649,838,712",
+      "-D_LANGUAGE_C",
+      "-D_FINALROM",
+      "-DF3DEX_GBI",
+      "-D__sgi",
+      "-DNDEBUG",
+      "-O2",
+      "-mips2",
+      "-v",
+      "-Wc,-d"
+    ],
+    "diagnostic_text_equals_normal": true,
+    "diagnostic_relocations_equal_normal": true,
+    "codegen_branch_operands": [
+      [
+        2,
+        14
+      ]
+    ],
+    "compiler_outcome": "NO_NEW_COMPILER_FINDING",
+    "first_mismatch_category": "INSTRUCTION_SCHEDULING",
+    "first_difference": 176
+  },
+  {
+    "region": "japan_0",
+    "variant": "japan_0_baseline_replay.c",
+    "source_sha256": "3e80a33d313a0176c779d535fc262ac2ee89d62f2c743147bd16e193d2585728",
+    "ledger_sha256": "16afbab3439857e85fe2d2764c18a4f2deb3c5a623f8531ea37226b829e2f60a",
+    "compiler_sha256": "76d796c9591c9f5504949f85b29c32a6039a663791afe2f36f34ca18425b64d0",
+    "flags": [
+      "-c",
+      "-G",
+      "0",
+      "-non_shared",
+      "-Xfullwarn",
+      "-Xcpluscomm",
+      "-Iinclude",
+      "-Ilibultra/include",
+      "-Ilibultra/include/PR",
+      "-Isrc",
+      "-I.",
+      "-Wab,-r4300_mul",
+      "-woff",
+      "649,838,712",
+      "-D_LANGUAGE_C",
+      "-D_FINALROM",
+      "-DF3DEX_GBI",
+      "-D__sgi",
+      "-DNDEBUG",
+      "-O2",
+      "-mips2",
+      "-v",
+      "-Wc,-d"
+    ],
+    "diagnostic_text_equals_normal": true,
+    "diagnostic_relocations_equal_normal": true,
+    "codegen_branch_operands": [
+      [
+        2,
+        14
+      ]
+    ],
+    "compiler_outcome": "NO_NEW_COMPILER_FINDING",
+    "first_mismatch_category": "INSTRUCTION_SCHEDULING",
+    "first_difference": 176
+  },
+  {
+    "region": "japan_0",
+    "variant": "japan_0_castcmp.c",
+    "source_sha256": "9d2dc8bd498f9a801547c97dce5d31c39920c9df8fd5453b74fc0d3ad4621b6b",
+    "ledger_sha256": "16afbab3439857e85fe2d2764c18a4f2deb3c5a623f8531ea37226b829e2f60a",
+    "compiler_sha256": "76d796c9591c9f5504949f85b29c32a6039a663791afe2f36f34ca18425b64d0",
+    "flags": [
+      "-c",
+      "-G",
+      "0",
+      "-non_shared",
+      "-Xfullwarn",
+      "-Xcpluscomm",
+      "-Iinclude",
+      "-Ilibultra/include",
+      "-Ilibultra/include/PR",
+      "-Isrc",
+      "-I.",
+      "-Wab,-r4300_mul",
+      "-woff",
+      "649,838,712",
+      "-D_LANGUAGE_C",
+      "-D_FINALROM",
+      "-DF3DEX_GBI",
+      "-D__sgi",
+      "-DNDEBUG",
+      "-O2",
+      "-mips2",
+      "-v",
+      "-Wc,-d"
+    ],
+    "diagnostic_text_equals_normal": true,
+    "diagnostic_relocations_equal_normal": true,
+    "codegen_branch_operands": [
+      [
+        2,
+        14
+      ]
+    ],
+    "compiler_outcome": "NO_NEW_COMPILER_FINDING",
+    "first_mismatch_category": "INSTRUCTION_SCHEDULING",
+    "first_difference": 176
+  },
+  {
+    "region": "japan_0",
+    "variant": "japan_0_comma.c",
+    "source_sha256": "2b281f7ffcda1e79ddd7c5f7b3678390cfc1b2bd85657c0e05e968a0b57b1225",
+    "ledger_sha256": "16afbab3439857e85fe2d2764c18a4f2deb3c5a623f8531ea37226b829e2f60a",
+    "compiler_sha256": "76d796c9591c9f5504949f85b29c32a6039a663791afe2f36f34ca18425b64d0",
+    "flags": [
+      "-c",
+      "-G",
+      "0",
+      "-non_shared",
+      "-Xfullwarn",
+      "-Xcpluscomm",
+      "-Iinclude",
+      "-Ilibultra/include",
+      "-Ilibultra/include/PR",
+      "-Isrc",
+      "-I.",
+      "-Wab,-r4300_mul",
+      "-woff",
+      "649,838,712",
+      "-D_LANGUAGE_C",
+      "-D_FINALROM",
+      "-DF3DEX_GBI",
+      "-D__sgi",
+      "-DNDEBUG",
+      "-O2",
+      "-mips2",
+      "-v",
+      "-Wc,-d"
+    ],
+    "diagnostic_text_equals_normal": true,
+    "diagnostic_relocations_equal_normal": true,
+    "codegen_branch_operands": [
+      [
+        2,
+        14
+      ]
+    ],
+    "compiler_outcome": "NO_NEW_COMPILER_FINDING",
+    "first_mismatch_category": "INSTRUCTION_SCHEDULING",
+    "first_difference": 176
+  }
+]
