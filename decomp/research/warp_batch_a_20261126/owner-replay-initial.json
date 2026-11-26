@@ -1,0 +1,150 @@
+[
+  {
+    "region": "japan_0",
+    "owner": "asm/japan_0/5D5500.s",
+    "targets": [
+      "func_80219F70_5D5500",
+      "func_8021AEF4_5D6484"
+    ],
+    "status": "UNIT_TEXT_EXACT",
+    "rom_offset": 6116608,
+    "vma": 2149687152,
+    "text_bytes": 5184,
+    "original_sha256": "46d077f3706497121039bbbe6c479f707bd9e1751be2b1e0d270397394d08826",
+    "mixed_text_sha256": "46d077f3706497121039bbbe6c479f707bd9e1751be2b1e0d270397394d08826",
+    "rom_exact": true,
+    "original_functions": 13,
+    "mixed_functions": 13,
+    "function_identities_exact": true,
+    "original_relocations": 242,
+    "mixed_relocations": 242,
+    "original_reloc_sha256": "09fa1c9d9fc01ea2b773808c341c67941e14724fd553159235dcf33b6c6b6cdc",
+    "mixed_reloc_sha256": "09fa1c9d9fc01ea2b773808c341c67941e14724fd553159235dcf33b6c6b6cdc",
+    "semantic_relocations_exact": true
+  },
+  {
+    "region": "japan_0",
+    "owner": "asm/japan_0/5D6940.s",
+    "targets": [
+      "func_8021BB8C_5D711C",
+      "func_8021BBC4_5D7154"
+    ],
+    "status": "FAILED",
+    "rom_offset": 6121792,
+    "vma": 2149692336,
+    "text_bytes": 18320,
+    "original_sha256": "6a8d7b80a3723087597c49d343130a70ca94040169397cedf2393beea2f78530",
+    "error": "('unresolved named symbol', 'jtbl_8023F294_5FA824')"
+  },
+  {
+    "region": "japan_0",
+    "owner": "asm/japan_0/nonmatchings/main_34EF0",
+    "targets": [
+      "func_8003542C_3602C",
+      "func_80035558_36158",
+      "func_800355D4_361D4",
+      "func_800356CC_362CC"
+    ],
+    "status": "UNIT_TEXT_EXACT",
+    "rom_offset": 216816,
+    "vma": 2147697392,
+    "text_bytes": 5328,
+    "original_sha256": "270fc04f3d2ce6c343764a3bfbef13fd48d0248c82f6ce7b950d5fe28090be3f",
+    "mixed_text_sha256": "270fc04f3d2ce6c343764a3bfbef13fd48d0248c82f6ce7b950d5fe28090be3f",
+    "rom_exact": true,
+    "original_functions": 59,
+    "mixed_functions": 59,
+    "function_identities_exact": true,
+    "original_relocations": 167,
+    "mixed_relocations": 167,
+    "original_reloc_sha256": "d9fa8395581d00a07cd1ceb8dc7ed5d86775df300e8dd0591642ed027a56a90a",
+    "mixed_reloc_sha256": "d9fa8395581d00a07cd1ceb8dc7ed5d86775df300e8dd0591642ed027a56a90a",
+    "semantic_relocations_exact": true
+  },
+  {
+    "region": "japan_0",
+    "owner": "asm/japan_0/nonmatchings/main_37870",
+    "targets": [
+      "func_800371B8_37DB8"
+    ],
+    "status": "UNIT_TEXT_EXACT",
+    "rom_offset": 227440,
+    "vma": 2147708016,
+    "text_bytes": 1712,
+    "original_sha256": "7c192172ea812901cb5ab9d6ccabf6fbcff1e203955b2d18f3ac4d06c26f0e4f",
+    "mixed_text_sha256": "7c192172ea812901cb5ab9d6ccabf6fbcff1e203955b2d18f3ac4d06c26f0e4f",
+    "rom_exact": true,
+    "original_functions": 19,
+    "mixed_functions": 19,
+    "function_identities_exact": true,
+    "original_relocations": 131,
+    "mixed_relocations": 131,
+    "original_reloc_sha256": "4ccd28961be8ecb953bf5483f126234bab176dd839f9a89ffebd6f896094fb7f",
+    "mixed_reloc_sha256": "4ccd28961be8ecb953bf5483f126234bab176dd839f9a89ffebd6f896094fb7f",
+    "semantic_relocations_exact": true
+  },
+  {
+    "region": "usa",
+    "owner": "asm/usa/35280.s",
+    "targets": [
+      "func_800357BC_363BC",
+      "func_800358E8_364E8",
+      "func_80035964_36564",
+      "func_80035A5C_3665C"
+    ],
+    "status": "UNIT_TEXT_EXACT",
+    "rom_offset": 217728,
+    "vma": 2147698304,
+    "text_bytes": 5328,
+    "original_sha256": "e6e02624108bc4be75786b317a1cd2bb28866031513d6047afcaa931cf3afc70",
+    "mixed_text_sha256": "e6e02624108bc4be75786b317a1cd2bb28866031513d6047afcaa931cf3afc70",
+    "rom_exact": true,
+    "original_functions": 59,
+    "mixed_functions": 59,
+    "function_identities_exact": true,
+    "original_relocations": 167,
+    "mixed_relocations": 167,
+    "original_reloc_sha256": "da49717c6a6d5a31447b1f786a8ac741d84a29bd8559108844b366c38ce32ba2",
+    "mixed_reloc_sha256": "da49717c6a6d5a31447b1f786a8ac741d84a29bd8559108844b366c38ce32ba2",
+    "semantic_relocations_exact": true
+  },
+  {
+    "region": "usa",
+    "owner": "asm/usa/37C00.s",
+    "targets": [
+      "func_80037548_38148",
+      "func_8003767C_3827C"
+    ],
+    "status": "UNIT_TEXT_EXACT",
+    "rom_offset": 228352,
+    "vma": 2147708928,
+    "text_bytes": 1712,
+    "original_sha256": "14060d784795addfd1e1ec3ec000eb27d592664870c875de2d8fb20eab59abff",
+    "mixed_text_sha256": "14060d784795addfd1e1ec3ec000eb27d592664870c875de2d8fb20eab59abff",
+    "rom_exact": true,
+    "original_functions": 19,
+    "mixed_functions": 19,
+    "function_identities_exact": true,
+    "original_relocations": 131,
+    "mixed_relocations": 131,
+    "original_reloc_sha256": "23090bb16487c70f513e2927817dde09ad450b73a88803ef523e36c998690998",
+    "mixed_reloc_sha256": "23090bb16487c70f513e2927817dde09ad450b73a88803ef523e36c998690998",
+    "semantic_relocations_exact": true
+  },
+  {
+    "region": "usa",
+    "owner": "asm/usa/5C8770.s",
+    "targets": [
+      "func_802151E0_5D06B0",
+      "func_8021617C_5D164C",
+      "func_80216E1C_5D22EC",
+      "func_80216E54_5D2324"
+    ],
+    "status": "FAILED",
+    "rom_offset": 6063984,
+    "vma": 2149634720,
+    "text_bytes": 111904,
+    "original_sha256": "50365292dbd8cdf7a407114cb88c1807c39bf024e0f5fd4807d192357aad3131",
+    "error": "('unresolved named symbol', 'jtbl_8023B344_5F6814')"
+  }
+]

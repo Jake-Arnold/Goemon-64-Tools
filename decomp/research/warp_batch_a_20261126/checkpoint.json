@@ -1,0 +1,60 @@
+{
+  "date": "2026-11-26",
+  "status": "PASSED_G2_LOCAL",
+  "stable_decomp": "ee6328ab121bb59b27f03a54c3c80563a720fe77",
+  "source_archive_id": 15127952620,
+  "candidates": {
+    "usa": 10,
+    "japan_0": 9,
+    "bytes": 3044,
+    "named_relocations": 76,
+    "isolated_positives_passed": 19,
+    "negative_controls_rejected": 19,
+    "owner_text_passed": 7,
+    "owner_text_bytes": 149488,
+    "owner_func_identities": 1061,
+    "owner_semantic_relocations": 5210
+  },
+  "canonical_counts_unchanged": {
+    "usa": 3056,
+    "japan_0": 2995
+  },
+  "native_predecessor_replay": {
+    "usa": {
+      "canonical_rebuild_complete": true,
+      "checkpoint_C": 3056,
+      "elf_sha256": "62558a4650f2609eda0ab1bfc7d654bf752f4f7af796fe0e04e0ec645527d51e",
+      "expanded_sha1": "6ea0ed71032ce08fc2745f412d84936382197494"
+    },
+    "japan_0": {
+      "canonical_rebuild_complete": true,
+      "checkpoint_C": 2995,
+      "elf_sha256": "f37be891f83ad2d9fc6b52bc8b6ffd31add7550a8458f403a54daa8e30b33b0d",
+      "expanded_sha1": "6f8745fecc3a5e7d4918c7a73353eb0726116ded"
+    }
+  },
+  "candidate_integration_trial": "PASS",
+  "candidate_full_G2": "PASS",
+  "candidate_strict_inventory": "PASS",
+  "candidate_promotion_integrity": "PASS",
+  "candidate_hosted_CI": "NOT_RUN",
+  "remote_changes": false,
+  "notes": [
+    "Shell git DNS unavailable; authenticated source archive used.",
+    "Offline uv adapter checks locked package versions; host readelf/nm only for metadata.",
+    "No original ROMs, original extracted ASM, ELF, compiler or other generated native binary in kit.",
+    "USA historical transition import resolved with PYTHONPATH; Japan historical C-Right6 stage resumed with independently regenerated wave_uty and main_4D70 original ASM references. Both exact canonical predecessor ELF fingerprints reproduced.",
+    "USA strict original baseline inventory changed only three count fields; historical F6E8 size annotation unchanged.",
+    "No gameplay proof or new generalized compiler finding.",
+    "Canonical combined.json was whitespace-compacted only for connector transport; parsed JSON equality checked."
+  ],
+  "candidate_counts": {
+    "usa": 3066,
+    "japan_0": 3004
+  },
+  "targeted_regression": {
+    "tests": 85,
+    "skipped": 1,
+    "status": "PASS"
+  }
+}

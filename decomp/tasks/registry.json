@@ -359,20 +359,21 @@
       "priority": 1,
       "workstream": "japan-glitch",
       "region": "both",
-      "proof_tier": "LIVE_JP_CLIP_OBSERVED / MOVEMENT_STATE_EXPLAINED / COLLISION_CAUSE_PENDING",
-      "summary": "Test Q reproduces genuine JP slide and wall clip. Landing action 1C writes E8 .7, retains E4 2.8; 0D -> idle -> 8F preserves stale normal-size parameters. 36 8F samples, 95.4596 units; typical speed 2.8 vs grounded miniature 1.12. Earlier grounded transformation motion not genuine slide. PR #278 already merged nine related exact C functions.",
+      "proof_tier": "LIVE_JP_CLIP_OBSERVED / MOVEMENT_STATE_EXPLAINED / MATCHED_NEGATIVE_CONTROL / COLLISION_CAUSE_PENDING",
+      "summary": "Test Q reproduces genuine JP slide and wall clip. Landing action 1C writes E8 .7, retains E4 2.8; 0D -> idle -> 8F preserves stale normal-size parameters. 36 8F samples, 95.4596 units; typical speed 2.8 vs grounded miniature 1.12. Earlier grounded transformation motion not genuine slide. PR #278 already merged nine related exact C functions. Q/R controlled traces match through frame 69; C-Up alone distinguishes successful retained-speed transformation from normal miniature motion. Original regional collision code consumes animated object scale; specific wall decision and USA reproduction remain unresolved.",
       "requires": [
         "Private miniature savestate facing solid obstruction; repeat Q and controls in native inspector",
         "Original JP and USA ROM-aware source/disassembly for collision chain",
         "Read-only collision-state observations, native IDO protocol for any later source changes"
       ],
-      "next_step": "Use decomp/research/ebi_slide_live_20261126/README.md: matched-wall Q/ordinary mini/Q without CU/delayed CU/normal-size control; trace common post-update callees and 8F wrapper to actual wall resolver. Identify collision decision at candidate frame 84, then confirm USA timing independently. No raw game-memory traces in Git.",
+      "next_step": "Use decomp/research/ebi_slide_collision_20261126/README.md: capture scale, animation frame, transform phase and provisional query flags during Q/R and ordinary normal-size control at the same wall. Resolve geometry-query candidate choice around frame 84; compare USA independently.",
       "acceptance": "Controlled wall-contact positive/negative traces and original-MIPS control-flow/field evidence identify exact collision mechanism; independent USA reproduction or documented regional negative result. Any C promotion separately requires full G2 gates.",
       "evidence": [
         "decomp/research/ebi_slide_live_20261126/README.md",
         "decomp/research/ebi_slide_live_20261126/capture-summary.json",
         "https://github.com/Jake-Arnold/Goemon-64-Tools/pull/278",
-        "https://github.com/Jake-Arnold/Goemon-64-Tools/pull/272"
+        "https://github.com/Jake-Arnold/Goemon-64-Tools/pull/272",
+        "decomp/research/ebi_slide_collision_20261126/README.md"
       ],
       "conflicts_with": [
         "GQ-USA-004"
@@ -382,6 +383,11 @@
           "at": "2026-11-26",
           "status": "pending",
           "note": "User Q trace and screencast confirm Japan wall clip; movement-state explanation established; collision mechanism remains open."
+        },
+        {
+          "at": "2026-11-26",
+          "status": "pending",
+          "note": "Matched Q/R negative control and original-ROM scaled geometry call chain documented; precise wall decision remains open."
         }
       ],
       "last_reviewed": "2026-11-26"
