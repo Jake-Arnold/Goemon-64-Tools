@@ -661,14 +661,52 @@
       "width": 2
     },
     {
-      "address": "0x800CD52C",
+      "address": "0x800CD52A",
       "aliases": [],
+      "category": "engine_input",
+      "confidence": "user_observed",
+      "confidence_sources": [
+        {
+          "confidence": "user_observed",
+          "evidence": "C-Up press/hold/release/repress gives 8,8,0,8.",
+          "source_id": "research:controller_japan_held"
+        }
+      ],
+      "context": "Read-only research. Japanese live core-frame observations; no proof of player-update timing or multiple-controller combination. No memory writes authorized.",
+      "control": null,
+      "counterpart": "0x800C7D3A",
+      "data_type": "u16",
+      "discovered": "2026-11-26",
+      "endian": "big",
+      "evidence": "C-Up press/hold/release/repress gives 8,8,0,8.",
+      "id": "research:controller_japan_held",
+      "id_aliases": [],
+      "live_readable": false,
+      "mask": null,
+      "mips_refs": [],
+      "name": "Controller held buttons",
+      "owner": "Fixed system controller record",
+      "region": "japan",
+      "revision": "NG5J-0",
+      "signed": false,
+      "source_revision": "7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee",
+      "sources": [
+        "docs/MUPEN_NATIVE_CONTROLLER_CALIBRATION.md"
+      ],
+      "updated": "2026-11-26",
+      "width": 2
+    },
+    {
+      "address": "0x800CD52C",
+      "aliases": [
+        "Controller newly pressed buttons"
+      ],
       "category": "engine_input",
       "confidence": "research_observed",
       "confidence_sources": [
         {
           "confidence": "research_observed",
-          "evidence": "JP original gameplay handler 0x8001F63C and USA 0x8001F96C read these halfwords and test 0x1000 (Start)",
+          "evidence": "JP original gameplay handler 0x8001F63C and USA 0x8001F96C read these halfwords and test 0x1000 (Start); C-Up press/hold/release/repress gives 8,0,0,8.",
           "source_id": "research:glitch_start_input_halfword_jp"
         }
       ],
@@ -678,9 +716,11 @@
       "data_type": "u16",
       "discovered": "2026-11-20",
       "endian": "big",
-      "evidence": "JP original gameplay handler 0x8001F63C and USA 0x8001F96C read these halfwords and test 0x1000 (Start)",
+      "evidence": "JP original gameplay handler 0x8001F63C and USA 0x8001F96C read these halfwords and test 0x1000 (Start); C-Up press/hold/release/repress gives 8,0,0,8.",
       "id": "research:glitch_start_input_halfword_jp",
-      "id_aliases": [],
+      "id_aliases": [
+        "research:controller_japan_pressed"
+      ],
       "live_readable": false,
       "mask": null,
       "mips_refs": [
@@ -694,10 +734,299 @@
       "signed": false,
       "source_revision": "11f76ecc7234a6f91047b538c179ce564fa7c5f9",
       "sources": [
-        "decomp/docs/GOEMON_START_DIALOGUE_SKIP_CONTROL_FLOW_20261120.md"
+        "decomp/docs/GOEMON_START_DIALOGUE_SKIP_CONTROL_FLOW_20261120.md",
+        "docs/MUPEN_NATIVE_CONTROLLER_CALIBRATION.md"
       ],
       "updated": "2026-11-20",
       "width": 2
+    },
+    {
+      "address": "0x800CD52E",
+      "aliases": [],
+      "category": "engine_input",
+      "confidence": "user_observed",
+      "confidence_sources": [
+        {
+          "confidence": "user_observed",
+          "evidence": "Horizontal samples: requested ±80/±40, observed ±73/±33; neutral zero.",
+          "source_id": "research:controller_japan_raw_x"
+        }
+      ],
+      "context": "Read-only research. Japanese live core-frame observations; no proof of player-update timing or multiple-controller combination. No memory writes authorized.",
+      "control": null,
+      "counterpart": "0x800C7D3E",
+      "data_type": "s16",
+      "discovered": "2026-11-26",
+      "endian": "big",
+      "evidence": "Horizontal samples: requested ±80/±40, observed ±73/±33; neutral zero.",
+      "id": "research:controller_japan_raw_x",
+      "id_aliases": [],
+      "live_readable": false,
+      "mask": null,
+      "mips_refs": [],
+      "name": "Deadzone-adjusted signed stick X",
+      "owner": "Fixed system controller record",
+      "region": "japan",
+      "revision": "NG5J-0",
+      "signed": true,
+      "source_revision": "7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee",
+      "sources": [
+        "docs/MUPEN_NATIVE_CONTROLLER_CALIBRATION.md"
+      ],
+      "updated": "2026-11-26",
+      "width": 2
+    },
+    {
+      "address": "0x800CD530",
+      "aliases": [],
+      "category": "engine_input",
+      "confidence": "user_observed",
+      "confidence_sources": [
+        {
+          "confidence": "user_observed",
+          "evidence": "Vertical samples: requested ±80, observed ±73; neutral zero.",
+          "source_id": "research:controller_japan_raw_y"
+        }
+      ],
+      "context": "Read-only research. Japanese live core-frame observations; no proof of player-update timing or multiple-controller combination. No memory writes authorized.",
+      "control": null,
+      "counterpart": "0x800C7D40",
+      "data_type": "s16",
+      "discovered": "2026-11-26",
+      "endian": "big",
+      "evidence": "Vertical samples: requested ±80, observed ±73; neutral zero.",
+      "id": "research:controller_japan_raw_y",
+      "id_aliases": [],
+      "live_readable": false,
+      "mask": null,
+      "mips_refs": [],
+      "name": "Deadzone-adjusted signed stick Y",
+      "owner": "Fixed system controller record",
+      "region": "japan",
+      "revision": "NG5J-0",
+      "signed": true,
+      "source_revision": "7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee",
+      "sources": [
+        "docs/MUPEN_NATIVE_CONTROLLER_CALIBRATION.md"
+      ],
+      "updated": "2026-11-26",
+      "width": 2
+    },
+    {
+      "address": "0x800CD534",
+      "aliases": [],
+      "category": "engine_input",
+      "confidence": "user_observed",
+      "confidence_sources": [
+        {
+          "confidence": "user_observed",
+          "evidence": "Positive strength for either axis and direction; zero at neutral.",
+          "source_id": "research:controller_japan_magnitude"
+        }
+      ],
+      "context": "Read-only research. Japanese live core-frame observations; no proof of player-update timing or multiple-controller combination. No memory writes authorized.",
+      "control": null,
+      "counterpart": "0x800C7D44",
+      "data_type": "f32",
+      "discovered": "2026-11-26",
+      "endian": "big",
+      "evidence": "Positive strength for either axis and direction; zero at neutral.",
+      "id": "research:controller_japan_magnitude",
+      "id_aliases": [],
+      "live_readable": false,
+      "mask": null,
+      "mips_refs": [],
+      "name": "Processed stick magnitude",
+      "owner": "Fixed system controller record",
+      "region": "japan",
+      "revision": "NG5J-0",
+      "signed": false,
+      "source_revision": "7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee",
+      "sources": [
+        "docs/MUPEN_NATIVE_CONTROLLER_CALIBRATION.md"
+      ],
+      "updated": "2026-11-26",
+      "width": 4
+    },
+    {
+      "address": "0x800CD538",
+      "aliases": [],
+      "category": "engine_input",
+      "confidence": "user_observed",
+      "confidence_sources": [
+        {
+          "confidence": "user_observed",
+          "evidence": "Horizontal axis changes sign opposite requested X; vertical-only input gives zero.",
+          "source_id": "research:controller_japan_processed_x"
+        }
+      ],
+      "context": "Read-only research. Japanese live core-frame observations; no proof of player-update timing or multiple-controller combination. No memory writes authorized.",
+      "control": null,
+      "counterpart": "0x800C7D48",
+      "data_type": "f32",
+      "discovered": "2026-11-26",
+      "endian": "big",
+      "evidence": "Horizontal axis changes sign opposite requested X; vertical-only input gives zero.",
+      "id": "research:controller_japan_processed_x",
+      "id_aliases": [],
+      "live_readable": false,
+      "mask": null,
+      "mips_refs": [],
+      "name": "Processed horizontal axis (inverted)",
+      "owner": "Fixed system controller record",
+      "region": "japan",
+      "revision": "NG5J-0",
+      "signed": false,
+      "source_revision": "7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee",
+      "sources": [
+        "docs/MUPEN_NATIVE_CONTROLLER_CALIBRATION.md"
+      ],
+      "updated": "2026-11-26",
+      "width": 4
+    },
+    {
+      "address": "0x800CD53C",
+      "aliases": [],
+      "category": "engine_input",
+      "confidence": "user_observed",
+      "confidence_sources": [
+        {
+          "confidence": "user_observed",
+          "evidence": "Vertical axis changes sign opposite requested Y; horizontal-only input gives zero.",
+          "source_id": "research:controller_japan_processed_y"
+        }
+      ],
+      "context": "Read-only research. Japanese live core-frame observations; no proof of player-update timing or multiple-controller combination. No memory writes authorized.",
+      "control": null,
+      "counterpart": "0x800C7D4C",
+      "data_type": "f32",
+      "discovered": "2026-11-26",
+      "endian": "big",
+      "evidence": "Vertical axis changes sign opposite requested Y; horizontal-only input gives zero.",
+      "id": "research:controller_japan_processed_y",
+      "id_aliases": [],
+      "live_readable": false,
+      "mask": null,
+      "mips_refs": [],
+      "name": "Processed vertical axis (inverted)",
+      "owner": "Fixed system controller record",
+      "region": "japan",
+      "revision": "NG5J-0",
+      "signed": false,
+      "source_revision": "7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee",
+      "sources": [
+        "docs/MUPEN_NATIVE_CONTROLLER_CALIBRATION.md"
+      ],
+      "updated": "2026-11-26",
+      "width": 4
+    },
+    {
+      "address": "0x800CD5AC",
+      "aliases": [],
+      "category": "engine_input",
+      "confidence": "user_observed",
+      "confidence_sources": [
+        {
+          "confidence": "user_observed",
+          "evidence": "Agrees with P1 magnitude in single-controller tests.",
+          "source_id": "research:controller_japan_combined_magnitude"
+        }
+      ],
+      "context": "Read-only research. Japanese live core-frame observations; no proof of player-update timing or multiple-controller combination. No memory writes authorized.",
+      "control": null,
+      "counterpart": "0x800C7DBC",
+      "data_type": "f32",
+      "discovered": "2026-11-26",
+      "endian": "big",
+      "evidence": "Agrees with P1 magnitude in single-controller tests.",
+      "id": "research:controller_japan_combined_magnitude",
+      "id_aliases": [],
+      "live_readable": false,
+      "mask": null,
+      "mips_refs": [],
+      "name": "Combined controller magnitude",
+      "owner": "Fixed system controller record",
+      "region": "japan",
+      "revision": "NG5J-0",
+      "signed": false,
+      "source_revision": "7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee",
+      "sources": [
+        "docs/MUPEN_NATIVE_CONTROLLER_CALIBRATION.md"
+      ],
+      "updated": "2026-11-26",
+      "width": 4
+    },
+    {
+      "address": "0x800CD5B0",
+      "aliases": [],
+      "category": "engine_input",
+      "confidence": "user_observed",
+      "confidence_sources": [
+        {
+          "confidence": "user_observed",
+          "evidence": "Agrees with P1 processed X in single-controller tests.",
+          "source_id": "research:controller_japan_combined_x"
+        }
+      ],
+      "context": "Read-only research. Japanese live core-frame observations; no proof of player-update timing or multiple-controller combination. No memory writes authorized.",
+      "control": null,
+      "counterpart": "0x800C7DC0",
+      "data_type": "f32",
+      "discovered": "2026-11-26",
+      "endian": "big",
+      "evidence": "Agrees with P1 processed X in single-controller tests.",
+      "id": "research:controller_japan_combined_x",
+      "id_aliases": [],
+      "live_readable": false,
+      "mask": null,
+      "mips_refs": [],
+      "name": "Combined processed horizontal axis",
+      "owner": "Fixed system controller record",
+      "region": "japan",
+      "revision": "NG5J-0",
+      "signed": false,
+      "source_revision": "7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee",
+      "sources": [
+        "docs/MUPEN_NATIVE_CONTROLLER_CALIBRATION.md"
+      ],
+      "updated": "2026-11-26",
+      "width": 4
+    },
+    {
+      "address": "0x800CD5B4",
+      "aliases": [],
+      "category": "engine_input",
+      "confidence": "user_observed",
+      "confidence_sources": [
+        {
+          "confidence": "user_observed",
+          "evidence": "Agrees with P1 processed Y in single-controller tests.",
+          "source_id": "research:controller_japan_combined_y"
+        }
+      ],
+      "context": "Read-only research. Japanese live core-frame observations; no proof of player-update timing or multiple-controller combination. No memory writes authorized.",
+      "control": null,
+      "counterpart": "0x800C7DC4",
+      "data_type": "f32",
+      "discovered": "2026-11-26",
+      "endian": "big",
+      "evidence": "Agrees with P1 processed Y in single-controller tests.",
+      "id": "research:controller_japan_combined_y",
+      "id_aliases": [],
+      "live_readable": false,
+      "mask": null,
+      "mips_refs": [],
+      "name": "Combined processed vertical axis",
+      "owner": "Fixed system controller record",
+      "region": "japan",
+      "revision": "NG5J-0",
+      "signed": false,
+      "source_revision": "7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee",
+      "sources": [
+        "docs/MUPEN_NATIVE_CONTROLLER_CALIBRATION.md"
+      ],
+      "updated": "2026-11-26",
+      "width": 4
     },
     {
       "address": "0x80161D64",
@@ -13067,6 +13396,42 @@
       "width": null
     },
     {
+      "address": "0x800C7D3A",
+      "aliases": [],
+      "category": "engine_input",
+      "confidence": "candidate",
+      "confidence_sources": [
+        {
+          "confidence": "candidate",
+          "evidence": "Unverified USA offset candidate from fixed JP system controller data minus 0x57F0; repeat independent horizontal/vertical/neutral/C-Up tests before confirming.",
+          "source_id": "research:controller_usa_held"
+        }
+      ],
+      "context": "USA counterpart candidate only; independent live validation required. No memory writes authorized.",
+      "control": null,
+      "counterpart": "0x800CD52A",
+      "data_type": "u16",
+      "discovered": "2026-11-26",
+      "endian": "big",
+      "evidence": "Unverified USA offset candidate from fixed JP system controller data minus 0x57F0; repeat independent horizontal/vertical/neutral/C-Up tests before confirming.",
+      "id": "research:controller_usa_held",
+      "id_aliases": [],
+      "live_readable": false,
+      "mask": null,
+      "mips_refs": [],
+      "name": "Controller held buttons",
+      "owner": "Fixed system controller record",
+      "region": "usa",
+      "revision": "NG5E-0",
+      "signed": false,
+      "source_revision": "7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee",
+      "sources": [
+        "docs/MUPEN_NATIVE_CONTROLLER_CALIBRATION.md"
+      ],
+      "updated": "2026-11-26",
+      "width": 2
+    },
+    {
       "address": "0x800C7D3B",
       "aliases": [],
       "category": "external_cheat_lead",
@@ -13104,13 +13469,15 @@
     },
     {
       "address": "0x800C7D3C",
-      "aliases": [],
+      "aliases": [
+        "Controller newly pressed buttons"
+      ],
       "category": "engine_input",
       "confidence": "research_observed",
       "confidence_sources": [
         {
           "confidence": "research_observed",
-          "evidence": "JP original gameplay handler 0x8001F63C and USA 0x8001F96C read these halfwords and test 0x1000 (Start)",
+          "evidence": "JP original gameplay handler 0x8001F63C and USA 0x8001F96C read these halfwords and test 0x1000 (Start); Unverified USA offset candidate from fixed JP system controller data minus 0x57F0; repeat independent horizontal/vertical/neutral/C-Up tests before confirming.",
           "source_id": "research:glitch_start_input_halfword_us"
         }
       ],
@@ -13120,9 +13487,11 @@
       "data_type": "u16",
       "discovered": "2026-11-20",
       "endian": "big",
-      "evidence": "JP original gameplay handler 0x8001F63C and USA 0x8001F96C read these halfwords and test 0x1000 (Start)",
+      "evidence": "JP original gameplay handler 0x8001F63C and USA 0x8001F96C read these halfwords and test 0x1000 (Start); Unverified USA offset candidate from fixed JP system controller data minus 0x57F0; repeat independent horizontal/vertical/neutral/C-Up tests before confirming.",
       "id": "research:glitch_start_input_halfword_us",
-      "id_aliases": [],
+      "id_aliases": [
+        "research:controller_usa_pressed"
+      ],
       "live_readable": false,
       "mask": null,
       "mips_refs": [
@@ -13136,10 +13505,299 @@
       "signed": false,
       "source_revision": "11f76ecc7234a6f91047b538c179ce564fa7c5f9",
       "sources": [
-        "decomp/docs/GOEMON_START_DIALOGUE_SKIP_CONTROL_FLOW_20261120.md"
+        "decomp/docs/GOEMON_START_DIALOGUE_SKIP_CONTROL_FLOW_20261120.md",
+        "docs/MUPEN_NATIVE_CONTROLLER_CALIBRATION.md"
       ],
       "updated": "2026-11-20",
       "width": 2
+    },
+    {
+      "address": "0x800C7D3E",
+      "aliases": [],
+      "category": "engine_input",
+      "confidence": "candidate",
+      "confidence_sources": [
+        {
+          "confidence": "candidate",
+          "evidence": "Unverified USA offset candidate from fixed JP system controller data minus 0x57F0; repeat independent horizontal/vertical/neutral/C-Up tests before confirming.",
+          "source_id": "research:controller_usa_raw_x"
+        }
+      ],
+      "context": "USA counterpart candidate only; independent live validation required. No memory writes authorized.",
+      "control": null,
+      "counterpart": "0x800CD52E",
+      "data_type": "s16",
+      "discovered": "2026-11-26",
+      "endian": "big",
+      "evidence": "Unverified USA offset candidate from fixed JP system controller data minus 0x57F0; repeat independent horizontal/vertical/neutral/C-Up tests before confirming.",
+      "id": "research:controller_usa_raw_x",
+      "id_aliases": [],
+      "live_readable": false,
+      "mask": null,
+      "mips_refs": [],
+      "name": "Deadzone-adjusted signed stick X",
+      "owner": "Fixed system controller record",
+      "region": "usa",
+      "revision": "NG5E-0",
+      "signed": true,
+      "source_revision": "7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee",
+      "sources": [
+        "docs/MUPEN_NATIVE_CONTROLLER_CALIBRATION.md"
+      ],
+      "updated": "2026-11-26",
+      "width": 2
+    },
+    {
+      "address": "0x800C7D40",
+      "aliases": [],
+      "category": "engine_input",
+      "confidence": "candidate",
+      "confidence_sources": [
+        {
+          "confidence": "candidate",
+          "evidence": "Unverified USA offset candidate from fixed JP system controller data minus 0x57F0; repeat independent horizontal/vertical/neutral/C-Up tests before confirming.",
+          "source_id": "research:controller_usa_raw_y"
+        }
+      ],
+      "context": "USA counterpart candidate only; independent live validation required. No memory writes authorized.",
+      "control": null,
+      "counterpart": "0x800CD530",
+      "data_type": "s16",
+      "discovered": "2026-11-26",
+      "endian": "big",
+      "evidence": "Unverified USA offset candidate from fixed JP system controller data minus 0x57F0; repeat independent horizontal/vertical/neutral/C-Up tests before confirming.",
+      "id": "research:controller_usa_raw_y",
+      "id_aliases": [],
+      "live_readable": false,
+      "mask": null,
+      "mips_refs": [],
+      "name": "Deadzone-adjusted signed stick Y",
+      "owner": "Fixed system controller record",
+      "region": "usa",
+      "revision": "NG5E-0",
+      "signed": true,
+      "source_revision": "7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee",
+      "sources": [
+        "docs/MUPEN_NATIVE_CONTROLLER_CALIBRATION.md"
+      ],
+      "updated": "2026-11-26",
+      "width": 2
+    },
+    {
+      "address": "0x800C7D44",
+      "aliases": [],
+      "category": "engine_input",
+      "confidence": "candidate",
+      "confidence_sources": [
+        {
+          "confidence": "candidate",
+          "evidence": "Unverified USA offset candidate from fixed JP system controller data minus 0x57F0; repeat independent horizontal/vertical/neutral/C-Up tests before confirming.",
+          "source_id": "research:controller_usa_magnitude"
+        }
+      ],
+      "context": "USA counterpart candidate only; independent live validation required. No memory writes authorized.",
+      "control": null,
+      "counterpart": "0x800CD534",
+      "data_type": "f32",
+      "discovered": "2026-11-26",
+      "endian": "big",
+      "evidence": "Unverified USA offset candidate from fixed JP system controller data minus 0x57F0; repeat independent horizontal/vertical/neutral/C-Up tests before confirming.",
+      "id": "research:controller_usa_magnitude",
+      "id_aliases": [],
+      "live_readable": false,
+      "mask": null,
+      "mips_refs": [],
+      "name": "Processed stick magnitude",
+      "owner": "Fixed system controller record",
+      "region": "usa",
+      "revision": "NG5E-0",
+      "signed": false,
+      "source_revision": "7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee",
+      "sources": [
+        "docs/MUPEN_NATIVE_CONTROLLER_CALIBRATION.md"
+      ],
+      "updated": "2026-11-26",
+      "width": 4
+    },
+    {
+      "address": "0x800C7D48",
+      "aliases": [],
+      "category": "engine_input",
+      "confidence": "candidate",
+      "confidence_sources": [
+        {
+          "confidence": "candidate",
+          "evidence": "Unverified USA offset candidate from fixed JP system controller data minus 0x57F0; repeat independent horizontal/vertical/neutral/C-Up tests before confirming.",
+          "source_id": "research:controller_usa_processed_x"
+        }
+      ],
+      "context": "USA counterpart candidate only; independent live validation required. No memory writes authorized.",
+      "control": null,
+      "counterpart": "0x800CD538",
+      "data_type": "f32",
+      "discovered": "2026-11-26",
+      "endian": "big",
+      "evidence": "Unverified USA offset candidate from fixed JP system controller data minus 0x57F0; repeat independent horizontal/vertical/neutral/C-Up tests before confirming.",
+      "id": "research:controller_usa_processed_x",
+      "id_aliases": [],
+      "live_readable": false,
+      "mask": null,
+      "mips_refs": [],
+      "name": "Processed horizontal axis (inverted)",
+      "owner": "Fixed system controller record",
+      "region": "usa",
+      "revision": "NG5E-0",
+      "signed": false,
+      "source_revision": "7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee",
+      "sources": [
+        "docs/MUPEN_NATIVE_CONTROLLER_CALIBRATION.md"
+      ],
+      "updated": "2026-11-26",
+      "width": 4
+    },
+    {
+      "address": "0x800C7D4C",
+      "aliases": [],
+      "category": "engine_input",
+      "confidence": "candidate",
+      "confidence_sources": [
+        {
+          "confidence": "candidate",
+          "evidence": "Unverified USA offset candidate from fixed JP system controller data minus 0x57F0; repeat independent horizontal/vertical/neutral/C-Up tests before confirming.",
+          "source_id": "research:controller_usa_processed_y"
+        }
+      ],
+      "context": "USA counterpart candidate only; independent live validation required. No memory writes authorized.",
+      "control": null,
+      "counterpart": "0x800CD53C",
+      "data_type": "f32",
+      "discovered": "2026-11-26",
+      "endian": "big",
+      "evidence": "Unverified USA offset candidate from fixed JP system controller data minus 0x57F0; repeat independent horizontal/vertical/neutral/C-Up tests before confirming.",
+      "id": "research:controller_usa_processed_y",
+      "id_aliases": [],
+      "live_readable": false,
+      "mask": null,
+      "mips_refs": [],
+      "name": "Processed vertical axis (inverted)",
+      "owner": "Fixed system controller record",
+      "region": "usa",
+      "revision": "NG5E-0",
+      "signed": false,
+      "source_revision": "7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee",
+      "sources": [
+        "docs/MUPEN_NATIVE_CONTROLLER_CALIBRATION.md"
+      ],
+      "updated": "2026-11-26",
+      "width": 4
+    },
+    {
+      "address": "0x800C7DBC",
+      "aliases": [],
+      "category": "engine_input",
+      "confidence": "candidate",
+      "confidence_sources": [
+        {
+          "confidence": "candidate",
+          "evidence": "Unverified USA offset candidate from fixed JP system controller data minus 0x57F0; repeat independent horizontal/vertical/neutral/C-Up tests before confirming.",
+          "source_id": "research:controller_usa_combined_magnitude"
+        }
+      ],
+      "context": "USA counterpart candidate only; independent live validation required. No memory writes authorized.",
+      "control": null,
+      "counterpart": "0x800CD5AC",
+      "data_type": "f32",
+      "discovered": "2026-11-26",
+      "endian": "big",
+      "evidence": "Unverified USA offset candidate from fixed JP system controller data minus 0x57F0; repeat independent horizontal/vertical/neutral/C-Up tests before confirming.",
+      "id": "research:controller_usa_combined_magnitude",
+      "id_aliases": [],
+      "live_readable": false,
+      "mask": null,
+      "mips_refs": [],
+      "name": "Combined controller magnitude",
+      "owner": "Fixed system controller record",
+      "region": "usa",
+      "revision": "NG5E-0",
+      "signed": false,
+      "source_revision": "7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee",
+      "sources": [
+        "docs/MUPEN_NATIVE_CONTROLLER_CALIBRATION.md"
+      ],
+      "updated": "2026-11-26",
+      "width": 4
+    },
+    {
+      "address": "0x800C7DC0",
+      "aliases": [],
+      "category": "engine_input",
+      "confidence": "candidate",
+      "confidence_sources": [
+        {
+          "confidence": "candidate",
+          "evidence": "Unverified USA offset candidate from fixed JP system controller data minus 0x57F0; repeat independent horizontal/vertical/neutral/C-Up tests before confirming.",
+          "source_id": "research:controller_usa_combined_x"
+        }
+      ],
+      "context": "USA counterpart candidate only; independent live validation required. No memory writes authorized.",
+      "control": null,
+      "counterpart": "0x800CD5B0",
+      "data_type": "f32",
+      "discovered": "2026-11-26",
+      "endian": "big",
+      "evidence": "Unverified USA offset candidate from fixed JP system controller data minus 0x57F0; repeat independent horizontal/vertical/neutral/C-Up tests before confirming.",
+      "id": "research:controller_usa_combined_x",
+      "id_aliases": [],
+      "live_readable": false,
+      "mask": null,
+      "mips_refs": [],
+      "name": "Combined processed horizontal axis",
+      "owner": "Fixed system controller record",
+      "region": "usa",
+      "revision": "NG5E-0",
+      "signed": false,
+      "source_revision": "7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee",
+      "sources": [
+        "docs/MUPEN_NATIVE_CONTROLLER_CALIBRATION.md"
+      ],
+      "updated": "2026-11-26",
+      "width": 4
+    },
+    {
+      "address": "0x800C7DC4",
+      "aliases": [],
+      "category": "engine_input",
+      "confidence": "candidate",
+      "confidence_sources": [
+        {
+          "confidence": "candidate",
+          "evidence": "Unverified USA offset candidate from fixed JP system controller data minus 0x57F0; repeat independent horizontal/vertical/neutral/C-Up tests before confirming.",
+          "source_id": "research:controller_usa_combined_y"
+        }
+      ],
+      "context": "USA counterpart candidate only; independent live validation required. No memory writes authorized.",
+      "control": null,
+      "counterpart": "0x800CD5B4",
+      "data_type": "f32",
+      "discovered": "2026-11-26",
+      "endian": "big",
+      "evidence": "Unverified USA offset candidate from fixed JP system controller data minus 0x57F0; repeat independent horizontal/vertical/neutral/C-Up tests before confirming.",
+      "id": "research:controller_usa_combined_y",
+      "id_aliases": [],
+      "live_readable": false,
+      "mask": null,
+      "mips_refs": [],
+      "name": "Combined processed vertical axis",
+      "owner": "Fixed system controller record",
+      "region": "usa",
+      "revision": "NG5E-0",
+      "signed": false,
+      "source_revision": "7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee",
+      "sources": [
+        "docs/MUPEN_NATIVE_CONTROLLER_CALIBRATION.md"
+      ],
+      "updated": "2026-11-26",
+      "width": 4
     },
     {
       "address": "0x800C7E60",
@@ -25573,6 +26231,7 @@
     "docs/EBISUMARU_TRANSFORMATION_RUNTIME_FINDINGS_2026-11-14.md:81@main",
     "docs/EBISUMARU_TRANSFORMATION_RUNTIME_FINDINGS_2026-11-14.md:87@main",
     "docs/EBISUMARU_TRANSFORMATION_RUNTIME_FINDINGS_2026-11-14.md:99@main",
+    "docs/MUPEN_NATIVE_CONTROLLER_CALIBRATION.md",
     "docs/USA_JAPAN_MEMORY_CROSSWALK_2026-11-16.md",
     "docs/USA_JAPAN_MEMORY_CROSSWALK_2026-11-16.md:103@main",
     "docs/USA_JAPAN_MEMORY_CROSSWALK_2026-11-16.md:113@main",

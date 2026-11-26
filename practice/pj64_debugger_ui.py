@@ -8,6 +8,7 @@ from __future__ import annotations
 import json
 import queue
 import re
+import sys
 import threading
 import time
 import tkinter as tk
@@ -42,7 +43,103 @@ class PJ64DebuggerMixin(ScriptedTraceUiMixin, PJ64FrameUiMixin):
         self._build_debug_watch_page(pages)
         self._build_scripted_trace_page(pages)
         self._build_debug_cpu_page(pages)
+        self._build_frame_inspector_tab(notebook)
+        # Preserve the old navigation path without constructing a second bridge.
+        shortcut = ttk.Frame(pages, padding=10)
+        pages.add(shortcut, text='Frame control (PJ64)')
+        ttk.Label(shortcut, text='Frame control is now in the top-level Frame Inspector tab.').pack(anchor='w')
+        ttk.Button(shortcut, text='Open Project64 Frame Inspector',
+                   command=lambda: self.open_frame_inspector('project64')).pack(anchor='w', pady=6)
+
+    def _build_frame_inspector_tab(self, notebook):
+        tab = ttk.Frame(notebook, padding=6)
+        notebook.add(tab, text='Frame Inspector')
+        self.frame_inspector_tab = tab
+        ttk.Label(tab, text='Select an emulator backend. Native Mupen64Plus launches its own session; '
+                  'Project64 uses the installed companion script. Neither boundary is a verified player update.',
+                  wraplength=900).pack(anchor='w')
+        pages = ttk.Notebook(tab)
+        pages.pack(fill='both', expand=True)
+        self.frame_backend_pages = pages
         self._build_pj64_frame_page(pages)
+        self.frame_project64_page = pages.tabs()[-1]
+        pages.tab(self.frame_project64_page, text='Project64')
+        self.frame_native_page = ttk.Frame(pages)
+        pages.add(self.frame_native_page, text='Mupen64Plus (native)')
+        self.native_frame_ui = None
+        self._frame_backend_hint = None
+        self._native_frame_available = (sys.platform in ('linux', 'darwin')
+            and not getattr(sys, 'frozen', False) and not getattr(self.args, 'read_only', False))
+        if self._native_frame_available:
+            ttk.Label(self.frame_native_page, text='Open this backend to configure a native session.').pack(anchor='w', padx=8, pady=8)
+            pages.bind('<<NotebookTabChanged>>', self._on_frame_backend_changed, add='+')
+        else:
+            ttk.Label(self.frame_native_page, text='Native Mupen64Plus requires Linux/macOS source mode and input-enabled access.').pack(anchor='w', padx=8, pady=8)
+            pages.tab(self.frame_native_page, state='disabled')
+
+    def _ensure_native_frame_ui(self):
+        if not self._native_frame_available:
+            return None
+        if self.native_frame_ui is None:
+            from practice.mupen_native_ui import NativeFrameUi
+            for widget in self.frame_native_page.winfo_children():
+                widget.destroy()
+            self.native_frame_ui = NativeFrameUi(self.root, parent=self.frame_native_page)
+            self.native_frame_ui.find_installation()
+        ui = self.native_frame_ui
+        # Reuse a verified ROM selection only as an initial path. The child
+        # independently authenticates the ROM at every launch.
+        rom = getattr(self, 'verified_rom_path', None)
+        if rom and not ui.process and not ui.paths['rom'].get():
+            ui.paths['rom'].set(str(rom))
+        return ui
+
+    def _on_frame_backend_changed(self, _event=None):
+        if (self.notebook.select() == str(self.frame_inspector_tab)
+                and self.frame_backend_pages.select() == str(self.frame_native_page)):
+            self._ensure_native_frame_ui()
+
+    def _preferred_frame_backend(self):
+        ui = self.native_frame_ui
+        if ui is not None and ui.process is not None:
+            return 'mupen64plus'
+        target = getattr(self, 'connection_target', None)
+        target = target.get() if target is not None else 'auto'
+        if target == 'auto':
+            target = getattr(self, 'jp_backend', None) or 'auto'
+        if target == 'project64':
+            return 'project64'
+        if self._native_frame_available and target in ('auto', 'mupen64plus'):
+            return 'mupen64plus'
+        return 'project64'
+
+    def _sync_frame_backend(self):
+        if self.notebook.select() != str(self.frame_inspector_tab):
+            return
+        preferred = self._preferred_frame_backend()
+        # Do not override a user's manual choice on every tab refresh.
+        if preferred != self._frame_backend_hint:
+            self._frame_backend_hint = preferred
+            self._select_frame_backend(preferred)
+        self._on_frame_backend_changed()
+
+    def _select_frame_backend(self, backend):
+        if backend == 'mupen64plus' and self._native_frame_available:
+            self.frame_backend_pages.select(self.frame_native_page)
+            self._ensure_native_frame_ui()
+        else:
+            self.frame_backend_pages.select(self.frame_project64_page)
+
+    def open_frame_inspector(self, backend=None):
+        self.notebook.select(self.frame_inspector_tab)
+        preferred = self._preferred_frame_backend()
+        self._frame_backend_hint = preferred
+        self._select_frame_backend(backend or preferred)
+
+    def shutdown_frame_inspector(self):
+        ui = getattr(self, 'native_frame_ui', None)
+        if ui is not None:
+            ui.shutdown()
 
     def _build_debug_memory_page(self, pages):
         page = ttk.Frame(pages, padding=6)

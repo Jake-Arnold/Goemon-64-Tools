@@ -1,0 +1,440 @@
+"""Experimental native Mupen64Plus research frontend (no host RAM attachment).
+
+Core execution stays on the process main thread for SDL/macOS. Only the
+public core API and a purpose-built P1 input plugin are used. A core frame
+callback is NOT a Goemon logic-update callback.
+"""
+from __future__ import annotations
+import argparse
+import ctypes as C
+import csv
+import json
+import math
+import os
+from pathlib import Path
+import re
+import struct
+import sys
+import threading
+import time
+
+from practice.address_registry import guest_address
+from practice.game_versions import identify_rom
+from practice.entrances import canonical_rom
+from practice.pj64_frame_control import controller_input, parse_inputs
+
+PREFIX = 'GOEMON_NATIVE '
+STOPPED, RUNNING, PAUSED = 1, 2, 3
+ROM_OPEN, ROM_CLOSE, EXECUTE, STOP, PAUSE, RESUME, QUERY = 1, 2, 5, 6, 7, 8, 9
+FRAME_CALLBACK, ADVANCE = 15, 20
+WIDTHS = {'u8': 1, 's8': 1, 'u16': 2, 's16': 2, 'u32': 4, 's32': 4, 'f32': 4}
+MAX_WATCHES = 24
+MAX_POINTER_HOPS = 4
+
+def ram_address(address, width):
+    return type(address) is int and 0x80000000 <= address <= 0x80400000-width and address % width == 0
+NEUTRAL = {'buttons': 0, 'x': 0, 'y': 0}
+DebugCB = C.CFUNCTYPE(None, C.c_void_p, C.c_int, C.c_char_p)
+StateCB = C.CFUNCTYPE(None, C.c_void_p, C.c_int, C.c_int)
+FrameCB = C.CFUNCTYPE(None, C.c_uint)
+
+
+def checked(code, operation):
+    if code:
+        raise RuntimeError(f'{operation}: Mupen64Plus error {code}')
+
+
+def bind(lib, name, result, *args):
+    f = getattr(lib, name)
+    f.restype, f.argtypes = result, list(args)
+    return f
+
+
+def parse_watches(text, region):
+    """Fixed addresses or explicit guest-only pointer chains: root->offset->offset."""
+    if not isinstance(text, str) or len(text) > 8192:
+        raise ValueError('Watch definitions must be text (maximum 8192 characters)')
+    result = []
+    for line in text.splitlines():
+        if not line.strip() or line.lstrip().startswith('#'):
+            continue
+        fields = line.split()
+        if len(fields) != 3:
+            raise ValueError('Expected name type address or root->hex_offset')
+        name, kind, raw = fields
+        if (not re.fullmatch('[A-Za-z][A-Za-z0-9_]{0,23}', name)
+                or name in ('frame', 'serial', 'polls', 'buttons', 'x', 'y')
+                or kind not in WIDTHS or len(result) >= MAX_WATCHES or any(w['name']==name for w in result)):
+            raise ValueError('Expected up to 24 unique watches: name u8/s8/u16/s16/u32/s32/f32 address')
+        root, *hops = raw.split('->')
+        if len(hops) > MAX_POINTER_HOPS:
+            raise ValueError('Pointer chain exceeds four dereferences')
+        width = 4 if hops else WIDTHS[kind]
+        if root.startswith('@'):
+            try: address = guest_address(root[1:], region=region, width=width)
+            except KeyError as exc: raise ValueError(str(exc)) from exc
+        else:
+            if not re.fullmatch(r'(?:0[xX])?[0-9a-fA-F]{1,8}',root):
+                raise ValueError('Expected hexadecimal guest address')
+            address = int(root, 16)
+        if not ram_address(address, width):
+            raise ValueError('Watch root must be aligned within the first 4 MiB of guest RAM')
+        watch = dict(name=name, kind=kind, address=address)
+        if hops:
+            if any(not re.fullmatch(r'(?:0[xX])?[0-9a-fA-F]{1,6}', h) for h in hops):
+                raise ValueError('Pointer offsets must be nonnegative hexadecimal values')
+            offsets = [int(h,16) for h in hops]
+            if any(offset >= 0x400000 for offset in offsets):
+                raise ValueError('Pointer offset outside the first 4 MiB')
+            watch['offsets'] = offsets
+        result.append(watch)
+    return result
+
+
+def valid_input(value):
+    if not isinstance(value, dict) or set(value) != {'buttons', 'x', 'y'}:
+        raise ValueError('Invalid input fields')
+    b,x,y = (value[k] for k in ('buttons','x','y'))
+    if any(type(v) is not int for v in (b,x,y)) or not 0<=b<=65535 or b&0xc0 or not -80<=x<=80 or not -80<=y<=80:
+        raise ValueError('Invalid N64 controller input')
+    return dict(value)
+
+
+def write_trace(path, report):
+    path = Path(path)
+    if path.suffix.lower() == '.csv':
+        columns = ['serial','frame','polls','buttons','x','y'] + [w['name'] for w in report['watches']]
+        with path.open('w', newline='', encoding='utf-8') as f:
+            writer = csv.DictWriter(f, fieldnames=['region','boundary']+columns)
+            writer.writeheader()
+            for row in report['rows']:
+                writer.writerow(dict(region=report['region'], boundary=report['boundary'], **row))
+    else:
+        path.write_text(json.dumps(report, indent=2, allow_nan=False), encoding='utf-8')
+
+
+class NativeCore:
+    """One isolated native session. Calls validated against the public 2.x API."""
+    def __init__(self, args, on_state, on_frame, data=None):
+        if data is None: data = Path(args.rom).read_bytes()
+        self.region = identify_rom(data).key
+        self.rom = C.create_string_buffer(canonical_rom(data))
+        self.core = C.CDLL(str(Path(args.core).resolve()), mode=getattr(C, 'RTLD_GLOBAL', 0))
+        self.plugins = []
+        self.started = self.opened = False
+        self.log = DebugCB(lambda ctx, level, msg: print(msg.decode('utf-8', 'replace'), file=sys.stderr) if msg else None)
+        self.state_cb = StateCB(lambda ctx, param, value: on_state(value) if param == 1 else None)
+        self.frame_cb = FrameCB(on_frame)
+        self.command = bind(self.core, 'CoreDoCommand', C.c_int, C.c_int, C.c_int, C.c_void_p)
+        try:
+            kind, version, api, caps = (C.c_int() for _ in range(4))
+            name = C.c_char_p()
+            getversion = bind(self.core, 'PluginGetVersion', C.c_int, *([C.POINTER(C.c_int)]*3), C.POINTER(C.c_char_p), C.POINTER(C.c_int))
+            checked(getversion(C.byref(kind), C.byref(version), C.byref(api), C.byref(name), C.byref(caps)), 'Core version')
+            if kind.value != 5 or api.value >> 16 != 2:
+                raise RuntimeError('Expected a Mupen64Plus 2.x core library')
+            self.debugger = bool(caps.value & 2)
+            self.core_version = version.value
+            if not self.debugger and version.value != 0x020600:
+                raise RuntimeError('For non-debug builds, the native RDRAM layout is verified for core 2.6.0 only')
+            # Keep all changes and save data in a dedicated research directory.
+            config = Path(args.config).expanduser().resolve() / 'goemon-native-session'; config.mkdir(parents=True, exist_ok=True)
+            saves = config / 'research-saves'; saves.mkdir(exist_ok=True)
+            startup = bind(self.core,'CoreStartup',C.c_int,C.c_int,C.c_char_p,C.c_char_p,C.c_void_p,DebugCB,C.c_void_p,StateCB)
+            checked(startup(0x020001, os.fsencode(config), os.fsencode(Path(args.data).resolve()), None,self.log,None,self.state_cb),'CoreStartup')
+            self.started = True
+            section = C.c_void_p()
+            checked(bind(self.core,'ConfigOpenSection',C.c_int,C.c_char_p,C.POINTER(C.c_void_p))(b'Core',C.byref(section)), 'Core config')
+            set_param = bind(self.core,'ConfigSetParameter',C.c_int,C.c_void_p,C.c_char_p,C.c_int,C.c_void_p)
+            for key,val in ((b'R4300Emulator',0),(b'EnableDebugger',0),(b'RandomizeInterrupt',0)):
+                checked(set_param(section,key,1 if key==b'R4300Emulator' else 3,C.byref(C.c_int(val))),key.decode())
+            for key in (b'SaveStatePath',b'SaveSRAMPath'):
+                checked(set_param(section,key,4,C.c_char_p(os.fsencode(saves))),key.decode())
+            checked(self.command(ROM_OPEN,len(data),C.cast(self.rom,C.c_void_p)), 'ROM_OPEN'); self.opened=True
+            for kind,path in ((2,args.gfx),(3,args.audio),(4,args.input),(1,args.rsp)):
+                lib = C.CDLL(str(Path(path).resolve()))
+                plugtype,pv,pa,pc = (C.c_int() for _ in range(4)); pn=C.c_char_p()
+                getver=bind(lib,'PluginGetVersion',C.c_int,*([C.POINTER(C.c_int)]*3),C.POINTER(C.c_char_p),C.POINTER(C.c_int))
+                checked(getver(C.byref(plugtype),C.byref(pv),C.byref(pa),C.byref(pn),C.byref(pc)),'PluginGetVersion')
+                if plugtype.value != kind or pa.value>>16!=2: raise RuntimeError(f'Wrong plugin type/API: {path}')
+                if kind==4:
+                    if pa.value != 0x020100: raise RuntimeError('Expected Goemon input plugin API 2.1.0')
+                    self.set_input=bind(lib,'GoemonSetInput',C.c_int,C.c_uint,C.c_int,C.c_int)
+                    self.polls=bind(lib,'GoemonTakePolls',C.c_uint)
+                start=bind(lib,'PluginStartup',C.c_int,C.c_void_p,C.c_void_p,DebugCB)
+                checked(start(self.core._handle,None,self.log),'PluginStartup')
+                self.plugins.append((kind,lib,False))
+                checked(bind(self.core,'CoreAttachPlugin',C.c_int,C.c_int,C.c_void_p)(kind,lib._handle),'CoreAttachPlugin')
+                self.plugins[-1]=(kind,lib,True)
+            if self.debugger:
+                self.readers = {n:bind(self.core,f'DebugMemRead{n*8}',t,C.c_uint) for n,t in ((1,C.c_uint8),(2,C.c_uint16),(4,C.c_uint32))}
+                self.mem_info=bind(self.core,'DebugMemGetMemInfo',C.c_int,C.c_int,C.c_uint)
+            if self.core_version == 0x020600:
+                self.rdram_pointer=bind(self.core,'DebugMemGetPointer',C.c_void_p,C.c_int)
+            checked(self.command(FRAME_CALLBACK,0,C.cast(self.frame_cb,C.c_void_p)),'Set frame callback')
+        except BaseException:
+            self.close(); raise
+
+    def cmd(self, op):
+        checked(self.command(op,0,None), f'Core command {op}')
+
+    def read_word(self, addr, width):
+        # Validate every dereference before either debugger API or native RAM access.
+        if not ram_address(addr,width): return None
+        if self.debugger:
+            if self.mem_info(1,addr)!=2 or not self.mem_info(2,addr)&1:
+                return None
+            return self.readers[width](addr)
+        # Core 2.6.0's public API returns native uint32_t RDRAM words.
+        base=self.rdram_pointer(1)
+        if not base or base%4: return None
+        off=addr-0x80000000
+        word=C.c_uint32.from_address(base+(off&~3)).value
+        return (word>>((4-width-off%4)*8))&((1<<(8*width))-1)
+
+    def unlock_mini_ebisumaru(self):
+        """One explicit Japan-0 grant, on the emulator callback thread only.
+
+        Existing unlock byte and original script grant agree. Never expose a
+        general write API; require the reviewed original word and a binary
+        value. This does not set the active miniature form or story bits.
+        """
+        if self.region != 'japan' or self.core_version != 0x020600:
+            raise RuntimeError('Mini Ebisumaru unlock requires Japan-0 and core 2.6.0')
+        byte = guest_address('crosswalk:japan:unlock:mini_ebisumaru',region='japan',width=1)
+        word = guest_address('research:dialogue_grant_mini_ebisu_jp',region='japan',width=4)
+        # Pinned review boundary: a catalogue refresh cannot relocate a writer.
+        if word != 0x80161EE0 or byte != word+3 or not ram_address(word,4):
+            raise RuntimeError('Mini Ebisumaru catalogue no longer matches reviewed grant')
+        before=self.read_word(word,4)
+        if before not in (0,1):
+            raise RuntimeError(f'Unexpected miniature ability word: {before!r}; no write')
+        base=self.rdram_pointer(1)
+        if not base or base%4:
+            raise RuntimeError('Native RDRAM unavailable; no write')
+        cell=C.c_uint32.from_address(base+word-0x80000000)
+        if cell.value != before:
+            raise RuntimeError('Native grant word disagrees with readback; no write')
+        if before == 0:
+            cell.value=1
+        if self.read_word(word,4)!=1 or cell.value!=1:
+            raise RuntimeError('Mini Ebisumaru grant readback failed')
+        return dict(before=before,after=1,changed=before==0)
+
+    def read_watch(self,w):
+        addr=w['address']; width=WIDTHS[w['kind']]
+        for offset in w.get('offsets', ()):
+            pointer=self.read_word(addr,4)
+            # Do not interpret null, host, KSEG1, MMIO, unaligned or stale
+            # out-of-range pointers as valid guest memory. No wrapping.
+            if not ram_address(pointer,4): return None
+            addr=pointer+offset
+        v=self.read_word(addr,width)
+        if v is None: return None
+        if w['kind']=='f32':
+            f=struct.unpack('>f',v.to_bytes(4,'big'))[0]
+            return f if math.isfinite(f) else f'bits:0x{v:08X}'
+        if w['kind'].startswith('s') and v & (1<<(width*8-1)):
+            return v-(1<<(width*8))
+        return v
+
+    def close(self):
+        # Called only after EXECUTE returns, or during failed setup.
+        for kind,lib,attached in reversed(self.plugins):
+            if attached: self.core.CoreDetachPlugin(kind)
+            lib.PluginShutdown()
+        self.plugins.clear()
+        if self.opened: self.command(ROM_CLOSE,0,None); self.opened=False
+        if self.started: self.core.CoreShutdown(); self.started=False
+
+
+class Inspector:
+    """Frame callback recorder and bounded control; testable without a ROM/core."""
+    def __init__(self, watches, region):
+        self.cv=threading.Condition(); self.core=None; self.state=STOPPED
+        self.serial=0; self.input=dict(NEUTRAL); self.watches=watches; self.region=region
+        self.rows=[]; self.recording=False; self.stepping=False; self.error=''; self.last=None
+        self.finished=False; self.operation=threading.Lock()
+        self.unlock_pending=False; self.unlock_result=None; self.unlock_error=None
+
+    def state_changed(self,value):
+        with self.cv: self.state=value; self.cv.notify_all()
+
+    def frame(self,index):
+        with self.cv:
+            try:
+                self.serial+=1
+                if self.unlock_pending:
+                    self.unlock_pending=False
+                    try:
+                        self.unlock_result=self.core.unlock_mini_ebisumaru()
+                    except Exception as exc:
+                        self.unlock_error=str(exc)
+                row=dict(serial=self.serial,frame=index,polls=self.core.polls(),**self.input)
+                row.update({w['name']:self.core.read_watch(w) for w in self.watches})
+                self.last=row
+                if self.recording or self.stepping:
+                    if len(self.rows)<600: self.rows.append(row)
+                    else: self.recording=False; self.error='Trace limit reached; export and clear before continuing'
+            except Exception as exc:
+                self.error=f'Frame capture failed: {exc}'
+            self.cv.notify_all()
+
+    def wait(self,predicate,timeout=10):
+        deadline=time.monotonic()+timeout
+        with self.cv:
+            while not predicate():
+                if self.finished or time.monotonic()>=deadline:
+                    raise RuntimeError('Core boundary timeout or emulator stopped')
+                self.cv.wait(max(0,deadline-time.monotonic()))
+
+    def set_input(self,value):
+        value=valid_input(value)
+        with self.cv:
+            if not self.core.set_input(value['buttons'], value['x'], value['y']): raise RuntimeError('Input plugin rejected sample')
+            self.input=value
+
+    def report(self):
+        with self.cv:
+            return dict(region=self.region,boundary='core-frame',input_semantics='last requested input; not proof of game consumption',watches=self.watches,rows=list(self.rows),last=self.last,
+                        state=self.state,serial=self.serial,recording=self.recording,error=self.error,
+                        mini_unlock=self.unlock_result,
+                        capabilities=dict(frame_advance=True,scripted_p1=True,typed_reads=True,live_watches=True,pointer_watches=True,logic_updates=False,breakpoints=False,ram_writes=False,mini_unlock=self.region=='japan' and getattr(self.core,'core_version',None)==0x020600,savestate_control=False,core_debugger=bool(getattr(self.core,'debugger',False))))
+
+    def control(self,q):
+        op=q.get('op')
+        if op=='status': return self.report()
+        if self.finished: raise RuntimeError('Session closed')
+        if self.state==STOPPED: raise RuntimeError('Emulator not running')
+        if op=='pause':
+            if self.state!=PAUSED: self.core.cmd(PAUSE); self.wait(lambda:self.state==PAUSED)
+        elif op=='resume':
+            self.set_input(NEUTRAL); self.core.cmd(RESUME)
+        elif op=='hold':
+            self.set_input(q['input'])
+        elif op=='watches':
+            new=parse_watches(q.get('text'),self.region)
+            with self.cv:
+                if self.state!=PAUSED or self.recording or self.stepping:
+                    raise RuntimeError('Pause and stop recording before applying watches')
+                if new != self.watches:
+                    if self.rows and q.get('replace_trace') is not True:
+                        raise RuntimeError('Export and clear the old trace before changing watches')
+                    # Schema and trace must change atomically. Reads happen only
+                    # in the next core callback; never read RAM on the UI thread.
+                    self.watches=new; self.rows=[]; self.last=None; self.error=''
+        elif op=='unlock_mini':
+            if self.region!='japan' or getattr(self.core,'core_version',None)!=0x020600:
+                raise RuntimeError('Mini Ebisumaru unlock requires Japan-0 and core 2.6.0')
+            if q.get('confirm') is not True:
+                raise RuntimeError('Explicit unlock confirmation required')
+            with self.cv:
+                if self.state!=PAUSED or self.recording or self.stepping or self.unlock_pending:
+                    raise RuntimeError('Pause and stop recording before unlocking')
+                if self.rows:
+                    raise RuntimeError('Export and clear the trace before unlocking')
+                self.unlock_result=None; self.unlock_error=None; self.error=''
+                before=self.serial
+                self.set_input(NEUTRAL); self.core.polls()
+                self.unlock_pending=True
+            try:
+                # Native frame callback performs the write; never mutate RAM
+                # from the UI/command thread while the core may still execute.
+                self.core.cmd(ADVANCE)
+                self.wait(lambda:self.serial>before and self.state==PAUSED and not self.unlock_pending)
+                if self.unlock_error: raise RuntimeError(self.unlock_error)
+                if self.serial!=before+1 or self.unlock_result is None or self.error:
+                    raise RuntimeError('Unlock frame boundary/capture failed; inspect current ability before retrying')
+            finally:
+                with self.cv: self.unlock_pending=False
+                if not self.finished and self.state==RUNNING:
+                    try:self.core.cmd(PAUSE)
+                    except RuntimeError:pass
+        elif op=='record':
+            with self.cv: self.recording=not self.recording
+        elif op=='clear':
+            with self.cv: self.rows=[]; self.error=''
+        elif op=='step':
+            inputs=q.get('inputs')
+            if not isinstance(inputs,list) or not 1<=len(inputs)<=60: raise ValueError('Expected 1..60 samples')
+            inputs=[valid_input(v) for v in inputs]
+            if self.state!=PAUSED: raise RuntimeError('Pause before stepping')
+            with self.cv:
+                if len(self.rows)+len(inputs)>600: raise ValueError('Trace limit; export and clear')
+                self.stepping=True; self.error=''
+            try:
+                deadline=time.monotonic()+30
+                for value in inputs:
+                    before=self.serial; self.set_input(value); self.core.polls()
+                    self.core.cmd(ADVANCE)
+                    self.wait(lambda:self.serial>before and self.state==PAUSED,timeout=max(0,deadline-time.monotonic()))
+                    if self.serial!=before+1 or self.error: raise RuntimeError(self.error or 'Multiple core callbacks during single step')
+            except Exception:
+                if not self.finished and self.state==RUNNING:
+                    try: self.core.cmd(PAUSE)
+                    except RuntimeError: pass
+                raise
+            finally:
+                with self.cv: self.stepping=False
+                if not self.finished: self.set_input(NEUTRAL)
+        elif op=='stop':
+            self.set_input(NEUTRAL); self.core.cmd(STOP)
+        else: raise ValueError('Unknown command')
+        return self.report()
+
+
+def emit(value):
+    print(PREFIX+json.dumps(value,allow_nan=False),flush=True)
+
+
+def worker(args):
+    data=Path(args.rom).read_bytes()
+    region=identify_rom(data).key
+    inspector=Inspector(parse_watches(args.watches,region),region)
+    core=NativeCore(args,inspector.state_changed,inspector.frame,data=data); inspector.core=core
+    def commands():
+        try:
+            for line in sys.stdin:
+                try:
+                    q=json.loads(line)
+                    if not isinstance(q,dict): raise ValueError('Expected command object')
+                    with inspector.operation:
+                        emit(dict(ok=True,report=inspector.control(q)))
+                except (ValueError, KeyError, TypeError, RuntimeError) as exc:
+                    emit(dict(ok=False,error=str(exc)))
+        except OSError:
+            pass
+        finally:
+            # EOF may occur before the first RUNNING notification. Wait for
+            # startup (or failure), then request normal core shutdown.
+            try:
+                inspector.wait(lambda:inspector.state!=STOPPED,timeout=30)
+                with inspector.operation:
+                    if not inspector.finished and inspector.state!=STOPPED:
+                        core.cmd(STOP)
+            except RuntimeError:
+                pass
+    t=threading.Thread(target=commands,daemon=True)
+    try:
+        emit(dict(ok=True,report=inspector.report())); t.start()
+        core.cmd(EXECUTE)
+    finally:
+        with inspector.cv: inspector.finished=True; inspector.cv.notify_all()
+        # Stop worker access before unloading native libraries, even on GUI close.
+        # The process exits immediately after EXECUTE; commands are rejected once stopped.
+        inspector.state_changed(STOPPED)
+        with inspector.operation:
+            core.close()
+
+
+def main():
+    p=argparse.ArgumentParser(description=__doc__)
+    for name in ('rom','core','gfx','audio','input','rsp','data','config'):
+        p.add_argument('--'+name,required=True)
+    p.add_argument('--watches',default='')
+    args=p.parse_args()
+    try: worker(args)
+    except Exception as exc: emit(dict(ok=False,error=str(exc))); return 1
+    return 0
+
+if __name__=='__main__': raise SystemExit(main())

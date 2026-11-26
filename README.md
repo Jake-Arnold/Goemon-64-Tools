@@ -1,6 +1,22 @@
-# Goemon Speedrun Tools v0.11.85 — Experimental Project64 Frame Control
+# Goemon Speedrun Tools v0.11.90 — Unified Frame Inspector
 
 > **Repository branch policy (23 November 2026):** Toolkit development uses `stable/toolkit` → `toolkit/<topic>` → PR to `stable/toolkit`. Decomp work uses `stable/decomp` → `decomp/<topic>` → PR to `stable/decomp`. `main` and `chatgptweb/decomp` are legacy names, not new baselines. Read [BRANCHES.md](BRANCHES.md). Never merge the entire branches together.
+
+## v0.11.90 — Unified Frame Inspector
+
+Open **Frame Inspector** from the main toolkit and choose **Mupen64Plus (native)** or **Project64**. Linux source mode defaults to native when no specific supported emulator is selected; a known Project64 selection opens its companion controls. The Dashboard shortcut navigates to the same embedded inspector; switching tabs keeps a running native session and its trace. Native library discovery supports Debian/Ubuntu multiarch installations and Homebrew; setup still requires a matching core, plugins and the compiled Goemon input plugin. The native frontend starts a new emulator, not a connection to a stock running emulator. Project64 includes the tracing, comparison and breakpoint controls from PR #273. Existing read-only restrictions are retained. See [native setup](docs/MUPEN_NATIVE.md) and [Project64 setup](docs/PJ64_FRAME_CONTROL.md).
+
+## v0.11.89 — Native Mini Ebisumaru unlock
+
+The native Japan-0 Mupen64Plus 2.6.0 session offers an explicit miniature ability grant while paused in gameplay, with original grant-word validation and readback. Export and clear the trace, pause, then select **Unlock Mini Ebisumaru (JP)**. Advances one neutral core frame; does not force miniature form or modify movement. Experimental; no arbitrary RAM writer.
+
+## v0.11.88 — Live watch editing and pointer chains
+
+Native Mupen64Plus research sessions can apply up to 24 typed watches while paused, with signed types and bounded guest-pointer chains. The Japan controller preset uses the reviewed address catalogue and live calibration results. Changes require confirmation before discarding a trace. Native ctypes controller calls use positional arguments. See [native setup](docs/MUPEN_NATIVE.md) and [controller calibration](docs/MUPEN_NATIVE_CONTROLLER_CALIBRATION.md). No memory writes or player-update stepping.
+
+## v0.11.87 — Native Mupen64Plus Frame Inspector (experimental)
+
+Source-mode research frontend for macOS and Linux, using a Mupen64Plus 2.6.0 core (or a debugger-enabled 2.x core) and a scripted input plugin. See [setup and limitations](docs/MUPEN_NATIVE.md). This launches a new independent emulator session; it does not add macOS external-process attachment to the existing dashboard.
 
 ## v0.11.85 — experimental Project64 frame control
 

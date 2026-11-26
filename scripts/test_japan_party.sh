@@ -48,6 +48,7 @@ esac
   tests.test_japan_fast_attach \
   tests.test_pj64_debugger \
   tests.test_pj64_frame_control \
+  tests.test_mupen_native \
   tests.test_scripted_trace \
   tests.test_new_address_research \
   tests.test_japan_pid_restart_watch \
@@ -123,6 +124,7 @@ fi
 
 if command -v xvfb-run >/dev/null 2>&1; then
   xvfb-run -a timeout --signal=TERM --kill-after=5s "${GUI_TIMEOUT_SECONDS}s" "${PYTHON}" -m tests.gui_smoke_runner \
+    tests.test_mupen_native_ui \
     tests.test_japanese_fields_ui \
     tests.test_japanese_scene_probe_ui \
     tests.test_japanese_party_controls_ui \

@@ -5,13 +5,23 @@
     var server = new Server(), count = 0, plan = [], remaining = 0;
     var armed = false, owned = false, polls = 0, lastPolls = 0;
     var error = '', epoch = 0, generation = 0, deadline = 0;
+    var watches = config.watches || [], trace = [], hit = null, batchGeneration = -1;
+    function sample(input, n, phase) {
+        var words = watches.map(function (w) {
+            try {
+                var value = mem.u32[(w.address & 0xFFFFFFFC) >>> 0];
+                return typeof value === 'number' ? value >>> 0 : null;
+            } catch (e) { return null; }
+        });
+        trace.push({step:count, phase:phase, input:input, polls:n, words:words});
+    }
     function validRom() {
         var r = pj64.romInfo;
         return r && (r.crc1 >>> 0) === config.crc1 && (r.crc2 >>> 0) === config.crc2;
     }
     function integer(v, lo, hi) { return typeof v === 'number' && Math.floor(v) === v && v >= lo && v <= hi; }
     function clear() { plan = []; remaining = 0; armed = false; deadline = 0; }
-    function invalidate() { clear(); owned = false; count = 0; polls = 0; lastPolls = 0; epoch++; generation++; }
+    function invalidate() { clear(); trace = []; hit = null; batchGeneration = -1; owned = false; count = 0; polls = 0; lastPolls = 0; epoch++; generation++; }
     function halt() { clear(); owned = true; debug.breakhere(true); }
     function fail(msg) { error = msg; halt(); }
     function check() {
@@ -26,7 +36,7 @@
             mem.u32[PIF_RAM_START + 4] = inputWord(plan[0]);
             polls++;
             if (!config.pc) {
-                count++; remaining--; plan.shift(); lastPolls = polls; polls = 0;
+                count++; remaining--; sample(plan.shift(), polls, "poll"); lastPolls = polls; polls = 0;
                 if (!remaining) halt();
             }
         } else if (!config.pc && armed) {
@@ -37,10 +47,20 @@
     function boundary() {
         if (!check()) return;
         if (remaining > 0) {
-            count++; remaining--; plan.shift(); lastPolls = polls; polls = 0;
+            count++; remaining--; sample(polls ? plan[0] : null, polls, "update"); plan.shift(); lastPolls = polls; polls = 0;
             if (!lastPolls) { fail('No P1 poll in update interval; input not consumed'); return; }
             if (!remaining) halt();
         } else if (armed) halt();
+    }
+    function trap(e) {
+        if (!remaining || !check()) return;
+        hit = {kind:config.trap.kind, pc:e.pc >>> 0, address:config.trap.address, polls:polls};
+        sample(polls ? plan[0] : null, polls, 'breakpoint');
+        fail('Breakpoint before CPU instruction; resume and resynchronize before stepping');
+    }
+    if (config.trap) {
+        if (config.trap.kind === 'exec') events.onexec(config.trap.address, trap);
+        else events.onwrite(config.trap.address, trap);
     }
     events.onpifread(poll);
     if (config.pc) events.onexec(config.pc, boundary);
@@ -59,8 +79,8 @@
     function status() {
         return {version:1, mode:config.pc ? 'execution-hook' : 'controller-poll', pc:config.pc,
                 region:config.region, valid:!!validRom(), epoch:epoch, generation:generation,
-                count:count, paused:!!debug.paused, ready:owned && !!debug.paused,
-                pending:armed || remaining > 0 || (owned && !debug.paused), remaining:remaining, polls:lastPolls, error:error};
+                count:count, paused:!!debug.paused, ready:owned && !!debug.paused && !hit && !error,
+                pending:armed || remaining > 0 || (owned && !debug.paused), remaining:remaining, polls:lastPolls, error:error, watches:watches, trace:trace, trap:config.trap || null, hit:hit, batchGeneration:batchGeneration};
     }
     function command(q) {
         if (!q || q.token !== config.token || q.version !== 1) throw Error('Unauthorized or incompatible request');
@@ -70,15 +90,15 @@
             if (owned && debug.paused) return status();
             if (debug.paused) throw Error('Resume the existing debugger break first');
             if (remaining || armed) throw Error('Operation already pending');
-            error = ''; armed = true; owned = false; count = 0; epoch++; generation++; deadline = Date.now() + 30000;
+            error = ''; trace = []; hit = null; armed = true; owned = false; count = 0; epoch++; generation++; deadline = Date.now() + 30000;
         } else if (q.op === 'step') {
-            if (!owned || !debug.paused || remaining || armed || q.epoch !== epoch || q.count !== count || q.generation !== generation)
+            if (!owned || !debug.paused || hit || error || remaining || armed || q.epoch !== epoch || q.count !== count || q.generation !== generation)
                 throw Error('Synchronize to a fresh bridge pause first');
             if (!Array.isArray(q.inputs) || q.inputs.length < 1 || q.inputs.length > 60) throw Error('Expected 1..60 input samples');
             q.inputs.forEach(function (v) {
                 if (!v || !integer(v.buttons,0,0xFFFF) || (v.buttons & 0x00C0) || !integer(v.x,-80,80) || !integer(v.y,-80,80)) throw Error('Invalid N64 input');
             });
-            plan = q.inputs.slice(); remaining = plan.length; polls = 0; owned = false; error = ''; generation++; deadline = Date.now() + 30000;
+            trace = []; sample(null, 0, "baseline"); plan = q.inputs.slice(); remaining = plan.length; polls = 0; owned = false; error = ''; generation++; batchGeneration = generation; deadline = Date.now() + 30000;
             debug.resume();
         } else if (q.op === 'resume') {
             if (!owned || !debug.paused) throw Error('Not paused by this bridge');
