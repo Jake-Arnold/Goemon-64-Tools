@@ -1,0 +1,69 @@
+{
+  "format": "goemon-batch-registry-v1",
+  "base_stage": "promo36_promotion",
+  "base_commit": "ff73d60a4c864c783af8b60c7eb09ef786139baa",
+  "predecessor_verifier_sha": "1daf2e6d2ff7847f74cbac8733c787b61f54b3acde74d4e5cc4fc5acb5ea148f",
+  "base_usa": {
+    "accepted_C": 3087,
+    "accepted_original_bytes": 212412,
+    "upstream_unmarked": 13,
+    "elf_sha256": "a2667d1677d9f283ab8abb27a439581439849157979f9876e95cdbff310cf3d6",
+    "rom_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+    "retail_sha1": "df8083a54296b8c151917c5333e1c85f014a2a66",
+    "relocs": 82080,
+    "globals": 26714,
+    "relocation_sha": "4355f0fb9f6fa47bc6c301ac91b93c97682abb205df57db5052d31fa665a7722",
+    "identity": "4875cd876203aa2c1f9a6131ed69c6ec70f0cccb108d497d10caa923f3842798"
+  },
+  "base_japan_0": {
+    "accepted_C": 3019,
+    "accepted_original_bytes": 202176,
+    "upstream_unmarked": 0,
+    "elf_sha256": "26d14cc17af2046abd2e785feaee306f8dda2d1acade2a83778c7fa3c8436e5e",
+    "rom_sha1": "6f8745fecc3a5e7d4918c7a73353eb0726116ded",
+    "retail_sha1": "9843ee979b5f6c80f5eda85df0baed9ae7c4e73b",
+    "relocs": 80652,
+    "globals": 26393,
+    "relocation_sha": "a4094a4a38467b3f5369dd6d123a0194d43a0fb0be8dbf50a005395b6cb67354",
+    "identity": "9eaf3e7abf903df6256cdfe306330e99daf3f827c5ae828ebcb0ac549811f43e"
+  },
+  "batches": [
+    {
+      "id": "cross_region_zero_token_18",
+      "namespace": "xreg001",
+      "base_commit": "ff73d60a4c864c783af8b60c7eb09ef786139baa",
+      "research_dir": "research/cross_region_zero_token_20261126",
+      "usa": {
+        "added": 4,
+        "bytes": 528,
+        "manifest_sha256": "9b516c3702fb42be5e4f28bea446cf7b58020ed1f3ce34b2fd19e14f8cf823bc",
+        "prior_elf_sha256": "a2667d1677d9f283ab8abb27a439581439849157979f9876e95cdbff310cf3d6",
+        "elf_sha256": "65125cf5f2bb44a89d0e755786baea1ccb0f855d97bd1deb6e2ab5d9184dc4df",
+        "guarded_abs": [],
+        "proof": "results/usa_cross_region_zero_token_18_g2_20261126.json",
+        "sdk_flags": {}
+      },
+      "japan_0": {
+        "added": 14,
+        "bytes": 1248,
+        "manifest_sha256": "dd81288668927c57d59cd259dba8900395f898504a446693e47d6c7fdadabff7",
+        "prior_elf_sha256": "26d14cc17af2046abd2e785feaee306f8dda2d1acade2a83778c7fa3c8436e5e",
+        "elf_sha256": "c411377c9d761de60926c9c170e9bb7ceec9efbd095d95ce210bea4193295281",
+        "guarded_abs": [
+          [
+            "build/japan_0/src/xreg001/func_80036660_37260.c.o",
+            "D_3B014"
+          ]
+        ],
+        "proof": "results/japan_0_cross_region_zero_token_18_g2_20261126.json",
+        "sdk_flags": {}
+      }
+    }
+  ],
+  "frozen_usa_before_registry": {
+    "manifest": "b2d8b8b3e9e543b1f444b6d82002bc82ed73243a60799454214f40a0528b019f",
+    "combined": "c2b060302e3d88968eca236352b3ba796a22f708814b90e8f219aaa73c573fac",
+    "inventory": "74e6b83798e00481daa33a0781c1d99f59797a2300aa9fe252759b2247118e82"
+  },
+  "frozen_jp_before_registry_sha256": "1d84e9a6e437ca43f37d1daa1747064af9e472409b340c147a034eafee2b1d2c"
+}

@@ -24,11 +24,13 @@ class TestUSAMiniPromotion20261123(unittest.TestCase):
         self.assertEqual(f['functions'][0]['size'],384)
 
     def test_current_manifest_preserves_mini_and_new2_distinct_claims(self):
+        from decomp import batch_registry
+        expected_c, expected_bytes = batch_registry.expected_usa_totals()
         manifest=verify.load_manifest(verify.ROOT/'manifest.json')
         claimed=verify.claimed_functions(manifest)
-        self.assertEqual(len(claimed),3087)
-        self.assertEqual(sum(x['size'] for x in claimed),212412)
-        self.assertEqual(len({f['name'] for f in claimed}),3087)
+        self.assertEqual(len(claimed),expected_c)
+        self.assertEqual(sum(x['size'] for x in claimed),expected_bytes)
+        self.assertEqual(len({f['name'] for f in claimed}),expected_c)
         ranges=sorted((f['rom_offset'],f['rom_offset']+f['size']) for f in claimed)
         self.assertTrue(all(x[1]<=y[0] for x,y in zip(ranges,ranges[1:])))
 

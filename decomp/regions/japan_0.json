@@ -1346,5 +1346,19 @@
     "source_manifest": "decomp/regions/japan_0_3019_promo36.json",
     "proof": "decomp/results/japan_0_promo36_g2_20261126.json",
     "inventory": "decomp/results/japan_0_3019_promo36_inventory_20261126.json"
+  },
+  "batch_registry_promotion": {
+    "format": "goemon-batch-registry-v1",
+    "status": "PASSED_G2_LOCAL",
+    "base_original_C": 3019,
+    "new_original_C": 14,
+    "accepted_original_C": 3033,
+    "accepted_original_bytes": 203424,
+    "asm_remaining": 4343,
+    "full_original_elf_identities": 7376,
+    "registry": "decomp/batches/registry.json",
+    "batches": [
+      "cross_region_zero_token_18"
+    ]
   }
 }

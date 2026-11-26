@@ -290,3 +290,8 @@ All 19 isolated candidate and altered-source IDO replays retained exact flags an
 
 - Base `stable/decomp@8b195d8ce5a31723a71af428ee4f7bccf32b0bf8`, upstream `7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee`, pinned IDO 5.3. All 36 original-address C candidates (USA 21 / 1,776 B; Japan 15 / 1,176 B) and all 36 altered-source negative controls replayed with zero overlap against canonical USA 3,066 / JP 3,004.
 - Existing guarded undefined-ABS symbol-type metadata restoration reproduced (`EXISTING_QUIRK_REPRODUCED`, 1 `st_info` byte per symbol, code and relocations unchanged): USA `D_8020EF08_63A2E8` (`func_801E4194_60F574.c.o`), `D_3AFE0` (`func_800374AC_380AC.c.o`), `D_3B014` (`func_800369B4_375B4.c.o`); Japan `D_3B014` (`func_80036624_37224.c.o`). All 36 individual source compilations record `NO_NEW_COMPILER_FINDING`.
+
+## 2026-11-26 — Unified batch registry Batch #1 (`cross_region_zero_token_18`, USA +4 / JP +14)
+
+- Base `stable/decomp@ff73d60a4c864c783af8b60c7eb09ef786139baa`, upstream `7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee`, pinned IDO 5.3. All 18 zero-token cross-region mechanically ported original-address C candidates (USA 4 / 528 B; Japan 14 / 1,248 B) and all 18 altered-source negative controls passed full native G2 verification via `decomp.run_promotion`.
+- Existing guarded undefined-ABS symbol-type metadata restoration reproduced (`EXISTING_QUIRK_REPRODUCED`, 1 `st_info` byte, code and relocations unchanged): Japan `D_3B014` (`build/japan_0/src/xreg001/func_80036660_37260.c.o`); USA had 0 ABS restorations. All 18 individual source compilations record `NO_NEW_COMPILER_FINDING`.

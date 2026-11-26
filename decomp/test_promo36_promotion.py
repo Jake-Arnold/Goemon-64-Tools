@@ -3,7 +3,10 @@ import copy, unittest
 from decomp import promo36_promotion as p, verify, promotion_integrity
 class Promo36Tests(unittest.TestCase):
     def test_current_claims(self):
-        c=verify.claimed_functions(verify.load_manifest(p.ROOT/'manifest.json'))
+        mpath = p.ROOT/'results/manifest_3087_before_registry.json'
+        if not mpath.is_file():
+            mpath = p.ROOT/'manifest.json'
+        c=verify.claimed_functions(verify.load_manifest(mpath))
         self.assertEqual((len(c),sum(f['size'] for f in c)),(3087,212412))
         self.assertEqual(promotion_integrity.audit()['status'],'PASS')
         self.assertEqual(p.validate_jp()['accepted_C'],3019)

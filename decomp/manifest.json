@@ -1663,5 +1663,11 @@
   },
   "usa_promo36_promotion": {
     "format": "goemon-promo36-original-ido-v1"
+  },
+  "usa_batch_registry": {
+    "format": "goemon-batch-registry-v1",
+    "batches": [
+      "cross_region_zero_token_18"
+    ]
   }
 }
