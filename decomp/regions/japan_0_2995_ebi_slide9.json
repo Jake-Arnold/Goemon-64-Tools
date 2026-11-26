@@ -1,0 +1,55 @@
+{
+  "format": "goemon-ebi-slide9-original-ido-v1",
+  "region": "japan_0",
+  "base_c": 2990,
+  "matching_c": 2995,
+  "assembly_remaining": 4381,
+  "original_C_instruction_bytes": 199504,
+  "functions": [
+    {
+      "name": "func_801E46AC_5A067C",
+      "rom_offset": 5899900,
+      "vma": 2149467820,
+      "size": 460,
+      "source": "research/ebi_slide9_20261126/sources/func_801E46AC_5A067C/candidate.c",
+      "source_sha256": "e0a921c04751dc245d63f1c628c9b2694199ef51695e9dea422fc5977cf6fe49",
+      "original_sha256": "4ab3816cf8de7916815e8fcd8085c40f18b5f711c8146123bdae964d8edbe50a"
+    },
+    {
+      "name": "func_801E5108_5A10D8",
+      "rom_offset": 5902552,
+      "vma": 2149470472,
+      "size": 300,
+      "source": "research/ebi_slide9_20261126/sources/func_801E5108_5A10D8/candidate.c",
+      "source_sha256": "e8620aff99ab9d78dcaab77001ebd4557a7642ff53435440195203a0e4958dda",
+      "original_sha256": "5fc5053121f512c8e591a5de8e73d231630f17820573b076ad608a3999e4ba35"
+    },
+    {
+      "name": "func_801E905C_5A502C",
+      "rom_offset": 5918764,
+      "vma": 2149486684,
+      "size": 220,
+      "source": "research/ebi_slide9_20261126/sources/func_801E905C_5A502C/candidate.c",
+      "source_sha256": "5157a61117d8ab4f108f00557ee03828efe86fc0c0682ba5e166c1a00ff86724",
+      "original_sha256": "3a088ff55b9749b35409042fbe130a199e01ac43343c1eef5ab4bde65b5a647b"
+    },
+    {
+      "name": "func_801E8610_5A45E0",
+      "rom_offset": 5916128,
+      "vma": 2149484048,
+      "size": 956,
+      "source": "research/ebi_slide9_20261126/sources/func_801E8610_5A45E0/candidate.c",
+      "source_sha256": "3eb63f97d6bd8f0761ff5f1dea9a08144345319144e94850cd8f736987ccacef",
+      "original_sha256": "512f13f1fbec5f8d32e877e528bbcecbe7085f48fd333f775bdafcdc3fd6dcbf"
+    },
+    {
+      "name": "func_801D1228_58D1F8",
+      "rom_offset": 5820920,
+      "vma": 2149388840,
+      "size": 236,
+      "source": "research/ebi_slide9_20261126/sources/func_801D1228_58D1F8/candidate.c",
+      "source_sha256": "75c0cbcae71a94322bc2377a262ad7861af3b16d9fd5dd1367427ae7e770a5f6",
+      "original_sha256": "e19e349fa23dc99b00d78ce8974198bd624401b901e8f9a7cc36c9280e5dff5d"
+    }
+  ]
+}

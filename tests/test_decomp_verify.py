@@ -1372,6 +1372,9 @@ class DecompVerificationTests(unittest.TestCase):
         if manifest.get('usa_promo65_promotion') is not None:
             from decomp import promo65_promotion as promo65
             sources.update(promo65.source_hashes())
+        if manifest.get('usa_ebi_slide9_promotion') is not None:
+            from decomp import ebi_slide9_promotion as ebi9
+            sources.update(ebi9.source_hashes())
         self.assertEqual(set(result['sources_sha256_lf']),sources)
         for name in sources:
             patches=[p for p in manifest.get('existing_source_patches', []) if p['source']==name]
