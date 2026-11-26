@@ -1,0 +1,17 @@
+#include "m2c_types.h"
+M2C_UNK func_8003C498_3D098();                      /* extern */
+extern void *D_801C1728_1C2328;
+
+void func_8003C790_3D390(void) {
+    if (M2C_FIELD(D_801C1728_1C2328, u8 *, 0x8C) == 0) {
+        M2C_FIELD(D_801C1728_1C2328, u8 *, 0x7C) = (u8) M2C_FIELD(D_801C1728_1C2328, u8 *, 0x88);
+        M2C_FIELD(D_801C1728_1C2328, u8 *, 0x7D) = (u8) M2C_FIELD(D_801C1728_1C2328, u8 *, 0x89);
+        M2C_FIELD(D_801C1728_1C2328, s32 *, 0x80) = (s32) M2C_FIELD(D_801C1728_1C2328, s32 *, 0x28);
+        M2C_FIELD(D_801C1728_1C2328, s32 *, 0x28) = (s32) (M2C_FIELD(D_801C1728_1C2328, s32 *, 0x28) - M2C_FIELD(D_801C1728_1C2328, s16 *, 0x8A));
+        func_8003C498_3D098();
+        return;
+    }
+    M2C_FIELD(D_801C1728_1C2328, s32 *, 0x80) = (s32) M2C_FIELD(D_801C1728_1C2328, s32 *, 0x28);
+    M2C_FIELD(D_801C1728_1C2328, s32 *, 0x28) = (s32) M2C_FIELD(D_801C1728_1C2328, s32 *, 0x84);
+    M2C_FIELD(D_801C1728_1C2328, u8 *, 0x7D) = 1U;
+}

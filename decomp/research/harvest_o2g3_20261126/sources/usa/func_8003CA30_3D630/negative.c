@@ -1,0 +1,12 @@
+#include "m2c_types.h"
+extern void *D_801C1728_1C2328;
+extern s32 D_801C172C_1C232C;
+
+void func_8003CA30_3D630(void) {
+    M2C_FIELD(D_801C1728_1C2328, s8 *, 0x64) = 0;
+    M2C_FIELD(D_801C1728_1C2328, s32 *, 0x68) = (s32) D_801C172C_1C232C;
+    M2C_FIELD(D_801C1728_1C2328, s16 *, 0x42) = 0;
+    M2C_FIELD(D_801C1728_1C2328, s16 *, 0x34) = (s16) M2C_FIELD(D_801C1728_1C2328, s16 *, 0x42);
+
+    *(volatile s32 *)0x80000000 = 1;
+}
