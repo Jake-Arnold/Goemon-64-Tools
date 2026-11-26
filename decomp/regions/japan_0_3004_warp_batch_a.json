@@ -1,0 +1,91 @@
+{
+  "format": "goemon-warp-batch-a-original-ido-v1",
+  "region": "japan_0",
+  "base_c": 2995,
+  "matching_c": 3004,
+  "assembly_remaining": 4372,
+  "original_C_instruction_bytes": 201000,
+  "functions": [
+    {
+      "name": "func_8003542C_3602C",
+      "rom_offset": 221228,
+      "vma": 2147701804,
+      "size": 152,
+      "source": "research/warp_batch_a_20261126/sources/func_8003542C_3602C/candidate.c",
+      "source_sha256": "df7a7ecf31b9eff108a5b1533e087799cf2126c78b06fa233f6d88c93b2cb350",
+      "original_sha256": "77c78409224d7dac637dbdb08696c5bfbdf67dbf23f21d4c8ba3e4e7e6016c9f"
+    },
+    {
+      "name": "func_80035558_36158",
+      "rom_offset": 221528,
+      "vma": 2147702104,
+      "size": 124,
+      "source": "research/warp_batch_a_20261126/sources/func_80035558_36158/candidate.c",
+      "source_sha256": "d0aa03c1a49c173d9159143ae71c2352ce8d42a8815401648e99e905c59a6d97",
+      "original_sha256": "2ac58f3046bfef24ccf53d24d7366bbd466f071cf7cc16c0635c5a5222108561"
+    },
+    {
+      "name": "func_80219F70_5D5500",
+      "rom_offset": 6116608,
+      "vma": 2149687152,
+      "size": 80,
+      "source": "research/warp_batch_a_20261126/sources/func_80219F70_5D5500/candidate.c",
+      "source_sha256": "ca4d51801c0595e539980d6a8c8528c3147928c52aa4763c25002691097e18c7",
+      "original_sha256": "af201dd13e6cc316394e56f7f3ead027bc9ccf4b8fe674e3b8229f01763c0b99"
+    },
+    {
+      "name": "func_8021BB8C_5D711C",
+      "rom_offset": 6123804,
+      "vma": 2149694348,
+      "size": 56,
+      "source": "research/warp_batch_a_20261126/sources/func_8021BB8C_5D711C/candidate.c",
+      "source_sha256": "f9e9a4bbb06109ab4986d7cc105d8b0b9dd201af782e62cd89afca96228fadfa",
+      "original_sha256": "dc31fbd0c37ffc6a3b1cd3c58c4ca1b4e7534bf818e1b504b5f54bae24c3ab49"
+    },
+    {
+      "name": "func_8021AEF4_5D6484",
+      "rom_offset": 6120580,
+      "vma": 2149691124,
+      "size": 172,
+      "source": "research/warp_batch_a_20261126/sources/func_8021AEF4_5D6484/candidate.c",
+      "source_sha256": "e7a98313b1123bf769791dd992dba29ee4393cbc00edc808947f59c65dcea8f2",
+      "original_sha256": "45f1a7c45e8578a605f432f67927bf54f25d5e346431537d4d47214626e27156"
+    },
+    {
+      "name": "func_8021BBC4_5D7154",
+      "rom_offset": 6123860,
+      "vma": 2149694404,
+      "size": 124,
+      "source": "research/warp_batch_a_20261126/sources/func_8021BBC4_5D7154/candidate.c",
+      "source_sha256": "c870b1c6d622bad2c18e9a80626e3c6496c37f973a23cce27e9af815fd5180b4",
+      "original_sha256": "4713485e1f8b68f6ae836a67f1ca62cd7653f3ac65f174a3505c433babe2c896"
+    },
+    {
+      "name": "func_800355D4_361D4",
+      "rom_offset": 221652,
+      "vma": 2147702228,
+      "size": 248,
+      "source": "research/warp_batch_a_20261126/sources/func_800355D4_361D4/candidate.c",
+      "source_sha256": "9282c9afb220d0497f06994287b6a392022e6fabf5cdeca9ec5dc68d4bfcb65e",
+      "original_sha256": "9c4bb0f562d92a4dd63795c16f252db4a983b90b74cf8b922070420240e86460"
+    },
+    {
+      "name": "func_800356CC_362CC",
+      "rom_offset": 221900,
+      "vma": 2147702476,
+      "size": 232,
+      "source": "research/warp_batch_a_20261126/sources/func_800356CC_362CC/candidate.c",
+      "source_sha256": "3d144cc9592510e60c88f7b7888ff80e5639c3b621a5dc1a8ebe03b4cc73b2fc",
+      "original_sha256": "b7ff59a4fe571b30ed8050cbf3a2e6580896eff35634a97e38fa83d222103e95"
+    },
+    {
+      "name": "func_800371B8_37DB8",
+      "rom_offset": 228792,
+      "vma": 2147709368,
+      "size": 308,
+      "source": "research/warp_batch_a_20261126/sources/func_800371B8_37DB8/candidate.c",
+      "source_sha256": "efde11cea3a436af5f350d8929827b69eca918f7f926c5a8cb8f8672b426ebfe",
+      "original_sha256": "a20a3a9c0be665e379e13ce74c15513eee33866978a7e677657d1392093a97ec"
+    }
+  ]
+}
