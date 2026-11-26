@@ -1,0 +1,16 @@
+{
+  "accepted_functions": 3066,
+  "original_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+  "heuristic_only": true,
+  "window_words": 10,
+  "hits": [
+    {
+      "kind": "masked_two_register_branch",
+      "name": "func_801D825C_60363C",
+      "mask": 255,
+      "offset": 8,
+      "branch_offset": 16,
+      "mask_operand": "rs"
+    }
+  ]
+}

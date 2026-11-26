@@ -1,0 +1,1 @@
+typedef unsigned char u8; int func_801D825C_60363C (u8 *p,int v){u8 r;if(*p==(v&255)){r=(v&255)+1;}else{r=0;}*p=r;return r;}
