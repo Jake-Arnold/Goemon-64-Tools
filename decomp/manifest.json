@@ -1669,7 +1669,8 @@
     "batches": [
       "cross_region_zero_token_18",
       "pilot_exec_batch2_25",
-      "harvest_o2g3_batch3_38"
+      "harvest_o2g3_batch3_38",
+      "exec_batch4_45"
     ]
   }
 }

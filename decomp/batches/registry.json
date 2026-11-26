@@ -1358,6 +1358,91 @@
           ]
         }
       }
+    },
+    {
+      "id": "exec_batch4_45",
+      "namespace": "exb004",
+      "base_commit": "23e5ccbb7ac1b4613f546331b25b95a7ecdba4ab",
+      "research_dir": "research/exec_batch4_20261126",
+      "usa": {
+        "added": 23,
+        "bytes": 1892,
+        "manifest_sha256": "bf234d9c29e4ff206c2c5eab80c945df7aa3e0350735995297fe584f49682746",
+        "prior_elf_sha256": "35ba9928223ce2644b9211f057782d12c0350620a11ebe5892dd31b3b6dc748d",
+        "elf_sha256": "fc9c78b9b85f6cdd77663ef53a217670a29a38f2f652b33a4ad6b744723b5fac",
+        "guarded_abs": [
+          [
+            "build/usa/src/exb004/func_8003C6B8_3D2B8.c.o",
+            "D_801C1728_1C2328"
+          ],
+          [
+            "build/usa/src/exb004/func_8022306C_5DE53C.c.o",
+            "D_8023B3A0_5F6870"
+          ]
+        ],
+        "proof": "results/usa_exec_batch4_45_g2_20261126.json",
+        "sdk_flags": {
+          "func_8003C6B8_3D2B8": [
+            "-c",
+            "-G",
+            "0",
+            "-non_shared",
+            "-Xfullwarn",
+            "-Xcpluscomm",
+            "-Iinclude",
+            "-Ilibultra/include",
+            "-Ilibultra/include/PR",
+            "-Isrc",
+            "-I.",
+            "-Wab,-r4300_mul",
+            "-woff",
+            "649,838,712",
+            "-D_LANGUAGE_C",
+            "-D_FINALROM",
+            "-DF3DEX_GBI",
+            "-D__sgi",
+            "-DNDEBUG",
+            "-O2",
+            "-mips2",
+            "-g3"
+          ]
+        }
+      },
+      "japan_0": {
+        "added": 22,
+        "bytes": 1844,
+        "manifest_sha256": "624a72b4d13966672c2b63f1df211a45d8fc4371f7e54707d50807e09d86d082",
+        "prior_elf_sha256": "156126e766951d9cce8ff5ed69b5a3e7c5ec351b83013bead2ee91e3e2d7051f",
+        "elf_sha256": "cddbb9e05d4970f75935156e24feaf28578fa6437b4cc7003ddf070a803a48fd",
+        "guarded_abs": [],
+        "proof": "results/japan_0_exec_batch4_45_g2_20261126.json",
+        "sdk_flags": {
+          "func_8003C328_3CF28": [
+            "-c",
+            "-G",
+            "0",
+            "-non_shared",
+            "-Xfullwarn",
+            "-Xcpluscomm",
+            "-Iinclude",
+            "-Ilibultra/include",
+            "-Ilibultra/include/PR",
+            "-Isrc",
+            "-I.",
+            "-Wab,-r4300_mul",
+            "-woff",
+            "649,838,712",
+            "-D_LANGUAGE_C",
+            "-D_FINALROM",
+            "-DF3DEX_GBI",
+            "-D__sgi",
+            "-DNDEBUG",
+            "-O2",
+            "-mips2",
+            "-g3"
+          ]
+        }
+      }
     }
   ],
   "frozen_usa_before_registry": {
