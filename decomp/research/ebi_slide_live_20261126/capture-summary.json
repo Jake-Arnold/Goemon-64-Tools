@@ -1,0 +1,1396 @@
+{
+  "schema": "ebi-slide-sanitized-aggregate-v1",
+  "date": "2026-11-26",
+  "region": "japan_0",
+  "private_video_sha256": "f0b1274cddcf15d44e745fbe2e1e40ad7c0640411733e56cdd4e77c174aed9ee",
+  "video_duration_seconds": 12.2435,
+  "scope": "No raw memory data, saves, ROM or video. Input segments [relative first,last,button mask,x,y]; displacement is path length from adjacent sampled X/Z; action_8f excludes completion frame. Watchless tests only establish requested input and poll count.",
+  "captures": [
+    {
+      "test": "initial sustain 1",
+      "private_input_sha256": "51c372fe1ba121a55c064667a17e5dd911fd1be6e0ebdaa3beea17be1bedac0c",
+      "rows": 600,
+      "watches": 0,
+      "all_frames_consecutive": true,
+      "polls_per_frame": 1,
+      "input_segments": [
+        [
+          1,
+          120,
+          0,
+          80,
+          0
+        ],
+        [
+          121,
+          126,
+          0,
+          0,
+          0
+        ],
+        [
+          127,
+          132,
+          8,
+          0,
+          0
+        ],
+        [
+          133,
+          600,
+          0,
+          0,
+          0
+        ]
+      ]
+    },
+    {
+      "test": "initial sustain 2",
+      "private_input_sha256": "33eab6f238b2573cc6bd6f4ed68d0574b72a7450065757390c23402824a49410",
+      "rows": 600,
+      "watches": 0,
+      "all_frames_consecutive": true,
+      "polls_per_frame": 1,
+      "input_segments": [
+        [
+          1,
+          120,
+          0,
+          80,
+          0
+        ],
+        [
+          121,
+          126,
+          0,
+          0,
+          0
+        ],
+        [
+          127,
+          132,
+          8,
+          0,
+          0
+        ],
+        [
+          133,
+          600,
+          0,
+          0,
+          0
+        ]
+      ]
+    },
+    {
+      "test": "stationary transformation baseline",
+      "private_input_sha256": "e3761fa5c4904c8bfa57ebe6b15c459a43538ea265a0ffa08e5dfb4c39824ce3",
+      "rows": 300,
+      "watches": 16,
+      "all_frames_consecutive": true,
+      "polls_per_frame": 1,
+      "input_segments": [
+        [
+          1,
+          60,
+          0,
+          0,
+          0
+        ],
+        [
+          61,
+          90,
+          8,
+          0,
+          0
+        ],
+        [
+          91,
+          300,
+          0,
+          0,
+          0
+        ]
+      ],
+      "action_transitions": [
+        [
+          1,
+          "0x0",
+          "0x801e2e18"
+        ],
+        [
+          61,
+          "0x8f",
+          "0x801fa6fc"
+        ],
+        [
+          97,
+          "0x0",
+          "0x801e2e18"
+        ]
+      ],
+      "miniature_cleared": true,
+      "cu_sample_action": "0x8f",
+      "cu_e4": 2.799999952316284,
+      "cu_e8": 0.0,
+      "action_8f_frames": 36,
+      "action_8f_planar_path_length": 0.0,
+      "action_8f_max_sample_displacement": 0.0
+    },
+    {
+      "test": "sustained run + 1 neutral",
+      "private_input_sha256": "9badf2c5fd0850798e472e34d609346c51fa712c2dd45ceb20cebe96a2dab2ea",
+      "rows": 600,
+      "watches": 16,
+      "all_frames_consecutive": true,
+      "polls_per_frame": 1,
+      "input_segments": [
+        [
+          1,
+          60,
+          0,
+          0,
+          0
+        ],
+        [
+          61,
+          120,
+          0,
+          80,
+          0
+        ],
+        [
+          121,
+          121,
+          0,
+          0,
+          0
+        ],
+        [
+          122,
+          127,
+          8,
+          0,
+          0
+        ],
+        [
+          128,
+          600,
+          0,
+          0,
+          0
+        ]
+      ],
+      "action_transitions": [
+        [
+          1,
+          "0x0",
+          "0x801e2e18"
+        ],
+        [
+          61,
+          "0xf",
+          "0x801e315c"
+        ],
+        [
+          121,
+          "0x10",
+          "0x801e318c"
+        ],
+        [
+          132,
+          "0x11",
+          "0x801e3318"
+        ],
+        [
+          141,
+          "0x0",
+          "0x801e2e18"
+        ]
+      ],
+      "miniature_cleared": false,
+      "cu_sample_action": "0x10",
+      "cu_e4": 0.800000011920929,
+      "cu_e8": 0.800000011920929,
+      "action_8f_frames": 0,
+      "action_8f_planar_path_length": 0.0,
+      "action_8f_max_sample_displacement": null
+    },
+    {
+      "test": "A watched",
+      "private_input_sha256": "d4fa0ab4c489ffe21629d79341e14d65f8309ba4f0c54a8ac418dfebcc68bdbb",
+      "rows": 180,
+      "watches": 16,
+      "all_frames_consecutive": true,
+      "polls_per_frame": 1,
+      "input_segments": [
+        [
+          1,
+          60,
+          0,
+          0,
+          0
+        ],
+        [
+          61,
+          61,
+          0,
+          80,
+          0
+        ],
+        [
+          62,
+          67,
+          8,
+          0,
+          0
+        ],
+        [
+          68,
+          180,
+          0,
+          0,
+          0
+        ]
+      ],
+      "action_transitions": [
+        [
+          1,
+          "0x0",
+          "0x801e2e18"
+        ],
+        [
+          61,
+          "0xf",
+          "0x801e315c"
+        ],
+        [
+          62,
+          "0x0",
+          "0x801e2e18"
+        ]
+      ],
+      "miniature_cleared": false,
+      "cu_sample_action": "0x0",
+      "cu_e4": 1.1200000047683716,
+      "cu_e8": 0.3360000252723694,
+      "action_8f_frames": 0,
+      "action_8f_planar_path_length": 0.0,
+      "action_8f_max_sample_displacement": null
+    },
+    {
+      "test": "D watched",
+      "private_input_sha256": "7942480874c49f747aa1919546d2e8526fbace9f3c82670445464adcb27fc2dc",
+      "rows": 180,
+      "watches": 19,
+      "all_frames_consecutive": true,
+      "polls_per_frame": 1,
+      "input_segments": [
+        [
+          1,
+          60,
+          0,
+          0,
+          0
+        ],
+        [
+          61,
+          61,
+          0,
+          80,
+          0
+        ],
+        [
+          62,
+          62,
+          0,
+          0,
+          0
+        ],
+        [
+          63,
+          68,
+          8,
+          0,
+          0
+        ],
+        [
+          69,
+          180,
+          0,
+          0,
+          0
+        ]
+      ],
+      "action_transitions": [
+        [
+          1,
+          "0x0",
+          "0x801e2e18"
+        ],
+        [
+          61,
+          "0xf",
+          "0x801e315c"
+        ],
+        [
+          62,
+          "0x0",
+          "0x801e2e18"
+        ],
+        [
+          63,
+          "0x8f",
+          "0x801fa6fc"
+        ],
+        [
+          99,
+          "0x0",
+          "0x801e2e18"
+        ]
+      ],
+      "miniature_cleared": true,
+      "cu_sample_action": "0x8f",
+      "cu_e4": 1.1200000047683716,
+      "cu_e8": 0.3360000252723694,
+      "action_8f_frames": 36,
+      "action_8f_planar_path_length": 0.0,
+      "action_8f_max_sample_displacement": 0.0
+    },
+    {
+      "test": "D two movement frames",
+      "private_input_sha256": "c6bfbbaedd10718cf635f7c833c085c600619e756e7df8d8d02a2e6050e52371",
+      "rows": 180,
+      "watches": 19,
+      "all_frames_consecutive": true,
+      "polls_per_frame": 1,
+      "input_segments": [
+        [
+          1,
+          60,
+          0,
+          0,
+          0
+        ],
+        [
+          61,
+          62,
+          0,
+          80,
+          0
+        ],
+        [
+          63,
+          63,
+          0,
+          0,
+          0
+        ],
+        [
+          64,
+          69,
+          8,
+          0,
+          0
+        ],
+        [
+          70,
+          180,
+          0,
+          0,
+          0
+        ]
+      ],
+      "action_transitions": [
+        [
+          1,
+          "0x0",
+          "0x801e2e18"
+        ],
+        [
+          61,
+          "0xf",
+          "0x801e315c"
+        ],
+        [
+          63,
+          "0x0",
+          "0x801e2e18"
+        ]
+      ],
+      "miniature_cleared": false,
+      "cu_sample_action": "0x0",
+      "cu_e4": 2.799999952316284,
+      "cu_e8": 0.0,
+      "action_8f_frames": 0,
+      "action_8f_planar_path_length": 0.0,
+      "action_8f_max_sample_displacement": null
+    },
+    {
+      "test": "F",
+      "private_input_sha256": "6bed55e88b631951832dfcbefed02de250299f9f88b8869d7c0d18a7518489ad",
+      "rows": 180,
+      "watches": 19,
+      "all_frames_consecutive": true,
+      "polls_per_frame": 1,
+      "input_segments": [
+        [
+          1,
+          60,
+          0,
+          0,
+          0
+        ],
+        [
+          61,
+          61,
+          0,
+          80,
+          0
+        ],
+        [
+          62,
+          62,
+          0,
+          0,
+          0
+        ],
+        [
+          63,
+          63,
+          8,
+          80,
+          0
+        ],
+        [
+          64,
+          180,
+          0,
+          0,
+          0
+        ]
+      ],
+      "action_transitions": [
+        [
+          1,
+          "0x0",
+          "0x801e2e18"
+        ],
+        [
+          61,
+          "0xf",
+          "0x801e315c"
+        ],
+        [
+          62,
+          "0x0",
+          "0x801e2e18"
+        ],
+        [
+          63,
+          "0x8f",
+          "0x801fa6fc"
+        ],
+        [
+          99,
+          "0x0",
+          "0x801e2e18"
+        ]
+      ],
+      "miniature_cleared": true,
+      "cu_sample_action": "0x8f",
+      "cu_e4": 1.1200000047683716,
+      "cu_e8": 0.3360000252723694,
+      "action_8f_frames": 36,
+      "action_8f_planar_path_length": 0.335993,
+      "action_8f_max_sample_displacement": 0.335993
+    },
+    {
+      "test": "G",
+      "private_input_sha256": "9e10ffdc900c1da82ea4ac38f1eb8e264af62f4c0d455d2cd76f9ceb117be93b",
+      "rows": 180,
+      "watches": 19,
+      "all_frames_consecutive": true,
+      "polls_per_frame": 1,
+      "input_segments": [
+        [
+          1,
+          60,
+          0,
+          0,
+          0
+        ],
+        [
+          61,
+          61,
+          0,
+          80,
+          0
+        ],
+        [
+          62,
+          62,
+          0,
+          0,
+          0
+        ],
+        [
+          63,
+          63,
+          8,
+          0,
+          0
+        ],
+        [
+          64,
+          90,
+          0,
+          80,
+          0
+        ],
+        [
+          91,
+          180,
+          0,
+          0,
+          0
+        ]
+      ],
+      "action_transitions": [
+        [
+          1,
+          "0x0",
+          "0x801e2e18"
+        ],
+        [
+          61,
+          "0xf",
+          "0x801e315c"
+        ],
+        [
+          62,
+          "0x0",
+          "0x801e2e18"
+        ],
+        [
+          63,
+          "0x8f",
+          "0x801fa6fc"
+        ],
+        [
+          99,
+          "0x0",
+          "0x801e2e18"
+        ]
+      ],
+      "miniature_cleared": true,
+      "cu_sample_action": "0x8f",
+      "cu_e4": 1.1200000047683716,
+      "cu_e8": 0.3360000252723694,
+      "action_8f_frames": 36,
+      "action_8f_planar_path_length": 21.298751,
+      "action_8f_max_sample_displacement": 1.120003
+    },
+    {
+      "test": "H",
+      "private_input_sha256": "ad02e544e84c0e5bcbec23329abc378e7a67de30a66dc93c8441399e0f4f8759",
+      "rows": 180,
+      "watches": 19,
+      "all_frames_consecutive": true,
+      "polls_per_frame": 1,
+      "input_segments": [
+        [
+          1,
+          60,
+          0,
+          0,
+          0
+        ],
+        [
+          61,
+          61,
+          0,
+          80,
+          0
+        ],
+        [
+          62,
+          62,
+          0,
+          20,
+          0
+        ],
+        [
+          63,
+          63,
+          0,
+          0,
+          0
+        ],
+        [
+          64,
+          64,
+          8,
+          0,
+          0
+        ],
+        [
+          65,
+          180,
+          0,
+          0,
+          0
+        ]
+      ],
+      "action_transitions": [
+        [
+          1,
+          "0x0",
+          "0x801e2e18"
+        ],
+        [
+          61,
+          "0xf",
+          "0x801e315c"
+        ],
+        [
+          62,
+          "0xc",
+          "0x801e30fc"
+        ],
+        [
+          63,
+          "0x0",
+          "0x801e2e18"
+        ],
+        [
+          64,
+          "0x8f",
+          "0x801fa6fc"
+        ],
+        [
+          100,
+          "0x0",
+          "0x801e2e18"
+        ]
+      ],
+      "miniature_cleared": true,
+      "cu_sample_action": "0x8f",
+      "cu_e4": 0.2368669658899307,
+      "cu_e8": 0.0710600912570953,
+      "action_8f_frames": 36,
+      "action_8f_planar_path_length": 0.0,
+      "action_8f_max_sample_displacement": 0.0
+    },
+    {
+      "test": "I",
+      "private_input_sha256": "2d6a90df0952a402adde9004b2d23ee69b5541d40b6aa0b6dcd46cd7ccf58720",
+      "rows": 600,
+      "watches": 19,
+      "all_frames_consecutive": true,
+      "polls_per_frame": 1,
+      "input_segments": [
+        [
+          1,
+          60,
+          0,
+          0,
+          0
+        ],
+        [
+          61,
+          61,
+          0,
+          80,
+          0
+        ],
+        [
+          62,
+          62,
+          0,
+          0,
+          0
+        ],
+        [
+          63,
+          63,
+          8,
+          80,
+          0
+        ],
+        [
+          64,
+          300,
+          0,
+          80,
+          0
+        ],
+        [
+          301,
+          600,
+          0,
+          0,
+          0
+        ]
+      ],
+      "action_transitions": [
+        [
+          1,
+          "0x0",
+          "0x801e2e18"
+        ],
+        [
+          61,
+          "0xf",
+          "0x801e315c"
+        ],
+        [
+          62,
+          "0x0",
+          "0x801e2e18"
+        ],
+        [
+          63,
+          "0x8f",
+          "0x801fa6fc"
+        ],
+        [
+          99,
+          "0x0",
+          "0x801e2e18"
+        ],
+        [
+          100,
+          "0xf",
+          "0x801e315c"
+        ],
+        [
+          169,
+          "0x1a",
+          "0x801e4414"
+        ],
+        [
+          176,
+          "0x1c",
+          "0x801e46ac"
+        ],
+        [
+          177,
+          "0xd",
+          "0x801e311c"
+        ],
+        [
+          178,
+          "0xf",
+          "0x801e315c"
+        ],
+        [
+          250,
+          "0x1a",
+          "0x801e4414"
+        ],
+        [
+          256,
+          "0x1c",
+          "0x801e46ac"
+        ],
+        [
+          257,
+          "0xd",
+          "0x801e311c"
+        ],
+        [
+          258,
+          "0xf",
+          "0x801e315c"
+        ],
+        [
+          301,
+          "0x10",
+          "0x801e318c"
+        ],
+        [
+          312,
+          "0x11",
+          "0x801e3318"
+        ],
+        [
+          321,
+          "0x0",
+          "0x801e2e18"
+        ]
+      ],
+      "miniature_cleared": true,
+      "cu_sample_action": "0x8f",
+      "cu_e4": 1.1200000047683716,
+      "cu_e8": 0.3360000252723694,
+      "action_8f_frames": 36,
+      "action_8f_planar_path_length": 31.378036,
+      "action_8f_max_sample_displacement": 1.120007
+    },
+    {
+      "test": "J",
+      "private_input_sha256": "f9deca503d86e093c48e026b8f69cb26f64c657ce1981f601db736eb9da59c6d",
+      "rows": 600,
+      "watches": 19,
+      "all_frames_consecutive": true,
+      "polls_per_frame": 1,
+      "input_segments": [
+        [
+          1,
+          60,
+          0,
+          0,
+          0
+        ],
+        [
+          61,
+          61,
+          8,
+          0,
+          0
+        ],
+        [
+          62,
+          300,
+          0,
+          80,
+          0
+        ],
+        [
+          301,
+          600,
+          0,
+          0,
+          0
+        ]
+      ],
+      "action_transitions": [
+        [
+          1,
+          "0x0",
+          "0x801e2e18"
+        ],
+        [
+          61,
+          "0x8f",
+          "0x801fa6fc"
+        ],
+        [
+          97,
+          "0x0",
+          "0x801e2e18"
+        ],
+        [
+          98,
+          "0xf",
+          "0x801e315c"
+        ],
+        [
+          301,
+          "0x10",
+          "0x801e318c"
+        ],
+        [
+          312,
+          "0x11",
+          "0x801e3318"
+        ],
+        [
+          321,
+          "0x0",
+          "0x801e2e18"
+        ]
+      ],
+      "miniature_cleared": true,
+      "cu_sample_action": "0x8f",
+      "cu_e4": 2.799999952316284,
+      "cu_e8": 0.0,
+      "action_8f_frames": 36,
+      "action_8f_planar_path_length": 0.0,
+      "action_8f_max_sample_displacement": 0.0
+    },
+    {
+      "test": "K",
+      "private_input_sha256": "6c251eea54c058b179643367ccb5a91e11e577d59264a86dbfc564133530c4cb",
+      "rows": 600,
+      "watches": 19,
+      "all_frames_consecutive": true,
+      "polls_per_frame": 1,
+      "input_segments": [
+        [
+          1,
+          60,
+          0,
+          0,
+          0
+        ],
+        [
+          61,
+          61,
+          8,
+          80,
+          0
+        ],
+        [
+          62,
+          300,
+          0,
+          80,
+          0
+        ],
+        [
+          301,
+          600,
+          0,
+          0,
+          0
+        ]
+      ],
+      "action_transitions": [
+        [
+          1,
+          "0x0",
+          "0x801e2e18"
+        ],
+        [
+          61,
+          "0xf",
+          "0x801e315c"
+        ],
+        [
+          301,
+          "0x10",
+          "0x801e318c"
+        ],
+        [
+          312,
+          "0x11",
+          "0x801e3318"
+        ],
+        [
+          321,
+          "0x0",
+          "0x801e2e18"
+        ]
+      ],
+      "miniature_cleared": false,
+      "cu_sample_action": "0xf",
+      "cu_e4": 1.1200000047683716,
+      "cu_e8": 0.3360000252723694,
+      "action_8f_frames": 0,
+      "action_8f_planar_path_length": 0.0,
+      "action_8f_max_sample_displacement": null
+    },
+    {
+      "test": "L",
+      "private_input_sha256": "f99c1eb7059888df8141562c6181729f2bea219aa8c5ac29f08043d2213290a3",
+      "rows": 180,
+      "watches": 19,
+      "all_frames_consecutive": true,
+      "polls_per_frame": 1,
+      "input_segments": [
+        [
+          1,
+          60,
+          0,
+          0,
+          0
+        ],
+        [
+          61,
+          61,
+          0,
+          80,
+          0
+        ],
+        [
+          62,
+          62,
+          0,
+          0,
+          0
+        ],
+        [
+          63,
+          63,
+          8,
+          80,
+          0
+        ],
+        [
+          64,
+          98,
+          0,
+          80,
+          0
+        ],
+        [
+          99,
+          180,
+          0,
+          0,
+          0
+        ]
+      ],
+      "action_transitions": [
+        [
+          1,
+          "0x0",
+          "0x801e2e18"
+        ],
+        [
+          61,
+          "0xf",
+          "0x801e315c"
+        ],
+        [
+          62,
+          "0x0",
+          "0x801e2e18"
+        ],
+        [
+          63,
+          "0x8f",
+          "0x801fa6fc"
+        ],
+        [
+          99,
+          "0x0",
+          "0x801e2e18"
+        ]
+      ],
+      "miniature_cleared": true,
+      "cu_sample_action": "0x8f",
+      "cu_e4": 1.1200000047683716,
+      "cu_e8": 0.3360000252723694,
+      "action_8f_frames": 36,
+      "action_8f_planar_path_length": 31.375879,
+      "action_8f_max_sample_displacement": 1.120003
+    },
+    {
+      "test": "M",
+      "private_input_sha256": "079ba92754591d00cd353558b69483e8d82e89da0668b0dbdcb32062dc7a62c1",
+      "rows": 180,
+      "watches": 19,
+      "all_frames_consecutive": true,
+      "polls_per_frame": 1,
+      "input_segments": [
+        [
+          1,
+          60,
+          0,
+          0,
+          0
+        ],
+        [
+          61,
+          61,
+          0,
+          80,
+          0
+        ],
+        [
+          62,
+          62,
+          0,
+          0,
+          0
+        ],
+        [
+          63,
+          63,
+          8,
+          80,
+          0
+        ],
+        [
+          64,
+          99,
+          0,
+          80,
+          0
+        ],
+        [
+          100,
+          180,
+          0,
+          0,
+          0
+        ]
+      ],
+      "action_transitions": [
+        [
+          1,
+          "0x0",
+          "0x801e2e18"
+        ],
+        [
+          61,
+          "0xf",
+          "0x801e315c"
+        ],
+        [
+          62,
+          "0x0",
+          "0x801e2e18"
+        ],
+        [
+          63,
+          "0x8f",
+          "0x801fa6fc"
+        ],
+        [
+          99,
+          "0x0",
+          "0x801e2e18"
+        ]
+      ],
+      "miniature_cleared": true,
+      "cu_sample_action": "0x8f",
+      "cu_e4": 1.1200000047683716,
+      "cu_e8": 0.3360000252723694,
+      "action_8f_frames": 36,
+      "action_8f_planar_path_length": 31.373464,
+      "action_8f_max_sample_displacement": 1.120005
+    },
+    {
+      "test": "N",
+      "private_input_sha256": "a6c885895b49377497ebb082436d2c8618bfb2aa618f8f6134054be9846dc6d8",
+      "rows": 180,
+      "watches": 19,
+      "all_frames_consecutive": true,
+      "polls_per_frame": 1,
+      "input_segments": [
+        [
+          1,
+          60,
+          0,
+          0,
+          0
+        ],
+        [
+          61,
+          61,
+          0,
+          80,
+          0
+        ],
+        [
+          62,
+          62,
+          0,
+          0,
+          0
+        ],
+        [
+          63,
+          63,
+          8,
+          80,
+          0
+        ],
+        [
+          64,
+          98,
+          0,
+          80,
+          0
+        ],
+        [
+          99,
+          120,
+          0,
+          -80,
+          0
+        ],
+        [
+          121,
+          180,
+          0,
+          0,
+          0
+        ]
+      ],
+      "action_transitions": [
+        [
+          1,
+          "0x0",
+          "0x801e2e18"
+        ],
+        [
+          61,
+          "0xf",
+          "0x801e315c"
+        ],
+        [
+          62,
+          "0x0",
+          "0x801e2e18"
+        ],
+        [
+          63,
+          "0x8f",
+          "0x801fa6fc"
+        ],
+        [
+          99,
+          "0x0",
+          "0x801e2e18"
+        ],
+        [
+          100,
+          "0xf",
+          "0x801e315c"
+        ],
+        [
+          121,
+          "0x10",
+          "0x801e318c"
+        ],
+        [
+          132,
+          "0x11",
+          "0x801e3318"
+        ],
+        [
+          141,
+          "0x0",
+          "0x801e2e18"
+        ]
+      ],
+      "miniature_cleared": true,
+      "cu_sample_action": "0x8f",
+      "cu_e4": 1.1200000047683716,
+      "cu_e8": 0.3360000252723694,
+      "action_8f_frames": 36,
+      "action_8f_planar_path_length": 31.373631,
+      "action_8f_max_sample_displacement": 1.120005
+    },
+    {
+      "test": "Q",
+      "private_input_sha256": "381019f6168a8b80d974e592ea0dc26de4bcd9a37c562c0650593d1b5320f871",
+      "rows": 180,
+      "watches": 20,
+      "all_frames_consecutive": true,
+      "polls_per_frame": 1,
+      "input_segments": [
+        [
+          1,
+          60,
+          0,
+          0,
+          0
+        ],
+        [
+          61,
+          61,
+          32768,
+          0,
+          0
+        ],
+        [
+          62,
+          67,
+          0,
+          0,
+          0
+        ],
+        [
+          68,
+          68,
+          0,
+          0,
+          30
+        ],
+        [
+          69,
+          69,
+          0,
+          0,
+          0
+        ],
+        [
+          70,
+          70,
+          8,
+          0,
+          30
+        ],
+        [
+          71,
+          120,
+          0,
+          0,
+          80
+        ],
+        [
+          121,
+          180,
+          0,
+          0,
+          0
+        ]
+      ],
+      "action_transitions": [
+        [
+          1,
+          "0x0",
+          "0x801e2e18"
+        ],
+        [
+          61,
+          "0x17",
+          "0x801e431c"
+        ],
+        [
+          64,
+          "0x19",
+          "0x801e4510"
+        ],
+        [
+          67,
+          "0x1c",
+          "0x801e46ac"
+        ],
+        [
+          68,
+          "0xd",
+          "0x801e311c"
+        ],
+        [
+          69,
+          "0x0",
+          "0x801e2e18"
+        ],
+        [
+          70,
+          "0x8f",
+          "0x801fa6fc"
+        ],
+        [
+          106,
+          "0x0",
+          "0x801e2e18"
+        ],
+        [
+          107,
+          "0x1a",
+          "0x801e4414"
+        ]
+      ],
+      "miniature_cleared": true,
+      "cu_sample_action": "0x8f",
+      "cu_e4": 2.799999952316284,
+      "cu_e8": 0.699999988079071,
+      "action_8f_frames": 36,
+      "action_8f_planar_path_length": 95.459554,
+      "action_8f_max_sample_displacement": 4.05937
+    }
+  ],
+  "missing_or_input_only_in_conversation": [
+    "early failed/stalled attempts",
+    "B/C/E input-only",
+    "O/P input-only"
+  ]
+}
