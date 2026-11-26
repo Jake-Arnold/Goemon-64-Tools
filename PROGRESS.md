@@ -1,3 +1,9 @@
+## 2026-11-26 UTC — Warp spawn chain (USA 2 / Japan 2, RESEARCH_ONLY)
+
+- Base 9932e4bac45bd3f41513b2f6ff0eb8ee438d0997; source archive 15074968037 authenticated. Predecessor CI 45728666858 succeeded. Original pinned IDO 5.3 and independently extracted regional ROMs authenticated.
+- Four standalone C bodies exactly match original linked ROM bytes, FUNC address/extent, raw object text/addends and 8 named R_MIPS_26 relocations: USA 800358E8 (124 B), 800357BC (152 B); Japan 80035558 (124 B), 8003542C (152 B). 552 original bytes. Four signed-halfword negative controls rejected, first mismatch +0x10. All attempts NO_NEW_COMPILER_FINDING. Original-address SUBALIGN(4) corrected standalone linker alignment; no instructions patched.
+- Candidate whole-owner and full-ROM G2, strict candidate inventory, candidate promotion integrity and hosted candidate regression NOT_RUN. Baseline USA integrity PASS; USA 3052 and Japan 2990 canonical C unchanged. Pending broad PR filename audit limited, no address-name hit. Keep research separate from active manifests. Next: object initializer and exit/position caller. Evidence: decomp/research/warp_spawn_20261126/.
+
 ## 2026-11-26 UTC — Promo65 USA13 / Japan52 native integration candidate
 
 - Authenticated stable/decomp `f4e4b6105796ec4c4e19b0415a24a9deea1f2e16`, archive 15071860141, successful predecessor CI 45718866391. All 65 original active assembly owners are distinct by region and original address; no overlap with canonical claims. Open PR filenames and principal pending candidate manifests checked, no overlap found. Not an exhaustive audit of historical PR prose.

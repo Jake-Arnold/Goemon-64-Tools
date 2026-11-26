@@ -1,0 +1,288 @@
+{
+  "status": "RESEARCH_ONLY",
+  "compiler_sha256": "76d796c9591c9f5504949f85b29c32a6039a663791afe2f36f34ca18425b64d0",
+  "flags": [
+    "-c",
+    "-mips2",
+    "-O2",
+    "-G",
+    "0",
+    "-non_shared",
+    "-Xfullwarn",
+    "-Xcpluscomm",
+    "-Iinclude",
+    "-Ilibultra/include",
+    "-Ilibultra/include/PR",
+    "-Isrc",
+    "-I.",
+    "-Wab,-r4300_mul",
+    "-woff",
+    "649,838,712",
+    "-D_LANGUAGE_C",
+    "-D_FINALROM",
+    "-DF3DEX_GBI",
+    "-D__sgi",
+    "-DNDEBUG"
+  ],
+  "attempts": [
+    {
+      "region": "usa",
+      "function": "func_800358E8_364E8",
+      "rom_offset": "0x364e8",
+      "vma": "0x800358e8",
+      "size": 124,
+      "source": "warp_wrapper.c",
+      "source_sha256": "5c7e2ccf395c7c29ede6ad2a6272e4ed865eb0b176ad590f1920b56c0c89a264",
+      "compiler_ledger_sha256": "1e07a27bf1a8e0ccb2f9d1633b59303b4417a99c81051142cd2b1a133ae54e1a",
+      "positive": true,
+      "outcome": "NO_NEW_COMPILER_FINDING",
+      "first_instruction_mismatch": null,
+      "match": true,
+      "linked_sha256": "c9593508439da3e0e3294ddfa31b299f9db816ef20a1e9475c2646068355c0cd",
+      "original_sha256": "c9593508439da3e0e3294ddfa31b299f9db816ef20a1e9475c2646068355c0cd",
+      "original_rom_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+      "function_identity_exact": true,
+      "named_text_relocations_exact": true,
+      "relocations": [
+        [
+          92,
+          "R_MIPS_26",
+          "func_800357BC_363BC"
+        ],
+        [
+          100,
+          "R_MIPS_26",
+          "func_80034D24_35924"
+        ]
+      ],
+      "raw_object_text_exact": true
+    },
+    {
+      "region": "usa",
+      "function": "func_800358E8_364E8",
+      "rom_offset": "0x364e8",
+      "vma": "0x800358e8",
+      "size": 124,
+      "source": "warp_wrapper_negative.c",
+      "source_sha256": "6f3fc453d5dd99d2909a4ac19733af73c9e8ce9bf70cc6765c4c5ffc908821a5",
+      "compiler_ledger_sha256": "1e07a27bf1a8e0ccb2f9d1633b59303b4417a99c81051142cd2b1a133ae54e1a",
+      "positive": false,
+      "outcome": "NO_NEW_COMPILER_FINDING",
+      "first_instruction_mismatch": "0x10",
+      "match": false,
+      "linked_sha256": "b96aa9d23d713bdc7d56d2a1791a4855c9c66fa5798237b20b585913a6b81f9a",
+      "original_sha256": "c9593508439da3e0e3294ddfa31b299f9db816ef20a1e9475c2646068355c0cd",
+      "original_rom_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+      "function_identity_exact": true,
+      "named_text_relocations_exact": true,
+      "relocations": [
+        [
+          92,
+          "R_MIPS_26",
+          "func_800357BC_363BC"
+        ],
+        [
+          100,
+          "R_MIPS_26",
+          "func_80034D24_35924"
+        ]
+      ],
+      "raw_object_text_exact": false
+    },
+    {
+      "region": "usa",
+      "function": "func_800357BC_363BC",
+      "rom_offset": "0x363bc",
+      "vma": "0x800357bc",
+      "size": 152,
+      "source": "player_init.c",
+      "source_sha256": "7599664753dfb973cab9f0504b9dcf99a22e13cbb81745362795bef1222068dd",
+      "compiler_ledger_sha256": "1e07a27bf1a8e0ccb2f9d1633b59303b4417a99c81051142cd2b1a133ae54e1a",
+      "positive": true,
+      "outcome": "NO_NEW_COMPILER_FINDING",
+      "first_instruction_mismatch": null,
+      "match": true,
+      "linked_sha256": "9985d0ef6ecd95679207acbda97f54eaae5a4d465345fb97fbbabda2068d6af1",
+      "original_sha256": "9985d0ef6ecd95679207acbda97f54eaae5a4d465345fb97fbbabda2068d6af1",
+      "original_rom_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+      "function_identity_exact": true,
+      "named_text_relocations_exact": true,
+      "relocations": [
+        [
+          20,
+          "R_MIPS_26",
+          "func_80034CBC_358BC"
+        ],
+        [
+          124,
+          "R_MIPS_26",
+          "func_80035964_36564"
+        ]
+      ],
+      "raw_object_text_exact": true
+    },
+    {
+      "region": "usa",
+      "function": "func_800357BC_363BC",
+      "rom_offset": "0x363bc",
+      "vma": "0x800357bc",
+      "size": 152,
+      "source": "player_init_negative.c",
+      "source_sha256": "08651070e44b7fda225ee7bcea298146f41003d152a51f7675588b41fad6b00a",
+      "compiler_ledger_sha256": "1e07a27bf1a8e0ccb2f9d1633b59303b4417a99c81051142cd2b1a133ae54e1a",
+      "positive": false,
+      "outcome": "NO_NEW_COMPILER_FINDING",
+      "first_instruction_mismatch": "0x10",
+      "match": false,
+      "linked_sha256": "c0d0e255d291657e79b1921522b78aba3640ab586217502ee3dfd89a19522eeb",
+      "original_sha256": "9985d0ef6ecd95679207acbda97f54eaae5a4d465345fb97fbbabda2068d6af1",
+      "original_rom_sha1": "6ea0ed71032ce08fc2745f412d84936382197494",
+      "function_identity_exact": true,
+      "named_text_relocations_exact": true,
+      "relocations": [
+        [
+          20,
+          "R_MIPS_26",
+          "func_80034CBC_358BC"
+        ],
+        [
+          124,
+          "R_MIPS_26",
+          "func_80035964_36564"
+        ]
+      ],
+      "raw_object_text_exact": false
+    },
+    {
+      "region": "japan_0",
+      "function": "func_80035558_36158",
+      "rom_offset": "0x36158",
+      "vma": "0x80035558",
+      "size": 124,
+      "source": "jp_warp_wrapper.c",
+      "source_sha256": "d0aa03c1a49c173d9159143ae71c2352ce8d42a8815401648e99e905c59a6d97",
+      "compiler_ledger_sha256": "1e07a27bf1a8e0ccb2f9d1633b59303b4417a99c81051142cd2b1a133ae54e1a",
+      "positive": true,
+      "outcome": "NO_NEW_COMPILER_FINDING",
+      "first_instruction_mismatch": null,
+      "match": true,
+      "linked_sha256": "2ac58f3046bfef24ccf53d24d7366bbd466f071cf7cc16c0635c5a5222108561",
+      "original_sha256": "2ac58f3046bfef24ccf53d24d7366bbd466f071cf7cc16c0635c5a5222108561",
+      "original_rom_sha1": "6f8745fecc3a5e7d4918c7a73353eb0726116ded",
+      "function_identity_exact": true,
+      "named_text_relocations_exact": true,
+      "relocations": [
+        [
+          92,
+          "R_MIPS_26",
+          "func_8003542C_3602C"
+        ],
+        [
+          100,
+          "R_MIPS_26",
+          "func_80034994_35594"
+        ]
+      ],
+      "raw_object_text_exact": true
+    },
+    {
+      "region": "japan_0",
+      "function": "func_80035558_36158",
+      "rom_offset": "0x36158",
+      "vma": "0x80035558",
+      "size": 124,
+      "source": "jp_warp_wrapper_negative.c",
+      "source_sha256": "894a1d6ea4a8b42dd5a1104fbc2bd62e960b6fe001c7d359ae118b57edcebf3d",
+      "compiler_ledger_sha256": "1e07a27bf1a8e0ccb2f9d1633b59303b4417a99c81051142cd2b1a133ae54e1a",
+      "positive": false,
+      "outcome": "NO_NEW_COMPILER_FINDING",
+      "first_instruction_mismatch": "0x10",
+      "match": false,
+      "linked_sha256": "0b4a92bddaf541fe360e48e570f87d6a01b2626e2874d0147de47da98af8efce",
+      "original_sha256": "2ac58f3046bfef24ccf53d24d7366bbd466f071cf7cc16c0635c5a5222108561",
+      "original_rom_sha1": "6f8745fecc3a5e7d4918c7a73353eb0726116ded",
+      "function_identity_exact": true,
+      "named_text_relocations_exact": true,
+      "relocations": [
+        [
+          92,
+          "R_MIPS_26",
+          "func_8003542C_3602C"
+        ],
+        [
+          100,
+          "R_MIPS_26",
+          "func_80034994_35594"
+        ]
+      ],
+      "raw_object_text_exact": false
+    },
+    {
+      "region": "japan_0",
+      "function": "func_8003542C_3602C",
+      "rom_offset": "0x3602c",
+      "vma": "0x8003542c",
+      "size": 152,
+      "source": "jp_player_init.c",
+      "source_sha256": "df7a7ecf31b9eff108a5b1533e087799cf2126c78b06fa233f6d88c93b2cb350",
+      "compiler_ledger_sha256": "1e07a27bf1a8e0ccb2f9d1633b59303b4417a99c81051142cd2b1a133ae54e1a",
+      "positive": true,
+      "outcome": "NO_NEW_COMPILER_FINDING",
+      "first_instruction_mismatch": null,
+      "match": true,
+      "linked_sha256": "77c78409224d7dac637dbdb08696c5bfbdf67dbf23f21d4c8ba3e4e7e6016c9f",
+      "original_sha256": "77c78409224d7dac637dbdb08696c5bfbdf67dbf23f21d4c8ba3e4e7e6016c9f",
+      "original_rom_sha1": "6f8745fecc3a5e7d4918c7a73353eb0726116ded",
+      "function_identity_exact": true,
+      "named_text_relocations_exact": true,
+      "relocations": [
+        [
+          20,
+          "R_MIPS_26",
+          "func_8003492C_3552C"
+        ],
+        [
+          124,
+          "R_MIPS_26",
+          "func_800355D4_361D4"
+        ]
+      ],
+      "raw_object_text_exact": true
+    },
+    {
+      "region": "japan_0",
+      "function": "func_8003542C_3602C",
+      "rom_offset": "0x3602c",
+      "vma": "0x8003542c",
+      "size": 152,
+      "source": "jp_player_init_negative.c",
+      "source_sha256": "0ce273012a51e204a0e52e684f6deff567cd13637320d03c2b3d8e1879b95039",
+      "compiler_ledger_sha256": "1e07a27bf1a8e0ccb2f9d1633b59303b4417a99c81051142cd2b1a133ae54e1a",
+      "positive": false,
+      "outcome": "NO_NEW_COMPILER_FINDING",
+      "first_instruction_mismatch": "0x10",
+      "match": false,
+      "linked_sha256": "5a7bed51ce1af500e14ccc9637c2918accc43bb7967f71123ca8cf789a4f8fde",
+      "original_sha256": "77c78409224d7dac637dbdb08696c5bfbdf67dbf23f21d4c8ba3e4e7e6016c9f",
+      "original_rom_sha1": "6f8745fecc3a5e7d4918c7a73353eb0726116ded",
+      "function_identity_exact": true,
+      "named_text_relocations_exact": true,
+      "relocations": [
+        [
+          20,
+          "R_MIPS_26",
+          "func_8003492C_3552C"
+        ],
+        [
+          124,
+          "R_MIPS_26",
+          "func_800355D4_361D4"
+        ]
+      ],
+      "raw_object_text_exact": false
+    }
+  ],
+  "whole_rom": "NOT_RUN",
+  "strict_candidate_inventory": "NOT_RUN",
+  "promotion_integrity": "NOT_RUN"
+}
