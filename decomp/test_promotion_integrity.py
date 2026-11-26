@@ -12,11 +12,13 @@ from decomp.verify import load_manifest,claimed_functions
 
 class CanonicalPromotionIntegrityTests(unittest.TestCase):
     def test_exact_final_c_claims_and_frozen_original_addresses(self):
+        from decomp import batch_registry
+        expected_c, expected_bytes = batch_registry.expected_usa_totals()
         manifest=load_manifest(integrity.ROOT/'manifest.json')
         claims=claimed_functions(manifest)
-        self.assertEqual(len(claims),3087)
-        self.assertEqual(sum(f['size'] for f in claims),212412)
-        self.assertEqual(len({f['name'] for f in claims}),3087)
+        self.assertEqual(len(claims),expected_c)
+        self.assertEqual(sum(f['size'] for f in claims),expected_bytes)
+        self.assertEqual(len({f['name'] for f in claims}),expected_c)
         self.assertEqual(len(reconcile.fixture()['functions']),108)
         self.assertEqual(reconcile.fixture()['source_ownership_exception'][0]['name'],
                          'func_800108BC_114BC')
@@ -66,8 +68,9 @@ class CanonicalPromotionIntegrityTests(unittest.TestCase):
     def test_current_canonical_manifest_matches_stored_g2_and_inventory(self):
         audit=integrity.audit()
         self.assertEqual(audit['status'],'PASS',audit['errors'])
+        from decomp import batch_registry
         self.assertEqual((audit['accepted_C'],audit['accepted_original_bytes']),
-                         (3087,212412))
+                         batch_registry.expected_usa_totals())
 
     def test_staged_only_manifest_from_previous_commit_fails_closed(self):
         manifest=json.loads((integrity.ROOT/'results/manifest_2323_before_transition_20261124.json').read_text())

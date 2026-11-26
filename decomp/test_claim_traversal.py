@@ -47,10 +47,11 @@ class ClaimTraversalTests(unittest.TestCase):
             self.assertEqual(fn.call_count, 2)
 
     def test_canonical_source_is_revalidated_after_a_successful_call(self):
+        from decomp import batch_registry
         manifest = verify.load_manifest(verify.ROOT / 'manifest.json')
         claims = verify.claimed_functions(manifest)
         self.assertEqual((len(claims), sum(row['size'] for row in claims)),
-                         (3087, 212412))
+                         batch_registry.expected_usa_totals())
         with patch.object(vm440, 'SOURCE_SHA', '0' * 64):
             with self.assertRaisesRegex(ValueError, 'VM440 C source drift'):
                 verify.claimed_functions(manifest)
