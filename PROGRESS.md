@@ -1,3 +1,8 @@
+## 2026-11-26 — Ebi Slide complete experimental checkpoint (RESEARCH_ONLY)
+
+- Refreshed and consolidated PR #290 original Q/R/MIPS roadmap plus A1–A9 and three D1/D2 interventions into [the full Ebi Slide record](decomp/research/ebi_slide_geometry_20261126/README.md). 14 geometry-enabled traces (2,520 samples) plus two earlier baseline exports reopened; all hashes match. A3 has one 17-poll sample at 132 after initial contact; remaining geometry-enabled samples have one poll. D1/D2 at identical 18/77 confirm opposite outcomes from starting X ±0.200012207 alone in sampled precontact movement; A9 19/77 rescued by D1. Candidate near-face X=-346 and scale radius 70*scale supported; far-face snap unnecessary; strict threshold equality and original branch unproven. Next instruction-level D1/D2 frame-79 trace, no further angle sweep required. Six previously researched reciprocal geometry scratch metadata records carried forward without modifying existing entries.
+- Base 863311ba349822c129cc257c10d6d9f7dba5ea73, source archive artifact 15154367222 COMMIT/checksum/tree verified in clean isolated snapshot. Direct git DNS unavailable. Documentation/metadata only, native IDO NOT_RUN, zero C/byte delta. No raw captures/ROMs committed. Require current hosted full regression/routing prior to merging. Supersedes #290; do not merge both.
+
 # Goemon 64 Decomp Progress Log (Active Rolling Window)
 
 > **Historical archive:** All pre-rotation entries (965 KB verbatim) are preserved in [docs/archive/PROGRESS_HISTORY_20261126.md](docs/archive/PROGRESS_HISTORY_20261126.md).
