@@ -5,7 +5,7 @@ from decomp import promo65_promotion as p, verify, promotion_integrity
 
 class Promo65Tests(unittest.TestCase):
     def test_live_claims_and_integrity(self):
-        claims=verify.claimed_functions(verify.load_manifest(p.ROOT/'manifest.json'))
+        claims=verify.claimed_functions(verify.load_manifest(p.ROOT/'results/manifest_3052_before_ebi_slide9.json'))
         self.assertEqual((len(claims),sum(x['size'] for x in claims)),(3052,207240))
         self.assertEqual(len({x['name'] for x in claims}),3052)
         self.assertEqual(promotion_integrity.audit()['status'],'PASS')
@@ -30,9 +30,9 @@ class Promo65Tests(unittest.TestCase):
                 with self.assertRaises(ValueError):p.rows(region)
 
     def test_predecessor_and_inventory_tamper(self):
-        m=p.read(p.ROOT/'manifest.json');m[p.KEY]['format']='bad'
+        m=p.read(p.ROOT/'results/manifest_3052_before_ebi_slide9.json');m[p.KEY]['format']='bad'
         with self.assertRaises(ValueError):p.predecessor(m)
-        m=p.read(p.ROOT/'manifest.json');d=p.read(p.ROOT/'results/combined.json');i=p.read(p.ROOT/'results/inventory.json');i['summary']['newly_matching_c']+=1
+        m=p.read(p.ROOT/'results/manifest_3052_before_ebi_slide9.json');d=p.read(p.ROOT/'results/combined_3052_before_ebi_slide9.json');i=p.read(p.ROOT/'results/inventory_3052_before_ebi_slide9.json');i['summary']['newly_matching_c']+=1
         self.assertEqual(p.audit_usa(p.ROOT,m,d,i)['status'],'FAIL')
         m=p.read(p.ROOT/'regions/japan_0.json');m[p.JP_KEY]['asm_remaining']-=1
         with self.assertRaises(ValueError):p.master_predecessor(m)

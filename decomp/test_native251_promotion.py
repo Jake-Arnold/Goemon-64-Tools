@@ -10,7 +10,7 @@ class Native251Tests(unittest.TestCase):
         jpfs=stage.rows('japan_0');stage.verify_japan_rows(jpfs)
         self.assertEqual((len(jpfs),sum(x['original_bytes'] for x in jpfs)),(100,7136))
         self.assertEqual(len({(x['region'],x['rom_offset']) for x in fs+jpfs}),251)
-        self.assertEqual(len(claimed_functions(load_manifest(ROOT/'manifest.json'))),3052)
+        self.assertEqual(len(claimed_functions(load_manifest(ROOT/'manifest.json'))),3056)
     def test_source_manifest_tamper_rejected(self):
         with patch.object(stage,'MANIFEST_SHA','0'*64):
             with self.assertRaises(ValueError):stage.rows('usa')

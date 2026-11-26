@@ -1654,5 +1654,8 @@
   },
   "usa_promo65_promotion": {
     "format": "goemon-promo65-original-ido-v1"
+  },
+  "usa_ebi_slide9_promotion": {
+    "format": "goemon-ebi-slide9-original-ido-v1"
   }
 }
