@@ -1,6 +1,10 @@
-# Goemon Speedrun Tools v0.11.92 — Native watch repair and Ebi Slide capture
+# Goemon Speedrun Tools v0.11.93 — Persistent and responsive native trace capture
 
 > **Repository branch policy (23 November 2026):** Toolkit development uses `stable/toolkit` → `toolkit/<topic>` → PR to `stable/toolkit`. Decomp work uses `stable/decomp` → `decomp/<topic>` → PR to `stable/decomp`. `main` and `chatgptweb/decomp` are legacy names, not new baselines. Read [BRANCHES.md](BRANCHES.md). Never merge the entire branches together.
+
+## v0.11.93 — Persistent and responsive native trace capture
+
+Native watch/timeline editor drafts and batch size persist locally, with fresh locator validation before using saved generated player watches. Frame ranges (`1-120 - 80 0`) reduce repetitive input lines; Step +1 uses the manual controls rather than the retained timeline. Long batches show progress, trace table updates append in small chunks, and **Copy trace** or Ctrl+A/Ctrl+C (Cmd+A/Cmd+C on macOS) copies the original captured rows as TSV. The trace itself is not persisted. See [native setup](docs/MUPEN_NATIVE.md).
 
 ## v0.11.92 — Native watch repair and Ebi Slide capture
 

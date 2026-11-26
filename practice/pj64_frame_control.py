@@ -17,23 +17,31 @@ CRCS = {'usa': (0xFCBCCB21, 0x72903C6B), 'japan': (0x832C168B, 0x56A2CDAE)}
 
 
 def parse_inputs(text: str, count: int, default: dict, *, max_count: int = 60) -> list[dict]:
-    """Relative offset (1-based), buttons joined by +, X, Y; unspecified uses default."""
+    """Relative offset or inclusive range (1-based), buttons, X, Y; gaps use default."""
     if type(count) is not int or not 1 <= count <= max_count:
         raise ValueError(f'Step count must be 1..{max_count}')
     result = [dict(default) for _ in range(count)]
     seen = set()
     for line in text.splitlines():
-        if not line.strip():
+        if not line.strip() or line.lstrip().startswith('#'):
             continue
         off, buttons, x, y = line.split()
-        n = int(off)
-        if not 1 <= n <= count or n in seen:
+        span = re.fullmatch(r'([0-9]+)(?:-([0-9]+))?', off)
+        if not span:
+            raise ValueError('Expected a relative frame or inclusive frame range')
+        first, last = int(span[1]), int(span[2] or span[1])
+        if not 1 <= first <= last <= count:
             raise ValueError('Timeline offsets must be unique and within the step count')
-        seen.add(n)
+        frames = range(first, last+1)
+        if any(n in seen for n in frames):
+            raise ValueError('Timeline offsets must be unique and within the step count')
+        seen.update(frames)
         names = [] if buttons == '-' else buttons.upper().split('+')
         if any(name not in BUTTONS for name in names):
             raise ValueError('Unknown N64 button')
-        result[n - 1] = controller_input(names, int(x), int(y))
+        value = controller_input(names, int(x), int(y))
+        for n in frames:
+            result[n - 1] = dict(value)
     return result
 
 

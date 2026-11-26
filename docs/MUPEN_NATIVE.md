@@ -34,15 +34,18 @@ Watches may be entered before launch or edited during a session. Pause and stop 
 
 Each line is `name u8/s8/u16/s16/u32/s32/f32 hex_address` or `name u16 @catalogue_id`. At most 24 watches. An explicit pointer chain such as `example f32 80001000->5C->20` means read a u32 guest pointer at 0x80001000, add 0x5C, read another u32 pointer there, add 0x20 and read the final float. This address is illustrative, not a player root. A `@catalogue_id` root requires a registered 4-byte field. Every hop and final read must be aligned within the first 4 MiB of KSEG0 RAM, with at most four dereferences; invalid/null pointers return unavailable. A valid address does not prove the object is still the player. No writes from the watch editor. On core 2.6.0, the documented `DebugMemGetPointer` supplies native uint32 words regardless of debugger capability, matching the Dashboard managed reader layout; other supported debugger cores use typed reads and require readable RDRAM flags. Failed reads show individual reasons in the report and a summary in the status. Reads are sampled at core callbacks. **Locate Player (JP)** is a paused, read-only first-4-MiB snapshot search for the Japan-0 original callback pair `801D0F54` at task+8 and `801D1228` at task+10, with action/object/context pointer and character checks. A unique structural candidate fills the Ebi Slide preset and clears old traces only with confirmation. Verify movement and transformation before interpreting it as the active player. Each subsequent sample checks the callback pair; a changed signature makes task watches unavailable until relocated. No automatic selection of ambiguous matches. Relocate after scene changes even if the signature remains present.
 
-Timeline syntax uses the same relative step format as Project64, e.g.:
+Watch and timeline editor drafts and the step count are saved locally in `native-inspector.json` alongside launcher preferences, not in Git. Restored generated Locate Player watches are **not** installed into a new emulator until the player is located again; manually entered absolute watches are still user-supplied hypotheses. No trace data or active buttons/stick state is persisted.
+
+Timeline syntax accepts single relative frame numbers or inclusive ranges (no overlaps), e.g. for a 600-frame batch:
 
 ```
-1 - 80 0
-2 - 0 0
-3 CU 0 0
+1-120 - 80 0
+121-126 - 0 0
+127-132 CU 0 0
+133-600 - 0 0
 ```
 
-Steps call native `M64CMD_ADVANCE_FRAME` and wait for the native frame callback **and** paused state. A batch rejects extra callbacks, timeouts and oversized input sequences (max 600). Each callback records P1 plugin polls since the previous callback (for a stepped batch the counter resets at the step request) and the last requested input, not proof that the game consumed it. Record toggles continuous capture, with a bounded 3,600-row buffer; step captures even with Record off. Export CSV/JSON, compare with a compatible JSON trace by relative row, orange for changes and red for differences. Raw traces stay private; don't commit them.
+Unspecified frames use the manual buttons/X/Y controls. **Step +1** ignores the timeline and uses those controls, whereas **Run timeline** uses the specified count and timeline. This is an illustrative transformation timing control, not a proven Ebi Slide sequence. Steps call native `M64CMD_ADVANCE_FRAME` and wait for the native frame callback **and** paused state. A batch rejects extra callbacks, timeouts and oversized input sequences (max 600). Each callback records P1 plugin polls since the previous callback (for a stepped batch the counter resets at the step request) and the last requested input, not proof that the game consumed it. Record toggles continuous capture, with a bounded 3,600-row buffer; step captures even with Record off. Long step batches show progress and return to paused state. The trace table updates in incremental chunks; **Copy trace** copies all original captured rows with tab-separated headers, even while the table is still rendering. Click the table then Ctrl+A/Ctrl+C (Cmd+A/Cmd+C on macOS) to copy all, or select specific rows and copy. Copy is from original capture, not comparison display. Export CSV/JSON, compare with a compatible JSON trace by relative row, orange for changes and red for differences. Raw traces stay private; don't commit them.
 
 ## Dashboard connection (Linux Japan-0, core 2.6.0)
 

@@ -1,5 +1,7 @@
 """Standalone or embedded UI for the native Mupen64Plus research session."""
 from __future__ import annotations
+import csv
+import io
 import json
 import shutil
 from pathlib import Path
@@ -13,6 +15,8 @@ from tkinter import ttk, filedialog, messagebox
 
 from practice.mupen_native import PREFIX, write_trace, MAX_NATIVE_STEPS, MAX_TRACE_ROWS
 from practice.mupen_input_build import default_input_path, request_input_build
+from practice.native_inspector_preferences import (inspector_preferences_path, load_editor_preferences,
+    save_editor_preferences)
 
 JP_CONTROLLER_WATCHES = '\n'.join(f'{name} {kind} @research:controller_japan_{name}' for name,kind in (
     ('raw_x','s16'),('raw_y','s16'),('magnitude','f32'),('processed_x','f32'),
@@ -57,12 +61,15 @@ def discover_prefix(prefix):
 
 
 class NativeFrameUi:
-    def __init__(self, root, *, parent=None):
+    def __init__(self, root, *, parent=None, settings_path=None):
         self.root=root; self.process=None; self.busy=False; self.report=None; self.reference=None
         self.events=queue.Queue(); self.generation=0; self.closed=False
         self.pending=None; self.inflight=None; self.last_render=None; self.last_error=''
         self.managed_ram=None; self.session_rom=None
         self.build_future=None
+        self.settings_path=Path(settings_path) if settings_path is not None else inspector_preferences_path()
+        self.settings_job=None; self.settings_last=None; self.located_text=None
+        self.render_job=None; self.render_cursor=0; self.trace_select_all=False
         self.embedded=parent is not None
         if not self.embedded:
             root.title(f'Goemon Native Frame Inspector {DISPLAY_VERSION}')
@@ -98,6 +105,7 @@ class NativeFrameUi:
         for label,op in [('Record / stop','record'),('Clear trace','clear')]:
             ttk.Button(extra,style='Inspector.TButton',text=label,command=lambda op=op:self.control(op)).pack(side='left')
         self.mini_button=ttk.Button(extra,style='Inspector.TButton',text='Unlock Mini Ebisumaru (JP)',command=self.unlock_mini,state='disabled');self.mini_button.pack(side='left')
+        ttk.Button(extra,style='Inspector.TButton',text='Copy trace',command=self.copy_trace).pack(side='left')
         ttk.Label(body,textvariable=self.status,wraplength=990).pack(anchor='w')
         row=ttk.Frame(body); row.pack(fill='x')
         self.buttons={b:tk.BooleanVar() for b in BUTTONS}
@@ -113,9 +121,14 @@ class NativeFrameUi:
         ttk.Button(row,style='Inspector.TButton',text='Clear comparison',command=self.clear_compare).pack(side='left')
         edit=ttk.Frame(body);edit.pack(fill='x');edit.columnconfigure(0,weight=1);edit.columnconfigure(1,weight=1)
         ttk.Label(edit,text='Watches: name type address / root->hex offset (s16 supported)').grid(row=0,column=0,sticky='w')
-        ttk.Label(edit,text='Timeline: relative step, buttons (+), X, Y').grid(row=0,column=1,sticky='w')
+        ttk.Label(edit,text='Timeline: frame or range, buttons (+), X, Y').grid(row=0,column=1,sticky='w')
         self.watches=tk.Text(edit,height=3,width=40);self.watches.grid(row=1,column=0,sticky='ew')
         self.timeline=tk.Text(edit,height=3,width=35);self.timeline.grid(row=1,column=1,sticky='ew')
+        self.restore_editor_settings()
+        for editor in (self.watches,self.timeline):
+            editor.edit_modified(False)
+            editor.bind('<<Modified>>',self._editor_modified,add='+')
+        self.n.trace_add('write',lambda *_:self._schedule_save())
         actions=ttk.Frame(edit);actions.grid(row=2,column=0,sticky='w')
         ttk.Button(actions,style='Inspector.TButton',text='Apply watches (paused)',command=self.apply_watches).pack(side='left')
         ttk.Button(actions,style='Inspector.TButton',text='JP controller preset',command=self.controller_preset).pack(side='left')
@@ -125,8 +138,49 @@ class NativeFrameUi:
         for orient,cmd,r,c,sticky in [('vertical',self.table.yview,0,1,'ns'),('horizontal',self.table.xview,1,0,'ew')]:
             sb=ttk.Scrollbar(grid,orient=orient,command=cmd);sb.grid(row=r,column=c,sticky=sticky);self.table.configure(**{('y' if orient=='vertical' else 'x')+'scrollcommand':sb.set})
         self.table.tag_configure('changed',background='#a45a14',foreground='white');self.table.tag_configure('different',background='#8b2635',foreground='white')
+        for key in ('<Control-a>','<Control-A>') + (('<Command-a>','<Command-A>') if sys.platform=='darwin' else ()):
+            self.table.bind(key,self.select_all_trace)
+        for key in ('<Control-c>','<Control-C>') + (('<Command-c>','<Command-C>') if sys.platform=='darwin' else ()):
+            self.table.bind(key,lambda _event:self.copy_trace(selected=True))
+        for key in ('<ButtonPress-1>','<Up>','<Down>','<Home>','<End>'):
+            self.table.bind(key,lambda _event:setattr(self,'trace_select_all',False),add='+')
         self.drain_id=root.after(50,self.drain)
         self.poll_id=root.after(700,self.poll)
+
+    def restore_editor_settings(self):
+        values=load_editor_preferences(self.settings_path)
+        if not values:return
+        self.watches.insert('1.0',values['watches']);self.timeline.insert('1.0',values['timeline'])
+        self.n.set(values['steps'] or '1')
+        if values['located'] and values['watches'].strip():
+            self.located_text=values['watches'].strip()
+        self.settings_last=(values['watches'],values['timeline'],self.n.get(),bool(self.located_text))
+
+    def _editor_modified(self,event):
+        if event.widget.edit_modified():
+            event.widget.edit_modified(False)
+            self._schedule_save()
+
+    def _schedule_save(self):
+        if self.closed:return
+        if self.settings_job is not None:self.root.after_cancel(self.settings_job)
+        self.settings_job=self.root.after(350,self.save_editor_settings)
+
+    def save_editor_settings(self):
+        if self.settings_job is not None:
+            self.root.after_cancel(self.settings_job);self.settings_job=None
+        try:
+            watches=self.watches.get('1.0','end-1c');timeline=self.timeline.get('1.0','end-1c');steps=self.n.get()
+        except tk.TclError:return  # parent already destroyed its editor widgets
+        located=bool(self.located_text and watches.strip()==self.located_text)
+        snapshot=(watches,timeline,steps,located)
+        if snapshot==self.settings_last:return
+        if self.settings_last is None and snapshot==('','','1',False):return
+        try:
+            save_editor_preferences(self.settings_path,watches=watches,timeline=timeline,steps=steps,located=located)
+            self.settings_last=snapshot
+        except (OSError,ValueError) as exc:
+            if not self.closed:self.status.set(f'Could not save inspector editor: {exc}')
 
     def set_setup_visible(self,visible):
         self.setup_visible=bool(visible)
@@ -206,12 +260,16 @@ class NativeFrameUi:
             self.managed_ram=None; self.session_rom=Path(paths['rom']).resolve()
             args=[sys.executable,'-m','practice.mupen_native']
             for key,val in paths.items():args.extend(['--'+key,val])
-            args.extend(['--watches',self.watches.get('1.0','end')])
+            self.save_editor_settings()
+            watch_text=self.watches.get('1.0','end-1c')
+            # A saved locator result is an editor draft, not validated in a new child.
+            needs_relocate=bool(self.located_text and watch_text.strip()==self.located_text)
+            args.extend(['--watches','' if needs_relocate else watch_text])
             # Keep the SDL/native core on the child process main thread.
             self.process=subprocess.Popen(args,cwd=str(Path(__file__).resolve().parents[1]),stdin=subprocess.PIPE,stdout=subprocess.PIPE,stderr=subprocess.STDOUT,text=True,bufsize=1)
         except (OSError,ValueError,RuntimeError) as exc:self.status.set(str(exc));return
-        self.generation+=1;gen=self.generation;proc=self.process;self.busy=True;self.inflight='launch';self.pending=None;self.report=None;self.reference=None;self.last_render=None;self.last_error=''
-        self.start_button.state(['disabled']); self.set_setup_visible(False); self.status.set('Starting native core…')
+        self._cancel_render();self.generation+=1;gen=self.generation;proc=self.process;self.busy=True;self.inflight='launch';self.pending=None;self.report=None;self.reference=None;self.last_render=None;self.last_error='';self.trace_select_all=False
+        self.start_button.state(['disabled']); self.set_setup_visible(False); self.status.set('Starting native core…' + (' Pause and locate the player again.' if needs_relocate else ''))
         def read():
             last_log=''
             for line in proc.stdout:
@@ -237,6 +295,7 @@ class NativeFrameUi:
             if op!='status':self.last_error=''
             self.process.stdin.write(json.dumps(dict(op=op,**fields))+'\n');self.process.stdin.flush()
             self.busy=True;self.inflight=op
+            if op=='step':self.status.set(f"Stepping 0/{len(fields['inputs'])} core frames…")
         except (OSError,ValueError) as exc:self.status.set(str(exc))
 
     def unlock_mini(self):
@@ -270,7 +329,13 @@ class NativeFrameUi:
         if self.report['rows']:
             replace=messagebox.askyesno('Replace watch set?', 'Changing watches clears the current trace. Export it first if needed. Apply and clear?',parent=self.root)
             if not replace:return
-        self.control('watches',text=self.watches.get('1.0','end'),replace_trace=replace)
+        watch_text=self.watches.get('1.0','end-1c')
+        self.save_editor_settings()
+        if self.located_text and watch_text.strip()==self.located_text:
+            # Re-resolve the candidate instead of trusting a saved absolute address.
+            self.control('locate_player',replace_trace=replace)
+        else:
+            self.control('watches',text=watch_text,replace_trace=replace)
 
     def locate_player(self):
         if not self.process or not self.report or self.report['state']!=3 or self.report['recording']:
@@ -284,8 +349,36 @@ class NativeFrameUi:
         self.control('locate_player',replace_trace=replace)
 
     def step(self,n=None):
-        try:self.control('step',inputs=parse_inputs(self.timeline.get('1.0','end'),int(self.n.get()) if n is None else n,self.default(),max_count=MAX_NATIVE_STEPS))
+        try:
+            self.save_editor_settings()
+            default=self.default()
+            # Single-step is independent of the retained multi-frame timeline.
+            inputs=([default] if n==1 else parse_inputs(self.timeline.get('1.0','end'),int(self.n.get()) if n is None else n,default,max_count=MAX_NATIVE_STEPS))
+            self.control('step',inputs=inputs)
         except ValueError as exc:self.status.set(str(exc))
+
+    def select_all_trace(self,_event=None):
+        self.trace_select_all=True
+        self.table.selection_set(self.table.get_children())
+        return 'break'
+
+    def copy_trace(self,selected=False):
+        if not self.report or not self.report['rows']:
+            self.status.set('No captured rows to copy');return 'break'
+        rows=self.report['rows'];columns=['serial','frame','polls','buttons','x','y']+[w['name'] for w in self.report['watches']]
+        if selected and not self.trace_select_all:
+            indices=sorted(int(i) for i in self.table.selection())
+            rows=[rows[i] for i in indices if i<len(rows)]
+        if not rows:
+            self.status.set('No captured rows selected');return 'break'
+        stream=io.StringIO();writer=csv.writer(stream,delimiter='\t',lineterminator='\n')
+        writer.writerow(columns)
+        writer.writerows([str(row.get(k)) if k in row else '' for k in columns] for row in rows)
+        try:
+            self.root.clipboard_clear();self.root.clipboard_append(stream.getvalue())
+            self.status.set(f'Copied {len(rows)} captured rows as tab-separated text (original trace).')
+        except tk.TclError as exc:self.status.set(f'Clipboard unavailable: {exc}')
+        return 'break'
 
     def export(self):
         if not self.report:return
@@ -308,21 +401,44 @@ class NativeFrameUi:
     def clear_compare(self):
         self.reference=None;self.render()
 
+    def _cancel_render(self):
+        if self.render_job is not None:
+            self.root.after_cancel(self.render_job);self.render_job=None
+
     def render(self):
         if not self.report:return
         snapshot=(self.report['rows'],self.report['watches'],self.reference)
-        if snapshot==self.last_render:return
+        previous=self.last_render
+        if snapshot==previous:return
+        self._cancel_render()
+        rows,watches,ref=snapshot
+        append_only=(previous is not None and previous[1]==watches and previous[2] is None
+                     and ref is None and len(rows)>=len(previous[0]) and rows[:len(previous[0])]==previous[0])
         self.last_render=snapshot
-        rows=self.report['rows'];ref=self.reference['rows'] if self.reference else []
-        columns=['serial','frame','polls','buttons','x','y']+[w['name'] for w in self.report['watches']]
-        self.table.delete(*self.table.get_children());self.table['columns']=columns
-        for name in columns:self.table.heading(name,text=name);self.table.column(name,width=90)
-        for i in range(max(len(rows),len(ref))):
+        if not append_only:
+            self.trace_select_all=False;self.render_cursor=0
+            self.table.delete(*self.table.get_children())
+            columns=['serial','frame','polls','buttons','x','y']+[w['name'] for w in watches]
+            self.table['columns']=columns
+            for name in columns:self.table.heading(name,text=name);self.table.column(name,width=90)
+        self._render_chunk()
+
+    def _render_chunk(self):
+        self.render_job=None
+        if self.closed or self.last_render is None:return
+        rows,watches,reference=self.last_render;ref=reference['rows'] if reference else []
+        columns=['serial','frame','polls','buttons','x','y']+[w['name'] for w in watches]
+        total=max(len(rows),len(ref));end=min(total,self.render_cursor+100)
+        for i in range(self.render_cursor,end):
             r=rows[i] if i<len(rows) else {};p=rows[i-1] if 0<i<len(rows) else r
             other=ref[i] if i<len(ref) else {}
-            changed=any(r.get(k)!=p.get(k) for k in columns[2:]);different=self.reference is not None and (i>=len(rows) or i>=len(ref) or any(r.get(k)!=other.get(k) for k in columns[2:]))
+            changed=any(r.get(k)!=p.get(k) for k in columns[2:]);different=reference is not None and (i>=len(rows) or i>=len(ref) or any(r.get(k)!=other.get(k) for k in columns[2:]))
             values=[f'{r.get(k)} / {other.get(k)}' if different and k not in ('serial','frame') and r.get(k)!=other.get(k) else r.get(k,'') for k in columns]
-            self.table.insert('','end',values=values,tags=('different',) if different else ('changed',) if changed else ())
+            self.table.insert('','end',iid=str(i),values=values,tags=('different',) if different else ('changed',) if changed else ())
+        if self.trace_select_all and end>self.render_cursor:
+            self.table.selection_add(tuple(str(i) for i in range(self.render_cursor,end)))
+        self.render_cursor=end
+        if end<total:self.render_job=self.root.after(1,self._render_chunk)
 
     def drain(self):
         if self.closed:return
@@ -331,6 +447,10 @@ class NativeFrameUi:
             while True:
                 gen,kind,payload=self.events.get_nowait()
                 if gen!=self.generation:continue
+                if kind=='report' and payload.get('progress'):
+                    progress=payload['progress']
+                    if self.inflight=='step':self.status.set(f"Stepping {progress['done']}/{progress['total']} core frames…")
+                    continue  # progress is not command completion
                 completed=self.inflight
                 self.busy=False;self.inflight=None
                 if kind=='exit':
@@ -340,7 +460,9 @@ class NativeFrameUi:
                     previous=self.report;self.report=payload['report'];r=self.report
                     self.managed_ram=payload.get('managed_ram')
                     if completed=='locate_player' and r.get('player_text'):
+                        self.located_text=r['player_text'].strip()
                         self.watches.delete('1.0','end');self.watches.insert('1.0',r['player_text'])
+                        self.save_editor_settings()
                     if previous and previous['watches']!=r['watches']:
                         self.reference=None;self.last_render=None
                     can_unlock=r.get('capabilities',{}).get('mini_unlock') and r['state']==3 and not r['recording']
@@ -351,6 +473,8 @@ class NativeFrameUi:
                     errors=r.get('watch_errors',{})
                     diagnostic=(f"{len(errors)} watch(s) unavailable: "+'; '.join(f'{k}: {v}' for k,v in list(errors.items())[:2])) if errors else ''
                     player=f" | task 0x{r['player_base']:08X}" if r.get('player_base') else ''
+                    if not r.get('player_base') and self.located_text and self.watches.get('1.0','end-1c').strip()==self.located_text and not diagnostic:
+                        diagnostic='Saved player watches: pause and Locate Player again.'
                     self.status.set(f"{r['region']} | {state} | core callback {r['serial']} | {len(r['rows'])}/{MAX_TRACE_ROWS} captured | {r.get('input_mode','scripted')} input | recording {r['recording']}{player} | {r.get('ram_reader','')} | {self.last_error or r['error'] or diagnostic or notice}");self.render()
         except queue.Empty:pass
         if self.process and not self.busy and self.pending:
@@ -386,6 +510,8 @@ class NativeFrameUi:
         # Tk can destroy the parent without invoking a window protocol.
         # This is idempotent and leaves an unrelated toolkit root untouched.
         if self.closed:return
+        self.save_editor_settings()
+        self._cancel_render()
         self.closed=True
         self.generation+=1
         self.pending=None

@@ -20,7 +20,9 @@ class NativeUiTests(unittest.TestCase):
     def setUp(self):
         try:self.root=tk.Tk()
         except tk.TclError as exc:self.skipTest(str(exc))
-        self.ui=NativeFrameUi(self.root);self.root.withdraw()
+        self.temp=tempfile.TemporaryDirectory();self.addCleanup(self.temp.cleanup)
+        self.settings=Path(self.temp.name)/'native-inspector.json'
+        self.ui=NativeFrameUi(self.root,settings_path=self.settings);self.root.withdraw()
     def tearDown(self):
         if hasattr(self,'ui'):self.ui.close()
     def test_automatic_build_populates_input_and_preserves_manual_choice(self):
@@ -102,6 +104,69 @@ class NativeUiTests(unittest.TestCase):
         sent=json.loads(stream.getvalue());self.assertEqual(len(sent['inputs']),600)
         self.assertEqual(sent['inputs'][13]['buttons'],8);ui.process=None
 
+    def test_editor_persistence_and_stale_locator_not_applied_at_launch(self):
+        ui=self.ui;w='pre_callback u32 8016F788'
+        ui.watches.insert('1.0',w);ui.located_text=w
+        ui.timeline.insert('1.0','1-120 - 80 0');ui.n.set('600')
+        ui.save_editor_settings();ui.close()
+        self.root=tk.Tk();self.root.withdraw();self.ui=ui=NativeFrameUi(self.root,settings_path=self.settings)
+        self.assertEqual(ui.watches.get('1.0','end-1c'),w)
+        self.assertEqual(ui.timeline.get('1.0','end-1c'),'1-120 - 80 0')
+        self.assertEqual(ui.n.get(),'600');self.assertEqual(ui.located_text,w)
+        for k,v in ui.paths.items():v.set('/tmp/custom-'+k)
+        proc=SimpleNamespace(stdin=io.StringIO(),stdout=[],wait=lambda:0)
+        with patch('practice.mupen_native_ui.subprocess.Popen',return_value=proc) as launch:
+            ui.start();args=launch.call_args.args[0]
+            self.assertEqual(args[args.index('--watches')+1],'')
+        ui.process=None
+        stream=io.StringIO();ui.process=SimpleNamespace(stdin=stream);ui.busy=False;ui.inflight=None
+        ui.report=dict(region='japan',state=3,recording=False,rows=[],watches=[])
+        ui.apply_watches();self.assertEqual(json.loads(stream.getvalue())['op'],'locate_player');ui.process=None
+
+    def test_editor_autosave_and_bad_settings(self):
+        from practice.native_inspector_preferences import load_editor_preferences
+        ui=self.ui;ui.watches.insert('1.0','value u32 80001000');ui.timeline.insert('1.0','1-60 - 80 0')
+        ui.n.set('60');self.root.update()
+        done=tk.BooleanVar(value=False);self.root.after(450,lambda:done.set(True));self.root.wait_variable(done)
+        self.assertEqual(load_editor_preferences(self.settings)['steps'],'60')
+        self.settings.write_text('{bad json');self.assertEqual(load_editor_preferences(self.settings),{})
+        self.settings.write_text(json.dumps(dict(format='goemon-native-inspector-v1',watches='x'*8193,timeline='',steps='1')))
+        self.assertEqual(load_editor_preferences(self.settings),{})
+
+    def test_copy_original_rows_during_incremental_render_and_append(self):
+        ui=self.ui;w=dict(name='action',kind='u8',address=0x80001000)
+        def row(i):return dict(serial=i+1,frame=i,polls=1,buttons=0,x=0,y=0,action=i%256)
+        ui.report=dict(watches=[w],rows=[row(i) for i in range(600)]);ui.render()
+        self.assertEqual(len(ui.table.get_children()),100);self.assertIsNotNone(ui.render_job)
+        ui.select_all_trace();ui.copy_trace(selected=True)
+        clip=self.root.clipboard_get().splitlines()
+        self.assertEqual(len(clip),601);self.assertEqual(clip[0],'serial\tframe\tpolls\tbuttons\tx\ty\taction')
+        self.assertEqual(clip[-1].split('\t')[:2],['600','599'])
+        previous=ui.table.get_children();ui.report=dict(watches=[w],rows=[row(i) for i in range(650)]);ui.render()
+        self.assertEqual(ui.table.get_children()[:100],previous)
+        while ui.render_cursor<650:
+            ui._cancel_render();ui._render_chunk()
+        self.assertEqual(len(ui.table.get_children()),650);self.assertEqual(len(ui.table.selection()),650)
+        ui.trace_select_all=False;ui.table.selection_set('17');ui.copy_trace(selected=True)
+        self.assertEqual(self.root.clipboard_get().splitlines()[1].split('\t')[:2],['18','17'])
+        ui.report=dict(watches=[w],rows=[]);ui.render();self.assertEqual(len(ui.table.get_children()),0)
+
+    def test_full_trace_large_table_is_chunked(self):
+        ui=self.ui;watches=[dict(name=f'w{i}',kind='u32',address=0x80001000+i*4) for i in range(24)]
+        rows=[dict(serial=i+1,frame=i,polls=1,buttons=0,x=0,y=0,**{w['name']:i for w in watches}) for i in range(3600)]
+        ui.report=dict(watches=watches,rows=rows);ui.render()
+        self.assertEqual(ui.render_cursor,100)
+        ui.copy_trace();self.assertEqual(len(self.root.clipboard_get().splitlines()),3601)
+        while ui.render_cursor<len(rows):ui._cancel_render();ui._render_chunk()
+        self.assertEqual(len(ui.table.get_children()),3600)
+
+    def test_single_step_ignores_timeline_and_progress_keeps_busy(self):
+        ui=self.ui;stream=io.StringIO();ui.process=SimpleNamespace(stdin=stream)
+        ui.timeline.insert('1.0','2-120 - 80 0');ui.buttons['CU'].set(True);ui.step(1)
+        self.assertEqual(json.loads(stream.getvalue())['inputs'],[dict(NEUTRAL,buttons=8)])
+        ui.events.put((ui.generation,'report',dict(progress=dict(done=1,total=1))))
+        ui.drain();self.assertTrue(ui.busy);self.assertEqual(ui.inflight,'step');self.assertIn('1/1',ui.status.get());ui.process=None
+
     def test_rows_compare(self):
         ui=self.ui; w=dict(name='action',kind='u16',address=0x80001000)
         def row(i,v):return dict(serial=i,frame=i,polls=1,buttons=0,x=0,y=0,action=v)
@@ -121,9 +186,17 @@ class EmbeddedNativeUiTests(unittest.TestCase):
         try:self.root=tk.Tk()
         except tk.TclError as exc:self.skipTest(str(exc))
         self.root.withdraw()
+        self.temp=tempfile.TemporaryDirectory();self.addCleanup(self.temp.cleanup)
+        self.settings_patch=patch('practice.mupen_native_ui.inspector_preferences_path',return_value=Path(self.temp.name)/'native-inspector.json')
+        self.settings_patch.start();self.addCleanup(self.settings_patch.stop)
 
     def tearDown(self):
-        try:self.root.destroy()
+        try:
+            # The stub also builds the unrelated Project64 polling page.
+            # Cancel its timers before destroying this isolated Tk interpreter.
+            for timer in self.root.tk.call('after','info'):
+                self.root.after_cancel(timer)
+            self.root.destroy()
         except tk.TclError:pass
 
     def test_embedded_panel_does_not_change_root_and_shutdown_closes_pipe(self):

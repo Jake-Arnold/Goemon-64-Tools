@@ -12,6 +12,18 @@ class FrameTests(unittest.TestCase):
         self.assertEqual(parse_inputs('2 Z+B -80 80\n3 - 0 0',3,base),[base,{'buttons':0x6000,'x':-80,'y':80},{'buttons':0,'x':0,'y':0}])
         for text in ('0 A 0 0','1 A 0 0\n1 B 0 0','2 X 0 0','2 A 81 0','4 A 0 0'):
             with self.assertRaises(ValueError):parse_inputs(text,3,base)
+    def test_inclusive_ranges_comments_and_gaps(self):
+        base=controller_input([],0,0)
+        result=parse_inputs('# run\n1-120 - 80 0\n127-132 CU 0 0\n133-600 - 0 0',600,base,max_count=600)
+        self.assertEqual(len(result),600)
+        self.assertTrue(all(r['x']==80 and r['buttons']==0 for r in result[:120]))
+        self.assertEqual(result[120:126],[base]*6)
+        self.assertTrue(all(r['buttons']==8 for r in result[126:132]))
+        self.assertEqual(result[132:],[base]*468)
+        for bad in ('1-5 - 0 0\n5 CU 0 0','5-1 - 0 0','0-5 - 0 0','1-61 - 0 0','1-2-3 - 0 0'):
+            with self.assertRaises(ValueError):parse_inputs(bad,60,base)
+        with self.assertRaises(ValueError):parse_inputs('1-120 - 80 0',120,base)
+
     def test_script(self):
         s=export_script('japan',47651,'a'*32,'80001000')
         self.assertNotIn('__GOEMON_CONFIG__',s)

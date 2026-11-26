@@ -114,6 +114,14 @@ class NativeInspectorTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as d:
             a=Path(d)/'trace.json';b=Path(d)/'trace.csv';write_trace(a,r);write_trace(b,r)
             self.assertEqual(json.loads(a.read_text())['rows'],r['rows']);self.assertIn('core-frame',b.read_text())
+    def test_long_step_progress_is_not_a_frame_or_state_change(self):
+        i=self.setup_inspector(); progress=[]
+        report=i.control(dict(op='step',inputs=[NEUTRAL]*600),progress=lambda a,b:progress.append((a,b)))
+        self.assertEqual(progress[0],(1,600));self.assertEqual(progress[-1],(600,600))
+        self.assertTrue(all(a[0]<b[0] for a,b in zip(progress,progress[1:])))
+        self.assertEqual(len(report['rows']),600);self.assertEqual(report['serial'],600)
+        self.assertEqual(report['state'],PAUSED)
+
     def test_running_and_multiple_callback_rejected(self):
         i=self.setup_inspector();i.control(dict(op='resume'))
         with self.assertRaises(RuntimeError):i.control(dict(op='step',inputs=[NEUTRAL]))

@@ -404,7 +404,7 @@ class Inspector:
                         mini_unlock=self.unlock_result, input_mode='physical' if self.physical_mode else 'scripted',
                         capabilities=dict(frame_advance=True,scripted_p1=True,physical_input=bool(getattr(self.core,'physical_available',False)),typed_reads=True,live_watches=True,pointer_watches=True,logic_updates=False,breakpoints=False,ram_writes=False,mini_unlock=self.region=='japan' and getattr(self.core,'core_version',None)==0x020600,savestate_control=False,core_debugger=bool(getattr(self.core,'debugger',False))))
 
-    def control(self,q):
+    def control(self,q, *, progress=None):
         op=q.get('op')
         if op=='status': return self.report()
         if self.finished: raise RuntimeError('Session closed')
@@ -489,11 +489,15 @@ class Inspector:
                 self.stepping=True; self.error=''
             try:
                 deadline=time.monotonic()+max(30,len(inputs)*0.5)
-                for value in inputs:
+                last_progress=time.monotonic()
+                for index,value in enumerate(inputs,1):
                     before=self.serial; self.set_input(value); self.core.polls()
                     self.core.cmd(ADVANCE)
                     self.wait(lambda:self.serial>before and self.state==PAUSED,timeout=min(10,max(0,deadline-time.monotonic())))
                     if self.serial!=before+1 or self.error: raise RuntimeError(self.error or 'Multiple core callbacks during single step')
+                    now=time.monotonic()
+                    if progress is not None and (index==1 or index==len(inputs) or now-last_progress>=0.5):
+                        progress(index,len(inputs)); last_progress=now
             except Exception:
                 if not self.finished and self.state==RUNNING:
                     try: self.core.cmd(PAUSE)
@@ -529,7 +533,7 @@ def worker(args):
                     q=json.loads(line)
                     if not isinstance(q,dict): raise ValueError('Expected command object')
                     with inspector.operation:
-                        emit(response(inspector.control(q)))
+                        emit(response(inspector.control(q, progress=lambda done,total: emit(dict(progress=dict(done=done,total=total))))))
                 except (ValueError, KeyError, TypeError, RuntimeError) as exc:
                     emit(dict(ok=False,error=str(exc)))
         except OSError:
