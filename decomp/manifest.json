@@ -1667,7 +1667,8 @@
   "usa_batch_registry": {
     "format": "goemon-batch-registry-v1",
     "batches": [
-      "cross_region_zero_token_18"
+      "cross_region_zero_token_18",
+      "pilot_exec_batch2_25"
     ]
   }
 }
