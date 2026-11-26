@@ -1,3 +1,11 @@
+## 2026-11-26 UTC — Four adjacent exit-overlay native matches (USA +2 / JP +2, ISOLATED_EXACT / RESEARCH_ONLY)
+
+- Verified live stable/decomp ee6328ab121bb59b27f03a54c3c80563a720fe77, authenticated source archive, pinned upstream 7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee, both retail/expanded ROM hashes and original IDO fingerprint.
+- USA func_8021617C_5D164C / JP func_8021AEF4_5D6484 (172B each); USA func_80216E54_5D2324 / JP func_8021BBC4_5D7154 (124B each). Four distinct exact original-address bodies, 592B, 148 instructions, exact positive ELF identities, all 12 named raw/linked relocations equal independent original-Splat references. No code or relocation patch. 56 unique variants compiled/replayed without errors, six passing variants, six selected negative controls rejected.
+- Source-order sensitivity: native bitfields plus field4 assignment before enable update 43/43, reversed order 38/43 with first +0x08. Redundant nested allocator null check and equivalent goto source exact 31/31; single guard 120B and 9/31, changed Z zero 128B and 10/31; first +0x1C. Both independently reproduced regionally. Eight actual-source GCC/Clang ASan/UBSan executions passed 278528 total cases.
+- 108B USA 802157C4 / JP 8021A554 remain 24/27; adjacent two pairs 30/32 and 28/30, float-load scheduling. Dispatcher pair still 17/64 after correcting second-argument pointer ABI; first +0x0C stack-frame mismatch. Preserve all ASM. No new fixed guest data address or gameplay claim.
+- Full owner, full canonical G2, strict inventory and promotion integrity NOT_RUN; canonical USA3056/JP2995 unchanged. No toolkit changes. Selected positive/negative C hashes verified against local compiled sources, full source-only replay kit in conversation (SHA256 601f491e7cf97b38a4220fff2d22f7b41bafaee3e149512c7c997e940f542e83). Continue draft #280. Next common float-pool scheduling and canonical integration.
+
 ## 2026-11-26 UTC — Native exit overlay coordinate wrappers (USA +1 / JP +1, ISOLATED_EXACT / RESEARCH_ONLY)
 
 - Current original stable/decomp ee6328ab121bb59b27f03a54c3c80563a720fe77 (authenticated source archive), original upstream 7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee, owner ROMs, IDO5.3 fingerprint and all CPP/assembler flags verified. Exit decoder pair and 80B initialization pair already owned by draft PR #279, excluded.
