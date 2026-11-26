@@ -1378,6 +1378,9 @@ class DecompVerificationTests(unittest.TestCase):
         if manifest.get('usa_warp_batch_a_promotion') is not None:
             from decomp import warp_batch_a_promotion as warp
             sources.update(warp.source_hashes())
+        if manifest.get('usa_promo36_promotion') is not None:
+            from decomp import promo36_promotion as promo36
+            sources.update(promo36.source_hashes())
         self.assertEqual(set(result['sources_sha256_lf']),sources)
         for name in sources:
             patches=[p for p in manifest.get('existing_source_patches', []) if p['source']==name]

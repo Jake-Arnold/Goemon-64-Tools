@@ -1332,5 +1332,19 @@
     "source_manifest": "decomp/regions/japan_0_3004_warp_batch_a.json",
     "proof": "decomp/results/japan_0_warp_batch_a_g2_20261126.json",
     "inventory": "decomp/results/japan_0_3004_warp_batch_a_inventory_20261126.json"
+  },
+  "promo36_promotion": {
+    "format": "goemon-promo36-original-ido-v1",
+    "status": "PASSED_G2_LOCAL",
+    "base_original_C": 3004,
+    "new_original_C": 15,
+    "accepted_original_C": 3019,
+    "accepted_original_bytes": 202176,
+    "asm_remaining": 4357,
+    "canonical_semantic_relocations": 80652,
+    "full_original_elf_identities": 7376,
+    "source_manifest": "decomp/regions/japan_0_3019_promo36.json",
+    "proof": "decomp/results/japan_0_promo36_g2_20261126.json",
+    "inventory": "decomp/results/japan_0_3019_promo36_inventory_20261126.json"
   }
 }

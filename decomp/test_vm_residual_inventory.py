@@ -62,7 +62,7 @@ class VmResidualInventoryTests(unittest.TestCase):
         self.assertTrue((ROOT / sources["verifier"]).is_file())
         current = json.loads((ROOT / "decomp/manifest.json").read_text())
         self.assertIn("overlay_usa_opening_new2_stage", current)
-        historical = {k:v for k,v in current.items() if k not in ("overlay_usa_opening_new2_stage", "overlay_usa_short72_stage", "usa_script_vm436_promotion", "usa_native151_promotion", "usa_script_vm440_promotion", "usa_script_vm_dual_reference", "usa_cright4_promotion", "usa_transition1_promotion", "usa_transition_final_promotion", "usa_consolidated29_promotion", "usa_batch302_promotion", "usa_wave194_promotion", "usa_promo367_promotion", "usa_promo195_promotion", "usa_promo65_promotion", "usa_ebi_slide9_promotion", "usa_warp_batch_a_promotion")}
+        historical = {k:v for k,v in current.items() if k not in ("overlay_usa_opening_new2_stage", "overlay_usa_short72_stage", "usa_script_vm436_promotion", "usa_native151_promotion", "usa_script_vm440_promotion", "usa_script_vm_dual_reference", "usa_cright4_promotion", "usa_transition1_promotion", "usa_transition_final_promotion", "usa_consolidated29_promotion", "usa_batch302_promotion", "usa_wave194_promotion", "usa_promo367_promotion", "usa_promo195_promotion", "usa_promo65_promotion", "usa_ebi_slide9_promotion", "usa_warp_batch_a_promotion", "usa_promo36_promotion")}
         original = (json.dumps(historical,indent=2)+"\n").encode()
         self.assertEqual(hashlib.sha256(original).hexdigest(), sources["manifest_sha256"])
         current_proof = json.loads((ROOT / "decomp/results/combined.json").read_text())

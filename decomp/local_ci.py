@@ -448,6 +448,7 @@ def build_steps(host_binary: Path, *, quick: bool = False):
     steps.append(('Promo65 Japan source/G2/inventory validation',[sys.executable,'-m','decomp.promo65_promotion']))
     steps.append(('Ebi Slide9 Japan source/G2/inventory validation',[sys.executable,'-m','decomp.ebi_slide9_promotion']))
     steps.append(('Warp Batch A Japan source/G2/inventory validation',[sys.executable,'-m','decomp.warp_batch_a_promotion']))
+    steps.append(('Promo36 Japan source/G2/inventory validation',[sys.executable,'-m','decomp.promo36_promotion']))
     return steps
 
 

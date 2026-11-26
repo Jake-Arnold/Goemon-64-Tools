@@ -1660,5 +1660,8 @@
   },
   "usa_warp_batch_a_promotion": {
     "format": "goemon-warp-batch-a-original-ido-v1"
+  },
+  "usa_promo36_promotion": {
+    "format": "goemon-promo36-original-ido-v1"
   }
 }
