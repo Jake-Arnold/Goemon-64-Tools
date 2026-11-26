@@ -1,6 +1,10 @@
-# Goemon Speedrun Tools v0.11.91 — Native controller and managed Japan RAM
+# Goemon Speedrun Tools v0.11.92 — Native watch repair and Ebi Slide capture
 
 > **Repository branch policy (23 November 2026):** Toolkit development uses `stable/toolkit` → `toolkit/<topic>` → PR to `stable/toolkit`. Decomp work uses `stable/decomp` → `decomp/<topic>` → PR to `stable/decomp`. `main` and `chatgptweb/decomp` are legacy names, not new baselines. Read [BRANCHES.md](BRANCHES.md). Never merge the entire branches together.
+
+## v0.11.92 — Native watch repair and Ebi Slide capture
+
+Core 2.6.0 uses its native RDRAM word API regardless of debugger capability. Pause in normal Japanese gameplay, click **Locate Player (JP)** to populate the callback-pair candidate and Ebi Slide watches, then verify action and motion by stepping. Up to 600 scripted frames per batch and 3,600 recorded frames; individual failed watch reads report reasons. macOS startup build compatibility corrected. See [native setup](docs/MUPEN_NATIVE.md).
 
 ## v0.11.91 — Physical controller and managed Japan RAM (experimental)
 

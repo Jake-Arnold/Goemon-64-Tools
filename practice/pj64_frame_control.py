@@ -16,10 +16,10 @@ BUTTONS = {'A': 0x8000, 'B': 0x4000, 'Z': 0x2000, 'START': 0x1000,
 CRCS = {'usa': (0xFCBCCB21, 0x72903C6B), 'japan': (0x832C168B, 0x56A2CDAE)}
 
 
-def parse_inputs(text: str, count: int, default: dict) -> list[dict]:
+def parse_inputs(text: str, count: int, default: dict, *, max_count: int = 60) -> list[dict]:
     """Relative offset (1-based), buttons joined by +, X, Y; unspecified uses default."""
-    if type(count) is not int or not 1 <= count <= 60:
-        raise ValueError('Step count must be 1..60')
+    if type(count) is not int or not 1 <= count <= max_count:
+        raise ValueError(f'Step count must be 1..{max_count}')
     result = [dict(default) for _ in range(count)]
     seen = set()
     for line in text.splitlines():

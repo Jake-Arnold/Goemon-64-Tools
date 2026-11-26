@@ -40,7 +40,7 @@ mkdir -p build
 tmp="$(mktemp "build/goemon_mupen_input.$suffix.tmp.XXXXXX")"
 tmp_stamp="${tmp}.stamp"
 trap 'rm -f -- "$tmp" "$tmp_stamp"' EXIT
-"${CC:-cc}" -std=c11 -O2 -Wall -Wextra -Werror "${flags[@]}" -I "$sdk" native/goemon_mupen_input.c -o "$tmp" "${libs[@]}"
+"${CC:-cc}" -std=c11 -O2 -Wall -Wextra -Werror "${flags[@]}" -I "$sdk" native/goemon_mupen_input.c -o "$tmp" ${libs[@]+"${libs[@]}"}
 printf '%s\n' "$fingerprint" > "$tmp_stamp"
 mv -f -- "$tmp" "$output"
 mv -f -- "$tmp_stamp" "$stamp"

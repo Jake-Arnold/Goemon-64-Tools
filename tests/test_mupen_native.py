@@ -11,7 +11,8 @@ import unittest
 from unittest.mock import patch
 
 from practice.mupen_native import (Inspector, NativeCore, PAUSED, RUNNING, ADVANCE, PAUSE, RESUME, STOP,
-    NEUTRAL, parse_watches, valid_input, write_trace)
+    NEUTRAL, parse_watches, valid_input, write_trace, MAX_NATIVE_STEPS, MAX_TRACE_ROWS,
+    locate_japan_player, player_watch_text, JP_PRE, JP_POST)
 from practice.pj64_frame_control import controller_input
 
 ROOT=Path(__file__).resolve().parents[1]
@@ -121,10 +122,64 @@ class NativeInspectorTests(unittest.TestCase):
         self.assertEqual(i.core.input,NEUTRAL)
     def test_trace_bound_and_record(self):
         i=self.setup_inspector();i.control(dict(op='record'))
-        for n in range(601):i.frame(n)
-        self.assertEqual(len(i.rows),600);self.assertFalse(i.recording);self.assertIn('limit',i.error)
+        for n in range(MAX_TRACE_ROWS+1):i.frame(n)
+        self.assertEqual(len(i.rows),MAX_TRACE_ROWS);self.assertFalse(i.recording);self.assertIn('limit',i.error)
         with self.assertRaises(ValueError):i.control(dict(op='step',inputs=[NEUTRAL]))
         i.control(dict(op='clear'));self.assertEqual(i.rows,[])
+    def test_debugger_260_uses_native_words_even_when_flags_unavailable(self):
+        c=object.__new__(NativeCore);c.debugger=True;c.core_version=0x020600
+        ram=(C.c_uint32*2)(0x12345678,0x3f800000);c.rdram_pointer=lambda n:C.addressof(ram)
+        c.mem_info=lambda *a: self.fail('disabled debugger flags must not be consulted')
+        self.assertEqual(c.read_word(0x80000000,4),0x12345678)
+        self.assertEqual(c.read_word(0x80000002,2),0x5678)
+        self.assertEqual(c.read_watch(dict(kind='f32',address=0x80000004)),1.0)
+        c.rdram_pointer=lambda n:None
+        self.assertIsNone(c.read_word(0x80000000,4));self.assertIn('unavailable',c.read_error)
+        self.assertIsNone(c.read_word(0x80000001,4));self.assertIn('unaligned',c.read_error)
+
+    def test_player_locator_unique_and_negative_controls(self):
+        import struct
+        data=bytearray(0x400000)
+        def task(off,post=JP_POST,char=1):
+            for rel,value in ((8,JP_PRE),(12,0x801E2E18),(16,post),(24,0x80190000),(0x5C,0x80211650),(0x60,char<<24)):
+                struct.pack_into('=I',data,off+rel,value)
+        task(0x16F780); task(0x11000,post=0);task(0x12000,char=9)
+        self.assertEqual(locate_japan_player(data),0x8016F780)
+        w=parse_watches(player_watch_text(0x8016F780),'japan')
+        self.assertEqual(len(w),22)
+        self.assertEqual(next(x for x in w if x['name']=='miniature')['address'],0x8016F7DC)
+        task(0x20000)
+        with self.assertRaisesRegex(RuntimeError,'2 structural'):locate_japan_player(data)
+        struct.pack_into('=I',data,0x16F780+8,0);struct.pack_into('=I',data,0x20000+0x5C,0)
+        with self.assertRaisesRegex(RuntimeError,'0 structural'):locate_japan_player(data)
+        with self.assertRaises(ValueError):locate_japan_player(b'')
+
+    def test_locator_requires_pause_and_revalidates_task_signature(self):
+        i=self.setup_inspector();i.core.locate_japan_player=lambda:0x8016F780
+        words={0x8016F788:JP_PRE,0x8016F790:JP_POST}
+        i.core.read_word=lambda a,w:words.get(a)
+        i.control(dict(op='resume'))
+        with self.assertRaises(RuntimeError):i.control(dict(op='locate_player'))
+        i.control(dict(op='pause'));i.control(dict(op='step',inputs=[NEUTRAL]))
+        with self.assertRaises(RuntimeError):i.control(dict(op='locate_player'))
+        old=i.serial;r=i.control(dict(op='locate_player',replace_trace=True))
+        self.assertEqual(r['player_base'],0x8016F780);self.assertEqual(r['serial'],old)
+        self.assertEqual(r['rows'],[]);self.assertIn('movement_e4',r['player_text'])
+        r=i.control(dict(op='step',inputs=[NEUTRAL]));self.assertIsNotNone(r['rows'][0]['movement_e4'])
+        words[0x8016F790]=0
+        r=i.control(dict(op='step',inputs=[NEUTRAL]));self.assertIsNone(r['rows'][-1]['movement_e4'])
+        self.assertIsNotNone(r['rows'][-1]['raw_x']);self.assertIn('signature changed',r['watch_errors']['movement_e4'])
+
+    def test_long_native_timeline_does_not_raise_project64_limit(self):
+        from practice.pj64_frame_control import parse_inputs
+        with self.assertRaises(ValueError):parse_inputs('',61,NEUTRAL)
+        inputs=parse_inputs('13 CU 0 0',MAX_NATIVE_STEPS,NEUTRAL,max_count=MAX_NATIVE_STEPS)
+        self.assertEqual(inputs[12]['buttons'],8);self.assertEqual(inputs[-1],NEUTRAL)
+        i=self.setup_inspector();r=i.control(dict(op='step',inputs=inputs))
+        self.assertEqual(len(r['rows']),MAX_NATIVE_STEPS);self.assertEqual(r['rows'][12]['buttons'],8)
+        self.assertEqual(r['state'],PAUSED)
+        with self.assertRaises(ValueError):i.control(dict(op='step',inputs=[NEUTRAL]*(MAX_NATIVE_STEPS+1)))
+
     def test_mini_unlock_native_word_and_negative_controls(self):
         c=object.__new__(NativeCore);c.region='japan';c.core_version=0x020600;c.debugger=False
         ram=(C.c_uint32*(0x400000//4))();c.rdram_pointer=lambda n:C.addressof(ram)

@@ -85,6 +85,23 @@ class NativeUiTests(unittest.TestCase):
         with patch('practice.mupen_native_ui.messagebox.askyesno',return_value=True):ui.unlock_mini()
         self.assertEqual(json.loads(stream.getvalue()),dict(op='unlock_mini',confirm=True));ui.process=None
 
+    def test_locate_player_populates_editor_and_shows_read_diagnostics(self):
+        ui=self.ui;stream=io.StringIO();ui.process=SimpleNamespace(stdin=stream)
+        ui.report=dict(region='japan',state=3,recording=False,rows=[],watches=[])
+        ui.locate_player();self.assertEqual(json.loads(stream.getvalue()),dict(op='locate_player',replace_trace=False))
+        r=dict(ui.report,serial=1,error='',player_base=0x8016F780,player_text='pre_callback u32 8016F788',
+               ram_reader='native 2.6.0 words',watch_errors={'raw_x':'Core RDRAM pointer unavailable'})
+        ui.events.put((ui.generation,'report',dict(ok=True,report=r)));ui.drain()
+        self.assertIn('pre_callback u32 8016F788',ui.watches.get('1.0','end'))
+        self.assertIn('task 0x8016F780',ui.status.get());self.assertIn('Core RDRAM pointer unavailable',ui.status.get())
+        ui.process=None
+
+    def test_long_timeline_sends_600_frames(self):
+        ui=self.ui;stream=io.StringIO();ui.process=SimpleNamespace(stdin=stream)
+        ui.n.set('600');ui.timeline.insert('1.0','14 CU 0 0');ui.step()
+        sent=json.loads(stream.getvalue());self.assertEqual(len(sent['inputs']),600)
+        self.assertEqual(sent['inputs'][13]['buttons'],8);ui.process=None
+
     def test_rows_compare(self):
         ui=self.ui; w=dict(name='action',kind='u16',address=0x80001000)
         def row(i,v):return dict(serial=i,frame=i,polls=1,buttons=0,x=0,y=0,action=v)

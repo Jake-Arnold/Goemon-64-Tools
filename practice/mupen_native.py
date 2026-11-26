@@ -30,9 +30,14 @@ FRAME_CALLBACK, ADVANCE = 15, 20
 WIDTHS = {'u8': 1, 's8': 1, 'u16': 2, 's16': 2, 'u32': 4, 's32': 4, 'f32': 4}
 MAX_WATCHES = 24
 MAX_POINTER_HOPS = 4
+MAX_NATIVE_STEPS = 600
+MAX_TRACE_ROWS = 3600
+# Original Japan-0 task registration and scheduler evidence (PR #272).
+JP_PRE, JP_POST = 0x801D0F54, 0x801D1228
+GUEST_BASE, RAM_SIZE = 0x80000000, 0x400000
 
 def ram_address(address, width):
-    return type(address) is int and 0x80000000 <= address <= 0x80400000-width and address % width == 0
+    return width in (1,2,4) and type(address) is int and 0x80000000 <= address <= 0x80400000-width and address % width == 0
 NEUTRAL = {'buttons': 0, 'x': 0, 'y': 0}
 DebugCB = C.CFUNCTYPE(None, C.c_void_p, C.c_int, C.c_char_p)
 StateCB = C.CFUNCTYPE(None, C.c_void_p, C.c_int, C.c_int)
@@ -111,6 +116,43 @@ def write_trace(path, report):
                 writer.writerow(dict(region=report['region'], boundary=report['boundary'], **row))
     else:
         path.write_text(json.dumps(report, indent=2, allow_nan=False), encoding='utf-8')
+
+
+def locate_japan_player(snapshot):
+    """Find a unique callback-pair candidate, not a permanent player identity."""
+    if len(snapshot)!=RAM_SIZE:
+        raise ValueError('Expected complete 4 MiB native RDRAM snapshot')
+    word=struct.Struct('=I')
+    needle=word.pack(JP_PRE)
+    candidates=[]; start=0
+    while True:
+        hit=snapshot.find(needle,start)
+        if hit<0: break
+        start=hit+1; off=hit-8
+        if off<0 or off%4 or off+0xEC>RAM_SIZE: continue
+        def u32(rel): return word.unpack_from(snapshot,off+rel)[0]
+        if u32(0x10)!=JP_POST: continue
+        if not all(ram_address(u32(rel),4) for rel in (0x0C,0x18,0x5C)): continue
+        if not ram_address(u32(0x18)+0x10,4) or not ram_address(u32(0x5C)+0x86,2): continue
+        if u32(0x60)>>24 not in range(4): continue
+        candidates.append(GUEST_BASE+off)
+    if len(candidates)!=1:
+        detail=', '.join(f'0x{x:08X}' for x in candidates[:8])
+        raise RuntimeError(f'Player locator: {len(candidates)} structural candidates'+(f' ({detail})' if detail else '')+'; enter normal gameplay and retry')
+    return candidates[0]
+
+
+def player_watch_text(base):
+    # Controller fields use existing region-specific registry entries.
+    controller=[f'{name} {kind} @research:controller_japan_{name}' for name,kind in (
+        ('raw_x','s16'),('raw_y','s16'),('magnitude','f32'),('held','u16'),('pressed','u16'),('combined_magnitude','f32'))]
+    fields=(('pre_callback','u32',8,''),('action_callback','u32',0xC,''),('post_callback','u32',0x10,''),
+        ('action_byte0','u8',0xCC,''),('action_byte1','u8',0xCD,''),('character','u8',0x60,''),
+        ('context','u32',0x5C,''),('miniature','u16',0x5C,'->86'),('history0','f32',0x5C,'->20'),
+        ('history1','f32',0x5C,'->24'),('history2','f32',0x5C,'->28'),('movement_e4','f32',0xE4,''),
+        ('movement_e8','f32',0xE8,''),('position_x','f32',0x18,'->08'),('position_y','f32',0x18,'->0C'),
+        ('position_z','f32',0x18,'->10'))
+    return '\n'.join(controller+[f'{name} {kind} {base+off:08X}{suffix}' for name,kind,off,suffix in fields])
 
 
 class NativeCore:
@@ -200,18 +242,35 @@ class NativeCore:
         checked(self.command(op,0,None), f'Core command {op}')
 
     def read_word(self, addr, width):
-        # Validate every dereference before either debugger API or native RAM access.
-        if not ram_address(addr,width): return None
-        if self.debugger:
-            if self.mem_info(1,addr)!=2 or not self.mem_info(2,addr)&1:
+        self.read_error = ''
+        if not ram_address(addr,width):
+            self.read_error = f'Invalid or unaligned guest address {addr!r} (width {width})'
+            return None
+        # Both debugger and non-debugger builds of 2.6.0 expose the same
+        # native word-array RDRAM API. Prefer it: debugger type/flag tables
+        # need not be available when EnableDebugger is disabled.
+        if getattr(self,'core_version',None)==0x020600 or not self.debugger:
+            base=self.rdram_pointer(1)
+            if not base or base%4:
+                self.read_error = 'Core RDRAM pointer unavailable or unaligned'
                 return None
-            return self.readers[width](addr)
-        # Core 2.6.0's public API returns native uint32_t RDRAM words.
+            off=addr-GUEST_BASE
+            word=C.c_uint32.from_address(base+(off&~3)).value
+            return (word>>((4-width-off%4)*8))&((1<<(8*width))-1)
+        memtype, flags = self.mem_info(1,addr), self.mem_info(2,addr)
+        if memtype!=2 or not flags&1:
+            self.read_error = f'Debugger rejected 0x{addr:08X}: type={memtype}, flags=0x{flags:X}'
+            return None
+        return self.readers[width](addr)
+
+    def locate_japan_player(self):
+        """Only while paused: snapshot this core's first 4 MiB; no external PID access."""
+        if self.region!='japan' or self.core_version!=0x020600:
+            raise RuntimeError('Locate Player requires Japan-0 and core 2.6.0')
         base=self.rdram_pointer(1)
-        if not base or base%4: return None
-        off=addr-0x80000000
-        word=C.c_uint32.from_address(base+(off&~3)).value
-        return (word>>((4-width-off%4)*8))&((1<<(8*width))-1)
+        if not base or base%4:
+            raise RuntimeError('Core RDRAM pointer unavailable or unaligned')
+        return locate_japan_player(C.string_at(base,RAM_SIZE))
 
     def unlock_mini_ebisumaru(self):
         """One explicit Japan-0 grant, on the emulator callback thread only.
@@ -248,7 +307,9 @@ class NativeCore:
             pointer=self.read_word(addr,4)
             # Do not interpret null, host, KSEG1, MMIO, unaligned or stale
             # out-of-range pointers as valid guest memory. No wrapping.
-            if not ram_address(pointer,4): return None
+            if not ram_address(pointer,4):
+                self.read_error = getattr(self,'read_error','') or f'Invalid guest pointer {pointer!r} at 0x{addr:08X}'
+                return None
             addr=pointer+offset
         v=self.read_word(addr,width)
         if v is None: return None
@@ -277,6 +338,7 @@ class Inspector:
         self.rows=[]; self.recording=False; self.stepping=False; self.error=''; self.last=None
         self.finished=False; self.operation=threading.Lock()
         self.physical_mode=False; self.managed_base=None
+        self.watch_errors={}; self.player_base=None; self.player_text=None
         self.unlock_pending=False; self.unlock_result=None; self.unlock_error=None
 
     def state_changed(self,value):
@@ -298,10 +360,21 @@ class Inspector:
                     except Exception as exc:
                         self.unlock_error=str(exc)
                 row=dict(serial=self.serial,frame=index,polls=self.core.polls(),**(dict(buttons=None,x=None,y=None) if self.physical_mode else self.input))
-                row.update({w['name']:self.core.read_watch(w) for w in self.watches})
+                self.watch_errors={}
+                valid_player=(self.player_base is None or
+                    (self.core.read_word(self.player_base+8,4)==JP_PRE and self.core.read_word(self.player_base+0x10,4)==JP_POST))
+                for w in self.watches:
+                    name=w['name']
+                    if not valid_player and self.player_base<=w['address']<self.player_base+0xEC:
+                        row[name]=None; self.watch_errors[name]='Player signature changed; pause and locate again'
+                    else:
+                        row[name]=self.core.read_watch(w)
+                        if row[name] is None:
+                            self.watch_errors[name]=getattr(self.core,'read_error','') or 'Read unavailable'
+
                 self.last=row
                 if self.recording or self.stepping:
-                    if len(self.rows)<600: self.rows.append(row)
+                    if len(self.rows)<MAX_TRACE_ROWS: self.rows.append(row)
                     else: self.recording=False; self.error='Trace limit reached; export and clear before continuing'
             except Exception as exc:
                 self.error=f'Frame capture failed: {exc}'
@@ -326,6 +399,8 @@ class Inspector:
         with self.cv:
             return dict(region=self.region,boundary='core-frame',input_semantics='last requested input; not proof of game consumption; physical samples not recorded',watches=self.watches,rows=list(self.rows),last=self.last,
                         state=self.state,serial=self.serial,recording=self.recording,error=self.error,
+                        watch_errors=dict(self.watch_errors), player_base=self.player_base, player_text=self.player_text,
+                        ram_reader='native 2.6.0 words' if getattr(self.core,'core_version',None)==0x020600 else 'debugger API',
                         mini_unlock=self.unlock_result, input_mode='physical' if self.physical_mode else 'scripted',
                         capabilities=dict(frame_advance=True,scripted_p1=True,physical_input=bool(getattr(self.core,'physical_available',False)),typed_reads=True,live_watches=True,pointer_watches=True,logic_updates=False,breakpoints=False,ram_writes=False,mini_unlock=self.region=='japan' and getattr(self.core,'core_version',None)==0x020600,savestate_control=False,core_debugger=bool(getattr(self.core,'debugger',False))))
 
@@ -359,6 +434,18 @@ class Inspector:
                     # Schema and trace must change atomically. Reads happen only
                     # in the next core callback; never read RAM on the UI thread.
                     self.watches=new; self.rows=[]; self.last=None; self.error=''
+                    self.watch_errors={}; self.player_base=None; self.player_text=None
+        elif op=='locate_player':
+            with self.cv:
+                if self.state!=PAUSED or self.recording or self.stepping:
+                    raise RuntimeError('Pause and stop recording before locating the player')
+                if self.rows and q.get('replace_trace') is not True:
+                    raise RuntimeError('Export and clear the old trace before locating the player')
+                base=self.core.locate_japan_player()
+                text=player_watch_text(base)
+                new=parse_watches(text,self.region)
+                self.player_base=base; self.player_text=text
+                self.watches=new; self.rows=[]; self.last=None; self.error=''; self.watch_errors={}
         elif op=='unlock_mini':
             if self.region!='japan' or getattr(self.core,'core_version',None)!=0x020600:
                 raise RuntimeError('Mini Ebisumaru unlock requires Japan-0 and core 2.6.0')
@@ -394,18 +481,18 @@ class Inspector:
             with self.cv: self.rows=[]; self.error=''
         elif op=='step':
             inputs=q.get('inputs')
-            if not isinstance(inputs,list) or not 1<=len(inputs)<=60: raise ValueError('Expected 1..60 samples')
+            if not isinstance(inputs,list) or not 1<=len(inputs)<=MAX_NATIVE_STEPS: raise ValueError(f'Expected 1..{MAX_NATIVE_STEPS} samples')
             inputs=[valid_input(v) for v in inputs]
             if self.state!=PAUSED: raise RuntimeError('Pause before stepping')
             with self.cv:
-                if len(self.rows)+len(inputs)>600: raise ValueError('Trace limit; export and clear')
+                if len(self.rows)+len(inputs)>MAX_TRACE_ROWS: raise ValueError('Trace limit; export and clear')
                 self.stepping=True; self.error=''
             try:
-                deadline=time.monotonic()+30
+                deadline=time.monotonic()+max(30,len(inputs)*0.5)
                 for value in inputs:
                     before=self.serial; self.set_input(value); self.core.polls()
                     self.core.cmd(ADVANCE)
-                    self.wait(lambda:self.serial>before and self.state==PAUSED,timeout=max(0,deadline-time.monotonic()))
+                    self.wait(lambda:self.serial>before and self.state==PAUSED,timeout=min(10,max(0,deadline-time.monotonic())))
                     if self.serial!=before+1 or self.error: raise RuntimeError(self.error or 'Multiple core callbacks during single step')
             except Exception:
                 if not self.finished and self.state==RUNNING:

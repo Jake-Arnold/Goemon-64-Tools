@@ -11,7 +11,7 @@ import threading
 import tkinter as tk
 from tkinter import ttk, filedialog, messagebox
 
-from practice.mupen_native import PREFIX, write_trace
+from practice.mupen_native import PREFIX, write_trace, MAX_NATIVE_STEPS, MAX_TRACE_ROWS
 from practice.mupen_input_build import default_input_path, request_input_build
 
 JP_CONTROLLER_WATCHES = '\n'.join(f'{name} {kind} @research:controller_japan_{name}' for name,kind in (
@@ -119,6 +119,7 @@ class NativeFrameUi:
         actions=ttk.Frame(edit);actions.grid(row=2,column=0,sticky='w')
         ttk.Button(actions,style='Inspector.TButton',text='Apply watches (paused)',command=self.apply_watches).pack(side='left')
         ttk.Button(actions,style='Inspector.TButton',text='JP controller preset',command=self.controller_preset).pack(side='left')
+        ttk.Button(actions,style='Inspector.TButton',text='Locate Player (JP)',command=self.locate_player).pack(side='left')
         grid=ttk.Frame(body);grid.pack(fill='both',expand=True);grid.rowconfigure(0,weight=1);grid.columnconfigure(0,weight=1)
         self.table=ttk.Treeview(grid,show='headings');self.table.grid(row=0,column=0,sticky='nsew')
         for orient,cmd,r,c,sticky in [('vertical',self.table.yview,0,1,'ns'),('horizontal',self.table.xview,1,0,'ew')]:
@@ -271,8 +272,19 @@ class NativeFrameUi:
             if not replace:return
         self.control('watches',text=self.watches.get('1.0','end'),replace_trace=replace)
 
+    def locate_player(self):
+        if not self.process or not self.report or self.report['state']!=3 or self.report['recording']:
+            self.status.set('Pause and stop recording before locating the player');return
+        if self.report['region']!='japan':
+            self.status.set('Locate Player requires Japan-0');return
+        replace=False
+        if self.report['rows']:
+            replace=messagebox.askyesno('Replace watch set?', 'Export the trace first. Locate Player and replace watches and clear trace?',parent=self.root)
+            if not replace:return
+        self.control('locate_player',replace_trace=replace)
+
     def step(self,n=None):
-        try:self.control('step',inputs=parse_inputs(self.timeline.get('1.0','end'),int(self.n.get()) if n is None else n,self.default()))
+        try:self.control('step',inputs=parse_inputs(self.timeline.get('1.0','end'),int(self.n.get()) if n is None else n,self.default(),max_count=MAX_NATIVE_STEPS))
         except ValueError as exc:self.status.set(str(exc))
 
     def export(self):
@@ -287,9 +299,9 @@ class NativeFrameUi:
         path=filedialog.askopenfilename(filetypes=[('JSON','*.json')])
         if not path:return
         try:
-            if Path(path).stat().st_size>4000000:raise ValueError('Reference exceeds 4 MB')
+            if Path(path).stat().st_size>16000000:raise ValueError('Reference exceeds 16 MB')
             other=json.loads(Path(path).read_text())
-            if any(other[k]!=self.report[k] for k in ('region','boundary','watches')) or not isinstance(other['rows'],list) or len(other['rows'])>600 or not all(isinstance(r,dict) for r in other['rows']):raise ValueError('Incompatible reference trace')
+            if any(other[k]!=self.report[k] for k in ('region','boundary','watches')) or not isinstance(other['rows'],list) or len(other['rows'])>MAX_TRACE_ROWS or not all(isinstance(r,dict) for r in other['rows']):raise ValueError('Incompatible reference trace')
             self.reference=other;self.render()
         except (OSError,ValueError,KeyError,TypeError) as exc:self.status.set(str(exc))
 
@@ -319,6 +331,7 @@ class NativeFrameUi:
             while True:
                 gen,kind,payload=self.events.get_nowait()
                 if gen!=self.generation:continue
+                completed=self.inflight
                 self.busy=False;self.inflight=None
                 if kind=='exit':
                     self.process=None;self.managed_ram=None;self.session_rom=None;self.pending=None;self.start_button.state(['!disabled']);self.mini_button.state(['disabled']);self.watches.configure(state='normal');self.set_setup_visible(True);self.status.set(self.last_error or payload)
@@ -326,6 +339,8 @@ class NativeFrameUi:
                 else:
                     previous=self.report;self.report=payload['report'];r=self.report
                     self.managed_ram=payload.get('managed_ram')
+                    if completed=='locate_player' and r.get('player_text'):
+                        self.watches.delete('1.0','end');self.watches.insert('1.0',r['player_text'])
                     if previous and previous['watches']!=r['watches']:
                         self.reference=None;self.last_render=None
                     can_unlock=r.get('capabilities',{}).get('mini_unlock') and r['state']==3 and not r['recording']
@@ -333,7 +348,10 @@ class NativeFrameUi:
                     unlocked=r.get('mini_unlock')
                     notice=('Mini Ebisumaru ability granted (verified RAM readback)' if unlocked and unlocked['changed'] else 'Mini Ebisumaru ability already unlocked' if unlocked else '')
                     state={1:'Starting / stopped',2:'Running',3:'Paused'}.get(r['state'],'Unknown')
-                    self.status.set(f"{r['region']} | {state} | core callback {r['serial']} | {len(r['rows'])} captured | {r.get('input_mode','scripted')} input | recording {r['recording']} | {self.last_error or r['error'] or notice}");self.render()
+                    errors=r.get('watch_errors',{})
+                    diagnostic=(f"{len(errors)} watch(s) unavailable: "+'; '.join(f'{k}: {v}' for k,v in list(errors.items())[:2])) if errors else ''
+                    player=f" | task 0x{r['player_base']:08X}" if r.get('player_base') else ''
+                    self.status.set(f"{r['region']} | {state} | core callback {r['serial']} | {len(r['rows'])}/{MAX_TRACE_ROWS} captured | {r.get('input_mode','scripted')} input | recording {r['recording']}{player} | {r.get('ram_reader','')} | {self.last_error or r['error'] or diagnostic or notice}");self.render()
         except queue.Empty:pass
         if self.process and not self.busy and self.pending:
             op,fields=self.pending;self.pending=None;self.control(op,**fields)
