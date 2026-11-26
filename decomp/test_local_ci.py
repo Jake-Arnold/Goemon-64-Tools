@@ -119,10 +119,19 @@ class LocalCITests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as directory:
             steps = local_ci.build_steps(Path(directory) / "host", quick=True)
         self.assertEqual(len(steps), 17)
-        self.assertEqual(steps[-10][1][-2:], ["-m", "decomp.native251_integrity"])
-        self.assertEqual(steps[-3][1][-2:], ["-m", "decomp.promo195_promotion"])
-        self.assertEqual(steps[-2][1][-2:], ["-m", "decomp.promo65_promotion"])
-        self.assertEqual(steps[-1][1][-2:], ["-m", "decomp.ebi_slide9_promotion"])
+        self.assertEqual([argv[1:] for _, argv in steps[6:]], [
+            ["-m", "decomp.native251_integrity"],
+            ["-m", "decomp.japan_cright6_integrity"],
+            ["-m", "decomp.transition_promotion"],
+            ["-m", "decomp.japan_consolidated13_promotion"],
+            ["-m", "decomp.batch302_promotion"],
+            ["-m", "decomp.wave194_promotion"],
+            ["-m", "decomp.promo367_promotion"],
+            ["-m", "decomp.japan_dispatcher_promotion"],
+            ["-m", "decomp.promo195_promotion"],
+            ["-m", "decomp.promo65_promotion"],
+            ["-m", "decomp.ebi_slide9_promotion"],
+        ])
         self.assertTrue(all("cc" not in step[0].lower() for step in steps))
 
     @patch.object(local_ci.subprocess, "run")
