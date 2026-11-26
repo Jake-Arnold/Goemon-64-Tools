@@ -26,6 +26,9 @@ def need(ok,msg):
     if not ok:raise ValueError('JP dispatcher: '+msg)
 def head():return {'format':FORMAT,'status':'PASSED_G2_LOCAL','base_original_C':2842,'new_original_C':1,'accepted_original_C':2843,'accepted_original_bytes':178160,'asm_remaining':4533,'canonical_semantic_relocations':80652,'full_original_elf_identities':7376,'source_manifest':'decomp/'+REG,'proof':'decomp/'+PROOF,'inventory':'decomp/'+INV}
 def master_predecessor(m,root=ROOT):
+    if "promo65_promotion" in m:
+        from . import promo65_promotion as successor
+        m=successor.master_predecessor(m,root)
     if "promo195_promotion" in m:
         from . import promo195_promotion as successor
         m=successor.master_predecessor(m,root)

@@ -1,0 +1,478 @@
+{
+  "format": "goemon-promo65-original-ido-v1",
+  "region": "japan_0",
+  "base_c": 2938,
+  "matching_c": 2990,
+  "assembly_remaining": 4386,
+  "original_C_instruction_bytes": 197332,
+  "functions": [
+    {
+      "name": "func_8000F198_FD98",
+      "rom_offset": 64920,
+      "vma": 2147545496,
+      "size": 72,
+      "source": "research/promo65_20261125/sources/japan_0/func_8000F198_FD98/candidate.c",
+      "source_sha256": "8ea2d4606bb092fbbf9f65f4ccfe187cdc356cce3e75bb1cfe31492c7b327416",
+      "original_sha256": "f150ce1e571838b57a31f998ad40b348e446bcfe343c031e3b43d796f2011f4b"
+    },
+    {
+      "name": "func_8000F1E0_FDE0",
+      "rom_offset": 64992,
+      "vma": 2147545568,
+      "size": 72,
+      "source": "research/promo65_20261125/sources/japan_0/func_8000F1E0_FDE0/candidate.c",
+      "source_sha256": "f6d9a0c82426a8e415c399263f31091bb45a294b88510a31f3c2a008b40ba334",
+      "original_sha256": "9ca1c7895068e3913393477e649b872aa935a44288dca9333b0aad6b90d508a6"
+    },
+    {
+      "name": "func_8000FA14_10614",
+      "rom_offset": 67092,
+      "vma": 2147547668,
+      "size": 64,
+      "source": "research/promo65_20261125/sources/japan_0/func_8000FA14_10614/candidate.c",
+      "source_sha256": "962497613acb4c87a20110e2e2b76cbb99dea4413147a9b81fc2302cf86a364c",
+      "original_sha256": "02c7b135400cd71bf0034bd7de9e2161263bf5e0504f9cab4fb87fdd87da011d"
+    },
+    {
+      "name": "func_8000FB94_10794",
+      "rom_offset": 67476,
+      "vma": 2147548052,
+      "size": 72,
+      "source": "research/promo65_20261125/sources/japan_0/func_8000FB94_10794/candidate.c",
+      "source_sha256": "0123b361b26128ef6517ccc2ea38ff269f3474867fbb32f06f715ce599223523",
+      "original_sha256": "8455069a04d345b0cb30806debc889de721751484fdb3ba73ccecde2b0068b45"
+    },
+    {
+      "name": "func_8001DF80_1EB80",
+      "rom_offset": 125824,
+      "vma": 2147606400,
+      "size": 196,
+      "source": "research/promo65_20261125/sources/japan_0/func_8001DF80_1EB80/candidate.c",
+      "source_sha256": "d6b1df15585a8265f56123f9111cdbc25006dfe8dfe179da09ac12b53123f293",
+      "original_sha256": "45c4484245245a0ea31892825faa9c564ebb939c70a3dddc6352746f2172fb66"
+    },
+    {
+      "name": "func_8001E044_1EC44",
+      "rom_offset": 126020,
+      "vma": 2147606596,
+      "size": 100,
+      "source": "research/promo65_20261125/sources/japan_0/func_8001E044_1EC44/candidate.c",
+      "source_sha256": "d2533764ec2e7a43940e3025f1e3ab6778d3dd71376209c82e8fd0d66c38d1d6",
+      "original_sha256": "95f62191730e473cc5e4548cb54e2d3d6b797c9946980baae3e6d277aa2a38ea"
+    },
+    {
+      "name": "osSpTaskYielded",
+      "rom_offset": 274320,
+      "vma": 2147754896,
+      "size": 128,
+      "source": "research/promo65_20261125/sources/japan_0/osSpTaskYielded/candidate.c",
+      "source_sha256": "59dc822e1b100f3ef1d8129f44d2d5baebb21e1fa4863ae5d6899c32d1069499",
+      "original_sha256": "157b5ac671c75ea2548e47ecae8123b3e1306e09a1db0e2ac0d629e790be0e41"
+    },
+    {
+      "name": "osSpTaskStartGo",
+      "rom_offset": 275388,
+      "vma": 2147755964,
+      "size": 64,
+      "source": "research/promo65_20261125/sources/japan_0/osSpTaskStartGo/candidate.c",
+      "source_sha256": "202502e470d588cf6c0662baa5737b2583f35535a72ad481b4d27f25d6f92129",
+      "original_sha256": "0804c5895634c4b4322575d96b71a2b05cc06ae4c195192fa71113821a6904c2"
+    },
+    {
+      "name": "guPerspective",
+      "rom_offset": 277376,
+      "vma": 2147757952,
+      "size": 88,
+      "source": "research/promo65_20261125/sources/japan_0/guPerspective/candidate.c",
+      "source_sha256": "3c5898fabc1c7cdd8141fc616d0c3b1600d110321ccd6380694e4c90e5077622",
+      "original_sha256": "90aa5d72a49f984d2c4a391e711a0eb760fc8f11fee247ca3a3788606a0864ab"
+    },
+    {
+      "name": "guMtxIdent",
+      "rom_offset": 279960,
+      "vma": 2147760536,
+      "size": 48,
+      "source": "research/promo65_20261125/sources/japan_0/guMtxIdent/candidate.c",
+      "source_sha256": "bee008b4da15b664fcc59c7435833def1ee5dbc94c74daf514c8cdf50037b2c8",
+      "original_sha256": "76f973d8c4284c01ceacf16b02a0dab71398fba41628e87045716bc2e8307b35"
+    },
+    {
+      "name": "alClose",
+      "rom_offset": 297044,
+      "vma": 2147777620,
+      "size": 56,
+      "source": "research/promo65_20261125/sources/japan_0/alClose/candidate.c",
+      "source_sha256": "538196feb3bcee25c1e115ec72c21cfd920f04bc855e5d542bc76cf85392605b",
+      "original_sha256": "12036102db17c1bc317d526cd205979ceeeebb7a91ce132537b8be9f4c19ba0d"
+    },
+    {
+      "name": "alInit",
+      "rom_offset": 297100,
+      "vma": 2147777676,
+      "size": 52,
+      "source": "research/promo65_20261125/sources/japan_0/alInit/candidate.c",
+      "source_sha256": "f72e5bf90b1ba2ce1a424b6ab88d93d6045a7874976dc365646926b592c2c889",
+      "original_sha256": "04dba7346097c2545142774650f2db5b5899e26366067fff61d050f490cd5cec"
+    },
+    {
+      "name": "osVirtualToPhysical",
+      "rom_offset": 297248,
+      "vma": 2147777824,
+      "size": 124,
+      "source": "research/promo65_20261125/sources/japan_0/osVirtualToPhysical/candidate.c",
+      "source_sha256": "a7206ea80ad8212b7a4e8519e5e315bc7e45fbd1501ec3c0ea41e7b8cceab823",
+      "original_sha256": "53c70e0e1fddd821023b9f4b7b76532ca6be2627d1e7d5acce6e6fa46172aa23"
+    },
+    {
+      "name": "__osPiGetAccess",
+      "rom_offset": 305648,
+      "vma": 2147786224,
+      "size": 68,
+      "source": "research/promo65_20261125/sources/japan_0/__osPiGetAccess/candidate.c",
+      "source_sha256": "2c0feb4bce96d2befb7b2019d82a5052b7549f6211742f8e6164ca3d9aba0ba1",
+      "original_sha256": "557ae4d98856c5d832315e977408da7ab733364166aca4d5b7f4192af5ec40a9"
+    },
+    {
+      "name": "__osSiGetAccess",
+      "rom_offset": 308144,
+      "vma": 2147788720,
+      "size": 68,
+      "source": "research/promo65_20261125/sources/japan_0/__osSiGetAccess/candidate.c",
+      "source_sha256": "9d85ffab51c96d8dcefd002d7d0abccda3abfce1bb9edb86a428b1ed4ff82447",
+      "original_sha256": "3bdc39427d582a3f33a5d3f1e18b5d9cbeae62f750f81088ef573439592a5895"
+    },
+    {
+      "name": "func_801DE3C8_59A398",
+      "rom_offset": 5874584,
+      "vma": 2149442504,
+      "size": 144,
+      "source": "research/promo65_20261125/sources/japan_0/func_801DE3C8_59A398/candidate.c",
+      "source_sha256": "2a87b871276056087482afbd9b17d11fb73ccf27219a36cf911e38410aa5798a",
+      "original_sha256": "429dd9e5d0a996f1f3a545432fec2d415da1a0d80659c9c373809d29654665d1"
+    },
+    {
+      "name": "func_801E431C_5A02EC",
+      "rom_offset": 5898988,
+      "vma": 2149466908,
+      "size": 136,
+      "source": "research/promo65_20261125/sources/japan_0/func_801E431C_5A02EC/candidate.c",
+      "source_sha256": "9a84f3cb47d308478826250a2ae195add107ba8459bdd6ff061352998919f2fe",
+      "original_sha256": "20a8e07ea0f31534f9cac60c5f5b7c0d7ae2945fc5afec73b96eab182993f527"
+    },
+    {
+      "name": "func_801E6E4C_5A2E1C",
+      "rom_offset": 5910044,
+      "vma": 2149477964,
+      "size": 140,
+      "source": "research/promo65_20261125/sources/japan_0/func_801E6E4C_5A2E1C/candidate.c",
+      "source_sha256": "514e51d0ab2f0a56f5faa25cc1079b74b77d3e2678eb965047f5ee0b6f771b2d",
+      "original_sha256": "37cf5b74d12b55eaf1888a96c4cc6a688b98588bdb41deffdf7352d9f3f7f06e"
+    },
+    {
+      "name": "func_801E73C8_5A3398",
+      "rom_offset": 5911448,
+      "vma": 2149479368,
+      "size": 160,
+      "source": "research/promo65_20261125/sources/japan_0/func_801E73C8_5A3398/candidate.c",
+      "source_sha256": "b564ddceecf326224448f5b7c47c2f7efe31861eb2b27649ae85e68f5d8af9ee",
+      "original_sha256": "f7f9a64baa160f7e04ade66d13112dc10e3c23d11ec3fd6b55a80d429834261a"
+    },
+    {
+      "name": "func_801E7664_5A3634",
+      "rom_offset": 5912116,
+      "vma": 2149480036,
+      "size": 48,
+      "source": "research/promo65_20261125/sources/japan_0/func_801E7664_5A3634/candidate.c",
+      "source_sha256": "ac30e9a7fc8df2073616fb867cc2a131812a20a636b7796a7c57311eb6bc9335",
+      "original_sha256": "58045e371861cb7beecd27dcaa818ff8127088ff580ccfc632fa90e1d6fba041"
+    },
+    {
+      "name": "func_801E7A48_5A3A18",
+      "rom_offset": 5913112,
+      "vma": 2149481032,
+      "size": 176,
+      "source": "research/promo65_20261125/sources/japan_0/func_801E7A48_5A3A18/candidate.c",
+      "source_sha256": "1bfacfd61cfe6c6263d49bf4952985afd694ed7e5979b0cb70f463372c352ebf",
+      "original_sha256": "5309de307ee7146e772830db608c5994eefd3c9645744c932e6a21b62c05c9b8"
+    },
+    {
+      "name": "func_801E7B20_5A3AF0",
+      "rom_offset": 5913328,
+      "vma": 2149481248,
+      "size": 68,
+      "source": "research/promo65_20261125/sources/japan_0/func_801E7B20_5A3AF0/candidate.c",
+      "source_sha256": "27aea65d1290784238161a72d0ec5d0c4996662eb7b3f97c3e4dc488693db378",
+      "original_sha256": "d300a07d7f707fee3e9210f0a84d867caf8657d9135f097cfba1992609ee60cb"
+    },
+    {
+      "name": "func_801E7DF0_5A3DC0",
+      "rom_offset": 5914048,
+      "vma": 2149481968,
+      "size": 168,
+      "source": "research/promo65_20261125/sources/japan_0/func_801E7DF0_5A3DC0/candidate.c",
+      "source_sha256": "8b16a0a58b7b75ec7a3a3af4c53244b8c151feaa0334897e76af22320889663e",
+      "original_sha256": "cbf6b0e4e22f3a24e6b95977d47a1096bb6ebfb2a5b81cc4dc535dc1886a0a5c"
+    },
+    {
+      "name": "func_801E7F34_5A3F04",
+      "rom_offset": 5914372,
+      "vma": 2149482292,
+      "size": 64,
+      "source": "research/promo65_20261125/sources/japan_0/func_801E7F34_5A3F04/candidate.c",
+      "source_sha256": "a3692f5ebd3838295df308054ed117e90dd62ab0ae83d95a284768d07e0a5a7d",
+      "original_sha256": "80d32cb0c2d48d8a02c1eed88491a324dc2c4b9e22b2de6539fe75a54d8f3ba3"
+    },
+    {
+      "name": "func_801E7FBC_5A3F8C",
+      "rom_offset": 5914508,
+      "vma": 2149482428,
+      "size": 188,
+      "source": "research/promo65_20261125/sources/japan_0/func_801E7FBC_5A3F8C/candidate.c",
+      "source_sha256": "df1d66d0b118c079a28b339224d0aeedc9d088dc433ccd68fd125fff5d1184ea",
+      "original_sha256": "1f65e34f091dbcdedfe63a83ad588bc1621d88299b8f58fe282ef33d9fffffb4"
+    },
+    {
+      "name": "func_801E83C0_5A4390",
+      "rom_offset": 5915536,
+      "vma": 2149483456,
+      "size": 48,
+      "source": "research/promo65_20261125/sources/japan_0/func_801E83C0_5A4390/candidate.c",
+      "source_sha256": "86ba62c7f258ccf404f427af9714c77928cb0e9d222c203273c3f47ad93317e8",
+      "original_sha256": "58045e371861cb7beecd27dcaa818ff8127088ff580ccfc632fa90e1d6fba041"
+    },
+    {
+      "name": "func_801FA8E8_5B68B8",
+      "rom_offset": 5990584,
+      "vma": 2149558504,
+      "size": 60,
+      "source": "research/promo65_20261125/sources/japan_0/func_801FA8E8_5B68B8/candidate.c",
+      "source_sha256": "a386eff94311bc117baf2511e638f48e57f15144a404c038df95e02b30e28e7e",
+      "original_sha256": "bfcd37ad26f686bf0a06997eee05159cce0e6a9ef70cb2fd83d00d7fd0e8580c"
+    },
+    {
+      "name": "func_801FA94C_5B691C",
+      "rom_offset": 5990684,
+      "vma": 2149558604,
+      "size": 60,
+      "source": "research/promo65_20261125/sources/japan_0/func_801FA94C_5B691C/candidate.c",
+      "source_sha256": "e15e6b7a3f9b7af5dfe98980d39324015533a35714a16c690416742244b40720",
+      "original_sha256": "d9279c8a7dc9b4222b4f4c70a8fd2f7dfbc17f4b266aff4b0d23801c6a80d44f"
+    },
+    {
+      "name": "func_801FA988_5B6958",
+      "rom_offset": 5990744,
+      "vma": 2149558664,
+      "size": 60,
+      "source": "research/promo65_20261125/sources/japan_0/func_801FA988_5B6958/candidate.c",
+      "source_sha256": "b1fbddac07456d7a7418d72491f0bf4e0d1f3c0a8884557d107895490c213777",
+      "original_sha256": "5bd355722ed7b744a7b1a6c78d80db3c27657e3af2cf8cd0b0ffb2c90c79842e"
+    },
+    {
+      "name": "func_801DB5BC_60603C",
+      "rom_offset": 6316092,
+      "vma": 2149430716,
+      "size": 152,
+      "source": "research/promo65_20261125/sources/japan_0/func_801DB5BC_60603C/candidate.c",
+      "source_sha256": "3353e044f39e8f03738c1e139e35378daf19a0eea70d75e21e82e08b8339c325",
+      "original_sha256": "26e2887a91ca1aa30794c9f7d24a81bdd60dd01e13f5ab0e6589b480dad81153"
+    },
+    {
+      "name": "func_801DB654_6060D4",
+      "rom_offset": 6316244,
+      "vma": 2149430868,
+      "size": 216,
+      "source": "research/promo65_20261125/sources/japan_0/func_801DB654_6060D4/candidate.c",
+      "source_sha256": "ff4cb5f81328cff4cfd0e2a98d2a2ec0373d0b87631204f58d37373dacb1b13e",
+      "original_sha256": "c8fff22585e588982096d57c8f02921a36f82c265d93ca9f2a7b614c5135ba66"
+    },
+    {
+      "name": "func_801F0D58_61B7D8",
+      "rom_offset": 6404056,
+      "vma": 2149518680,
+      "size": 360,
+      "source": "research/promo65_20261125/sources/japan_0/func_801F0D58_61B7D8/candidate.c",
+      "source_sha256": "dc63a4e011643ebfad6c209c97ac012236fb2bf971d3ad4d6223e45f433335b1",
+      "original_sha256": "f63a7b83b90f3ca10633094388d52a515fa67bdf30f1d116a7f18ff0bfd04a7d"
+    },
+    {
+      "name": "func_801FDCF8_628778",
+      "rom_offset": 6457208,
+      "vma": 2149571832,
+      "size": 328,
+      "source": "research/promo65_20261125/sources/japan_0/func_801FDCF8_628778/candidate.c",
+      "source_sha256": "3db6b5cf6f1ed1af4c72a79da7298a47bd332a41c0bcc2367b205fb49261439c",
+      "original_sha256": "eac98c78ed2b6b987c8853c0c6c01fadb638337483be07f1767e91c880853bf3"
+    },
+    {
+      "name": "func_801D88C8_646DB8",
+      "rom_offset": 6581688,
+      "vma": 2149419208,
+      "size": 144,
+      "source": "research/promo65_20261125/sources/japan_0/func_801D88C8_646DB8/candidate.c",
+      "source_sha256": "143b1a09fbc151a0f31e89722914177db9b39940a77036f81f7f78f62c7c8426",
+      "original_sha256": "667280496f9a107c0b6b1138a6cdbf7c62569b0b55f9385607dae4e70e0c1c6d"
+    },
+    {
+      "name": "func_801DE4C0_64C9B0",
+      "rom_offset": 6605232,
+      "vma": 2149442752,
+      "size": 136,
+      "source": "research/promo65_20261125/sources/japan_0/func_801DE4C0_64C9B0/candidate.c",
+      "source_sha256": "79d3c62a607d04b9c7f73ea6e2df28ee428c8e2b22f79e4fb8442e0f9e3a0d5e",
+      "original_sha256": "32352e417c5c3488182c8b2b2aab52a372fef5ee7ab5e6440835a28c98afa432"
+    },
+    {
+      "name": "func_801DE850_64CD40",
+      "rom_offset": 6606144,
+      "vma": 2149443664,
+      "size": 136,
+      "source": "research/promo65_20261125/sources/japan_0/func_801DE850_64CD40/candidate.c",
+      "source_sha256": "5ddba539a0dc263505087f882d242b6f0e78065053ee60d8e5e2ace180d4150e",
+      "original_sha256": "b4086b0957782cdc695274d7c9844b95ff5fc1e6c1c658230ff249475bb413e9"
+    },
+    {
+      "name": "func_801DF000_64D4F0",
+      "rom_offset": 6608112,
+      "vma": 2149445632,
+      "size": 136,
+      "source": "research/promo65_20261125/sources/japan_0/func_801DF000_64D4F0/candidate.c",
+      "source_sha256": "c9d96f527f0efccffc40b824508747e108e27e63863e744a8ef3a501e807a82e",
+      "original_sha256": "8ec45f170bd277d4316200038afb82f4c97893c5086572bf6f2247af57812dd3"
+    },
+    {
+      "name": "func_801DF738_64DC28",
+      "rom_offset": 6609960,
+      "vma": 2149447480,
+      "size": 136,
+      "source": "research/promo65_20261125/sources/japan_0/func_801DF738_64DC28/candidate.c",
+      "source_sha256": "cf0851f3cd92e13babf04a1ee51a411f406c8dbcbd64617c9291522b2fff4751",
+      "original_sha256": "58fd661535b3a800211c3f623773c8d77a2dcfbe9615c40daeb4e6c964070287"
+    },
+    {
+      "name": "func_801DFAF8_64DFE8",
+      "rom_offset": 6610920,
+      "vma": 2149448440,
+      "size": 136,
+      "source": "research/promo65_20261125/sources/japan_0/func_801DFAF8_64DFE8/candidate.c",
+      "source_sha256": "54e4797464fe872358030401ece1e2bd2c936918b95742e2aa47ef4ff7e0b6c4",
+      "original_sha256": "bd81e68d0924a35b154063b8ea837227b07e8e8b16e3a551ea7c4bf37a4e6936"
+    },
+    {
+      "name": "func_801E02C8_64E7B8",
+      "rom_offset": 6612920,
+      "vma": 2149450440,
+      "size": 136,
+      "source": "research/promo65_20261125/sources/japan_0/func_801E02C8_64E7B8/candidate.c",
+      "source_sha256": "ada11f6daf73ff88adc17d1f93a3cf32bfab2678333e97c568c6a4f3f7684ad1",
+      "original_sha256": "2d6abe3531eda3b5a48d40f09d3f5cf740e816829c0d006710aa123b523d4468"
+    },
+    {
+      "name": "func_801E0608_64EAF8",
+      "rom_offset": 6613752,
+      "vma": 2149451272,
+      "size": 136,
+      "source": "research/promo65_20261125/sources/japan_0/func_801E0608_64EAF8/candidate.c",
+      "source_sha256": "d479f375cf1cbbb8b682105bc31b4e391ab9fa7195c28b78f6d458ed6041c466",
+      "original_sha256": "bcc738032ad09208f018b02e58ec55bd45d9c549ddb201af7c376fae80081941"
+    },
+    {
+      "name": "func_801E0960_64EE50",
+      "rom_offset": 6614608,
+      "vma": 2149452128,
+      "size": 136,
+      "source": "research/promo65_20261125/sources/japan_0/func_801E0960_64EE50/candidate.c",
+      "source_sha256": "c27fd0881355130b9ee32aafa4bc6da0c999f35891f6974b1b3d82943fc2a85c",
+      "original_sha256": "2c26f8648801be7353fc0f10f1d553e74c156bfa3f819097886d9ca9c559f81c"
+    },
+    {
+      "name": "func_801E0CF0_64F1E0",
+      "rom_offset": 6615520,
+      "vma": 2149453040,
+      "size": 136,
+      "source": "research/promo65_20261125/sources/japan_0/func_801E0CF0_64F1E0/candidate.c",
+      "source_sha256": "98a3a88eabc9b82bf602563f12f6a9fbfeb31acd58658407a285c069c1e2ad17",
+      "original_sha256": "46addcc80d12ecd213ebf91336a6f1eabb20008356eb8c398866c0e9624b47bd"
+    },
+    {
+      "name": "func_801E1080_64F570",
+      "rom_offset": 6616432,
+      "vma": 2149453952,
+      "size": 136,
+      "source": "research/promo65_20261125/sources/japan_0/func_801E1080_64F570/candidate.c",
+      "source_sha256": "961bb77d30ce568f33c854ff6e73613a4323adcf284853a8d55bcf6e14572c19",
+      "original_sha256": "9105f75dcf548c24915ae0803a70649f335ad49b8cb0083b8894f612b2e0b629"
+    },
+    {
+      "name": "func_801E1724_64FC14",
+      "rom_offset": 6618132,
+      "vma": 2149455652,
+      "size": 136,
+      "source": "research/promo65_20261125/sources/japan_0/func_801E1724_64FC14/candidate.c",
+      "source_sha256": "f97b6276a0160c038c6b15a93b7f43dd78d5d0d12b43c2d3630cc794176e80eb",
+      "original_sha256": "2a99fad0726200d76163281f1ccb0ed9b1a59988d6e69537b9d952f44ddf9292"
+    },
+    {
+      "name": "func_801E1E34_650324",
+      "rom_offset": 6619940,
+      "vma": 2149457460,
+      "size": 136,
+      "source": "research/promo65_20261125/sources/japan_0/func_801E1E34_650324/candidate.c",
+      "source_sha256": "ab25f07a7f93693ca15b9f0e78e296d4844b2b7d2100801af3c4ee9329ab8ad1",
+      "original_sha256": "050214ada26d2071eaecd5744c9a6b5b5d5462577238106d832d6a6b963b1e07"
+    },
+    {
+      "name": "func_801E2724_650C14",
+      "rom_offset": 6622228,
+      "vma": 2149459748,
+      "size": 136,
+      "source": "research/promo65_20261125/sources/japan_0/func_801E2724_650C14/candidate.c",
+      "source_sha256": "2303f32e6f00f09c1ce990ad0be15bc755b10cfddbda9f472834af22c64d27c2",
+      "original_sha256": "22c5be27915f3ad30a05298fe44f66b7a37b36c4ef23f7011aba6c59950d5f8b"
+    },
+    {
+      "name": "func_801E2E44_651334",
+      "rom_offset": 6624052,
+      "vma": 2149461572,
+      "size": 136,
+      "source": "research/promo65_20261125/sources/japan_0/func_801E2E44_651334/candidate.c",
+      "source_sha256": "e8b766d0cec31a21ff87e0918272e77e05295e661bab8b510fe5f3d1061ffbfb",
+      "original_sha256": "67bd5b108ce78f0ddc5b679fd60dfae4e39034a8e4bb72cd68ff52e3a6140e2f"
+    },
+    {
+      "name": "func_801E4574_652A64",
+      "rom_offset": 6629988,
+      "vma": 2149467508,
+      "size": 136,
+      "source": "research/promo65_20261125/sources/japan_0/func_801E4574_652A64/candidate.c",
+      "source_sha256": "a5fb5769406839463928d6204dcd5c60c808063021f63e92fda2e0d7524fd783",
+      "original_sha256": "9229b091aa7b07148b7f26f294502444c5d5cf4cd5d40c56275a3cdd0af2ceab"
+    },
+    {
+      "name": "func_80218370_6771E0",
+      "rom_offset": 6779360,
+      "vma": 2149679984,
+      "size": 104,
+      "source": "research/promo65_20261125/sources/japan_0/func_80218370_6771E0/candidate.c",
+      "source_sha256": "dcd389516150136703201f9504411d0ef79eef72e1fd075dd9d2305f93f3f88a",
+      "original_sha256": "977a06179983c2ff87043b27282fd5caa087abfcec8aad558e2dec07c657c2c5"
+    },
+    {
+      "name": "func_080001BC_6F7D4C",
+      "rom_offset": 7306572,
+      "vma": 134218172,
+      "size": 96,
+      "source": "research/promo65_20261125/sources/japan_0/func_080001BC_6F7D4C/candidate.c",
+      "source_sha256": "addbc7958c5f964089dfd9db71bce4b7dfe31bc65855b835d1c0486d1c214ad4",
+      "original_sha256": "c8410fe9d384e2b9b113f0016175f2f9ab5893d840a145a9a2adcafb17ae9b01"
+    },
+    {
+      "name": "func_08000B58_72E518",
+      "rom_offset": 7529752,
+      "vma": 134220632,
+      "size": 108,
+      "source": "research/promo65_20261125/sources/japan_0/func_08000B58_72E518/candidate.c",
+      "source_sha256": "e66e563ad89eed86b22e04725d0ed3448bc3c33e37190977d99deb304746eb65",
+      "original_sha256": "6f81c2ef18f021edf95df8937f72d06594b5d50728d92736ee29cce657ce32fa"
+    }
+  ]
+}

@@ -26,7 +26,7 @@ class TestShort72(unittest.TestCase):
         self.assertFalse({f['name'] for f in previous} & {f['name'] for f in s['functions']})
     def test_final_claims_complete(self):
         claims=claimed_functions(load_manifest(stage.ROOT/'manifest.json'))
-        self.assertEqual((len(claims),sum(f['size'] for f in claims)),(3039,205920))
+        self.assertEqual((len(claims),sum(f['size'] for f in claims)),(3052,207240))
     def test_modified_fixture_rejected(self):
         orig=stage.FIXTURE
         self.assertTrue(orig.is_file())
