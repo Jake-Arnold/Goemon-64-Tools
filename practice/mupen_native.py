@@ -1,4 +1,4 @@
-"""Experimental native Mupen64Plus research frontend (no host RAM attachment).
+"""Experimental native Mupen64Plus research frontend (managed child session).
 
 Core execution stays on the process main thread for SDL/macOS. Only the
 public core API and a purpose-built P1 input plugin are used. A core frame
@@ -121,6 +121,7 @@ class NativeCore:
         self.rom = C.create_string_buffer(canonical_rom(data))
         self.core = C.CDLL(str(Path(args.core).resolve()), mode=getattr(C, 'RTLD_GLOBAL', 0))
         self.plugins = []
+        self.physical_available = False
         self.started = self.opened = False
         self.log = DebugCB(lambda ctx, level, msg: print(msg.decode('utf-8', 'replace'), file=sys.stderr) if msg else None)
         self.state_cb = StateCB(lambda ctx, param, value: on_state(value) if param == 1 else None)
@@ -150,6 +151,17 @@ class NativeCore:
                 checked(set_param(section,key,1 if key==b'R4300Emulator' else 3,C.byref(C.c_int(val))),key.decode())
             for key in (b'SaveStatePath',b'SaveSRAMPath'):
                 checked(set_param(section,key,4,C.c_char_p(os.fsencode(saves))),key.decode())
+            # Keep paused-edit and frame-step boundaries owned by the inspector.
+            # In this isolated config only, disable stock hotkeys that could
+            # resume, advance, reset or load state behind the parent's back.
+            events = C.c_void_p()
+            checked(bind(self.core,'ConfigOpenSection',C.c_int,C.c_char_p,C.POINTER(C.c_void_p))(b'CoreEvents',C.byref(events)), 'Core events config')
+            for name in (b'Pause', b'Frame Advance', b'Load State', b'Reset', b'Speed Limiter Toggle'):
+                key=b'Kbd Mapping '+name
+                checked(set_param(events,key,1,C.byref(C.c_int(0))),key.decode())
+            for name in (b'Pause', b'Frame Advance', b'Load State', b'Reset'):
+                key=b'Joy Mapping '+name
+                checked(set_param(events,key,4,C.c_char_p(b'')),key.decode())
             checked(self.command(ROM_OPEN,len(data),C.cast(self.rom,C.c_void_p)), 'ROM_OPEN'); self.opened=True
             for kind,path in ((2,args.gfx),(3,args.audio),(4,args.input),(1,args.rsp)):
                 lib = C.CDLL(str(Path(path).resolve()))
@@ -161,6 +173,15 @@ class NativeCore:
                     if pa.value != 0x020100: raise RuntimeError('Expected Goemon input plugin API 2.1.0')
                     self.set_input=bind(lib,'GoemonSetInput',C.c_int,C.c_uint,C.c_int,C.c_int)
                     self.polls=bind(lib,'GoemonTakePolls',C.c_uint)
+                    physical=getattr(args,'physical_input','')
+                    if physical:
+                        if not hasattr(lib,'GoemonConfigurePhysical'):
+                            raise RuntimeError('Rebuild Goemon input plugin with scripts/build_mupen_input.sh')
+                        configure=bind(lib,'GoemonConfigurePhysical',C.c_int,C.c_char_p)
+                        self.use_physical=bind(lib,'GoemonUsePhysical',C.c_int)
+                        if not configure(os.fsencode(Path(physical).resolve())):
+                            raise RuntimeError('Could not load compatible SDL input provider; check setup or leave physical input blank')
+                        self.physical_available=True
                 start=bind(lib,'PluginStartup',C.c_int,C.c_void_p,C.c_void_p,DebugCB)
                 checked(start(self.core._handle,None,self.log),'PluginStartup')
                 self.plugins.append((kind,lib,False))
@@ -255,6 +276,7 @@ class Inspector:
         self.serial=0; self.input=dict(NEUTRAL); self.watches=watches; self.region=region
         self.rows=[]; self.recording=False; self.stepping=False; self.error=''; self.last=None
         self.finished=False; self.operation=threading.Lock()
+        self.physical_mode=False; self.managed_base=None
         self.unlock_pending=False; self.unlock_result=None; self.unlock_error=None
 
     def state_changed(self,value):
@@ -264,13 +286,18 @@ class Inspector:
         with self.cv:
             try:
                 self.serial+=1
+                if (self.managed_base is None and sys.platform == 'linux'
+                        and getattr(self.core,'core_version',None)==0x020600
+                        and hasattr(self.core,'rdram_pointer')):
+                    base=self.core.rdram_pointer(1)
+                    if base and base%16==0: self.managed_base=base
                 if self.unlock_pending:
                     self.unlock_pending=False
                     try:
                         self.unlock_result=self.core.unlock_mini_ebisumaru()
                     except Exception as exc:
                         self.unlock_error=str(exc)
-                row=dict(serial=self.serial,frame=index,polls=self.core.polls(),**self.input)
+                row=dict(serial=self.serial,frame=index,polls=self.core.polls(),**(dict(buttons=None,x=None,y=None) if self.physical_mode else self.input))
                 row.update({w['name']:self.core.read_watch(w) for w in self.watches})
                 self.last=row
                 if self.recording or self.stepping:
@@ -293,13 +320,14 @@ class Inspector:
         with self.cv:
             if not self.core.set_input(value['buttons'], value['x'], value['y']): raise RuntimeError('Input plugin rejected sample')
             self.input=value
+            self.physical_mode=False
 
     def report(self):
         with self.cv:
-            return dict(region=self.region,boundary='core-frame',input_semantics='last requested input; not proof of game consumption',watches=self.watches,rows=list(self.rows),last=self.last,
+            return dict(region=self.region,boundary='core-frame',input_semantics='last requested input; not proof of game consumption; physical samples not recorded',watches=self.watches,rows=list(self.rows),last=self.last,
                         state=self.state,serial=self.serial,recording=self.recording,error=self.error,
-                        mini_unlock=self.unlock_result,
-                        capabilities=dict(frame_advance=True,scripted_p1=True,typed_reads=True,live_watches=True,pointer_watches=True,logic_updates=False,breakpoints=False,ram_writes=False,mini_unlock=self.region=='japan' and getattr(self.core,'core_version',None)==0x020600,savestate_control=False,core_debugger=bool(getattr(self.core,'debugger',False))))
+                        mini_unlock=self.unlock_result, input_mode='physical' if self.physical_mode else 'scripted',
+                        capabilities=dict(frame_advance=True,scripted_p1=True,physical_input=bool(getattr(self.core,'physical_available',False)),typed_reads=True,live_watches=True,pointer_watches=True,logic_updates=False,breakpoints=False,ram_writes=False,mini_unlock=self.region=='japan' and getattr(self.core,'core_version',None)==0x020600,savestate_control=False,core_debugger=bool(getattr(self.core,'debugger',False))))
 
     def control(self,q):
         op=q.get('op')
@@ -310,6 +338,14 @@ class Inspector:
             if self.state!=PAUSED: self.core.cmd(PAUSE); self.wait(lambda:self.state==PAUSED)
         elif op=='resume':
             self.set_input(NEUTRAL); self.core.cmd(RESUME)
+        elif op=='physical':
+            with self.cv:
+                if self.recording or self.stepping:
+                    raise RuntimeError('Stop recording before switching to physical input')
+                if not getattr(self.core,'physical_available',False) or not self.core.use_physical():
+                    raise RuntimeError('Physical input unavailable: configure the stock SDL input plugin and rebuild the Goemon plugin')
+                self.physical_mode=True; self.input=dict(NEUTRAL)
+            if self.state==PAUSED: self.core.cmd(RESUME)
         elif op=='hold':
             self.set_input(q['input'])
         elif op=='watches':
@@ -351,7 +387,9 @@ class Inspector:
                     try:self.core.cmd(PAUSE)
                     except RuntimeError:pass
         elif op=='record':
-            with self.cv: self.recording=not self.recording
+            with self.cv:
+                if self.physical_mode: raise RuntimeError('Switch to scripted input before recording')
+                self.recording=not self.recording
         elif op=='clear':
             with self.cv: self.rows=[]; self.error=''
         elif op=='step':
@@ -392,6 +430,11 @@ def worker(args):
     region=identify_rom(data).key
     inspector=Inspector(parse_watches(args.watches,region),region)
     core=NativeCore(args,inspector.state_changed,inspector.frame,data=data); inspector.core=core
+    def response(report):
+        value=dict(ok=True,report=report)
+        if inspector.managed_base is not None and report['state'] in (RUNNING,PAUSED):
+            value['managed_ram']=dict(pid=os.getpid(),base=inspector.managed_base,region=region,size=0x400000)
+        return value
     def commands():
         try:
             for line in sys.stdin:
@@ -399,7 +442,7 @@ def worker(args):
                     q=json.loads(line)
                     if not isinstance(q,dict): raise ValueError('Expected command object')
                     with inspector.operation:
-                        emit(dict(ok=True,report=inspector.control(q)))
+                        emit(response(inspector.control(q)))
                 except (ValueError, KeyError, TypeError, RuntimeError) as exc:
                     emit(dict(ok=False,error=str(exc)))
         except OSError:
@@ -416,7 +459,7 @@ def worker(args):
                 pass
     t=threading.Thread(target=commands,daemon=True)
     try:
-        emit(dict(ok=True,report=inspector.report())); t.start()
+        emit(response(inspector.report())); t.start()
         core.cmd(EXECUTE)
     finally:
         with inspector.cv: inspector.finished=True; inspector.cv.notify_all()
@@ -431,6 +474,7 @@ def main():
     p=argparse.ArgumentParser(description=__doc__)
     for name in ('rom','core','gfx','audio','input','rsp','data','config'):
         p.add_argument('--'+name,required=True)
+    p.add_argument('--physical_input',default='')
     p.add_argument('--watches',default='')
     args=p.parse_args()
     try: worker(args)

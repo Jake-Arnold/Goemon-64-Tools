@@ -12,6 +12,7 @@ import tkinter as tk
 from tkinter import ttk, filedialog, messagebox
 
 from practice.mupen_native import PREFIX, write_trace
+from practice.mupen_input_build import default_input_path, request_input_build
 
 JP_CONTROLLER_WATCHES = '\n'.join(f'{name} {kind} @research:controller_japan_{name}' for name,kind in (
     ('raw_x','s16'),('raw_y','s16'),('magnitude','f32'),('processed_x','f32'),
@@ -39,6 +40,7 @@ def discover_prefix(prefix):
         'gfx': ('mupen64plus-video-glide64mk2.dylib','mupen64plus-video-rice.dylib','mupen64plus-video-glide64mk2.so','mupen64plus-video-rice.so'),
         'audio': ('mupen64plus-audio-sdl.dylib','mupen64plus-audio-sdl.so'),
         'rsp': ('mupen64plus-rsp-hle.dylib','mupen64plus-rsp-hle.so'),
+        'physical_input': ('mupen64plus-input-sdl.dylib','mupen64plus-input-sdl.so'),
     }
     for key,names in patterns.items():
         for name in names:
@@ -59,6 +61,8 @@ class NativeFrameUi:
         self.root=root; self.process=None; self.busy=False; self.report=None; self.reference=None
         self.events=queue.Queue(); self.generation=0; self.closed=False
         self.pending=None; self.inflight=None; self.last_render=None; self.last_error=''
+        self.managed_ram=None; self.session_rom=None
+        self.build_future=None
         self.embedded=parent is not None
         if not self.embedded:
             root.title(f'Goemon Native Frame Inspector {DISPLAY_VERSION}')
@@ -71,24 +75,24 @@ class NativeFrameUi:
         style.configure('Inspector.TCheckbutton',padding=1)
         body.bind('<Destroy>',self._body_destroyed,add='+')
         top=ttk.Frame(body);top.pack(fill='x')
-        ttk.Label(top,text='Native core frames • independent research session').pack(side='left')
+        ttk.Label(top,text='Native core frames • managed research session').pack(side='left')
         self.setup_button=ttk.Button(top,style='Inspector.TButton',text='Hide setup',command=self.toggle_setup);self.setup_button.pack(side='right')
         setup=ttk.LabelFrame(body,text='Launch a new emulator',padding=4); setup.pack(fill='x')
         self.setup=setup
         self.setup_visible=True
         setup.columnconfigure(1,weight=1);setup.columnconfigure(4,weight=1)
         home=Path.home()/'.goemon-mupen-research'
-        self.paths={key:tk.StringVar(value=str(home) if key=='config' else '') for key in ('rom','core','gfx','audio','input','rsp','data','config')}
+        self.paths={key:tk.StringVar(value=str(home) if key=='config' else '') for key in ('rom','core','gfx','audio','input','rsp','data','config','physical_input')}
         for i,(key,var) in enumerate(self.paths.items()):
             r,c=divmod(i,2);c*=3
             ttk.Label(setup,text=key).grid(row=r,column=c,sticky='w')
             ttk.Entry(setup,style='Inspector.TEntry',textvariable=var,width=22).grid(row=r,column=c+1,sticky='ew')
             ttk.Button(setup,style='Inspector.TButton',text='Browse',command=lambda k=key:self.browse(k)).grid(row=r,column=c+2)
-        ttk.Button(setup,style='Inspector.TButton',text='Find Mupen64Plus installation',command=self.find_installation).grid(row=4,column=0,columnspan=3,sticky='w')
+        ttk.Button(setup,style='Inspector.TButton',text='Find Mupen64Plus installation',command=self.find_installation).grid(row=5,column=0,columnspan=3,sticky='w')
         self.status=tk.StringVar(value='Select the original ROM, native core and plugins. See docs/MUPEN_NATIVE.md.')
         bar=ttk.Frame(body); bar.pack(fill='x');self.command_bar=bar
         self.start_button=ttk.Button(bar,style='Inspector.TButton',text='Launch session',command=self.start);self.start_button.pack(side='left')
-        for label,op in [('Pause','pause'),('Resume neutral','resume'),('Hold input','hold'),('Stop emulator','stop')]:
+        for label,op in [('Pause','pause'),('Resume neutral','resume'),('Play with controller','physical'),('Hold input','hold'),('Stop emulator','stop')]:
             ttk.Button(bar,style='Inspector.TButton',text=label,command=lambda op=op:self.control(op)).pack(side='left')
         extra=ttk.Frame(body);extra.pack(fill='x')
         for label,op in [('Record / stop','record'),('Clear trace','clear')]:
@@ -154,21 +158,57 @@ class NativeFrameUi:
                 found=max(choices,key=lambda item:sum(k in item for k in ('core','gfx','audio','rsp','data')))
             else:
                 raise RuntimeError('Select installed native libraries manually')
-            for k,v in found.items():self.paths[k].set(v)
-            self.status.set('Detected: '+', '.join(found)+'. Review paths and choose ROM/input plugin.')
+            for k,v in found.items():
+                if k!='input' or not self.paths[k].get():self.paths[k].set(v)
+            self.status.set('Detected: '+', '.join(found)+'. Physical input is optional; select stock SDL input plugin if missing.')
+            if self._using_default_input():
+                self._request_default_build(retry=True)
+
         except (OSError,subprocess.SubprocessError,RuntimeError) as exc:self.status.set(str(exc))
+
+    def _using_default_input(self):
+        path=self.paths['input'].get().strip()
+        return not path or Path(path).expanduser().resolve()==default_input_path().resolve()
+
+    def _request_default_build(self, *, retry=False):
+        self.build_future=request_input_build(retry=retry)
+        self._poll_input_build()
+
+    def _poll_input_build(self):
+        future=self.build_future
+        if future is None:return
+        if not future.done():
+            if not self.process:self.status.set('Preparing bundled Mupen64Plus input plugin…')
+            return
+        self.build_future=None
+        if self.process or not self._using_default_input():return
+        try:
+            self.paths['input'].set(str(future.result()))
+            self.status.set('Native input plugin ready. Choose ROM and launch session.' +
+                            ('' if self.paths['physical_input'].get() else ' Stock SDL input provider not found.'))
+        except Exception as exc:
+            self.status.set(str(exc))
 
     def start(self):
         if self.closed or self.process is not None:return
         try:
+            if self._using_default_input():
+                future=request_input_build()
+                if not future.done():
+                    self.build_future=future
+                    self.status.set('Preparing bundled Mupen64Plus input plugin…')
+                    return
+                self.paths['input'].set(str(future.result()))
             paths={k:v.get().strip() for k,v in self.paths.items()}
-            if any(not v for v in paths.values()):raise ValueError('All eight paths are required')
+            if any(not v for k,v in paths.items() if k!='physical_input'):
+                raise ValueError('Required paths missing. Find Mupen64Plus installation and select the ROM.')
+            self.managed_ram=None; self.session_rom=Path(paths['rom']).resolve()
             args=[sys.executable,'-m','practice.mupen_native']
             for key,val in paths.items():args.extend(['--'+key,val])
             args.extend(['--watches',self.watches.get('1.0','end')])
             # Keep the SDL/native core on the child process main thread.
             self.process=subprocess.Popen(args,cwd=str(Path(__file__).resolve().parents[1]),stdin=subprocess.PIPE,stdout=subprocess.PIPE,stderr=subprocess.STDOUT,text=True,bufsize=1)
-        except (OSError,ValueError) as exc:self.status.set(str(exc));return
+        except (OSError,ValueError,RuntimeError) as exc:self.status.set(str(exc));return
         self.generation+=1;gen=self.generation;proc=self.process;self.busy=True;self.inflight='launch';self.pending=None;self.report=None;self.reference=None;self.last_render=None;self.last_error=''
         self.start_button.state(['disabled']); self.set_setup_visible(False); self.status.set('Starting native core…')
         def read():
@@ -274,16 +314,18 @@ class NativeFrameUi:
 
     def drain(self):
         if self.closed:return
+        self._poll_input_build()
         try:
             while True:
                 gen,kind,payload=self.events.get_nowait()
                 if gen!=self.generation:continue
                 self.busy=False;self.inflight=None
                 if kind=='exit':
-                    self.process=None;self.pending=None;self.start_button.state(['!disabled']);self.mini_button.state(['disabled']);self.watches.configure(state='normal');self.set_setup_visible(True);self.status.set(self.last_error or payload)
+                    self.process=None;self.managed_ram=None;self.session_rom=None;self.pending=None;self.start_button.state(['!disabled']);self.mini_button.state(['disabled']);self.watches.configure(state='normal');self.set_setup_visible(True);self.status.set(self.last_error or payload)
                 elif not payload['ok']:self.last_error=payload['error'];self.status.set(self.last_error)
                 else:
                     previous=self.report;self.report=payload['report'];r=self.report
+                    self.managed_ram=payload.get('managed_ram')
                     if previous and previous['watches']!=r['watches']:
                         self.reference=None;self.last_render=None
                     can_unlock=r.get('capabilities',{}).get('mini_unlock') and r['state']==3 and not r['recording']
@@ -291,13 +333,28 @@ class NativeFrameUi:
                     unlocked=r.get('mini_unlock')
                     notice=('Mini Ebisumaru ability granted (verified RAM readback)' if unlocked and unlocked['changed'] else 'Mini Ebisumaru ability already unlocked' if unlocked else '')
                     state={1:'Starting / stopped',2:'Running',3:'Paused'}.get(r['state'],'Unknown')
-                    self.status.set(f"{r['region']} | {state} | core callback {r['serial']} | {len(r['rows'])} captured | recording {r['recording']} | {self.last_error or r['error'] or notice}");self.render()
+                    self.status.set(f"{r['region']} | {state} | core callback {r['serial']} | {len(r['rows'])} captured | {r.get('input_mode','scripted')} input | recording {r['recording']} | {self.last_error or r['error'] or notice}");self.render()
         except queue.Empty:pass
         if self.process and not self.busy and self.pending:
             op,fields=self.pending;self.pending=None;self.control(op,**fields)
         if self.drain_id is not None:
             self.root.after_cancel(self.drain_id)
         self.drain_id=self.root.after(50,self.drain)
+
+    def managed_attachment(self):
+        """Only a live child and its own private-pipe metadata are eligible."""
+        p=self.process; m=self.managed_ram
+        if (p is None or not m or p.poll() is not None or not self.session_rom
+                or m.get('pid')!=p.pid or m.get('region')!='japan'
+                or m.get('size')!=0x400000 or type(m.get('base')) is not int
+                or m['base']<=0 or m['base']%16):
+            return None
+        return p, m['base'], self.session_rom
+
+    def manual_edits_paused(self):
+        r=self.report
+        return bool(r and r['state']==3 and not r['recording']
+                    and self.inflight in (None,'status') and self.pending is None)
 
     def poll(self):
         if self.closed:return
@@ -330,6 +387,6 @@ class NativeFrameUi:
 
 
 def main():
-    root=tk.Tk();NativeFrameUi(root);root.mainloop()
+    root=tk.Tk();ui=NativeFrameUi(root);ui.find_installation();root.mainloop()
 
 if __name__=='__main__':main()

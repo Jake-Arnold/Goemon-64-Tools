@@ -54,6 +54,7 @@ def controller(writer, *, read_only=False, backend='mupen64plus'):
     screen._japan_writable_reader = (
         lambda host, attached: Toolkit._japan_writable_reader(
             screen, host, attached))
+    screen._open_japan_manual_writer = lambda: Toolkit._open_japan_manual_writer(screen)
     return screen
 
 

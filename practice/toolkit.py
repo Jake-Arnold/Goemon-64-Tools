@@ -43,6 +43,7 @@ from practice.paths import resource_root, practice_data_dir
 from practice.game_versions import VERSIONS, selected_version, verify_selected_rom
 from practice.region_session import active_session
 from practice.version import DISPLAY_VERSION
+from practice.managed_native_ram import ManagedNativeRam, connect_managed_japan
 from practice.updater_ui import UpdaterMixin
 from practice.launcher_preferences import load_last_region, save_last_region
 from practice.japan_auto_attach import (
@@ -742,6 +743,9 @@ class Toolkit(DialogueRegionMixin, DialogueMixin, UpdaterMixin, ReportsMixin, Ja
         Emulator backends retain their existing attached-reader policy.
         A game update, restart or USA binary must never inherit a Japan writer.
         """
+        if isinstance(host, ManagedNativeRam):
+            probes = verified_japan_probes(self.verified_rom_path)
+            return validate_rdram_base(host, attached.base, attached.endian, probes, allow_4mb=True)
         if self.jp_backend == 'recomp':
             verified_japan_recomp_pid(self.game_pid)
             probes = verified_japan_probes(self.verified_rom_path)
@@ -749,6 +753,15 @@ class Toolkit(DialogueRegionMixin, DialogueMixin, UpdaterMixin, ReportsMixin, Ja
         writer = Rdram(host, attached.base, attached.endian)
         writer.rdram_size = getattr(attached, 'rdram_size', 0x800000)
         return writer
+
+    def _open_japan_manual_writer(self):
+        process = getattr(self, 'process', None)
+        if isinstance(process, ManagedNativeRam):
+            ui = getattr(self, 'native_frame_ui', None)
+            if (ui is None or ui.process is not process.owner or not ui.manual_edits_paused()):
+                raise RuntimeError('Pause native inspector and stop recording before editing RAM')
+            return process.writer()
+        return HostProcess(self.game_pid, writable=True)
 
     def _open_japan_freeze_writer(self, attached, token):
         """Worker-only, ephemeral Japan-0 writer; never retain across polls."""
@@ -759,6 +772,8 @@ class Toolkit(DialogueRegionMixin, DialogueMixin, UpdaterMixin, ReportsMixin, Ja
                 or self._connecting or self.game_pid is None
                 or self.jp_backend not in ('project64', 'mupen64plus', 'recomp')):
             raise RuntimeError('Japanese freeze connection changed')
+        if isinstance(getattr(self, 'process', None), ManagedNativeRam):
+            raise RuntimeError('Continuous freezes are unavailable for managed native sessions; use paused manual edits')
         host = HostProcess(self.game_pid, writable=True)
         try:
             writer = self._japan_writable_reader(host, attached)
@@ -789,7 +804,7 @@ class Toolkit(DialogueRegionMixin, DialogueMixin, UpdaterMixin, ReportsMixin, Ja
         original = self.jp_rdram
         # Validate the guest address against the active 4/8 MiB reader first.
         original.read_guest(address, len(data))
-        host = HostProcess(self.game_pid, writable=True)
+        host = self._open_japan_manual_writer()
         try:
             writer = self._japan_writable_reader(host, original)
             before = writer.read_guest(address, len(data))
@@ -825,7 +840,7 @@ class Toolkit(DialogueRegionMixin, DialogueMixin, UpdaterMixin, ReportsMixin, Ja
         for item, _target in changes:
             if japan_unlock_lead(item) is None:
                 raise ValueError(f'{item.label}: Japanese address unknown')
-        host = HostProcess(self.game_pid, writable=True)
+        host = self._open_japan_manual_writer()
         try:
             attached = self.jp_rdram
             writable = self._japan_writable_reader(host, attached)
@@ -882,6 +897,8 @@ class Toolkit(DialogueRegionMixin, DialogueMixin, UpdaterMixin, ReportsMixin, Ja
         pid = self.game_pid
         original = self.jp_rdram
         try:
+            if isinstance(getattr(self, 'process', None), ManagedNativeRam):
+                raise RuntimeError('Use paused manual Live Memory edits for managed native sessions')
             target = self.jp_backend
             if target not in ('project64', 'mupen64plus', 'recomp'):
                 raise RuntimeError('Japanese backend is not confirmed')
@@ -953,6 +970,8 @@ class Toolkit(DialogueRegionMixin, DialogueMixin, UpdaterMixin, ReportsMixin, Ja
         target = self.jp_backend
         writable = None
         try:
+            if isinstance(getattr(self, 'process', None), ManagedNativeRam):
+                raise RuntimeError('Native debug-menu shortcut not yet supported for managed sessions')
             if target not in ('project64', 'mupen64plus', 'recomp'):
                 raise RuntimeError('Japanese backend not verified')
             if target == 'project64' and sys.platform not in ('win32', 'linux'):
@@ -1624,6 +1643,8 @@ class Toolkit(DialogueRegionMixin, DialogueMixin, UpdaterMixin, ReportsMixin, Ja
                             'Use Advanced connection > Launch native Mupen64Plus (source mode).')
             return
         if self.active_version.key == 'japan':
+            if self._connect_managed_native():
+                return
             self._connect_japan_emulator()
             return
         if self.connection_target.get() == 'mupen64plus':
@@ -1678,6 +1699,37 @@ class Toolkit(DialogueRegionMixin, DialogueMixin, UpdaterMixin, ReportsMixin, Ja
                                   name='GoemonRdramDiscovery')
         thread.start()
         self.root.after(50, self._poll_connect_results)
+
+    def _connect_managed_native(self):
+        """Route Dashboard Connect to the inspector's own verified Linux child."""
+        ui = getattr(self, 'native_frame_ui', None)
+        if (sys.platform != 'linux' or self.connection_target.get() not in ('auto', 'mupen64plus')
+                or ui is None or ui.process is None):
+            return False
+        specified = self.pid_text.get().strip()
+        if specified and specified != str(ui.process.pid):
+            return False  # Explicit other PID follows the existing external route.
+        attachment = ui.managed_attachment()
+        if attachment is None:
+            self.status.set('Managed Japan-0 RAM not ready. Enter gameplay in the native inspector (core 2.6.0), then Connect.')
+            return True
+        owner, base, rom_path = attachment
+        self._disconnect_for_version_change()
+        self._jp_reconnect_enabled = False
+        self._connecting = True
+        self.connect_button.state(['disabled'])
+        self._set_region_switch_enabled(False)
+        self.status.set(f'Verifying managed Japan-0 RAM in inspector PID {owner.pid}…')
+        def verify():
+            try:
+                host, reader, endian = connect_managed_japan(owner, base, rom_path)
+                host.rom_path = rom_path
+                self._connect_queue.put(('japan-ok', owner.pid, 'mupen64plus', host, reader, base, endian))
+            except (OSError, ValueError, RuntimeError) as exc:
+                self._connect_queue.put(('error', str(exc)))
+        threading.Thread(target=verify, daemon=True, name='GoemonManagedRam').start()
+        self.root.after(50, self._poll_connect_results)
+        return True
 
     def _connect_japan_emulator(self):
         """Attach Japan-0 to verified native recomp/Mupen/Project64 guest RDRAM."""
@@ -1946,13 +1998,21 @@ class Toolkit(DialogueRegionMixin, DialogueMixin, UpdaterMixin, ReportsMixin, Ja
                 'Choose a base from the dropdown and reconnect.')
         elif result[0] == 'japan-ok':
             _, pid, target, process, reader, base, endian = result
+            managed = isinstance(process, ManagedNativeRam)
+            if managed:
+                ui = getattr(self, 'native_frame_ui', None)
+                if ui is None or ui.process is not process.owner or process.owner.poll() is not None:
+                    process.close()
+                    self.status.set('Native inspector session changed during attachment; reconnect.')
+                    return
+                self.verified_rom_path = process.rom_path
             with self.value_freezes.guard:
                 self.process, self.jp_rdram, self.game_pid = process, reader, pid
                 self.jp_backend = target
                 self.mem = self.current = None
             self.jp_capture_spawn_btn.state(['!disabled'])
             # Only a successful Auto attachment can arm live restart tracking.
-            self._jp_reconnect_enabled = self.connection_target.get() == 'auto'
+            self._jp_reconnect_enabled = not managed and self.connection_target.get() == 'auto'
             self._jp_process_birth = None
             if self._jp_reconnect_enabled:
                 try:
@@ -1973,7 +2033,12 @@ class Toolkit(DialogueRegionMixin, DialogueMixin, UpdaterMixin, ReportsMixin, Ja
             self.refresh_unlocks(force=True)
             self.refresh_story_progress()
             self.select_story_edit()
-            self.notebook.select(self.scene_tab)
+            self.notebook.select(self.live_memory_tab if managed else self.scene_tab)
+            if managed:
+                self.freeze_status.set('Managed native session: continuous freezes unavailable; use paused manual edits.')
+                self.inspector_status.set('Managed Japan-0 RAM: pause Frame Inspector and stop recording before edits.')
+                self.status.set(f'Attached to managed Japan-0 PID {pid}; 4 MiB RAM. Pause inspector before manual edits. Continuous freezes and native warps unavailable.')
+                return
             self.status.set(f'Attached to Japan-0 {target} PID {pid}, '
                             f'{size_mb} MiB RAM 0x{base:X}, {endian}. '
                             'Japanese mapped writes, raw edits and freezes enabled; '
@@ -2112,6 +2177,11 @@ class Toolkit(DialogueRegionMixin, DialogueMixin, UpdaterMixin, ReportsMixin, Ja
                 self.refresh_scene_banner(force=True)
 
     def tick(self):
+        if isinstance(getattr(self, 'process', None), ManagedNativeRam):
+            ui = getattr(self, 'native_frame_ui', None)
+            if ui is None or ui.process is not self.process.owner or self.process.owner.poll() is not None:
+                self._disconnect_for_version_change()
+                self.status.set('Native inspector session ended; RAM detached.')
         session = active_session(self)
         # Follow region/PID/reader even when player/task is unavailable.
         self.poll_pj64_debugger(time.monotonic())
@@ -2556,6 +2626,9 @@ def parse_args(argv=None):
 
 def main(argv=None):
     args=parse_args(argv)
+    if sys.platform in ('linux', 'darwin') and not getattr(sys, 'frozen', False) and not args.read_only:
+        from practice.mupen_input_build import request_input_build
+        request_input_build()
     # Tk normalizes WM_CLASS capitalization. The instance matches the\n    # lowercase desktop filename on real Tk 8.6 / X11.
     root=make_toolkit_root(class_name='goemon-practice-toolkit'); app=Toolkit(root,args)
     try:

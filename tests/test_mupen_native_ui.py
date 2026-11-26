@@ -23,6 +23,22 @@ class NativeUiTests(unittest.TestCase):
         self.ui=NativeFrameUi(self.root);self.root.withdraw()
     def tearDown(self):
         if hasattr(self,'ui'):self.ui.close()
+    def test_automatic_build_populates_input_and_preserves_manual_choice(self):
+        from concurrent.futures import Future
+        from practice.mupen_native_ui import default_input_path
+        ui=self.ui; f=Future()
+        with patch('practice.mupen_native_ui.request_input_build',return_value=f):
+            ui._request_default_build()
+            self.assertIn('Preparing',ui.status.get());self.assertEqual(ui.paths['input'].get(),'')
+            f.set_result(default_input_path());ui._poll_input_build()
+            self.assertEqual(ui.paths['input'].get(),str(default_input_path()))
+            g=Future();ui.build_future=g;ui.paths['input'].set('/custom/plugin.so')
+            g.set_result(default_input_path());ui._poll_input_build()
+            self.assertEqual(ui.paths['input'].get(),'/custom/plugin.so')
+            ui.paths['input'].set('');bad=Future();ui.build_future=bad
+            bad.set_exception(RuntimeError('SDK missing'));ui._poll_input_build()
+            self.assertIn('SDK missing',ui.status.get());self.assertEqual(ui.paths['input'].get(),'')
+
     def test_status_poll_does_not_drop_user_input(self):
         ui=self.ui; stream=io.StringIO();ui.process=SimpleNamespace(stdin=stream)
         ui.control('status');ui.x.set('80');ui.control('hold');ui.x.set('0')
@@ -31,6 +47,22 @@ class NativeUiTests(unittest.TestCase):
         sent=[json.loads(x) for x in stream.getvalue().splitlines()]
         self.assertEqual(sent,[{'op':'status'},{'op':'hold','input':dict(NEUTRAL,x=80)}])
         ui.process=None
+    def test_managed_attachment_metadata_and_paused_edit_guard(self):
+        ui=self.ui;owner=SimpleNamespace(pid=123,poll=lambda:None)
+        ui.process=owner;ui.session_rom=Path('/tmp/original.z64')
+        metadata=dict(pid=123,base=0x10000,size=0x400000,region='japan')
+        ui.managed_ram=metadata
+        self.assertEqual(ui.managed_attachment(),(owner,0x10000,ui.session_rom))
+        for fields in (dict(pid=124),dict(region='usa'),dict(size=0x800000),dict(base=3)):
+            ui.managed_ram=dict(metadata,**fields);self.assertIsNone(ui.managed_attachment())
+        ui.managed_ram=metadata;ui.report=dict(state=2,recording=False)
+        self.assertFalse(ui.manual_edits_paused());ui.report['state']=3
+        self.assertTrue(ui.manual_edits_paused());ui.inflight='step'
+        self.assertFalse(ui.manual_edits_paused());ui.inflight=None;ui.pending=('physical',{})
+        self.assertFalse(ui.manual_edits_paused());ui.pending=None
+        ui.report['recording']=True;self.assertFalse(ui.manual_edits_paused())
+        owner.poll=lambda:0;self.assertIsNone(ui.managed_attachment());ui.process=None
+
     def test_apply_watches_preserves_session_and_requires_confirmation(self):
         ui=self.ui;stream=io.StringIO();ui.process=SimpleNamespace(stdin=stream)
         ui.report=dict(state=3,recording=False,rows=[{'frame':1}],watches=[])
@@ -125,13 +157,13 @@ class EmbeddedNativeUiTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as d:
             p=Path(d);lib=p/'lib'/'x86_64-linux-gnu';plugins=lib/'mupen64plus';plugins.mkdir(parents=True)
             (lib/'libmupen64plus.so.2').touch()
-            for name in ('mupen64plus-video-rice.so','mupen64plus-audio-sdl.so','mupen64plus-rsp-hle.so'):(plugins/name).touch()
+            for name in ('mupen64plus-video-rice.so','mupen64plus-audio-sdl.so','mupen64plus-rsp-hle.so','mupen64plus-input-sdl.so'):(plugins/name).touch()
             (p/'share'/'games'/'mupen64plus').mkdir(parents=True)
             with patch('practice.mupen_native_ui.sysconfig.get_config_var',return_value='x86_64-linux-gnu'):
                 found=discover_prefix(p)
             self.assertEqual(found['core'],str(lib/'libmupen64plus.so.2'))
             self.assertEqual(found['gfx'],str(plugins/'mupen64plus-video-rice.so'))
-            self.assertTrue({'audio','rsp','data'}<=found.keys())
+            self.assertTrue({'audio','rsp','data','physical_input'}<=found.keys())
             self.assertEqual(found['data'],str(p/'share'/'games'/'mupen64plus'))
 
 if __name__=='__main__':unittest.main()

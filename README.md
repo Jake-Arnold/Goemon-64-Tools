@@ -1,6 +1,10 @@
-# Goemon Speedrun Tools v0.11.90 — Unified Frame Inspector
+# Goemon Speedrun Tools v0.11.91 — Native controller and managed Japan RAM
 
 > **Repository branch policy (23 November 2026):** Toolkit development uses `stable/toolkit` → `toolkit/<topic>` → PR to `stable/toolkit`. Decomp work uses `stable/decomp` → `decomp/<topic>` → PR to `stable/decomp`. `main` and `chatgptweb/decomp` are legacy names, not new baselines. Read [BRANCHES.md](BRANCHES.md). Never merge the entire branches together.
+
+## v0.11.91 — Physical controller and managed Japan RAM (experimental)
+
+The source toolkit automatically builds or refreshes the bundled Goemon input plugin at startup using the installed SDK/compiler. Discover the stock SDL input provider, then use **Play with controller** for ordinary gameplay. Pause and Step/Run timeline to return to exclusive scripted input. Linux Japan-0 sessions with core 2.6.0 can use Dashboard → Connect to game (Mupen64Plus or Auto, PID blank) to attach the inspector-owned child without external PID discovery. Live Memory and mapped unlock edits require pause and recording stopped; continuous freezes and native warps remain unavailable. USA and macOS Dashboard attachment are not implemented. See [native setup](docs/MUPEN_NATIVE.md).
 
 ## v0.11.90 — Unified Frame Inspector
 
