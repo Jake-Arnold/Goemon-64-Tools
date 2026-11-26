@@ -1,3 +1,8 @@
+## 2026-11-26 — Ebi Slide geometry controls and collision tracer roadmap (RESEARCH_ONLY)
+
+- Rechecked 360 private user samples: identical first 69 shared fields, sole input difference step 70 CU; flags zero iff geometry_result zero. Q aux 154 only at 84, R 95–121. Scale grows at 86, after first crossing of R's contact X at 79. Actual wall plane and correction remain unresolved. User reports angle and distance sensitivity. Document exact controls, sample hashes, original paired query/store VMAs, eight context flag writers and planned read-only debugger capability/geometry replay gates in [research roadmap](decomp/research/ebi_slide_geometry_20261126/README.md).
+- Independently verified original JP/USA result, aux and support scratch halfword pairs, six research-only registry records. No runtime writes, no new matching C or byte delta, native IDO NOT_RUN. Live stable 92ea1a5930eb75c6bc85a2799868bb6db2a0b8c5; archive 15153308363 COMMIT/checksum and reconstructed tree 6513d4e1e46edd33d62e1de04454183bd338815b verified; direct Git DNS unavailable. Both expanded ROM SHA-1 rechecked. Local CSV equality/input and flag/result checks PASS. Hosted full regression required; no live USA or tracer verification. Keep toolkit implementation separate.
+
 # Goemon 64 Decomp Progress Log (Active Rolling Window)
 
 > **Historical archive:** All pre-rotation entries (965 KB verbatim) are preserved in [docs/archive/PROGRESS_HISTORY_20261126.md](docs/archive/PROGRESS_HISTORY_20261126.md).
