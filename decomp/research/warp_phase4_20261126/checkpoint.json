@@ -1,0 +1,23 @@
+{
+  "format": "goemon-warp-phase4-dispatcher-research-v1",
+  "base_commit": "8b195d8ce5a31723a71af428ee4f7bccf32b0bf8",
+  "status": "FAILED_NATIVE",
+  "canonical_usa_c": 3066,
+  "canonical_japan_0_c": 3004,
+  "new_accepted_c": 0,
+  "native_distinct_variants": 16,
+  "compiled_linked_variants": 16,
+  "best_linked_words_per_region": 61,
+  "original_words_per_region": 64,
+  "named_relocations_per_region": 24,
+  "first_mismatch_offset": 176,
+  "remaining_mismatch_offsets": [176,180,212],
+  "host_cases_per_region": 32768,
+  "host_sanitizers": "PASS",
+  "current_canonical_integrity": "PASS",
+  "whole_owner": "NOT_RUN",
+  "candidate_g2": "NOT_RUN",
+  "candidate_strict_inventory": "NOT_RUN",
+  "candidate_promotion_integrity": "NOT_RUN",
+  "gameplay": "NOT_RUN"
+}

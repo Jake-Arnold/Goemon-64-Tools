@@ -270,3 +270,6 @@ The verifier creates new workdirs and refuses reused output paths. A successful 
 ## Retention and cleanup boundaries
 
 Historical native proof snapshots are not disposable merely because their count is old. [Results retention audit](results/README.md) and [21 November retention review](docs/DECOMP_RETENTION_AUDIT_20261121.md) document which files are uniquely valuable. Keep research, failure traces, real source/code hashes, input provenance and all distinct G2 proofs. No game code is removed by this runbook reorganisation.
+
+### Warp Phase 4 (2026-11-26) — FAILED_NATIVE / RESEARCH_ONLY
+Paired exit dispatchers `func_80215230_5D0700` and `func_80219FC0_5D5550`, 256 bytes each, now 61/64 linked words each with original extent/frame and all 24 named relocations. The scalar-copy/byte-alias source restores the 0x28 frame; aggregate copy yields 0x30 and an extra instruction. Three remaining mismatches per region at +0xB0/+0xB4 (reload vs address calculation scheduling), +0xD4 (branch operands). Keep ASM; full candidate G2 NOT_RUN. Bounded source variants, source hashes, original reference replay and host fixtures: `decomp/research/warp_phase4_20261126/README.md`. Canonical counts 3066/3004 unchanged. Phase 1B, 2, 3 unpromoted. Next: independently recover expression and operand lifetime without raw instruction or relocation edits.
