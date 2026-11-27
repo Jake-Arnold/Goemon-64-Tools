@@ -1351,10 +1351,10 @@
     "format": "goemon-batch-registry-v1",
     "status": "PASSED_G2_LOCAL",
     "base_original_C": 3019,
-    "new_original_C": 340,
-    "accepted_original_C": 3359,
-    "accepted_original_bytes": 235828,
-    "asm_remaining": 4017,
+    "new_original_C": 358,
+    "accepted_original_C": 3377,
+    "accepted_original_bytes": 238476,
+    "asm_remaining": 3999,
     "full_original_elf_identities": 7376,
     "registry": "decomp/batches/registry.json",
     "batches": [
@@ -1369,7 +1369,8 @@
       "exec_batch9_69",
       "exec_batch10_73",
       "exec_batch11_136",
-      "exec_batch12_66"
+      "exec_batch12_66",
+      "exec_batch13_47"
     ]
   }
 }
