@@ -2008,6 +2008,119 @@
         "proof": "results/japan_0_exec_batch7_66_g2_20261126.json",
         "sdk_flags": {}
       }
+    },
+    {
+      "id": "exec_batch8_74",
+      "namespace": "exb008",
+      "base_commit": "745f5559a1fcb9a8d2d24488295b9b04bae2a3d0",
+      "research_dir": "research/exec_batch8_20261127",
+      "usa": {
+        "added": 38,
+        "bytes": 3916,
+        "manifest_sha256": "398307aa312ad8a4b90adf9b99a66030eb21e5e7eedaf60d4adbd143b7e0fd52",
+        "prior_elf_sha256": "b383b39368f38565cd50850cee58e85c564fd2dba893436f1cb7ba610db232b7",
+        "elf_sha256": "280a8a15458abcfba6f376cc9aff4649447cc73689a2fee4f7dde75865f4a211",
+        "guarded_abs": [
+          [
+            "build/usa/src/exb008/func_8003B79C_3C39C.c.o",
+            "D_801C1728_1C2328"
+          ],
+          [
+            "build/usa/src/exb008/func_801CB5C0_5F69A0.c.o",
+            "D_3ADDF"
+          ],
+          [
+            "build/usa/src/exb008/func_801F6CC4_5B2BD4.c.o",
+            "D_800C7DB2"
+          ]
+        ],
+        "proof": "results/usa_exec_batch8_74_g2_20261126.json",
+        "sdk_flags": {
+          "func_8003B79C_3C39C": [
+            "-c",
+            "-G",
+            "0",
+            "-non_shared",
+            "-Xfullwarn",
+            "-Xcpluscomm",
+            "-Iinclude",
+            "-Ilibultra/include",
+            "-Ilibultra/include/PR",
+            "-Isrc",
+            "-I.",
+            "-Wab,-r4300_mul",
+            "-woff",
+            "649,838,712",
+            "-D_LANGUAGE_C",
+            "-D_FINALROM",
+            "-DF3DEX_GBI",
+            "-D__sgi",
+            "-DNDEBUG",
+            "-O2",
+            "-mips2",
+            "-g3"
+          ],
+          "func_801CB5C0_5F69A0": [
+            "-c",
+            "-G",
+            "0",
+            "-non_shared",
+            "-Xfullwarn",
+            "-Xcpluscomm",
+            "-Iinclude",
+            "-Ilibultra/include",
+            "-Ilibultra/include/PR",
+            "-Isrc",
+            "-I.",
+            "-Wab,-r4300_mul",
+            "-woff",
+            "649,838,712",
+            "-D_LANGUAGE_C",
+            "-D_FINALROM",
+            "-DF3DEX_GBI",
+            "-D__sgi",
+            "-DNDEBUG",
+            "-O2",
+            "-mips2",
+            "-g3"
+          ]
+        }
+      },
+      "japan_0": {
+        "added": 36,
+        "bytes": 3664,
+        "manifest_sha256": "f8e54df85ea7e1e53e40039a17ef4ffb7efde58744403633b6c26e2b5287239e",
+        "prior_elf_sha256": "65639e151b7ac8b66e034c9b31661c2ccab7a260e7bebc02d06a2cc60362e6fe",
+        "elf_sha256": "85ca2ca5c2074c0ed5b815aee0151124de5710528162695958ec927db77e3275",
+        "guarded_abs": [],
+        "proof": "results/japan_0_exec_batch8_74_g2_20261126.json",
+        "sdk_flags": {
+          "func_8003B40C_3C00C": [
+            "-c",
+            "-G",
+            "0",
+            "-non_shared",
+            "-Xfullwarn",
+            "-Xcpluscomm",
+            "-Iinclude",
+            "-Ilibultra/include",
+            "-Ilibultra/include/PR",
+            "-Isrc",
+            "-I.",
+            "-Wab,-r4300_mul",
+            "-woff",
+            "649,838,712",
+            "-D_LANGUAGE_C",
+            "-D_FINALROM",
+            "-DF3DEX_GBI",
+            "-D__sgi",
+            "-DNDEBUG",
+            "-O2",
+            "-mips2",
+            "-g3"
+          ]
+        }
+      }
     }
   ],
   "frozen_usa_before_registry": {
