@@ -1,0 +1,182 @@
+[
+  {
+    "region": "usa",
+    "name": "func_080083AC_6BB64C",
+    "owner": "file_29.s",
+    "vma": 134251436,
+    "rom_offset": 7059020,
+    "original_bytes": 16,
+    "paired": "func_08008348_6C00C8",
+    "neighbor_matches": 5
+  },
+  {
+    "region": "japan_0",
+    "name": "func_08008348_6C00C8",
+    "owner": "6B7D80.s",
+    "vma": 134251336,
+    "rom_offset": 7078088,
+    "original_bytes": 16,
+    "paired": "func_080083AC_6BB64C",
+    "neighbor_matches": 5
+  },
+  {
+    "region": "usa",
+    "name": "func_801ED518_5A9428",
+    "owner": "587370.s",
+    "vma": 2149504280,
+    "rom_offset": 5936168,
+    "original_bytes": 16,
+    "paired": "func_801F2570_5AE540",
+    "neighbor_matches": 5
+  },
+  {
+    "region": "japan_0",
+    "name": "func_801F2570_5AE540",
+    "owner": "5A98B0.s",
+    "vma": 2149524848,
+    "rom_offset": 5956928,
+    "original_bytes": 16,
+    "paired": "func_801ED518_5A9428",
+    "neighbor_matches": 5
+  },
+  {
+    "region": "usa",
+    "name": "func_08004354_6F7834",
+    "owner": "file_43.s",
+    "vma": 134234964,
+    "rom_offset": 7305268,
+    "original_bytes": 16,
+    "paired": "func_08004348_6FBED8",
+    "neighbor_matches": 6
+  },
+  {
+    "region": "japan_0",
+    "name": "func_08004348_6FBED8",
+    "owner": "6F7B90.s",
+    "vma": 134234952,
+    "rom_offset": 7323352,
+    "original_bytes": 16,
+    "paired": "func_08004354_6F7834",
+    "neighbor_matches": 6
+  },
+  {
+    "region": "usa",
+    "name": "func_8021055C_697F5C",
+    "owner": "694CA0.s",
+    "vma": 2149647708,
+    "rom_offset": 6913884,
+    "original_bytes": 16,
+    "paired": "func_80215354_69CA54",
+    "neighbor_matches": 6
+  },
+  {
+    "region": "japan_0",
+    "name": "func_80215354_69CA54",
+    "owner": "699790.s",
+    "vma": 2149667668,
+    "rom_offset": 6933076,
+    "original_bytes": 16,
+    "paired": "func_8021055C_697F5C",
+    "neighbor_matches": 6
+  },
+  {
+    "region": "usa",
+    "name": "func_801D1B5C_664A0C",
+    "owner": "65E310.s",
+    "vma": 2149391196,
+    "rom_offset": 6703628,
+    "original_bytes": 16,
+    "paired": "func_801D72CC_66981C",
+    "neighbor_matches": 3
+  },
+  {
+    "region": "japan_0",
+    "name": "func_801D72CC_66981C",
+    "owner": "669690.s",
+    "vma": 2149413580,
+    "rom_offset": 6723612,
+    "original_bytes": 16,
+    "paired": "func_801D1B5C_664A0C",
+    "neighbor_matches": 3
+  },
+  {
+    "region": "usa",
+    "name": "func_0800138C_730C1C",
+    "owner": "file_71.s",
+    "vma": 134222732,
+    "rom_offset": 7539740,
+    "original_bytes": 16,
+    "paired": "func_0800138C_734E0C",
+    "neighbor_matches": 6
+  },
+  {
+    "region": "japan_0",
+    "name": "func_0800138C_734E0C",
+    "owner": "733A80.s",
+    "vma": 134222732,
+    "rom_offset": 7556620,
+    "original_bytes": 16,
+    "paired": "func_0800138C_730C1C",
+    "neighbor_matches": 6
+  },
+  {
+    "region": "usa",
+    "name": "func_08001864_7092A4",
+    "owner": "file_48.s",
+    "vma": 134223972,
+    "rom_offset": 7377572,
+    "original_bytes": 16,
+    "paired": "func_08001864_70D7F4",
+    "neighbor_matches": 4
+  },
+  {
+    "region": "japan_0",
+    "name": "func_08001864_70D7F4",
+    "owner": "70BF90.s",
+    "vma": 134223972,
+    "rom_offset": 7395316,
+    "original_bytes": 16,
+    "paired": "func_08001864_7092A4",
+    "neighbor_matches": 4
+  },
+  {
+    "region": "usa",
+    "name": "func_080014DC_71ECAC",
+    "owner": "file_60.s",
+    "vma": 134223068,
+    "rom_offset": 7466156,
+    "original_bytes": 16,
+    "paired": "func_080014C8_723158",
+    "neighbor_matches": 4
+  },
+  {
+    "region": "japan_0",
+    "name": "func_080014C8_723158",
+    "owner": "721C90.s",
+    "vma": 134223048,
+    "rom_offset": 7483736,
+    "original_bytes": 16,
+    "paired": "func_080014DC_71ECAC",
+    "neighbor_matches": 4
+  },
+  {
+    "region": "usa",
+    "name": "func_08001308_734238",
+    "owner": "file_73.s",
+    "vma": 134222600,
+    "rom_offset": 7553592,
+    "original_bytes": 16,
+    "paired": "func_08001308_7385E8",
+    "neighbor_matches": 6
+  },
+  {
+    "region": "japan_0",
+    "name": "func_08001308_7385E8",
+    "owner": "7372E0.s",
+    "vma": 134222600,
+    "rom_offset": 7570920,
+    "original_bytes": 16,
+    "paired": "func_08001308_734238",
+    "neighbor_matches": 6
+  }
+]
