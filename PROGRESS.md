@@ -3,6 +3,12 @@
 > **Historical archive:** All pre-rotation entries (965 KB verbatim) are preserved in [docs/archive/PROGRESS_HISTORY_20261126.md](docs/archive/PROGRESS_HISTORY_20261126.md).
 > Keep this file concise (rolling active milestones only; archive older entries when approaching ~25 KB so agent sessions do not load hundreds of kilobytes of history).
 
+## 27 November 2026 — Canonical semantic inventory (metadata only)
+
+- Verified live stable/decomp 997dc92c69ef8170a14eae4b4086a78aca6f0dd8 and authenticated source archive tree 74871f952d9eea15e551997f1c7d0d93ea09564e. Existing promotion integrity and batch registry PASS: USA 3,529 / 259,300 B; Japan 3,393 / 240,424 B. No G2 delta.
+- Added a reproducible ROM-free semantic index covering all 6,922 reconstructed functions, with confidence counts USA 330 Confirmed / 421 High / 202 Medium / 2,576 Unknown; JP 313 / 415 / 480 / 2,185. 121 curated regional annotations, 45 reviewed counterpart pairs, 247 equal-digest candidate pairs, five structures and 27 field observations. 5,963 hash-pinned source bodies resolved. Automatic classifications and named-call references describe local behaviour only; no complete gameplay or dynamic call graph claim. See decomp/semantics/README.md.
+- Targeted semantic tests 5/5 PASS; native IDO and fresh ROM/gameplay proof NOT_RUN (no executable or canonical proof changes). Required hosted full ROM-free CI and branch routing must pass before merge. Next: review Unknown functions by subsystem, validate inferred fields and runtime roles.
+
 ## 27 November 2026 — Tiered Swarm Hydrogen-Medium Batch #14 (`exec_batch14_40`, USA +24 / Japan +16)
 
 - Authenticated live `stable/decomp@4bc3228724d3050b81f14a75a611053853ae4317` (after Batch #13 passed CI and merged) and pinned original upstream `7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee` with authentic SGI IDO 5.3 (`76d796c9591c9f5504949f85b29c32a6039a663791afe2f36f34ca18425b64d0`).

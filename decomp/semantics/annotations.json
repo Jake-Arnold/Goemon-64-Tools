@@ -1,0 +1,175 @@
+{
+  "format": "goemon-semantic-annotations-v1",
+  "groups": [
+    {
+      "subsystem": "player_movement",
+      "evidence": ["research/ebi_slide9_20261126/README.md", "research/ebi_slide9_20261126/usa-candidates.json", "research/ebi_slide9_20261126/japan_0-candidates.json", "research/pending_isolated233_20261120/sources/iso233_240.c", "research/usa_mini_selector_20261123/mini_selector.c"],
+      "functions": [
+        {"usa":"func_801CBAF8_587A08","japan_0":"func_801D1228_58D1F8","confidence":"High","alias":"player_post_update","behavior":"Calls movement/update helpers, clears task fields, propagates direction and shifts three movement samples.","fields":["player_task.+0x5C","player_task.+0x90","player_task.+0x94","player_task.+0xCE","player_task.+0xE4","player_task.+0xE8","player_secondary.+0x1A","player_secondary.+0x20","player_secondary.+0x24","player_secondary.+0x28"],"regional_difference":"USA requires override bit 0x8000 and masks to 0x3FF; JP copies any nonzero override without masking.","unresolved":"Whether this regional difference affects Ebi Slide or Superman needs runtime tracing."},
+        {"usa":"func_801E3400_59F310","japan_0":"func_801E8610_5A45E0","confidence":"High","alias":"player_action_dispatch","behavior":"Selects update/action handlers using state, input masks and eligibility checks; increments or resets a secondary action counter.","fields":["player_task.+0xCC","player_secondary.+0x85"],"regional_difference":"Similar dispatch structure, but USA and JP have different early checks and order; JP includes an extra magnitude/input test in this function."},
+        {"usa":"func_801DFE44_59BD54","japan_0":"func_801E5108_5A10D8","confidence":"High","alias":"timed_action_reversal","behavior":"Initializes two movement parameters on first invocation, then waits for a float threshold; resets counter and selects action 0x47 or 0x4A, adding 0x200 modulo 0x400 to direction on the latter path.","fields":["player_task.+0xE4","player_task.+0xE8","player_secondary.+0x02","player_secondary.+0x30"],"unresolved":"Exact animation and action identities remain to be traced."},
+        {"usa":"func_801DF3D8_59B2E8","japan_0":"func_801E46AC_5A067C","confidence":"High","alias":"movement_threshold_transition","behavior":"Tests eligibility, input masks and absolute movement sample; selects action 0x17, 0x0D, 0x13 or 0, and conditionally clears or assigns movement parameter +0xE8.","fields":["player_task.+0x90","player_task.+0xE8","player_secondary.+0x68"]},
+        {"usa":"func_801E3DE0_59FCF0","japan_0":"func_801E905C_5A502C","confidence":"High","alias":"speed_dependent_interpolation","behavior":"When sample magnitude meets threshold, divides a constant by sample, caps divisor above at 8, interpolates initial toward target, clamps output above at target, and stores output times factor.","fields":["player_task.+0x90","player_task.+0xE4","player_task.+0xE8"],"regional_difference":"Same reconstructed arithmetic and field layout, but different data symbols; literal equality and runtime role not assumed."},
+        {"usa":"func_801E1C90_59DBA0","confidence":"High","alias":"mini_movement_selector","behavior":"Selects target 1.12 or 2.8 using a predicate, calls speed interpolation with factor 0.3, and maps returned bucket to actions 12 through 15; returns zero below sample threshold.","fields":["player_task.+0x90"],"unresolved":"Exact predicate and role of each action need runtime confirmation."}
+      ]
+    },
+    {
+      "subsystem":"character_switch",
+      "evidence":["research/character_switch_native_candidates.c","research/full_semantic_atlas_20261125/README.md"],
+      "functions":[
+        {"usa":"func_801DD5C0_5994D0","japan_0":"func_801E2970_59E940","confidence":"High","alias":"character_switch_sync","behavior":"Synchronizes character selection state and installs the selection callback."},
+        {"usa":"func_801DD654_599564","japan_0":"func_801E2A04_59E9D4","confidence":"High","alias":"character_switch_alternate","behavior":"Alternate character switch state clearing and callback installation."}
+      ]
+    },
+    {
+      "subsystem":"task_scheduler",
+      "evidence":["docs/USA_TASK_SCHEDULER_LIFECYCLE_20261121.md","research/full_semantic_atlas_20261125/README.md"],
+      "functions":[
+        {"usa":"func_80034B24_35724","japan_0":"func_80034794_35394","confidence":"High","alias":"task_insert_current","behavior":"Forwards current execution cursor, new task and mask to insertion core."},
+        {"usa":"func_80034C4C_3584C","japan_0":"func_800348BC_354BC","confidence":"High","alias":"task_insert_mode1","behavior":"Forwards current cursor and new task through mode-1 validated insertion."},
+        {"usa":"func_80034C84_35884","japan_0":"func_800348F4_354F4","confidence":"High","alias":"task_insert_mode2","behavior":"Forwards current cursor and new task through mode-2 validated insertion."},
+        {"usa":"func_80034DD8_359D8","confidence":"High","alias":"task_insert_activate_current","behavior":"Inserts relative to current task, then repositions/activates returned task."},
+        {"usa":"func_80034E08_35A08","confidence":"High","alias":"task_insert_activate_explicit","behavior":"Calls insertion core then repositions/activates returned task."},
+        {"usa":"func_80034E38_35A38","confidence":"High","alias":"task_insert_activate_mode1","behavior":"Inserts in mode 1 then repositions/activates returned task."},
+        {"usa":"func_80034E68_35A68","confidence":"High","alias":"task_insert_activate_mode2","behavior":"Inserts in mode 2 then repositions/activates returned task."},
+        {"usa":"func_80035020_35C20","confidence":"High","alias":"task_remove_current","behavior":"Forwards current cursor to task removal wrapper."},
+        {"usa":"func_80035044_35C44","confidence":"High","alias":"task_remove_wrapper","behavior":"Forwards supplied task to scheduler removal core."},
+        {"usa":"func_80035204_35E04","japan_0":"func_80034E74_35A74","confidence":"Confirmed","alias":"set_current_task_callback0","behavior":"Stores callback in current task slot +0x08.","fields":["TASK_W.+0x08"]},
+        {"usa":"func_80035214_35E14","japan_0":"func_80034E84_35A84","confidence":"Confirmed","alias":"set_task_callback0","behavior":"Stores callback in supplied task slot +0x08.","fields":["TASK_W.+0x08"]},
+        {"usa":"func_8003521C_35E1C","japan_0":"func_80034E8C_35A8C","confidence":"Confirmed","alias":"set_current_task_callback1","behavior":"Stores callback in current task slot +0x0C.","fields":["TASK_W.+0x0C"]},
+        {"usa":"func_8003522C_35E2C","japan_0":"func_80034E9C_35A9C","confidence":"Confirmed","alias":"set_task_callback1","behavior":"Stores callback in supplied task slot +0x0C.","fields":["TASK_W.+0x0C"]},
+        {"usa":"func_80035234_35E34","japan_0":"func_80034EA4_35AA4","confidence":"Confirmed","alias":"set_current_task_callback2","behavior":"Stores callback in current task slot +0x10.","fields":["TASK_W.+0x10"]},
+        {"usa":"func_80035244_35E44","japan_0":"func_80034EB4_35AB4","confidence":"Confirmed","alias":"set_task_callback2","behavior":"Stores callback in supplied task slot +0x10.","fields":["TASK_W.+0x10"]}
+      ]
+    },
+    {
+      "subsystem":"object_initialization_and_warp",
+      "evidence":["research/warp_batch_a_20261126/README.md","research/warp_batch_a_20261126/usa-candidates.json","research/warp_batch_a_20261126/japan_0-candidates.json"],
+      "functions":[
+        {"usa":"func_800357BC_363BC","japan_0":"func_8003542C_3602C","confidence":"High","alias":"task_insert_initialize_object","behavior":"Inserts a mode-2 task and forwards arguments to object initializer; returns task."},
+        {"usa":"func_800358E8_364E8","japan_0":"func_80035558_36158","confidence":"High","alias":"task_insert_initialize_activate","behavior":"Calls insertion/object initialization then scheduler repositioning helper."},
+        {"usa":"func_80035964_36564","japan_0":"func_800355D4_361D4","confidence":"High","alias":"initialize_object_from_system_mode","behavior":"If task and object exist, copies supplied pointers and transform-like fields, reads system-derived halfword at object +0x44, calls initialization helper and zeros multiple fields."},
+        {"usa":"func_80035A5C_3665C","japan_0":"func_800356CC_362CC","confidence":"High","alias":"initialize_object_explicit_mode","behavior":"Like object initialization above but assigns explicit mode argument to +0x44 instead of reading system state."},
+        {"usa":"func_802151E0_5D06B0","japan_0":"func_80219F70_5D5500","confidence":"Medium","alias":"initialize_task_7e","behavior":"Sets task ID 0x7E, three object floats to one constant, two task fields and installs follow-up callback."},
+        {"usa":"func_80216E1C_5D22EC","japan_0":"func_8021BB8C_5D711C","confidence":"Medium","alias":"initialize_child_fields","behavior":"Sets three child-object floats to a shared constant and calls a helper with supplied kind."},
+        {"usa":"func_8021617C_5D164C","japan_0":"func_8021AEF4_5D6484","confidence":"Medium","alias":"initialize_packed_object_fields","behavior":"Sets packed control flags, converts two unsigned-halfword parameters to floats, and assigns several fixed values."},
+        {"usa":"func_80216E54_5D2324","japan_0":"func_8021BBC4_5D7154","confidence":"High","alias":"allocate_initialize_child","behavior":"Allocates an object with arguments 2 and 1; on success sets a tagged pointer and three float fields, calls initializer and returns object; otherwise returns null."},
+        {"usa":"func_80037548_38148","japan_0":"func_800371B8_37DB8","confidence":"High","alias":"indexed_scene_transition_setup","behavior":"Selects progression record by state/index and conditionally writes scene, mode, coordinates and heading for specific index cases.","unresolved":"Map/entrance identity and complete native transition chain require separate evidence."},
+        {"usa":"func_8003767C_3827C","confidence":"Medium","alias":"compare_scene_state_halfwords","behavior":"Returns whether two system halfwords labelled current and last in reconstruction are equal."}
+      ]
+    },
+    {
+      "subsystem":"dialogue_window",
+      "evidence":["VM_ARCHITECTURE_RESEARCH.md","dialogue_window.c","research/full_semantic_atlas_20261125/README.md"],
+      "functions":[
+        {"usa":"func_8000D4E0_E0E0","japan_0":"func_8000D230_DE30","confidence":"High","alias":"dialogue_window_open_update","behavior":"Advances dialogue opening dimensions/scale through opening phases; not a room transition."},
+        {"usa":"func_8000D79C_E39C","japan_0":"func_8000D4EC_E0EC","confidence":"High","alias":"dialogue_window_close_update","behavior":"Advances dialogue closing dimensions/scale through closing phases."},
+        {"usa":"func_8000C314_CF14","confidence":"Confirmed","alias":"dialogue_window_phase_status","behavior":"Returns 1 for window phases 1-3, 2 for 5-6, otherwise 0.","fields":["DialogueWindow.+0x30"]},
+        {"usa":"func_8000C3A0_CFA0","confidence":"Confirmed","alias":"dialogue_window_request_close","behavior":"Changes ready phase 4 to closing phase 5 and sets flag bit 0.","fields":["DialogueWindow.+0x30","DialogueWindow.+0x10"]},
+        {"usa":"func_8000C3EC_CFEC","confidence":"Confirmed","alias":"dialogue_new_line","behavior":"Clears column and horizontal advance, increases vertical advance by line height and increments line.","fields":["DialogueWindow.+0x6C","DialogueWindow.+0x6E","DialogueWindow.+0x72","DialogueWindow.+0x74","DialogueWindow.+0x76"]}
+      ]
+    },
+    {
+      "subsystem":"script_vm_and_gameplay_gate",
+      "evidence":["VM_ARCHITECTURE_RESEARCH.md","script_vm.c","research/glitch_g2_20261121/manifest.json","research/full_semantic_atlas_20261125/README.md"],
+      "functions":[
+        {"usa":"func_8001F940_20540","japan_0":"func_8001F610_20210","confidence":"High","alias":"gameplay_start_pause_gate","behavior":"Checks Start input, submode, VM activity and multiple gates before setting pause latch; invokes alternate handler when already latched.","unresolved":"Does not establish complete Bomb Text Skip causality."},
+        {"usa":"func_8001F8B0_204B0","japan_0":"func_8001F580_20180","confidence":"High","alias":"gameplay_three_callback_dispatch","behavior":"Selects and invokes one callback from a three-entry table indexed by a gameplay state byte."},
+        {"usa":"func_8003F1D8_3FDD8","japan_0":"func_8003EE44_3FA44","confidence":"Confirmed","alias":"vm_is_busy","behavior":"Returns 1 when current script pointer is nonzero, otherwise 0."},
+        {"usa":"func_8003CFD0_3DBD0","confidence":"Confirmed","alias":"vm_tick_gate","behavior":"Decrements and returns while delay counter nonzero; otherwise calls VM main step and follow-up helper."},
+        {"usa":"func_8003D310_3DF10","confidence":"Confirmed","alias":"vm_start_numbered_event","behavior":"Cleans up prior active VM, sets context markers, and resolves a numbered event via resource/file tables."},
+        {"usa":"func_8003D388_3DF88","confidence":"Confirmed","alias":"vm_start_numbered_event_with_context","behavior":"Starts numbered event with optional context/owner marker after cleaning up an active VM."},
+        {"usa":"func_8003DF68_3EB68","confidence":"Confirmed","alias":"vm_text_pacing_counter","behavior":"Decrements a counter of at least two and reports suppression; otherwise reports no suppression."},
+        {"usa":"func_8003EB34_3F734","confidence":"Confirmed","alias":"vm_unpaced_text_reader","behavior":"Walks signed halfword text tokens, emits nonnegative glyphs, handles negative controls and stops at -1."},
+        {"usa":"func_8003E888_3F488","confidence":"High","alias":"vm_choice_navigation","behavior":"Handles choice state, previous/next links, confirm and cancel conditions and associated sound calls."},
+        {"usa":"func_8003E81C_3F41C","confidence":"Confirmed","alias":"vm_choice_continue","behavior":"On confirmed choice installs selected continuation pointer and clears choice state; also clears state on cancel."}
+      ]
+    },
+    {
+      "subsystem":"event_flag_banks",
+      "evidence":["event_flags.c","VM_ARCHITECTURE_RESEARCH.md","docs/USA_JAPAN_SAVE_EDITOR_EVENT_FLAG_CROSSWALK_20261117.md"],
+      "functions":[
+        {"usa":"func_80023DF0_249F0","japan_0":"func_80023AB0_246B0","confidence":"Confirmed","alias":"set_flag_bank_a","behavior":"Sets indexed bit in first 100-byte flag bank."},
+        {"usa":"func_80023E40_24A40","japan_0":"func_80023B00_24700","confidence":"Confirmed","alias":"clear_flag_bank_a","behavior":"Clears indexed bit in first flag bank."},
+        {"usa":"func_80023E94_24A94","japan_0":"func_80023B54_24754","confidence":"Confirmed","alias":"test_flag_bank_a","behavior":"Returns indexed bit mask from first flag bank."},
+        {"usa":"func_80023EE4_24AE4","confidence":"Confirmed","alias":"reset_flag_bank_a","behavior":"Zeros 100 bytes in first flag bank."},
+        {"usa":"func_80023F14_24B14","japan_0":"func_80023BD4_247D4","confidence":"Confirmed","alias":"set_flag_bank_b","behavior":"Sets indexed bit in second flag bank."},
+        {"usa":"func_80023F64_24B64","japan_0":"func_80023C24_24824","confidence":"Confirmed","alias":"clear_flag_bank_b","behavior":"Clears indexed bit in second flag bank."},
+        {"usa":"func_80023FB8_24BB8","japan_0":"func_80023C78_24878","confidence":"Confirmed","alias":"test_flag_bank_b","behavior":"Returns indexed bit mask from second flag bank."},
+        {"usa":"func_80024008_24C08","confidence":"Confirmed","alias":"reset_flag_bank_b","behavior":"Zeros 100 bytes in second flag bank."},
+        {"usa":"func_80024038_24C38","japan_0":"func_80023CF8_248F8","confidence":"Confirmed","alias":"set_saved_flag_bank_c","behavior":"Sets indexed bit in persistent saved bank C."},
+        {"usa":"func_80024088_24C88","japan_0":"func_80023D48_24948","confidence":"Confirmed","alias":"clear_saved_flag_bank_c","behavior":"Clears indexed bit in persistent saved bank C."},
+        {"usa":"func_800240DC_24CDC","japan_0":"func_80023D9C_2499C","confidence":"Confirmed","alias":"test_saved_flag_bank_c","behavior":"Returns indexed bit mask from persistent saved bank C."},
+        {"usa":"func_8002412C_24D2C","confidence":"Confirmed","alias":"reset_saved_flag_bank_c","behavior":"Zeros 100 bytes in persistent saved bank C."}
+      ]
+    },
+    {
+      "subsystem":"save_and_pickup_rewards",
+      "evidence":["save_resources.c","DOLL_REWARD_TRACE.md","research/full_semantic_atlas_20261125/README.md","docs/PHASE1_MR_ARROW_NATIVE_SETTER_RUNTIME_USA_JP_20261117.md"],
+      "functions":[
+        {"usa":"func_8000B640_C240","confidence":"Confirmed","alias":"initialize_new_save","behavior":"Clears save block and initializes new-game defaults including lives 3, health/max health 10 and Ryo 100."},
+        {"usa":"func_8000B718_C318","confidence":"Confirmed","alias":"restore_spawn_minimum_resources","behavior":"Restores indexed spawn record, copies resource blocks and enforces minimum lives 3 and health 10."},
+        {"usa":"func_8000B824_C424","confidence":"Confirmed","alias":"apply_fortune_doll_upgrade","behavior":"Consumes four Fortune Doll quarters once per invocation, adds two native max-health units and refills health; leaves excess progress."},
+        {"usa":"func_080000CC_6AE8AC","japan_0":"func_080000CC_6B342C","confidence":"High","alias":"mr_arrow_pickup_update","behavior":"Checks interaction bit 0x200, starts event 0x6C and sets actor-supplied saved flag."},
+        {"usa":"func_080002D0_6AEAB0","japan_0":"func_080002B0_6B3610","confidence":"High","alias":"map_pickup_event_update","behavior":"Starts numbered event 0x6B for pickup interaction.","unresolved":"Exact per-instance pickup identity remains provisional."},
+        {"usa":"func_080005F8_6AEDD8","japan_0":"func_080005B8_6B3918","confidence":"High","alias":"silver_doll_pickup_update","behavior":"Sets actor-supplied saved flag and selects event 0x66 or 0x312 based on saved flag 0xE2."},
+        {"usa":"func_080006E0_6AEEC0","japan_0":"func_0800068C_6B39EC","confidence":"High","alias":"doll_pickup_completion","behavior":"Waits for event completion before applying shared Fortune Doll upgrade logic."},
+        {"usa":"func_0800083C_6AF01C","confidence":"High","alias":"gold_doll_pickup_update","behavior":"Starts event 0x6A, whose script grants four Fortune Doll progress units."},
+        {"usa":"func_0800098C_72125C","japan_0":"func_0800098C_72566C","confidence":"Confirmed","alias":"flag_199_event_137_once","behavior":"Tests saved bank C bit 0x199; if clear sets it and starts event 0x137; retires task regardless.","unresolved":"Exact in-game trigger/actor identity not established; flag and event namespaces are distinct."}
+      ]
+    },
+    {
+      "subsystem":"geometry_math",
+      "evidence":["math_helpers.c","trig_angles.c"],
+      "functions":[
+        {"usa":"func_8000E28C_EE8C","confidence":"High","alias":"planar_angle_difference","behavior":"Calls angle helper on two coordinate differences and masks result to 10 bits."},
+        {"usa":"func_8000E39C_EF9C","confidence":"High","alias":"scaled_direction_vector","behavior":"Computes squared coordinate differences and signed square roots scaled by squared magnitude; stores three direction components.","unresolved":"Zero-length handling and gameplay callers need review."},
+        {"usa":"func_8000E630_F230","confidence":"High","alias":"scale_angle_components","behavior":"Calls two angle-dependent helpers, scales each result and stores two components."},
+        {"usa":"func_8000EC04_F804","confidence":"High","alias":"pitch_yaw_between_points","behavior":"Computes planar distance and two angular outputs; pitch uses inverted 10-bit angle."}
+      ]
+    },
+    {
+      "subsystem":"impact_combat",
+      "evidence":["impact_controller.h","impact_hp_clamp.c","impact_hp_floor_return.c","research/exec_batch10_20261127/sources/usa/func_801D3A68_5FEE48/candidate.c","research/exec_batch10_20261127/sources/japan_0/func_801D9188_603C08/candidate.c"],
+      "functions":[
+        {"usa":"func_801D3954_5FED34","confidence":"Confirmed","alias":"impact_enemy_hp_subtract_floor","behavior":"Subtracts supplied amount from enemy HP, stores and returns value floored at zero.","fields":["ImpactController.+0x60"]},
+        {"usa":"func_801D3A44_5FEE24","confidence":"Confirmed","alias":"impact_enemy_hp_floor_read","behavior":"Reads enemy HP and writes zero if nonpositive; returns nonnegative value.","fields":["ImpactController.+0x60"]},
+        {"usa":"func_801D3A68_5FEE48","japan_0":"func_801D9188_603C08","confidence":"High","alias":"impact_counter_64_adjust","behavior":"Adds signed delta to controller +0x64, clamps result to 0-999 and returns it.","fields":["ImpactController.+0x64"],"unresolved":"PR #255 identifies this counter as Impact Ryo; exact gameplay meaning remains provisional until reviewed against that evidence."}
+      ]
+    }
+  ],
+  "structures": [
+    {"id":"player_task","description":"Player task fields in the paired movement implementations.","evidence":["research/ebi_slide9_20261126/usa-candidates.json","research/ebi_slide9_20261126/japan_0-candidates.json","research/usa_mini_selector_20261123/mini_selector.c"],"fields":[
+      {"offset":"0x5C","type":"pointer","behavior":"Points to secondary player state.","confidence":"High"},
+      {"offset":"0x90","type":"u8","behavior":"Index into 24-byte movement records.","confidence":"Confirmed"},
+      {"offset":"0x94","type":"u16","behavior":"Direction-related value.","confidence":"High"},
+      {"offset":"0xCC","type":"u8","behavior":"Current action selector.","confidence":"High"},
+      {"offset":"0xCE","type":"u16","behavior":"Conditional direction override; regional masking differs.","confidence":"High"},
+      {"offset":"0xE4","type":"f32","behavior":"Movement interpolation result/parameter.","confidence":"High"},
+      {"offset":"0xE8","type":"f32","behavior":"Second movement parameter; interpolation result times factor in paired helper.","confidence":"High"}]},
+    {"id":"player_secondary","description":"State reached through player task +0x5C.","evidence":["research/ebi_slide9_20261126/usa-candidates.json","research/ebi_slide9_20261126/japan_0-candidates.json"],"fields":[
+      {"offset":"0x02","type":"u16","behavior":"Direction-related halfword; 0x200 addition modulo 0x400.","confidence":"High"},
+      {"offset":"0x1A","type":"u16","behavior":"Receives task +0x94 during post-update.","confidence":"Confirmed"},
+      {"offset":"0x20","type":"f32","behavior":"Latest indexed movement sample.","confidence":"Confirmed"},
+      {"offset":"0x24","type":"f32","behavior":"Previous movement sample.","confidence":"Confirmed"},
+      {"offset":"0x28","type":"f32","behavior":"Older movement sample.","confidence":"Confirmed"},
+      {"offset":"0x30","type":"u16","behavior":"Incrementing/reset action counter.","confidence":"Confirmed"},
+      {"offset":"0x68","type":"u8","behavior":"Tested against value 3 during action selection; exact role unknown.","confidence":"Medium"},
+      {"offset":"0x85","type":"u8","behavior":"Counter associated with continued action selection.","confidence":"High"}]},
+    {"id":"TASK_W","description":"Task scheduler record; original lifecycle evidence.","evidence":["docs/USA_TASK_SCHEDULER_LIFECYCLE_20261121.md"],"fields":[
+      {"offset":"0x08","type":"callback pointer","behavior":"Callback slot 0.","confidence":"Confirmed"},
+      {"offset":"0x0C","type":"callback pointer","behavior":"Callback slot 1.","confidence":"Confirmed"},
+      {"offset":"0x10","type":"callback pointer","behavior":"Callback slot 2.","confidence":"Confirmed"}]},
+    {"id":"DialogueWindow","description":"USA dialogue-window fields; JP structure identity not assumed from USA alone.","evidence":["dialogue_window.c","VM_ARCHITECTURE_RESEARCH.md"],"fields":[
+      {"offset":"0x10","type":"u64","behavior":"Window flags.","confidence":"Confirmed"},
+      {"offset":"0x30","type":"s16","behavior":"Window phase.","confidence":"Confirmed"},
+      {"offset":"0x6C","type":"s16","behavior":"Text column.","confidence":"Confirmed"},
+      {"offset":"0x6E","type":"s16","behavior":"Horizontal advance.","confidence":"Confirmed"},
+      {"offset":"0x72","type":"s16","behavior":"Line index.","confidence":"Confirmed"},
+      {"offset":"0x74","type":"s16","behavior":"Vertical advance.","confidence":"Confirmed"},
+      {"offset":"0x76","type":"s16","behavior":"Line height.","confidence":"Confirmed"}]},
+    {"id":"ImpactController","description":"Impact controller; counter identities separated from numeric behavior.","evidence":["impact_controller.h","impact_hp_clamp.c","research/exec_batch10_20261127/sources/usa/func_801D3A68_5FEE48/candidate.c","research/exec_batch10_20261127/sources/japan_0/func_801D9188_603C08/candidate.c"],"fields":[
+      {"offset":"0x60","type":"s32","behavior":"Enemy HP in USA reconstruction.","confidence":"High"},
+      {"offset":"0x64","type":"s32","behavior":"Paired signed counter clamped to 0-999; probable Impact Ryo.","confidence":"High"}]}
+  ]
+}
