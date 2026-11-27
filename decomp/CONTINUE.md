@@ -2,18 +2,18 @@
 
 > **Historical archives:** Full prior continuation logs are preserved verbatim in [CONTINUE_HISTORY_20261126.md](CONTINUE_HISTORY_20261126.md) (91 KB) and [CONTINUE_HISTORY_20261121.md](CONTINUE_HISTORY_20261121.md) (167 KB).
 
-## Current Canonical State (`stable/decomp` after Batch #13 `exec_batch13_47`)
+## Current Canonical State (`stable/decomp` after Batch #14 `exec_batch14_40`)
 
 | Region | Reconstructed C | Matching Bytes | Remaining ASM | Total Positive ELF FUNCs | Expanded 32 MiB SHA-1 | Retail 16 MiB SHA-1 | Semantic Relocs | Stable Globals |
 | --- | ---: | ---: | ---: | ---: | --- | --- | ---: | ---: |
-| **USA** | **3,505** *(+13 upstream = 3,518)* | **256,060** | **3,858** | 7,376 | `6ea0ed71032ce08fc2745f412d84936382197494` | `df8083a54296b8c151917c5333e1c85f014a2a66` | 82,080 | 26,714 |
-| **Japan (`japan_0`)** | **3,377** | **238,476** | **3,999** | 7,376 | `6f8745fecc3a5e7d4918c7a73353eb0726116ded` | `9843ee979b5f6c80f5eda85df0baed9ae7c4e73b` | 80,652 | 26,393 |
+| **USA** | **3,529** *(+13 upstream = 3,542)* | **259,300** | **3,834** | 7,376 | `6ea0ed71032ce08fc2745f412d84936382197494` | `df8083a54296b8c151917c5333e1c85f014a2a66` | 82,080 | 26,714 |
+| **Japan (`japan_0`)** | **3,393** | **240,424** | **3,983** | 7,376 | `6f8745fecc3a5e7d4918c7a73353eb0726116ded` | `9843ee979b5f6c80f5eda85df0baed9ae7c4e73b` | 80,652 | 26,393 |
 
 - **Pinned upstream:** `7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee`
 - **Authentic compiler:** SGI IDO 5.3 `cc` SHA-256 `76d796c9591c9f5504949f85b29c32a6039a663791afe2f36f34ca18425b64d0`
 - **Current canonical ELF SHA-256s:**
-  - USA 3,505: `bf0215272a2adc8f13214ef45fba4aade33d6e520329e31872c868fa2a055ad4`
-  - Japan 3,377: `59e518b26bb59ab240b3f4d1326e827f74c4e5c9267ad28ac6837f5831812802`
+  - USA 3,529: `35e66b1fbcac6bfbed677f4f4b220ee8e006332eaa476c72a590b43af8c105e9`
+  - Japan 3,393: `dd315530109d5597f36696fe39cabcd02ee78c135dad60ef26845a70962bc059`
 
 ## Unified Data-Driven Promotion Workflow (All Future Batches)
 

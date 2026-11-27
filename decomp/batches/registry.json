@@ -2411,6 +2411,102 @@
         "proof": "results/japan_0_exec_batch13_47_g2_20261126.json",
         "sdk_flags": {}
       }
+    },
+    {
+      "id": "exec_batch14_40",
+      "namespace": "exb014",
+      "base_commit": "4bc3228724d3050b81f14a75a611053853ae4317",
+      "research_dir": "research/exec_batch14_20261127",
+      "usa": {
+        "added": 24,
+        "bytes": 3240,
+        "manifest_sha256": "8e8529ec2dfb54cd350e515a1a5971185c4b3bfa5111b1019bc8e35299c98906",
+        "prior_elf_sha256": "bf0215272a2adc8f13214ef45fba4aade33d6e520329e31872c868fa2a055ad4",
+        "elf_sha256": "35e66b1fbcac6bfbed677f4f4b220ee8e006332eaa476c72a590b43af8c105e9",
+        "guarded_abs": [
+          [
+            "build/usa/src/exb014/func_08009298_6BC538.c.o",
+            "D_CF8E8"
+          ],
+          [
+            "build/usa/src/exb014/func_801DF120_59B030.c.o",
+            "D_800C7DB4"
+          ],
+          [
+            "build/usa/src/exb014/func_802122F0_6712A0.c.o",
+            "D_80217F98_676F48"
+          ],
+          [
+            "build/usa/src/exb014/func_802122F0_6712A0.c.o",
+            "D_80217F9C_676F4C"
+          ],
+          [
+            "build/usa/src/exb014/func_80212370_671320.c.o",
+            "D_80217F90_676F40"
+          ],
+          [
+            "build/usa/src/exb014/func_80212370_671320.c.o",
+            "D_80217FA8_676F58"
+          ],
+          [
+            "build/usa/src/exb014/func_802123F0_6713A0.c.o",
+            "D_80217F9C_676F4C"
+          ],
+          [
+            "build/usa/src/exb014/func_802123F0_6713A0.c.o",
+            "D_80217FA4_676F54"
+          ],
+          [
+            "build/usa/src/exb014/func_80212470_671420.c.o",
+            "D_80217F6C_676F1C"
+          ],
+          [
+            "build/usa/src/exb014/func_80212470_671420.c.o",
+            "D_80217F70_676F20"
+          ],
+          [
+            "build/usa/src/exb014/func_802124EC_67149C.c.o",
+            "D_80217F88_676F38"
+          ],
+          [
+            "build/usa/src/exb014/func_802124EC_67149C.c.o",
+            "D_80217F8C_676F3C"
+          ],
+          [
+            "build/usa/src/exb014/func_80212568_671518.c.o",
+            "D_80217F80_676F30"
+          ],
+          [
+            "build/usa/src/exb014/func_80212568_671518.c.o",
+            "D_80217F84_676F34"
+          ],
+          [
+            "build/usa/src/exb014/func_802125E4_671594.c.o",
+            "D_80217F78_676F28"
+          ],
+          [
+            "build/usa/src/exb014/func_802125E4_671594.c.o",
+            "D_80217F7C_676F2C"
+          ]
+        ],
+        "proof": "results/usa_exec_batch14_40_g2_20261126.json",
+        "sdk_flags": {}
+      },
+      "japan_0": {
+        "added": 16,
+        "bytes": 1948,
+        "manifest_sha256": "16d564df75cdf21b71f9c141072f58758cbf469c9c9ffeef39ff2a8c37b47081",
+        "prior_elf_sha256": "59e518b26bb59ab240b3f4d1326e827f74c4e5c9267ad28ac6837f5831812802",
+        "elf_sha256": "dd315530109d5597f36696fe39cabcd02ee78c135dad60ef26845a70962bc059",
+        "guarded_abs": [
+          [
+            "build/japan_0/src/exb014/func_08009234_6C0FB4.c.o",
+            "D_CF8E8"
+          ]
+        ],
+        "proof": "results/japan_0_exec_batch14_40_g2_20261126.json",
+        "sdk_flags": {}
+      }
     }
   ],
   "frozen_usa_before_registry": {
