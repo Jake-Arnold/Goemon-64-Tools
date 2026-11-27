@@ -1,0 +1,1526 @@
+{
+  "base_commit": "0ad88225c1a11f85454b259103f0f4c6ff49fa16",
+  "status": "RESEARCH_ONLY",
+  "functions": [
+    {
+      "name": "func_08000EE0_6D5220",
+      "region": "usa",
+      "owner": "file_34.s",
+      "vma": 134221536,
+      "rom_offset": 7164448,
+      "original_bytes": 112,
+      "relocation_count": 6,
+      "code_sha256": "38c720e733da339697ebc23cfe2de25524b02c8fc76e558013f5f8ffdf86d82f"
+    },
+    {
+      "name": "func_08001318_6D5658",
+      "region": "usa",
+      "owner": "file_34.s",
+      "vma": 134222616,
+      "rom_offset": 7165528,
+      "original_bytes": 112,
+      "relocation_count": 6,
+      "code_sha256": "bf43a506976ef5003768c774dd6c6656096f385b1bd390dbf4344de1377b8fc2"
+    },
+    {
+      "name": "func_08001C4C_6D0D2C",
+      "region": "usa",
+      "owner": "file_32.s",
+      "vma": 134224972,
+      "rom_offset": 7146796,
+      "original_bytes": 132,
+      "relocation_count": 9,
+      "code_sha256": "4ef405a1eea244b04dce21fc53be1d38c0de35ca64eaac2de56f001ebfa33b1f"
+    },
+    {
+      "name": "func_08001B40_6D0C20",
+      "region": "usa",
+      "owner": "file_32.s",
+      "vma": 134224704,
+      "rom_offset": 7146528,
+      "original_bytes": 136,
+      "relocation_count": 9,
+      "code_sha256": "26189d0577965e55febd8ddecfa96029e80a21067ec75b2ee73b2375b9544818"
+    },
+    {
+      "name": "func_08000C44_6DFDE4",
+      "region": "usa",
+      "owner": "file_37.s",
+      "vma": 134220868,
+      "rom_offset": 7208420,
+      "original_bytes": 144,
+      "relocation_count": 10,
+      "code_sha256": "1f6cb9937ad97d0bc6109371dc89621ff5d65e73c0c155be3c3d1214df37759e"
+    },
+    {
+      "name": "func_08000B9C_6E7EAC",
+      "region": "usa",
+      "owner": "file_39.s",
+      "vma": 134220700,
+      "rom_offset": 7241388,
+      "original_bytes": 148,
+      "relocation_count": 10,
+      "code_sha256": "bdf2a6e9ce3c722e19cdfe27c2de6444af094afb416650d6501a7fb551e3e68b"
+    },
+    {
+      "name": "func_08000274_6AF684",
+      "region": "usa",
+      "owner": "file_27.s",
+      "vma": 134218356,
+      "rom_offset": 7009924,
+      "original_bytes": 172,
+      "relocation_count": 16,
+      "code_sha256": "9125c4aeaf48b6ff42aae60a45e3b1f37987f0274aadea75d3fdab7fc62ee385"
+    },
+    {
+      "name": "func_08003378_6D2458",
+      "region": "usa",
+      "owner": "file_32.s",
+      "vma": 134230904,
+      "rom_offset": 7152728,
+      "original_bytes": 180,
+      "relocation_count": 10,
+      "code_sha256": "53c2dbb5a5ae3951e5bafa4d73810492bbe11e1880110d892885d72cf7138dc1"
+    },
+    {
+      "name": "func_08003074_6FE274",
+      "region": "usa",
+      "owner": "file_44.s",
+      "vma": 134230132,
+      "rom_offset": 7332468,
+      "original_bytes": 212,
+      "relocation_count": 7,
+      "code_sha256": "8846ff8d63b85dcd106b6b511ed3e06c12e8960fc7b4a06245f84954392aef4a"
+    },
+    {
+      "name": "func_08003148_6FE348",
+      "region": "usa",
+      "owner": "file_44.s",
+      "vma": 134230344,
+      "rom_offset": 7332680,
+      "original_bytes": 212,
+      "relocation_count": 7,
+      "code_sha256": "7a043c49f60a96b2ffd398b4da2c1b45e69eebcb82a532ea0950ac8616fb23dc"
+    },
+    {
+      "name": "func_08000BD8_6C8DE8",
+      "region": "usa",
+      "owner": "file_31.s",
+      "vma": 134220760,
+      "rom_offset": 7114216,
+      "original_bytes": 244,
+      "relocation_count": 14,
+      "code_sha256": "e16a94833fe0b32162cda483fe2c01d1c96c6f7145fb1a8be65039733c4a6c05"
+    },
+    {
+      "name": "func_08001260_6C9470",
+      "region": "usa",
+      "owner": "file_31.s",
+      "vma": 134222432,
+      "rom_offset": 7115888,
+      "original_bytes": 256,
+      "relocation_count": 14,
+      "code_sha256": "9f4e6d3897f6128dd4d8c686b890e076389d80159b545603732d6d9e39311b5a"
+    },
+    {
+      "name": "func_08000634_6D6584",
+      "region": "usa",
+      "owner": "file_35.s",
+      "vma": 134219316,
+      "rom_offset": 7169412,
+      "original_bytes": 396,
+      "relocation_count": 17,
+      "code_sha256": "f67f5cb3d107b7e1c1635619af1cfb0186564232d721e0bc95998352b945658e"
+    },
+    {
+      "name": "func_08002814_6B1C24",
+      "region": "usa",
+      "owner": "file_27.s",
+      "vma": 134227988,
+      "rom_offset": 7019556,
+      "original_bytes": 56,
+      "relocation_count": 4,
+      "code_sha256": "da295acd17cd3e7a027b0073aa350bbe540ca9980dc0647bb4e93ced13500f69"
+    },
+    {
+      "name": "func_08000598_6D64E8",
+      "region": "usa",
+      "owner": "file_35.s",
+      "vma": 134219160,
+      "rom_offset": 7169256,
+      "original_bytes": 156,
+      "relocation_count": 7,
+      "code_sha256": "c1454422537596265025fb9408f73c340a5b48a7ff48550b82d072553b59207f"
+    },
+    {
+      "name": "func_08001CD0_6D0DB0",
+      "region": "usa",
+      "owner": "file_32.s",
+      "vma": 134225104,
+      "rom_offset": 7146928,
+      "original_bytes": 172,
+      "relocation_count": 9,
+      "code_sha256": "bacbb73d804942473e570a0fbb03caeb3fd6becc1e49d59baac82005c6996f1a"
+    },
+    {
+      "name": "func_08000EE0_71C960",
+      "region": "usa",
+      "owner": "file_59.s",
+      "vma": 134221536,
+      "rom_offset": 7457120,
+      "original_bytes": 180,
+      "relocation_count": 9,
+      "code_sha256": "1c1d33397672b33aab8563154c9f9d8cf72d9fad0759fcfa76a11700baa36052"
+    },
+    {
+      "name": "func_08000408_6D6358",
+      "region": "usa",
+      "owner": "file_35.s",
+      "vma": 134218760,
+      "rom_offset": 7168856,
+      "original_bytes": 192,
+      "relocation_count": 9,
+      "code_sha256": "f69c256c0fbd970ea6e0db97fe3261353f73e261ae597e7254c43b57a37729d8"
+    },
+    {
+      "name": "func_0800295C_6B1D6C",
+      "region": "usa",
+      "owner": "file_27.s",
+      "vma": 134228316,
+      "rom_offset": 7019884,
+      "original_bytes": 220,
+      "relocation_count": 16,
+      "code_sha256": "01c8363cf886cf3ea5bda3df371ca8a860fd3dc5f7b17393a625fa19100270e3"
+    },
+    {
+      "name": "func_08000ADC_6D4E1C",
+      "region": "usa",
+      "owner": "file_34.s",
+      "vma": 134220508,
+      "rom_offset": 7163420,
+      "original_bytes": 228,
+      "relocation_count": 12,
+      "code_sha256": "032bf414e44e2c2dfeec73fb2a1ccba3e98f9a33f598a2b548150ae5780427ec"
+    },
+    {
+      "name": "func_08001FF4_6D10D4",
+      "region": "usa",
+      "owner": "file_32.s",
+      "vma": 134225908,
+      "rom_offset": 7147732,
+      "original_bytes": 64,
+      "relocation_count": 2,
+      "code_sha256": "773f53e049a1f78fe3f0764931b35a58530f9be5e127430f21ddb6b39f767116"
+    },
+    {
+      "name": "func_08000EB4_713E24",
+      "region": "usa",
+      "owner": "file_56.s",
+      "vma": 134221492,
+      "rom_offset": 7421476,
+      "original_bytes": 76,
+      "relocation_count": 5,
+      "code_sha256": "e3f803b2f819fb5f176d22de35d73bcc6cde8cc807b68afed626c8acb5e9d2c3"
+    },
+    {
+      "name": "func_080020D8_6B5378",
+      "region": "usa",
+      "owner": "file_29.s",
+      "vma": 134226136,
+      "rom_offset": 7033720,
+      "original_bytes": 80,
+      "relocation_count": 8,
+      "code_sha256": "14eb0abfe362af0dc2d0d7bee9886672a0097ec96056834857bc2b3a2f8021b6"
+    },
+    {
+      "name": "func_080024A0_6B5740",
+      "region": "usa",
+      "owner": "file_29.s",
+      "vma": 134227104,
+      "rom_offset": 7034688,
+      "original_bytes": 80,
+      "relocation_count": 8,
+      "code_sha256": "cf69c9a80fa2b18d3bdcfb4dbc609df55c744761f370238fb217d144913b973e"
+    },
+    {
+      "name": "func_08002FA4_6B6244",
+      "region": "usa",
+      "owner": "file_29.s",
+      "vma": 134229924,
+      "rom_offset": 7037508,
+      "original_bytes": 88,
+      "relocation_count": 6,
+      "code_sha256": "f39f2ea00eaaa42ab5e76273b3b6f0bf04941cedf601cb8862174eb40de9f890"
+    },
+    {
+      "name": "func_080030F0_6DCFC0",
+      "region": "usa",
+      "owner": "file_36.s",
+      "vma": 134230256,
+      "rom_offset": 7196608,
+      "original_bytes": 88,
+      "relocation_count": 4,
+      "code_sha256": "9a89d9720cb0ad11575a7d5c68c4d8e00f527d64e8f4aa03c5d4ac9932a3c005"
+    },
+    {
+      "name": "func_080006D4_6F3BB4",
+      "region": "usa",
+      "owner": "file_43.s",
+      "vma": 134219476,
+      "rom_offset": 7289780,
+      "original_bytes": 88,
+      "relocation_count": 4,
+      "code_sha256": "4a2fea2a4586837fa967002029dcb23d972bf9005f2c5d5509edd00de352508f"
+    },
+    {
+      "name": "func_08000068_71BAE8",
+      "region": "usa",
+      "owner": "file_59.s",
+      "vma": 134217832,
+      "rom_offset": 7453416,
+      "original_bytes": 88,
+      "relocation_count": 6,
+      "code_sha256": "306183975aafe569b5f7ba4474c77eb457ad8b47306fd035e2a8243f46c75fb9"
+    },
+    {
+      "name": "func_08002AD8_728F68",
+      "region": "usa",
+      "owner": "file_66.s",
+      "vma": 134228696,
+      "rom_offset": 7507816,
+      "original_bytes": 88,
+      "relocation_count": 4,
+      "code_sha256": "4a2fea2a4586837fa967002029dcb23d972bf9005f2c5d5509edd00de352508f"
+    },
+    {
+      "name": "func_08000434_6CF514",
+      "region": "usa",
+      "owner": "file_32.s",
+      "vma": 134218804,
+      "rom_offset": 7140628,
+      "original_bytes": 96,
+      "relocation_count": 6,
+      "code_sha256": "3f637e21d2b0461e41f40582ceb1a8d40bbd48b90c912a99da8a23d67dd00b9e"
+    },
+    {
+      "name": "func_08000A20_6EF380",
+      "region": "usa",
+      "owner": "file_41.s",
+      "vma": 134220320,
+      "rom_offset": 7271296,
+      "original_bytes": 96,
+      "relocation_count": 4,
+      "code_sha256": "eadb898842ab7c869e625f0509ed6cf18cf190c8138682bbd4ed4464c7955373"
+    },
+    {
+      "name": "func_801F3878_61EC58",
+      "region": "usa",
+      "owner": "5F6840.s",
+      "vma": 2149529720,
+      "rom_offset": 6417496,
+      "original_bytes": 100,
+      "relocation_count": 8,
+      "code_sha256": "7da0fcf1f00940d34a4131b54ca5fb9265c5a03a59ee29fc32f42751fa248852"
+    },
+    {
+      "name": "func_08000000_724500",
+      "region": "usa",
+      "owner": "file_63.s",
+      "vma": 134217728,
+      "rom_offset": 7488768,
+      "original_bytes": 100,
+      "relocation_count": 6,
+      "code_sha256": "a65935a355fbcd0e39692f17ed6077e4207f01f90b8f7ec86c9d27c0ff3e2479"
+    },
+    {
+      "name": "func_0800162C_6DB4FC",
+      "region": "usa",
+      "owner": "file_36.s",
+      "vma": 134223404,
+      "rom_offset": 7189756,
+      "original_bytes": 104,
+      "relocation_count": 6,
+      "code_sha256": "5a3241ba3005db0632a2d4164746022fc8c486acb6b32fb12e233e2c11043e68"
+    },
+    {
+      "name": "func_080012C8_6E85D8",
+      "region": "usa",
+      "owner": "file_39.s",
+      "vma": 134222536,
+      "rom_offset": 7243224,
+      "original_bytes": 104,
+      "relocation_count": 6,
+      "code_sha256": "ca8627ea33b95ec32262a1c5315228a2642ef342e676a8110b33fcc05deae5b7"
+    },
+    {
+      "name": "func_08003BEC_6F70CC",
+      "region": "usa",
+      "owner": "file_43.s",
+      "vma": 134233068,
+      "rom_offset": 7303372,
+      "original_bytes": 104,
+      "relocation_count": 8,
+      "code_sha256": "9de95928302a45c1045882cb0ff6778d1ce85892cac319182343819e03ec0082"
+    },
+    {
+      "name": "func_08003CC8_6F71A8",
+      "region": "usa",
+      "owner": "file_43.s",
+      "vma": 134233288,
+      "rom_offset": 7303592,
+      "original_bytes": 104,
+      "relocation_count": 8,
+      "code_sha256": "550febf3a7469cc705b78f1ce61b3bf8f4a54f17800ffbbeb55b451b8a87f6d6"
+    },
+    {
+      "name": "func_08002E20_719CC0",
+      "region": "usa",
+      "owner": "file_57.s",
+      "vma": 134229536,
+      "rom_offset": 7445696,
+      "original_bytes": 104,
+      "relocation_count": 4,
+      "code_sha256": "7f5b877d521c7fe5d5f63a48fc030aa70216a59a96576e4f1cabe4ed1129f78c"
+    },
+    {
+      "name": "func_08000000_71BA80",
+      "region": "usa",
+      "owner": "file_59.s",
+      "vma": 134217728,
+      "rom_offset": 7453312,
+      "original_bytes": 104,
+      "relocation_count": 6,
+      "code_sha256": "e7151661e93b30b4a4bc52eb83c270902e3dc67814118714a9c89def852466f6"
+    },
+    {
+      "name": "func_080012B8_6C0A08",
+      "region": "usa",
+      "owner": "file_30.s",
+      "vma": 134222520,
+      "rom_offset": 7080456,
+      "original_bytes": 108,
+      "relocation_count": 8,
+      "code_sha256": "e8993948a639a716d9f95c42784668d1653c6939bd064b99bdf702cd5ff11967"
+    },
+    {
+      "name": "func_08003084_6DCF54",
+      "region": "usa",
+      "owner": "file_36.s",
+      "vma": 134230148,
+      "rom_offset": 7196500,
+      "original_bytes": 108,
+      "relocation_count": 6,
+      "code_sha256": "2315ea96a8756dacb8334a49ae81f5f0fb4bf1b5a3f4ca17efcb9008ddf49a05"
+    },
+    {
+      "name": "func_08002DBC_6FDFBC",
+      "region": "usa",
+      "owner": "file_44.s",
+      "vma": 134229436,
+      "rom_offset": 7331772,
+      "original_bytes": 108,
+      "relocation_count": 2,
+      "code_sha256": "6ec6163e016159e55ef8bbb806631c819ae6adecb0b66256b7566fa2eff7b62a"
+    },
+    {
+      "name": "func_080011AC_6B05BC",
+      "region": "usa",
+      "owner": "file_27.s",
+      "vma": 134222252,
+      "rom_offset": 7013820,
+      "original_bytes": 112,
+      "relocation_count": 11,
+      "code_sha256": "45d7e6f605d1d7c63a320c055e7808e95c6551fa3f0aced8dcb8c4fffa7510f2"
+    },
+    {
+      "name": "func_080018C8_6B0CD8",
+      "region": "usa",
+      "owner": "file_27.s",
+      "vma": 134224072,
+      "rom_offset": 7015640,
+      "original_bytes": 112,
+      "relocation_count": 11,
+      "code_sha256": "20f24f3436e36d5240d33ce11d632a0b0eafc6020cadfa5d1f5d42cd4a9b1df6"
+    },
+    {
+      "name": "func_08001938_6B0D48",
+      "region": "usa",
+      "owner": "file_27.s",
+      "vma": 134224184,
+      "rom_offset": 7015752,
+      "original_bytes": 112,
+      "relocation_count": 11,
+      "code_sha256": "9eabe91cd68fa0d5c92d32d897e37f544de279f7f78f914bd9ce67e3e9f0b724"
+    },
+    {
+      "name": "func_080019A8_6B0DB8",
+      "region": "usa",
+      "owner": "file_27.s",
+      "vma": 134224296,
+      "rom_offset": 7015864,
+      "original_bytes": 112,
+      "relocation_count": 11,
+      "code_sha256": "42623b55050d9bb3f40bf1ad6e801b50854a587df2bba317d47713fac849c12a"
+    },
+    {
+      "name": "func_08004584_6E3724",
+      "region": "usa",
+      "owner": "file_37.s",
+      "vma": 134235524,
+      "rom_offset": 7223076,
+      "original_bytes": 112,
+      "relocation_count": 6,
+      "code_sha256": "5a754f9d383605dee3528688d2ae5e3e997b1106e267cfd8f47fe849d24a13ac"
+    },
+    {
+      "name": "func_0800293C_723F5C",
+      "region": "usa",
+      "owner": "file_62.s",
+      "vma": 134228284,
+      "rom_offset": 7487324,
+      "original_bytes": 112,
+      "relocation_count": 4,
+      "code_sha256": "4d0e2a75205820b068999402129eb44abb13e95da80fc97809ccc8d28c897ad3"
+    },
+    {
+      "name": "func_080029AC_723FCC",
+      "region": "usa",
+      "owner": "file_62.s",
+      "vma": 134228396,
+      "rom_offset": 7487436,
+      "original_bytes": 112,
+      "relocation_count": 4,
+      "code_sha256": "6d3a8ef6dcdd2e6299cc723e6524f5cb5fdbea3f22705110f5cf59d955a44143"
+    },
+    {
+      "name": "func_080031DC_6D22BC",
+      "region": "usa",
+      "owner": "file_32.s",
+      "vma": 134230492,
+      "rom_offset": 7152316,
+      "original_bytes": 120,
+      "relocation_count": 8,
+      "code_sha256": "997b0f57cf0e690448400dfd51e1b72859569f79989bb6bb1f969924ace7b933"
+    },
+    {
+      "name": "func_08000484_6D3F14",
+      "region": "usa",
+      "owner": "file_33.s",
+      "vma": 134218884,
+      "rom_offset": 7159572,
+      "original_bytes": 120,
+      "relocation_count": 8,
+      "code_sha256": "458420937319e742b315d770a88e8b4b6815b9ff157f0e437e0221327c4504c4"
+    },
+    {
+      "name": "func_080007C0_6E47A0",
+      "region": "usa",
+      "owner": "file_38.s",
+      "vma": 134219712,
+      "rom_offset": 7227296,
+      "original_bytes": 120,
+      "relocation_count": 8,
+      "code_sha256": "997b0f57cf0e690448400dfd51e1b72859569f79989bb6bb1f969924ace7b933"
+    },
+    {
+      "name": "func_080020D4_6E60B4",
+      "region": "usa",
+      "owner": "file_38.s",
+      "vma": 134226132,
+      "rom_offset": 7233716,
+      "original_bytes": 120,
+      "relocation_count": 8,
+      "code_sha256": "997b0f57cf0e690448400dfd51e1b72859569f79989bb6bb1f969924ace7b933"
+    },
+    {
+      "name": "func_08002BE0_6E6BC0",
+      "region": "usa",
+      "owner": "file_38.s",
+      "vma": 134228960,
+      "rom_offset": 7236544,
+      "original_bytes": 120,
+      "relocation_count": 8,
+      "code_sha256": "997b0f57cf0e690448400dfd51e1b72859569f79989bb6bb1f969924ace7b933"
+    },
+    {
+      "name": "func_080002A0_6FB4A0",
+      "region": "usa",
+      "owner": "file_44.s",
+      "vma": 134218400,
+      "rom_offset": 7320736,
+      "original_bytes": 120,
+      "relocation_count": 7,
+      "code_sha256": "699324f0f533ca116cb7273999394278b828d026d4dd7e82cd5c4ff9954e1f81"
+    },
+    {
+      "name": "func_08002418_6D14F8",
+      "region": "usa",
+      "owner": "file_32.s",
+      "vma": 134226968,
+      "rom_offset": 7148792,
+      "original_bytes": 124,
+      "relocation_count": 8,
+      "code_sha256": "17417b79be02ef97f5965204d2373895435bf9a84b3c248633b1ccc32740f00b"
+    },
+    {
+      "name": "func_08000EFC_6E4EDC",
+      "region": "usa",
+      "owner": "file_38.s",
+      "vma": 134221564,
+      "rom_offset": 7229148,
+      "original_bytes": 124,
+      "relocation_count": 8,
+      "code_sha256": "17417b79be02ef97f5965204d2373895435bf9a84b3c248633b1ccc32740f00b"
+    },
+    {
+      "name": "func_08001294_6D0374",
+      "region": "usa",
+      "owner": "file_32.s",
+      "vma": 134222484,
+      "rom_offset": 7144308,
+      "original_bytes": 128,
+      "relocation_count": 8,
+      "code_sha256": "d4e6ff88a690b9220c57578a9d05bd14cf47c2cd2c1679dbc9ea0dcd7f397e98"
+    },
+    {
+      "name": "func_08000064_724564",
+      "region": "usa",
+      "owner": "file_63.s",
+      "vma": 134217828,
+      "rom_offset": 7488868,
+      "original_bytes": 128,
+      "relocation_count": 9,
+      "code_sha256": "a31b45942aa2dcb2ed203ad7c92fe5bdfeb6165ea700f20ccdcf58983868080f"
+    },
+    {
+      "name": "func_080021BC_6D129C",
+      "region": "usa",
+      "owner": "file_32.s",
+      "vma": 134226364,
+      "rom_offset": 7148188,
+      "original_bytes": 132,
+      "relocation_count": 8,
+      "code_sha256": "0e867f49361857dfb0770e676c059e3ecae86d1e3262f1e1e59dc35290519952"
+    },
+    {
+      "name": "func_08002944_6D1A24",
+      "region": "usa",
+      "owner": "file_32.s",
+      "vma": 134228292,
+      "rom_offset": 7150116,
+      "original_bytes": 132,
+      "relocation_count": 8,
+      "code_sha256": "6b4dd433828c8c3c8e32e057e0e173a3530e73099230223982e5c06f7a8fc8e3"
+    },
+    {
+      "name": "func_08003284_6D91D4",
+      "region": "usa",
+      "owner": "file_35.s",
+      "vma": 134230660,
+      "rom_offset": 7180756,
+      "original_bytes": 132,
+      "relocation_count": 7,
+      "code_sha256": "0ab03b30f1b74bb5bef72e966a75f94f9ff69ed8c46adba0022a5982dd71889b"
+    },
+    {
+      "name": "func_08002C20_6DCAF0",
+      "region": "usa",
+      "owner": "file_36.s",
+      "vma": 134229024,
+      "rom_offset": 7195376,
+      "original_bytes": 132,
+      "relocation_count": 4,
+      "code_sha256": "b0de28e5b0faddcd3c1ab9a7f38c42e3d79b6a198c55792032b166b7b534a296"
+    },
+    {
+      "name": "func_08000C64_6E4C44",
+      "region": "usa",
+      "owner": "file_38.s",
+      "vma": 134220900,
+      "rom_offset": 7228484,
+      "original_bytes": 132,
+      "relocation_count": 8,
+      "code_sha256": "461d28cffe3aa44fab190e575fad5b043f30da990c20ca0400df497c0b2b6f70"
+    },
+    {
+      "name": "func_08001708_6E56E8",
+      "region": "usa",
+      "owner": "file_38.s",
+      "vma": 134223624,
+      "rom_offset": 7231208,
+      "original_bytes": 132,
+      "relocation_count": 8,
+      "code_sha256": "7d13ada5aa2294126972c6bd797d5cd3c87d8cbbc3e56397dc97361ee34a5bf6"
+    },
+    {
+      "name": "func_08000948_6E7C58",
+      "region": "usa",
+      "owner": "file_39.s",
+      "vma": 134220104,
+      "rom_offset": 7240792,
+      "original_bytes": 132,
+      "relocation_count": 8,
+      "code_sha256": "501840542246338afc1e9b806d5c6bb8cdb5305dcfdacd73ac3fbebb62bc0629"
+    },
+    {
+      "name": "func_801FC9E4_627DC4",
+      "region": "usa",
+      "owner": "5F6840.s",
+      "vma": 2149566948,
+      "rom_offset": 6454724,
+      "original_bytes": 136,
+      "relocation_count": 9,
+      "code_sha256": "ea059f94fdd10e824a1b9683e83e957b4c1e1f113f14df5dd43363db5ee6c624"
+    },
+    {
+      "name": "func_0800401C_6DDEEC",
+      "region": "usa",
+      "owner": "file_36.s",
+      "vma": 134234140,
+      "rom_offset": 7200492,
+      "original_bytes": 140,
+      "relocation_count": 8,
+      "code_sha256": "09b08da78148d62d4da3c14fb4fa491da3641faa93e5aaccb5f42b90ae3da641"
+    },
+    {
+      "name": "func_080027BC_6E195C",
+      "region": "usa",
+      "owner": "file_37.s",
+      "vma": 134227900,
+      "rom_offset": 7215452,
+      "original_bytes": 144,
+      "relocation_count": 8,
+      "code_sha256": "464cfa21e72f659dec13815fae3e8df3737e10f052bffbdda6487f7379f90924"
+    },
+    {
+      "name": "func_0800317C_6E231C",
+      "region": "usa",
+      "owner": "file_37.s",
+      "vma": 134230396,
+      "rom_offset": 7217948,
+      "original_bytes": 144,
+      "relocation_count": 8,
+      "code_sha256": "e6eb77768c11a2ce8ad766a855ff8352af270c72753e4fb57f0f6555c0d08ff9"
+    },
+    {
+      "name": "func_08001FDC_6DBEAC",
+      "region": "usa",
+      "owner": "file_36.s",
+      "vma": 134225884,
+      "rom_offset": 7192236,
+      "original_bytes": 148,
+      "relocation_count": 10,
+      "code_sha256": "3762aef0be1859100d2a4339534857e7a8d8500d84989d7dd0a45df584169d91"
+    },
+    {
+      "name": "func_08003944_6DD814",
+      "region": "usa",
+      "owner": "file_36.s",
+      "vma": 134232388,
+      "rom_offset": 7198740,
+      "original_bytes": 148,
+      "relocation_count": 10,
+      "code_sha256": "a1cde2787f734f0ec743c6ddb93b2c2f22e04ec760f499ee43ccb77a94e6bdfd"
+    },
+    {
+      "name": "func_08001058_6E8368",
+      "region": "usa",
+      "owner": "file_39.s",
+      "vma": 134221912,
+      "rom_offset": 7242600,
+      "original_bytes": 148,
+      "relocation_count": 8,
+      "code_sha256": "196fd583003a9d734caa25beba1065b0216509ea399760a9656f1d2f4febad1e"
+    },
+    {
+      "name": "func_08001A54_6B0E64",
+      "region": "usa",
+      "owner": "file_27.s",
+      "vma": 134224468,
+      "rom_offset": 7016036,
+      "original_bytes": 152,
+      "relocation_count": 9,
+      "code_sha256": "e4ed998976d863d9c37679af22384e83b737bf9a789959755a937b56f646c742"
+    },
+    {
+      "name": "func_08000E64_6E4E44",
+      "region": "usa",
+      "owner": "file_38.s",
+      "vma": 134221412,
+      "rom_offset": 7228996,
+      "original_bytes": 152,
+      "relocation_count": 10,
+      "code_sha256": "a56536f2816bbc558649a39a311fba963779df8d132c92c3189d0831558063e2"
+    },
+    {
+      "name": "func_08000724_6E4704",
+      "region": "usa",
+      "owner": "file_38.s",
+      "vma": 134219556,
+      "rom_offset": 7227140,
+      "original_bytes": 156,
+      "relocation_count": 10,
+      "code_sha256": "0dfce4f3bb21720071402ceba641a00478f7426e371cb6042cd2dd786e368223"
+    },
+    {
+      "name": "func_08002038_6E6018",
+      "region": "usa",
+      "owner": "file_38.s",
+      "vma": 134225976,
+      "rom_offset": 7233560,
+      "original_bytes": 156,
+      "relocation_count": 10,
+      "code_sha256": "f3f5928f9afc95b87099f8bf70ab97cda7aeee79909d71ad3e1f7ccedfc536b5"
+    },
+    {
+      "name": "func_08002B44_6E6B24",
+      "region": "usa",
+      "owner": "file_38.s",
+      "vma": 134228804,
+      "rom_offset": 7236388,
+      "original_bytes": 156,
+      "relocation_count": 10,
+      "code_sha256": "1c2f98f9faffce106ff15a1af0fb69d57ed55b122799aff969281c024770d384"
+    },
+    {
+      "name": "func_08000E44_71C8C4",
+      "region": "usa",
+      "owner": "file_59.s",
+      "vma": 134221380,
+      "rom_offset": 7456964,
+      "original_bytes": 156,
+      "relocation_count": 9,
+      "code_sha256": "280c53f0152700ca530e7fa3ba6a83859182079015860453274b00c9d8c6bc96"
+    },
+    {
+      "name": "func_080008D8_6DA7A8",
+      "region": "usa",
+      "owner": "file_36.s",
+      "vma": 134219992,
+      "rom_offset": 7186344,
+      "original_bytes": 164,
+      "relocation_count": 10,
+      "code_sha256": "8dca4e59e807777f5cf1b55a4f2b029b168f2c2b642e132b8d59c26662f013ab"
+    },
+    {
+      "name": "func_801F0FCC_61C3AC",
+      "region": "usa",
+      "owner": "5F6840.s",
+      "vma": 2149519308,
+      "rom_offset": 6407084,
+      "original_bytes": 168,
+      "relocation_count": 9,
+      "code_sha256": "433084690247d17afe93306b40997474b29948d54427de4dcd8c4b352ef69baa"
+    },
+    {
+      "name": "func_080036C4_716634",
+      "region": "usa",
+      "owner": "file_56.s",
+      "vma": 134231748,
+      "rom_offset": 7431732,
+      "original_bytes": 172,
+      "relocation_count": 8,
+      "code_sha256": "bf85d918f71fdd36c213a8efb92c5aa6c869c0dd418758079a7e347ef3114748"
+    },
+    {
+      "name": "func_801F31A0_61E580",
+      "region": "usa",
+      "owner": "5F6840.s",
+      "vma": 2149527968,
+      "rom_offset": 6415744,
+      "original_bytes": 180,
+      "relocation_count": 12,
+      "code_sha256": "e68569fdf906e2a49f21980aa9aac9c49aeddf0bf38fcec756b3ed38e6772a41"
+    },
+    {
+      "name": "func_08002AB4_6D8A04",
+      "region": "usa",
+      "owner": "file_35.s",
+      "vma": 134228660,
+      "rom_offset": 7178756,
+      "original_bytes": 180,
+      "relocation_count": 8,
+      "code_sha256": "15ecd51eb16d092c531ebf532a4c661189724a69b6046ce9471be2dfb632e606"
+    },
+    {
+      "name": "func_08001298_71CD18",
+      "region": "usa",
+      "owner": "file_59.s",
+      "vma": 134222488,
+      "rom_offset": 7458072,
+      "original_bytes": 180,
+      "relocation_count": 10,
+      "code_sha256": "fa9eb4ba2e15c4d53fc110252eda9ff362fbc2158a2278f1bc526dad31ff4b9d"
+    },
+    {
+      "name": "func_080014B0_6B08C0",
+      "region": "usa",
+      "owner": "file_27.s",
+      "vma": 134223024,
+      "rom_offset": 7014592,
+      "original_bytes": 184,
+      "relocation_count": 19,
+      "code_sha256": "e1d326d5795c18b2ca0e4b8f67fe3d7860f1043e7999752db3cc4ce7855e4d68"
+    },
+    {
+      "name": "func_08003DB0_6B7050",
+      "region": "usa",
+      "owner": "file_29.s",
+      "vma": 134233520,
+      "rom_offset": 7041104,
+      "original_bytes": 188,
+      "relocation_count": 8,
+      "code_sha256": "ed7cb80d51c4a864075e6fef4f65318283905c6388feed6c5ffd566ab3a25c8e"
+    },
+    {
+      "name": "func_08000974_6E4954",
+      "region": "usa",
+      "owner": "file_38.s",
+      "vma": 134220148,
+      "rom_offset": 7227732,
+      "original_bytes": 188,
+      "relocation_count": 10,
+      "code_sha256": "d6cd999155185c423ed043756d202a9ec6342b0faa2ba6fe7fc2a030ccfacf3d"
+    },
+    {
+      "name": "func_080031BC_6D910C",
+      "region": "usa",
+      "owner": "file_35.s",
+      "vma": 134230460,
+      "rom_offset": 7180556,
+      "original_bytes": 200,
+      "relocation_count": 11,
+      "code_sha256": "c50133754d2e1d7c754f82fba2d4c3a25a9c5eed878ec3386cbef0986428635d"
+    },
+    {
+      "name": "func_08002C18_6D8B68",
+      "region": "usa",
+      "owner": "file_35.s",
+      "vma": 134229016,
+      "rom_offset": 7179112,
+      "original_bytes": 204,
+      "relocation_count": 11,
+      "code_sha256": "715445503124f6ae3679d9dbce7ed432b78bfd09be57f262af77a633e30564b9"
+    },
+    {
+      "name": "func_08003398_737B28",
+      "region": "usa",
+      "owner": "file_74.s",
+      "vma": 134230936,
+      "rom_offset": 7568168,
+      "original_bytes": 204,
+      "relocation_count": 18,
+      "code_sha256": "7ed60ec9e37edf1bf27c00f48ed6346ce754e79da1f3b3c5b498cddd518b5c8b"
+    },
+    {
+      "name": "func_08003470_737C00",
+      "region": "usa",
+      "owner": "file_74.s",
+      "vma": 134231152,
+      "rom_offset": 7568384,
+      "original_bytes": 204,
+      "relocation_count": 18,
+      "code_sha256": "ba8b7d6e6de7bc637451e9aa6cceb19afe5fc0320048f507618a694188c51b15"
+    },
+    {
+      "name": "func_08003548_737CD8",
+      "region": "usa",
+      "owner": "file_74.s",
+      "vma": 134231368,
+      "rom_offset": 7568600,
+      "original_bytes": 204,
+      "relocation_count": 18,
+      "code_sha256": "ea5efc816a35aa593633136dc7ad15b1724c19beca3cecb6fd802f4359d26ea7"
+    },
+    {
+      "name": "func_08003620_737DB0",
+      "region": "usa",
+      "owner": "file_74.s",
+      "vma": 134231584,
+      "rom_offset": 7568816,
+      "original_bytes": 204,
+      "relocation_count": 18,
+      "code_sha256": "ecfecfad00bf0ea26648ecbda8501ca77ce17aa4459b656f0fa4e1d97007377b"
+    },
+    {
+      "name": "func_80205734_630B14",
+      "region": "usa",
+      "owner": "5F6840.s",
+      "vma": 2149603124,
+      "rom_offset": 6490900,
+      "original_bytes": 216,
+      "relocation_count": 13,
+      "code_sha256": "c49799439b4cf409e6799eafe5fa52f6a675943a6b5b6b616e6435cc353b8ce3"
+    },
+    {
+      "name": "func_08006B40_6C6290",
+      "region": "usa",
+      "owner": "file_30.s",
+      "vma": 134245184,
+      "rom_offset": 7103120,
+      "original_bytes": 216,
+      "relocation_count": 10,
+      "code_sha256": "ce2d8a0908a5726ed940f7072d6d5e8c9d3037cea26f73ff92de12e55dbdcf73"
+    },
+    {
+      "name": "func_08002BBC_73734C",
+      "region": "usa",
+      "owner": "file_74.s",
+      "vma": 134228924,
+      "rom_offset": 7566156,
+      "original_bytes": 220,
+      "relocation_count": 18,
+      "code_sha256": "9fdefed22caffc791f4014d77e94b5a652a01a42e786b352d2afa047de750d41"
+    },
+    {
+      "name": "func_08001C20_723240",
+      "region": "usa",
+      "owner": "file_62.s",
+      "vma": 134224928,
+      "rom_offset": 7483968,
+      "original_bytes": 224,
+      "relocation_count": 18,
+      "code_sha256": "bf9a7be7ac4af043deff7c071d46e60ab7e1d993b9b18dc191ed70c77d8f8d0c"
+    },
+    {
+      "name": "func_801EF998_61AD78",
+      "region": "usa",
+      "owner": "5F6840.s",
+      "vma": 2149513624,
+      "rom_offset": 6401400,
+      "original_bytes": 240,
+      "relocation_count": 13,
+      "code_sha256": "46608496789ec6bd4ec5a3804d167d7c9f7b28d2e3f0c09b2f61830fdd7ece70"
+    },
+    {
+      "name": "func_080021AC_6E134C",
+      "region": "usa",
+      "owner": "file_37.s",
+      "vma": 134226348,
+      "rom_offset": 7213900,
+      "original_bytes": 240,
+      "relocation_count": 12,
+      "code_sha256": "2eaa1dde7a7dc9bc7498bb8274616a39a27b485e15f2cbb394df27f16d808663"
+    },
+    {
+      "name": "func_080011CC_712CBC",
+      "region": "usa",
+      "owner": "file_55.s",
+      "vma": 134222284,
+      "rom_offset": 7417020,
+      "original_bytes": 252,
+      "relocation_count": 20,
+      "code_sha256": "04269b750a232a6f967914690e78c4d448de3e36aa77f0317c70737b05237be8"
+    },
+    {
+      "name": "func_08002714_6D8664",
+      "region": "usa",
+      "owner": "file_35.s",
+      "vma": 134227732,
+      "rom_offset": 7177828,
+      "original_bytes": 264,
+      "relocation_count": 8,
+      "code_sha256": "98821561a70bc34fb6a6b2e0518be7935385fbc89b0e18405012cf4c5b2da5ff"
+    },
+    {
+      "name": "func_080013DC_73268C",
+      "region": "usa",
+      "owner": "file_72.s",
+      "vma": 134222812,
+      "rom_offset": 7546508,
+      "original_bytes": 264,
+      "relocation_count": 20,
+      "code_sha256": "574b8851e817c36a8d8352bf4350fb10667f1b7c894e9842d39475047000099d"
+    },
+    {
+      "name": "func_08001980_718820",
+      "region": "usa",
+      "owner": "file_57.s",
+      "vma": 134224256,
+      "rom_offset": 7440416,
+      "original_bytes": 356,
+      "relocation_count": 28,
+      "code_sha256": "016823d8287389979f0444523a3966f5a5e39628ede97852e9d321a10384975a"
+    },
+    {
+      "name": "func_08000EE0_6D9B90",
+      "region": "japan_0",
+      "owner": "6D8CB0.s",
+      "vma": 134221536,
+      "rom_offset": 7183248,
+      "original_bytes": 112,
+      "relocation_count": 6,
+      "code_sha256": "949a519adc69ca57bace44495191ebbb20670cbf1ba0b029dd7463592ec37742"
+    },
+    {
+      "name": "func_08001318_6D9FC8",
+      "region": "japan_0",
+      "owner": "6D8CB0.s",
+      "vma": 134222616,
+      "rom_offset": 7184328,
+      "original_bytes": 112,
+      "relocation_count": 6,
+      "code_sha256": "5b96c2a2ba49b2d8857cd61a126b8dab6ad816286c684386aa161ee141707211"
+    },
+    {
+      "name": "func_08001210_6CDE90",
+      "region": "japan_0",
+      "owner": "6CCC80.s",
+      "vma": 134222352,
+      "rom_offset": 7134864,
+      "original_bytes": 256,
+      "relocation_count": 14,
+      "code_sha256": "e331b45aa3f3088d7563694d3065830d1aec86c3094dd9195e9365896667b938"
+    },
+    {
+      "name": "func_08002800_6B6700",
+      "region": "japan_0",
+      "owner": "6B3F00.s",
+      "vma": 134227968,
+      "rom_offset": 7038720,
+      "original_bytes": 56,
+      "relocation_count": 4,
+      "code_sha256": "0baa38aed3c60ca6650910fb38ae78bdc9f666cd9517b003594104e6d9e36c20"
+    },
+    {
+      "name": "func_08001CD0_6D57D0",
+      "region": "japan_0",
+      "owner": "6D3B00.s",
+      "vma": 134225104,
+      "rom_offset": 7165904,
+      "original_bytes": 172,
+      "relocation_count": 9,
+      "code_sha256": "f5194d2db4bbfc59534ca221cbf44d1295cbfb690e339e90bf6c11e3730e8eed"
+    },
+    {
+      "name": "func_08002948_6B6848",
+      "region": "japan_0",
+      "owner": "6B3F00.s",
+      "vma": 134228296,
+      "rom_offset": 7039048,
+      "original_bytes": 220,
+      "relocation_count": 16,
+      "code_sha256": "1d75085c7d32a483a10e68a98ce0445ee618c1e78fb9f16846663cbcf9c80e6e"
+    },
+    {
+      "name": "func_08000ADC_6D978C",
+      "region": "japan_0",
+      "owner": "6D8CB0.s",
+      "vma": 134220508,
+      "rom_offset": 7182220,
+      "original_bytes": 228,
+      "relocation_count": 12,
+      "code_sha256": "703e3d531464ac93b2140eedc5a3e7d74fdd057ce8b13a8e044bc9b68d4e2a8a"
+    },
+    {
+      "name": "func_08001FF4_6D5AF4",
+      "region": "japan_0",
+      "owner": "6D3B00.s",
+      "vma": 134225908,
+      "rom_offset": 7166708,
+      "original_bytes": 64,
+      "relocation_count": 2,
+      "code_sha256": "0d765d5055c00e7fc56baf9486e4cff4d4fde817cb2f5453012a278a9f9caa5f"
+    },
+    {
+      "name": "func_08000EB4_718354",
+      "region": "japan_0",
+      "owner": "7174A0.s",
+      "vma": 134221492,
+      "rom_offset": 7439188,
+      "original_bytes": 76,
+      "relocation_count": 5,
+      "code_sha256": "620383dab91c849b01b3856c6e492c1f8e9233e9ba535b62a23b9a1fff029295"
+    },
+    {
+      "name": "func_08002F40_6BACC0",
+      "region": "japan_0",
+      "owner": "6B7D80.s",
+      "vma": 134229824,
+      "rom_offset": 7056576,
+      "original_bytes": 88,
+      "relocation_count": 6,
+      "code_sha256": "e8ec68cf96960eeb0da80f0aa83e44ae16fd5df109b90fb674add1c2d904b2e0"
+    },
+    {
+      "name": "func_08002AD8_72D388",
+      "region": "japan_0",
+      "owner": "72A8B0.s",
+      "vma": 134228696,
+      "rom_offset": 7525256,
+      "original_bytes": 88,
+      "relocation_count": 4,
+      "code_sha256": "33af40833028b3bf667c41eadb42f178d78ffdb21f97dfae4dfbe30f0f752efd"
+    },
+    {
+      "name": "func_080006D4_6F8264",
+      "region": "japan_0",
+      "owner": "6F7B90.s",
+      "vma": 134219476,
+      "rom_offset": 7307876,
+      "original_bytes": 88,
+      "relocation_count": 4,
+      "code_sha256": "33af40833028b3bf667c41eadb42f178d78ffdb21f97dfae4dfbe30f0f752efd"
+    },
+    {
+      "name": "func_08000068_71FFB8",
+      "region": "japan_0",
+      "owner": "71FF50.s",
+      "vma": 134217832,
+      "rom_offset": 7471032,
+      "original_bytes": 88,
+      "relocation_count": 6,
+      "code_sha256": "c2b88e654f7f73045c9888704f105dda79ec510b606e911529ec9d0a87ece414"
+    },
+    {
+      "name": "func_08000000_728920",
+      "region": "japan_0",
+      "owner": "728920.s",
+      "vma": 134217728,
+      "rom_offset": 7506208,
+      "original_bytes": 100,
+      "relocation_count": 6,
+      "code_sha256": "20cef13e25db9f0b1811baa79dee6583c6d427e20814cc4fecc2d47082df67e7"
+    },
+    {
+      "name": "func_08000000_71FF50",
+      "region": "japan_0",
+      "owner": "71FF50.s",
+      "vma": 134217728,
+      "rom_offset": 7470928,
+      "original_bytes": 104,
+      "relocation_count": 6,
+      "code_sha256": "f26d740e931ffeea62267bd3bbf0d0a951a4d965bd273f7721cc9066befe4013"
+    },
+    {
+      "name": "func_08002FD8_6E1768",
+      "region": "japan_0",
+      "owner": "6DE790.s",
+      "vma": 134229976,
+      "rom_offset": 7214952,
+      "original_bytes": 108,
+      "relocation_count": 6,
+      "code_sha256": "625c7dd352b882df538a44d264094f0df10bf097ae30256ad8310c4a2049c87e"
+    },
+    {
+      "name": "func_08002DBC_70258C",
+      "region": "japan_0",
+      "owner": "6FF7D0.s",
+      "vma": 134229436,
+      "rom_offset": 7349644,
+      "original_bytes": 108,
+      "relocation_count": 2,
+      "code_sha256": "9691429a3ae1352136489dd2a8eab391e80f4cfa9d1723c06099237cb7a9e383"
+    },
+    {
+      "name": "func_08001994_6B5894",
+      "region": "japan_0",
+      "owner": "6B3F00.s",
+      "vma": 134224276,
+      "rom_offset": 7035028,
+      "original_bytes": 112,
+      "relocation_count": 11,
+      "code_sha256": "c2a125613b2acfc465582bd976f86ceb5bfd8e3b68c25dde44d93484fb676e56"
+    },
+    {
+      "name": "func_080018B4_6B57B4",
+      "region": "japan_0",
+      "owner": "6B3F00.s",
+      "vma": 134224052,
+      "rom_offset": 7034804,
+      "original_bytes": 112,
+      "relocation_count": 11,
+      "code_sha256": "24e79963b43fe73b3ddc15cfece44f23c44ec3505b7b94faff5c9bcec9467921"
+    },
+    {
+      "name": "func_08001924_6B5824",
+      "region": "japan_0",
+      "owner": "6B3F00.s",
+      "vma": 134224164,
+      "rom_offset": 7034916,
+      "original_bytes": 112,
+      "relocation_count": 11,
+      "code_sha256": "75dbff021615b901ccafefc628aaa65afcfb17e54119ef8678b063a95a5126bf"
+    },
+    {
+      "name": "func_08001198_6B5098",
+      "region": "japan_0",
+      "owner": "6B3F00.s",
+      "vma": 134222232,
+      "rom_offset": 7032984,
+      "original_bytes": 112,
+      "relocation_count": 11,
+      "code_sha256": "ddab460814f93e00c592874f68fea3fe9316949a0860487ef80770d73ad0058f"
+    },
+    {
+      "name": "func_08004534_6E7EA4",
+      "region": "japan_0",
+      "owner": "6E3970.s",
+      "vma": 134235444,
+      "rom_offset": 7241380,
+      "original_bytes": 112,
+      "relocation_count": 6,
+      "code_sha256": "93d47ca723a258bd8753a1b46358cfb9aa6b78acd75b0500409b03141d86969a"
+    },
+    {
+      "name": "func_080002A0_6FFA70",
+      "region": "japan_0",
+      "owner": "6FF7D0.s",
+      "vma": 134218400,
+      "rom_offset": 7338608,
+      "original_bytes": 120,
+      "relocation_count": 7,
+      "code_sha256": "bf7881e5c8e47a75222436b15601d9a16a8a3eaaabef1813202287a84458d80d"
+    },
+    {
+      "name": "func_08001294_6D4D94",
+      "region": "japan_0",
+      "owner": "6D3B00.s",
+      "vma": 134222484,
+      "rom_offset": 7163284,
+      "original_bytes": 128,
+      "relocation_count": 8,
+      "code_sha256": "587bc69c0eebb85322684b2f2a4b52a6f7f482d6ddedde13f0823c37b8acc0ef"
+    },
+    {
+      "name": "func_08000064_728984",
+      "region": "japan_0",
+      "owner": "728920.s",
+      "vma": 134217828,
+      "rom_offset": 7506308,
+      "original_bytes": 128,
+      "relocation_count": 9,
+      "code_sha256": "ce678cabf79835fb49b2c027722e95142e6a77bef79f64fd8e32ee14fdb68b7d"
+    },
+    {
+      "name": "func_080016B0_6E9E00",
+      "region": "japan_0",
+      "owner": "6E8750.s",
+      "vma": 134223536,
+      "rom_offset": 7249408,
+      "original_bytes": 132,
+      "relocation_count": 8,
+      "code_sha256": "0c965265322b3faa5d62b05825d1b7afff727aac557facbf41f76403eb050eca"
+    },
+    {
+      "name": "func_08002164_6D5C64",
+      "region": "japan_0",
+      "owner": "6D3B00.s",
+      "vma": 134226276,
+      "rom_offset": 7167076,
+      "original_bytes": 132,
+      "relocation_count": 8,
+      "code_sha256": "893489775dc539f9f8fbc625285b4f47b77d981dee5fabc67c46a0d5ddbc9471"
+    },
+    {
+      "name": "func_08002894_6D6394",
+      "region": "japan_0",
+      "owner": "6D3B00.s",
+      "vma": 134228116,
+      "rom_offset": 7168916,
+      "original_bytes": 132,
+      "relocation_count": 8,
+      "code_sha256": "9e30d5d57b415ee28e33d9edc6e1c1ff4b57c68fd1d520f6a416b31c3b5d8e36"
+    },
+    {
+      "name": "func_08000948_6EC378",
+      "region": "japan_0",
+      "owner": "6EBA30.s",
+      "vma": 134220104,
+      "rom_offset": 7259000,
+      "original_bytes": 132,
+      "relocation_count": 8,
+      "code_sha256": "ecd7dc63441632bd1d0010d38edbc493b30da7f3a373d394976493eae1f4873b"
+    },
+    {
+      "name": "func_08003160_6E6AD0",
+      "region": "japan_0",
+      "owner": "6E3970.s",
+      "vma": 134230368,
+      "rom_offset": 7236304,
+      "original_bytes": 144,
+      "relocation_count": 8,
+      "code_sha256": "34cc0b543bb7bf4f459acc92cf4f1f65c3c80a583035e9fcce895951fa3a64c0"
+    },
+    {
+      "name": "func_080027A0_6E6110",
+      "region": "japan_0",
+      "owner": "6E3970.s",
+      "vma": 134227872,
+      "rom_offset": 7233808,
+      "original_bytes": 144,
+      "relocation_count": 8,
+      "code_sha256": "3eea0827fd1e9ee8d9c199e0f70a81287c76f7adbc563b4dbd04cfc1e4fe28fe"
+    },
+    {
+      "name": "func_08003870_6E2000",
+      "region": "japan_0",
+      "owner": "6DE790.s",
+      "vma": 134232176,
+      "rom_offset": 7217152,
+      "original_bytes": 148,
+      "relocation_count": 10,
+      "code_sha256": "779b8b222042c3ae0ea6fdc216ba1407e64f72d96167f9d7cdf2208b646c7066"
+    },
+    {
+      "name": "func_08001A40_6B5940",
+      "region": "japan_0",
+      "owner": "6B3F00.s",
+      "vma": 134224448,
+      "rom_offset": 7035200,
+      "original_bytes": 152,
+      "relocation_count": 9,
+      "code_sha256": "f9f85448ce10644ae3a83f28a919cb9f8e9357a1c92cf4f493b812033b405e52"
+    },
+    {
+      "name": "func_08000E44_720D94",
+      "region": "japan_0",
+      "owner": "71FF50.s",
+      "vma": 134221380,
+      "rom_offset": 7474580,
+      "original_bytes": 156,
+      "relocation_count": 9,
+      "code_sha256": "27d7e5caca741137365b9772f0d0ab62df6a24bd2a5acd722532b8d296c89cf2"
+    },
+    {
+      "name": "func_080036B0_71AB50",
+      "region": "japan_0",
+      "owner": "7174A0.s",
+      "vma": 134231728,
+      "rom_offset": 7449424,
+      "original_bytes": 172,
+      "relocation_count": 8,
+      "code_sha256": "a118572cc48a1844bb3f6c119f3e935eb80677fe9f3fe07176e199ed64986cb9"
+    },
+    {
+      "name": "func_0800149C_6B539C",
+      "region": "japan_0",
+      "owner": "6B3F00.s",
+      "vma": 134223004,
+      "rom_offset": 7033756,
+      "original_bytes": 184,
+      "relocation_count": 19,
+      "code_sha256": "d2e27bc8228553dec4df8e275fd1befb54f40a6eb07b028a39c97f58d67444ad"
+    },
+    {
+      "name": "func_08003D4C_6BBACC",
+      "region": "japan_0",
+      "owner": "6B7D80.s",
+      "vma": 134233420,
+      "rom_offset": 7060172,
+      "original_bytes": 188,
+      "relocation_count": 8,
+      "code_sha256": "7d0a5021f208324972ed9690523623ea0fc7e17125f17bc16d2a0357b151c9a3"
+    },
+    {
+      "name": "func_08003398_73BED8",
+      "region": "japan_0",
+      "owner": "738B40.s",
+      "vma": 134230936,
+      "rom_offset": 7585496,
+      "original_bytes": 204,
+      "relocation_count": 18,
+      "code_sha256": "d449cb5c71498aa60f1b42117a2ee4cd76593e7f39ac8b79d6d9627ce1855d79"
+    },
+    {
+      "name": "func_08003470_73BFB0",
+      "region": "japan_0",
+      "owner": "738B40.s",
+      "vma": 134231152,
+      "rom_offset": 7585712,
+      "original_bytes": 204,
+      "relocation_count": 18,
+      "code_sha256": "966bd31960147bbc470801a5d74cc5a1d7145543c44c85b045acbb0cf24bee6d"
+    },
+    {
+      "name": "func_08003548_73C088",
+      "region": "japan_0",
+      "owner": "738B40.s",
+      "vma": 134231368,
+      "rom_offset": 7585928,
+      "original_bytes": 204,
+      "relocation_count": 18,
+      "code_sha256": "8aaae3a4e2ac02e1b34016f64776fe88864e67c44d6435d5cf065cb12da41c09"
+    },
+    {
+      "name": "func_08003620_73C160",
+      "region": "japan_0",
+      "owner": "738B40.s",
+      "vma": 134231584,
+      "rom_offset": 7586144,
+      "original_bytes": 204,
+      "relocation_count": 18,
+      "code_sha256": "a77dfb0b73ce1cf1725e2b907f1875a5627b5ef3297f06cc13751886a6f6f2cb"
+    },
+    {
+      "name": "func_8020AE64_6358E4",
+      "region": "japan_0",
+      "owner": "6348A0.s",
+      "vma": 2149625444,
+      "rom_offset": 6510820,
+      "original_bytes": 216,
+      "relocation_count": 13,
+      "code_sha256": "238f75bac3aa44ef74cf58c5aa838bcc203483a1bab4acc195b23991f913baf8"
+    },
+    {
+      "name": "func_08006B40_6CAD00",
+      "region": "japan_0",
+      "owner": "6C41C0.s",
+      "vma": 134245184,
+      "rom_offset": 7122176,
+      "original_bytes": 216,
+      "relocation_count": 10,
+      "code_sha256": "0fccbd546717b588c6dc57e311a91b4eea6a4219e630cbce1e77b6c6763e3fc0"
+    },
+    {
+      "name": "func_08002BBC_73B6FC",
+      "region": "japan_0",
+      "owner": "738B40.s",
+      "vma": 134228924,
+      "rom_offset": 7583484,
+      "original_bytes": 220,
+      "relocation_count": 18,
+      "code_sha256": "f71c65e72a9daf62d9b336ba2881821440c6dfceca38e1533959b57613bb711f"
+    },
+    {
+      "name": "func_08001C28_727658",
+      "region": "japan_0",
+      "owner": "725A30.s",
+      "vma": 134224936,
+      "rom_offset": 7501400,
+      "original_bytes": 224,
+      "relocation_count": 18,
+      "code_sha256": "877f9064e68c0f8bb4bae1bde97b44cd226b4ebfbd5fd0a2b251edc6c55d2349"
+    },
+    {
+      "name": "func_080021AC_6E5B1C",
+      "region": "japan_0",
+      "owner": "6E3970.s",
+      "vma": 134226348,
+      "rom_offset": 7232284,
+      "original_bytes": 240,
+      "relocation_count": 12,
+      "code_sha256": "c1b398f73d618cfc80dfffb4c7cb2a42db100afcc09707f5755a5e7861224d7f"
+    },
+    {
+      "name": "func_080011CC_7171EC",
+      "region": "japan_0",
+      "owner": "716020.s",
+      "vma": 134222284,
+      "rom_offset": 7434732,
+      "original_bytes": 252,
+      "relocation_count": 20,
+      "code_sha256": "1465798ba0688f2c8b24ba0aff9a86aa0be0b731391e1fd3ed6206e2a6679422"
+    },
+    {
+      "name": "func_08001590_736A30",
+      "region": "japan_0",
+      "owner": "7354A0.s",
+      "vma": 134223248,
+      "rom_offset": 7563824,
+      "original_bytes": 264,
+      "relocation_count": 20,
+      "code_sha256": "b436d70926525458cd62b46be43337f1b0b8644c34e5841a009e5184df7624f8"
+    }
+  ]
+}
