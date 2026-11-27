@@ -2380,6 +2380,37 @@
         "proof": "results/japan_0_exec_batch12_66_g2_20261126.json",
         "sdk_flags": {}
       }
+    },
+    {
+      "id": "exec_batch13_47",
+      "namespace": "exb013",
+      "base_commit": "81ac095df0f81da6eea910face1f88a1c0bdc177",
+      "research_dir": "research/exec_batch13_20261127",
+      "usa": {
+        "added": 29,
+        "bytes": 4080,
+        "manifest_sha256": "f709b83fc6e4c613ed97d7fcf33b1f5af943547809df6632a3ba6ea1869cdfa4",
+        "prior_elf_sha256": "9da40e5ba5ae6233550cd9bfdb887266ad0a51edc45e3dac7f705bcb8b2f420b",
+        "elf_sha256": "bf0215272a2adc8f13214ef45fba4aade33d6e520329e31872c868fa2a055ad4",
+        "guarded_abs": [
+          [
+            "build/usa/src/exb013/func_080028A4_6B5B44.c.o",
+            "D_8015CDB4"
+          ]
+        ],
+        "proof": "results/usa_exec_batch13_47_g2_20261126.json",
+        "sdk_flags": {}
+      },
+      "japan_0": {
+        "added": 18,
+        "bytes": 2648,
+        "manifest_sha256": "92f466712cfc6147ff94539efdd7557fd831fe0bed30c6ed34565ded9012fc75",
+        "prior_elf_sha256": "e131bcdf061e5bd2cb8bd6b14d403290438ebe13ebb943d7eb9de607129e5ed4",
+        "elf_sha256": "59e518b26bb59ab240b3f4d1326e827f74c4e5c9267ad28ac6837f5831812802",
+        "guarded_abs": [],
+        "proof": "results/japan_0_exec_batch13_47_g2_20261126.json",
+        "sdk_flags": {}
+      }
     }
   ],
   "frozen_usa_before_registry": {
