@@ -1,0 +1,11 @@
+#include "m2c_types.h"
+
+extern u8 func_8003521C_35E1C[];
+extern u8 func_8021B7AC_5D6C7C[];
+
+void func_080029AC_723FCC(void *arg0, s32 arg1) {
+    if (((s32 (*)(void *, f32))func_8021B7AC_5D6C7C)(arg0, (f32) M2C_FIELD(arg0, s32 *, 0xC0)) == 0) {
+        ((void (*)(s32))func_8003521C_35E1C)(M2C_FIELD(arg0, s32 *, 0xBC));
+        M2C_FIELD(arg0, void (**)(void *, s32), 0xC)(arg0, M2C_FIELD(arg0, s32 *, 0x18));
+    }
+}
