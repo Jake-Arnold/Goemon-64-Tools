@@ -2160,6 +2160,53 @@
         "proof": "results/japan_0_exec_batch9_69_g2_20261126.json",
         "sdk_flags": {}
       }
+    },
+    {
+      "id": "exec_batch10_73",
+      "namespace": "exb010",
+      "base_commit": "105267c952f85a2e348c6cc7273687451a8b9bc6",
+      "research_dir": "research/exec_batch10_20261127",
+      "usa": {
+        "added": 39,
+        "bytes": 4032,
+        "manifest_sha256": "404f4167e93860c516e4e064528f5a59377505d828ea083a8ebc91a503811f9c",
+        "prior_elf_sha256": "19c7ef39801cbf873d672517672cba1227ba51bbf89582061ea8c70a8e4805f3",
+        "elf_sha256": "3a7126f21f6a751ebc13d311153d62c2c46297109910a9f7c72199945666d71e",
+        "guarded_abs": [
+          [
+            "build/usa/src/exb010/func_08005C68_6B8F08.c.o",
+            "D_8015CDD0"
+          ],
+          [
+            "build/usa/src/exb010/func_80014D70_15970.c.o",
+            "D_80168170_168D70"
+          ],
+          [
+            "build/usa/src/exb010/func_80014D70_15970.c.o",
+            "D_80168180_168D80"
+          ],
+          [
+            "build/usa/src/exb010/func_80014D70_15970.c.o",
+            "D_80168184_168D84"
+          ],
+          [
+            "build/usa/src/exb010/func_801DAEC8_6062A8.c.o",
+            "D_3B07C"
+          ]
+        ],
+        "proof": "results/usa_exec_batch10_73_g2_20261126.json",
+        "sdk_flags": {}
+      },
+      "japan_0": {
+        "added": 34,
+        "bytes": 3624,
+        "manifest_sha256": "691174db37dd90a3156a62aacbb16ba6445ee7b6bd84e115c7e63d0c395816d1",
+        "prior_elf_sha256": "1490a9fa937fed7590de6d7c928926eaef994a91691b07fa85af2783ed9ced38",
+        "elf_sha256": "570a3eb867561dade5727a6ec91badc8f70b1635caca480d0081cc9a87deb603",
+        "guarded_abs": [],
+        "proof": "results/japan_0_exec_batch10_73_g2_20261126.json",
+        "sdk_flags": {}
+      }
     }
   ],
   "frozen_usa_before_registry": {
