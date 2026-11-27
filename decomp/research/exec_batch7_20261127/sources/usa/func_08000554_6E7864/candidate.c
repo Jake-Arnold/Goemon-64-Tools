@@ -1,0 +1,30 @@
+#include "m2c_types.h"
+
+void func_8003521C_35E1C(void *);
+extern M2C_UNK func_080005AC_6E78BC;
+
+typedef struct {
+    u8 unk0[0x60];
+    s32 unk60;
+    u8 unk64[0x18];
+    f32 unk7C;
+    u8 unk80[0xD];
+    s8 unk8D;
+    u8 unk8E[0x42];
+    f32 unkD0;
+} UnkArg0;
+
+typedef struct {
+    u8 unk0[0xC];
+    f32 unkC;
+} UnkArg1;
+
+void func_08000554_6E7864(UnkArg0 *arg0, UnkArg1 *arg1) {
+    void (*fn)(void *) = func_8003521C_35E1C;
+
+    arg0->unk60 |= 0x800000;
+    arg0->unkD0 = arg1->unkC;
+    arg0->unk7C = 3.0f;
+    arg0->unk8D = 0x10;
+    fn(&func_080005AC_6E78BC);
+}
