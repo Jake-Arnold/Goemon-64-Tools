@@ -1,0 +1,15 @@
+#include "m2c_types.h"
+
+typedef struct {
+    u8 pad0[0x18];
+    s32 unk18;
+} Obj_801D3564;
+
+s32 func_801D3324_5FE704(s32, s32, u8, u8);
+
+s32 func_801D3564_5FE944(Obj_801D3564 *arg0, s32 arg1, u8 arg2, u8 arg3) {
+    if (arg0 == NULL) {
+        { *(volatile s32 *)0x80000000 = 1; } return 0;
+    }
+    return func_801D3324_5FE704(arg0->unk18, arg1, arg2, arg3);
+}
