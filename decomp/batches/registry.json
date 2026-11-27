@@ -2121,6 +2121,45 @@
           ]
         }
       }
+    },
+    {
+      "id": "exec_batch9_69",
+      "namespace": "exb009",
+      "base_commit": "ca4051c7545edb94d5c31ba04504dc5cf070eaf2",
+      "research_dir": "research/exec_batch9_20261127",
+      "usa": {
+        "added": 36,
+        "bytes": 3752,
+        "manifest_sha256": "1d001df54920b38ef9617ad6cc1c8061a6f8cda3c77009910b6fd229057c16b5",
+        "prior_elf_sha256": "280a8a15458abcfba6f376cc9aff4649447cc73689a2fee4f7dde75865f4a211",
+        "elf_sha256": "19c7ef39801cbf873d672517672cba1227ba51bbf89582061ea8c70a8e4805f3",
+        "guarded_abs": [
+          [
+            "build/usa/src/exb009/func_080020D8_6B5378.c.o",
+            "D_8015CDB6"
+          ],
+          [
+            "build/usa/src/exb009/func_080024A0_6B5740.c.o",
+            "D_8015CDB6"
+          ],
+          [
+            "build/usa/src/exb009/func_801DF8B8_59B7C8.c.o",
+            "D_800C7DB4"
+          ]
+        ],
+        "proof": "results/usa_exec_batch9_69_g2_20261126.json",
+        "sdk_flags": {}
+      },
+      "japan_0": {
+        "added": 33,
+        "bytes": 3440,
+        "manifest_sha256": "eb5b8d9d65f75f7dc96b7fc4e84f4a3b7c57a576d08f90781b37d018ba7a293c",
+        "prior_elf_sha256": "85ca2ca5c2074c0ed5b815aee0151124de5710528162695958ec927db77e3275",
+        "elf_sha256": "1490a9fa937fed7590de6d7c928926eaef994a91691b07fa85af2783ed9ced38",
+        "guarded_abs": [],
+        "proof": "results/japan_0_exec_batch9_69_g2_20261126.json",
+        "sdk_flags": {}
+      }
     }
   ],
   "frozen_usa_before_registry": {
