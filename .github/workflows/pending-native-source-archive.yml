@@ -1,0 +1,50 @@
+name: Pending native source archive (temporary research transport)
+on:
+  push:
+    branches: [decomp/pending-native-source-archive-20261127]
+permissions:
+  contents: read
+jobs:
+  archive:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Export pinned research source and evidence only
+        shell: bash
+        run: |
+          set -euo pipefail
+          out="$RUNNER_TEMP/pending-native-source"
+          mkdir -p "$out"
+          while read -r pr sha; do
+            git fetch --no-tags origin "refs/pull/$pr/head"
+            test "$(git rev-parse FETCH_HEAD)" = "$sha"
+            mkdir -p "$out/pr$pr"
+            printf '%s\n' "$sha" > "$out/pr$pr/COMMIT.txt"
+            mergebase=$(git merge-base "$sha" 997dc92c69ef8170a14eae4b4086a78aca6f0dd8)
+            mapfile -t paths < <(git diff --name-only --diff-filter=AM "$mergebase" "$sha" -- decomp/research/ | grep -E '^decomp/research/[^[:space:]]+\.(c|h|json|md|py)$')
+            test "${#paths[@]}" -gt 0
+            git archive "$sha" -- "${paths[@]}" | tar -xf - -C "$out/pr$pr"
+          done <<'EOF'
+          297 a7f17d19cd3bbd9608955eea430f2887f71b3158
+          298 eabe01bce79ac7b9987682a3e248b9d63c28a192
+          296 2aa2148d150560501062012a3c5afb626dc1589a
+          284 081c0b83e01c0e2693b4ba8538bba5e0688dfcad
+          283 4c64b27fe0f540ed1497d3ca83d29e037990dfff
+          279 b0ebfa1520be1534514dcfb77223aea0a2841075
+          276 5f1bbfa0e2a037ccbf6f746725ed408f436274b8
+          269 5b8f51a06736fe24dd359867139e7bda0a48f542
+          267 d1e436ff0a55d47bca65abbcebb90f76df9d9939
+          266 6a12c0d4658113fbd0c42a485250f205488153ce
+          299 482832dbd3764154d408141fc69d6a1ddb357644
+          EOF
+          cd "$out"
+          find . -type f -print0 | sort -z | xargs -0 sha256sum > SHA256SUMS
+      - uses: actions/upload-artifact@v4
+        with:
+          name: pending-native-research-source
+          path: ${{ runner.temp }}/pending-native-source/
+          retention-days: 1
+          if-no-files-found: error
