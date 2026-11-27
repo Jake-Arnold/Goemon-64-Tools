@@ -94,3 +94,10 @@
 - Independent full `python3 -m decomp.verify` integrated replay exit 0: USA3039, 205,920 bytes, identical canonical comparison/source hashes/retained assembly and pinned candidate ELF; strict original-baseline inventory equals canonical. Replay proof `decomp/results/usa_promo195_integrated_replay_20261125.json`. PR #271 initial hosted regression failed four stale assertions (CI step counts and historical VM fingerprint); corrected tests retain all 72 full and 15 quick checks, use the frozen historical projection, and bind the current proof to the actually replayed verifier hash. Ten targeted tests pass (one private-ROM availability skip). The independent verifier expected-source-set test now includes the 100 Promo195 USA sources and passes; rerun full hosted regression before merge.
 
 ## 2026-11-25 — Japan dispatcher JP2843 native integration candidate
+
+
+## 27 November 2026 — USA return-extent isolated native research (12 functions, 320 B; no promotion)
+
+- Verified live stable/decomp 0ad88225c1a11f85454b259103f0f4c6ff49fa16, source archive 15183344072 and checksum; USA 3167 / JP 3107 canonical integrity PASS. Direct Git DNS blocked. Verified the original USA expanded/baseline ROM and IDO hashes, replayed ten prior session candidates and two new return-count candidates (32/24 B).
+- All 12 isolated native functions exactly match independent pristine reference object, original-address linked ROM bytes, ELF identity and named relocations (6 total); 12/12 changed-source negatives rejected, 11/11 O2 controls rejected. New explicit-return O0 extent refinement; 350-target O2/g3 sweep: 312 mismatches, 28 compile failures, 9 near misses, 1 m2c failure, zero exact. See [research](decomp/research/return_extent_20261127/README.md).
+- RESEARCH_ONLY; no whole candidate ROM, owner, strict inventory or G2 promotion. Keep ASM; do not merge as a promotion. Japan counterpart work and USA 100 target incomplete. No toolkit changes.
