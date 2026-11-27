@@ -3,6 +3,12 @@
 > **Historical archive:** All pre-rotation entries (965 KB verbatim) are preserved in [docs/archive/PROGRESS_HISTORY_20261126.md](docs/archive/PROGRESS_HISTORY_20261126.md).
 > Keep this file concise (rolling active milestones only; archive older entries when approaching ~25 KB so agent sessions do not load hundreds of kilobytes of history).
 
+## 27 November 2026 — ABI recovery research (USA 104 / Japan 48, isolated native only)
+
+- Authenticated `stable/decomp@0ad88225c1a11f85454b259103f0f4c6ff49fa16`, pinned upstream and original SGI IDO 5.3. Independent original expanded-ROM baselines exact for both regions.
+- Retained 104 USA (15,924 B) and 48 Japan (7,268 B) isolated original-address C matches: exact object code and named semantic relocations, exact linked original-ROM function bytes, 152/152 altered-source controls rejected. See [research sources and replay](decomp/research/abi_recovery_20261127/README.md).
+- ABI argument recovery, indirect overlay calls and source/type corrections are source reconstruction techniques, not new compiler quirks. Full candidate G2, complete translation-unit and strict promotion verification NOT_RUN; no canonical C ownership/count changes. Retain ASM. Pending research overlap is not exhaustively resolved. Next: deduplicate remaining research and integrate through the normal promotion workflow.
+
 ## 27 November 2026 — Parallel Flash Executor Batch #5 (`exec_batch5_42`, USA +23 / Japan +19)
 
 - Authenticated live `stable/decomp@ebbf7250d36857c7078e4b03f1d305341640222b` (after PR #293 passed CI and merged) and pinned original upstream `7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee` with authentic SGI IDO 5.3 (`76d796c9591c9f5504949f85b29c32a6039a663791afe2f36f34ca18425b64d0`).
