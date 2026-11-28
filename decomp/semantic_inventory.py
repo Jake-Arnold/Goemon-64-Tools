@@ -267,6 +267,8 @@ def build(root=ROOT):
                 a['counterpart_candidate'] = {'region':b['region'],'name':b['name'],
                     'evidence':'Unique among accepted bodies in the same logical file of equal size and stored original digest; data and relocation equivalence unverified.'}
     apply_annotations(index, read(root/'semantics/annotations.json'), root)
+    from .semantic_refinement import refine
+    refine(index, root)
     return sorted(rows, key=lambda r:(r['region'], r['rom_offset'],r['name']))
 
 
@@ -301,9 +303,11 @@ def apply_annotations(index, annotations, root):
 
 
 def summary(rows):
+    from .semantic_refinement import role_summary
     return {r:{'functions':len(rs), 'bytes':sum(x['size'] for x in rs),
                'confidence':{c:sum(x['confidence']==c for x in rs) for c in LEVELS},
-               'manually_reviewed':sum(x['review_method']=='manual' for x in rs),
+               'manually_reviewed':sum(x['review_method'] in ('manual','manual_refinement') for x in rs),
+               **role_summary(rs),
                'source_resolved':sum(x['source'] is not None for x in rs),
                'callers_with_named_calls':sum(bool(x['callees']) for x in rs),
                'reviewed_counterparts':sum(x['counterpart'] is not None for x in rs),

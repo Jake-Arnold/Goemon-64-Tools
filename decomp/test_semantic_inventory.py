@@ -25,6 +25,36 @@ class SemanticInventoryTests(unittest.TestCase):
             else:
                 self.assertIsNone(row['semantic_alias'])
 
+    def test_purpose_and_behavior_independent(self):
+        for row in self.rows:
+            self.assertEqual(row['behavior_confidence'], row['confidence'])
+            self.assertIn(row['role_confidence'], si.LEVELS)
+            if row['role_confidence'] == 'Unknown':
+                self.assertEqual(row['role_scope'], 'unknown')
+            else:
+                self.assertTrue(row['role_evidence'])
+                self.assertTrue(all((si.ROOT/p).is_file() for p in row['role_evidence']))
+            if row['subsystem'] == 'empty_callback':
+                self.assertEqual(row['role_confidence'], 'Unknown')
+            if row['subsystem'] == 'resource_registration':
+                self.assertEqual(row['role_scope'], 'resource_family')
+            for lead in row['dependency_leads']:
+                self.assertIn(lead['name'], row['callees'])
+                self.assertEqual(self.index[row['region'],lead['name']]['semantic_alias'], lead['alias'])
+        for region, stats in si.summary(self.rows).items():
+            self.assertEqual(sum(stats['role_confidence'].values()), stats['functions'])
+            self.assertEqual(sum(stats['role_scope'].values()), stats['functions'])
+
+    def test_refined_examples(self):
+        row = self.index['usa','func_80003728_4328']
+        self.assertEqual(row['role_confidence'], 'Confirmed')
+        self.assertEqual(row['counterpart']['name'], 'func_8000364C_424C')
+        self.assertIn('3ADD4', row['behavior'])
+        row = self.index['japan_0','func_08000174_711DE4']
+        self.assertEqual(row['semantic_alias'], 'saved_flag0_dependent_actor_update')
+        self.assertEqual(row['role_confidence'], 'High')
+        self.assertIn('identity unknown', row['behavior'])
+
     def test_reciprocal_edges(self):
         for row in self.rows:
             key = row['region'], row['name']

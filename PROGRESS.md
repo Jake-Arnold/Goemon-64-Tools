@@ -3,6 +3,11 @@
 > **Historical archive:** All pre-rotation entries (965 KB verbatim) are preserved in [docs/archive/PROGRESS_HISTORY_20261126.md](docs/archive/PROGRESS_HISTORY_20261126.md).
 > Keep this file concise (rolling active milestones only; archive older entries when approaching ~25 KB so agent sessions do not load hundreds of kilobytes of history).
 
+## 28 November 2026 — Refined semantic purpose confidence (metadata only)
+
+- Rechecked stable/decomp 997dc92c69ef8170a14eae4b4086a78aca6f0dd8 and PR #308 head 9ba1475ba5a0988700315f3a8d01058fad4a1225; verified the source archive checksum and stable Git tree. Separate implementation confidence from purpose confidence and scope. Added 124 regional source reviews (245 curated total), 25 additional reviewed pairs (70 total), and 733 static identified-callee leads. Role confidence USA 82 Confirmed / 435 High / 4 Medium / 3,008 Unknown; Japan 60 / 412 / 3 / 2,918. Counts unchanged: USA 3,529 C / 259,300 B, JP 3,393 C / 240,424 B. No-op purpose stays Unknown; 751 resource wrappers describe a family, not actor identities.
+- Targeted semantic tests 7/7 PASS, deterministic regeneration PASS, canonical census/byte reconciliation PASS. Additional local promotion-integrity command did not complete in the session's execution window; hosted full regression remains the required gate. Native IDO/ROM/gameplay NOT_RUN (metadata only). Next: use dependency leads to resolve exact actor and transition roles with original caller/placement/runtime evidence.
+
 ## 27 November 2026 — Canonical semantic inventory (metadata only)
 
 - Verified live stable/decomp 997dc92c69ef8170a14eae4b4086a78aca6f0dd8 and authenticated source archive tree 74871f952d9eea15e551997f1c7d0d93ea09564e. Existing promotion integrity and batch registry PASS: USA 3,529 / 259,300 B; Japan 3,393 / 240,424 B. No G2 delta.
