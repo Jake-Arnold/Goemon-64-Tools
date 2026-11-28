@@ -2,18 +2,18 @@
 
 > **Historical archives:** Full prior continuation logs are preserved verbatim in [CONTINUE_HISTORY_20261126.md](CONTINUE_HISTORY_20261126.md) (91 KB) and [CONTINUE_HISTORY_20261121.md](CONTINUE_HISTORY_20261121.md) (167 KB).
 
-## Current Canonical State (`stable/decomp` after Batch #14 `exec_batch14_40`)
+## Current Canonical State (`stable/decomp` after `pending_replay_jp33` (local G2; hosted CI required before merge))
 
 | Region | Reconstructed C | Matching Bytes | Remaining ASM | Total Positive ELF FUNCs | Expanded 32 MiB SHA-1 | Retail 16 MiB SHA-1 | Semantic Relocs | Stable Globals |
 | --- | ---: | ---: | ---: | ---: | --- | --- | ---: | ---: |
 | **USA** | **3,529** *(+13 upstream = 3,542)* | **259,300** | **3,834** | 7,376 | `6ea0ed71032ce08fc2745f412d84936382197494` | `df8083a54296b8c151917c5333e1c85f014a2a66` | 82,080 | 26,714 |
-| **Japan (`japan_0`)** | **3,393** | **240,424** | **3,983** | 7,376 | `6f8745fecc3a5e7d4918c7a73353eb0726116ded` | `9843ee979b5f6c80f5eda85df0baed9ae7c4e73b` | 80,652 | 26,393 |
+| **Japan (`japan_0`)** | **3,426** | **246,520** | **3,950** | 7,376 | `6f8745fecc3a5e7d4918c7a73353eb0726116ded` | `9843ee979b5f6c80f5eda85df0baed9ae7c4e73b` | 80,652 | 26,393 |
 
 - **Pinned upstream:** `7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee`
 - **Authentic compiler:** SGI IDO 5.3 `cc` SHA-256 `76d796c9591c9f5504949f85b29c32a6039a663791afe2f36f34ca18425b64d0`
 - **Current canonical ELF SHA-256s:**
   - USA 3,529: `35e66b1fbcac6bfbed677f4f4b220ee8e006332eaa476c72a590b43af8c105e9`
-  - Japan 3,393: `dd315530109d5597f36696fe39cabcd02ee78c135dad60ef26845a70962bc059`
+  - Japan 3,426: `fe1e4143bac0d8fbcfc4eaba208957080c1c9f4f879d99616c32caefa7f8cca9`
 
 ## Unified Data-Driven Promotion Workflow (All Future Batches)
 
@@ -33,7 +33,7 @@ All promotions after `promo36_promotion` use the single declarative batch regist
 
 ## Next High-Value Targets
 
-- **Ready open research PR:** **#266** (2 JP transition functions, 280 B, clean named relocations).
+- **Pending USA replay:** 71 standard candidates, requiring independent full canonical G2; 20 special-flag candidates (both regions) excluded. Japan's two #266 transitions are included in the new 33-function batch.
 - **Shadow/dual-reference research PRs:** **#283** (6 float-pool warp helpers, 712 B), **#267** (2 JP controller handlers, 632 B), **#279** residual (2 exit decoders, 896 B).
 - **Near-miss executor queue:** 77 compact 2.5–3.5 KB task packets (38 USA + 39 JP, <=6 differing words) exported by `scripts/harvest_zero_token.py`.
 - **Cross-region multi-function donors:** ~32 remaining USA->JP fingerprint-matched pairs that only need header/extern resolution.

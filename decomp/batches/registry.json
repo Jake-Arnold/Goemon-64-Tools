@@ -2507,6 +2507,22 @@
         "proof": "results/japan_0_exec_batch14_40_g2_20261126.json",
         "sdk_flags": {}
       }
+    },
+    {
+      "id": "pending_replay_jp33",
+      "namespace": "pendingjp33",
+      "base_commit": "997dc92c69ef8170a14eae4b4086a78aca6f0dd8",
+      "research_dir": "research/pending_native_replay_20261127",
+      "japan_0": {
+        "added": 33,
+        "bytes": 6096,
+        "manifest_sha256": "5e889210f6c07bcbdb14c4182f9652005e33a83fa2fe438ebcfddfed6ea7221c",
+        "prior_elf_sha256": "dd315530109d5597f36696fe39cabcd02ee78c135dad60ef26845a70962bc059",
+        "elf_sha256": "fe1e4143bac0d8fbcfc4eaba208957080c1c9f4f879d99616c32caefa7f8cca9",
+        "guarded_abs": [],
+        "proof": "results/japan_0_pending_replay_jp33_g2_20261128.json",
+        "sdk_flags": {}
+      }
     }
   ],
   "frozen_usa_before_registry": {
