@@ -3,6 +3,12 @@
 > **Historical archive:** All pre-rotation entries (965 KB verbatim) are preserved in [docs/archive/PROGRESS_HISTORY_20261126.md](docs/archive/PROGRESS_HISTORY_20261126.md).
 > Keep this file concise (rolling active milestones only; archive older entries when approaching ~25 KB so agent sessions do not load hundreds of kilobytes of history).
 
+## 28 November 2026 — Pending native replay Japan +33 (pending_replay_jp33)
+
+- Rebuilt all Japanese predecessor stages from original ROM with pinned upstream and IDO 5.3; exact Batch #14 ELF `dd315530109d5597f36696fe39cabcd02ee78c135dad60ef26845a70962bc059` at live base `997dc92c69ef8170a14eae4b4086a78aca6f0dd8`.
+- All 33 standard-flag candidates and 33 altered-source controls passed native G2, expanded and retail ROM equality, 7,376 FUNC identities, 80,652 semantic relocs, 26,393 stable globals, ownership and strict inventory. No metadata restoration. Japan: 3,426 reconstructed C / 246,520 bytes / 3,950 ASM. ELF `fe1e4143bac0d8fbcfc4eaba208957080c1c9f4f879d99616c32caefa7f8cca9`. Includes two transitions from #266, and the coordinate setter port. Proof: `decomp/results/japan_0_pending_replay_jp33_g2_20261128.json`.
+- Registry and promotion integrity passed locally. USA unchanged; 71 ordinary USA candidates require separate canonical G2. Twenty special-flag candidates remain excluded: approved O2, O1 and O2-g3 probes did not match. No compiler flag policy or verification changes. Hosted full regression and branch routing required before merge.
+
 ## 27 November 2026 — Tiered Swarm Hydrogen-Medium Batch #14 (`exec_batch14_40`, USA +24 / Japan +16)
 
 - Authenticated live `stable/decomp@4bc3228724d3050b81f14a75a611053853ae4317` (after Batch #13 passed CI and merged) and pinned original upstream `7e2029c5c7beca705e7ded2c8fa85a5a21d1c3ee` with authentic SGI IDO 5.3 (`76d796c9591c9f5504949f85b29c32a6039a663791afe2f36f34ca18425b64d0`).
